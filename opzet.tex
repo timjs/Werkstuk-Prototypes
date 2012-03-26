@@ -1,10 +1,16 @@
 \documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[dutch]{babel}
-\usepackage[margin=2cm]{geometry}
-\usepackage{parskip}
+
 \usepackage{amsmath}
 \usepackage{pxfonts}
+
+\usepackage[margin=2cm]{geometry}
+\usepackage{parskip}
 \usepackage{lastpage}
+
+\frenchspacing
 
 \def\Title{Een Natuurlijke Semantiek voor JavaScript}
 \def\Tim{Tim Steenvoorden (s0712663)}
@@ -32,33 +38,33 @@
 
 \section*{Onderwerpkeuze, vraagstelling en verwachtingen}
 
-Het onderwerp van ons werkstuk is een specifieke variant van Object Ori\"entatie. Deze variant is bekend van JavaScript, en kenmerkt zich door de volgende twee eigenschappen:
+Het onderwerp van ons werkstuk is een specifieke variant van Object Oriëntatie. Deze variant is bekend van JavaScript, en kenmerkt zich door de volgende twee eigenschappen:
 
 \begin{itemize}
-	\item Lexical Scoping
-	\item Prototype Inheritance
+	\item Lexicaal bereik
+	\item Prototype overerving
 \end{itemize}
 
-Wij willen een natuurlijke semantiek ontwikkelen voor een minimale object-ge\"orienteerde taal die de bovenstaande twee taalconstructies ondersteunt. De te ontwerpen taal zal erg op een kleine subset van JavaScript lijken.
+Wij willen een natuurlijke semantiek ontwikkelen voor een minimale object geörienteerde taal die de bovenstaande twee taal constructies ondersteunt. De te ontwerpen taal zal erg op een kleine deelverzameling van JavaScript lijken.
 
-\textbf{Wij hopen inzicht te krijgen in de manier waarop zulke taalconstructies impact hebben op de natuurlijke semantiek van een object ge\"orienteerde taal.} Daarbij willen wij ook een natuurlijke semantiek ontwikkelen die deze aspecten niet, of anders, ondersteunt. Denk hierbij bijvoorbeeld aan een minimale versie van Java, met klassieke overerving (inheritance) i.p.v.~prototype overerving. Dit is een goede kandidaat voor een ``case study'' zoals aangegeven in de eisen.
+\textbf{Wij hopen inzicht te krijgen in de manier waarop zulke taal constructies impact hebben op de natuurlijke semantiek van een object geörienteerde taal.} Daarbij willen wij ook een natuurlijke semantiek ontwikkelen die deze aspecten niet, of anders, ondersteunt. Denk hierbij bijvoorbeeld aan een minimale versie van Java, met klassieke overerving (\emph{inheritance}) in plaats van prototype overerving. Dit is een goede kandidaat voor een ``case study'' zoals aangegeven in de eisen.
 %Onze bevindingen, bij het ontwerpen van deze natuurlijke semantieken, zullen als resultaat dienen van ons onderzoek.
 
 De natuurlijke semantiek die wij willen ontwikkelen zal niet veel afwijken van die van While. De voornaamste verschillen zullen zich in het \emph{semantische model} voordoen, en daarmee dus ook de manier waarop de toestand van een programma zich laat representeren. Concrete veranderingen zijn bijvoorbeeld dat
 
 \begin{itemize}
 	\item het ``terminatie'' predikaat ($\longrightarrow$) een andere signatuur zal krijgen;
-	\item er een aantal geheel nieuwe deductieregels bij zullen komen;
+	\item er een aantal geheel nieuwe deductie regels bij zullen komen;
 	\item de expressie interpretatie functie $\mathcal{A}$ aangepast en uitgebreid zal worden.
 \end{itemize}
 
-Maar los van deze aanpassingen zal de semantiek in zijn geheel niet fundamenteel veranderen. Terminatie uitspraken blijven van de vorm $\langle \mathit{Statement}, \mathit{state}\rangle \longrightarrow \mathit{state}'$, expressie interpretatie van de vorm $\mathcal{A}{[\![a]\!]}\mathit{state} = \mathit{waarde}$ en de evaluatie van expressies en statements zal strict gescheiden blijven, zoals in While.
+Maar los van deze aanpassingen zal de semantiek in zijn geheel niet fundamenteel veranderen. Terminatie uitspraken blijven van de vorm $\langle \mathit{Statement}, \mathit{state}\rangle \longrightarrow \mathit{state}'$, expressie interpretatie van de vorm $\mathcal{A}{[\![a]\!]}\mathit{state} = \mathit{waarde}$ en de evaluatie van expressies en statements zal strikt gescheiden blijven, zoals in While.
 
-Wij verwachten daarmee dus ook het meeste werk te hebben aan het bedenken van een geschikt semantisch model. De syntax zal niet zo'n probleem zijn, aangezien het (1) ter ondersteuning is aan bovengenoemde taalconstructies en dus zal voortvloeien uit de eisen die zich voordoen, en (2) waarschijnlijk niet veel hoeft af te wijken van de syntax van JavaScript, maar dan sterk vereenvoudigd.
+Wij verwachten daarmee dus ook het meeste werk te hebben aan het bedenken van een geschikt semantisch model. De syntaxis zal niet zo'n probleem zijn, aangezien het (1) ter ondersteuning is aan bovengenoemde taal constructies en dus zal voortvloeien uit de eisen die zich voordoen, en (2) waarschijnlijk niet veel hoeft af te wijken van de syntaxis van JavaScript, maar dan sterk vereenvoudigd.
 
-\section*{Introductie Lexical Scoping}
+\section*{Introductie lexicaal bereik}
 
-\emph{Lexical scoping} (ook wel \emph{static scoping} genoemd) biedt grote expressiekracht aan programmeertalen zoals JavaScript. De manier waarop lexical scoping werkt lijkt heel erg op de manier waarop in wiskundeformules variabelen worden gebonden, en kan aan de hand van dit voorbeeld goed worden uitgelegd.
+\emph{Lexicaal bereik} (ook wel \emph{statisch bereik} genoemd) biedt grote expressiekracht aan programmeertalen zoals JavaScript. De manier waarop lexicaal bereik werkt lijkt heel erg op de manier waarop in wiskunde formules variabelen worden gebonden, en kan aan de hand van dit voorbeeld goed worden uitgelegd.
 
 Beschouw de volgende (betekenisloze) wiskundige formule:
 
@@ -74,9 +80,9 @@ Hierin is de variabele $x$ gebonden, en $n$ vrij. De gehele formule bevat vrije 
 	\le n^2
 \end{equation*}
 
-Nu refereert de variabele $n$ naar de $n$ die bij de kwantor staat, en is gebonden geworden. Net zo kan in een taal met lexical scope, een vrije variabele ``altijd nog'' gebonden worden door er iets ``omheen'' te zetten.
+Nu refereert de variabele $n$ naar de $n$ die bij de kwantor staat, en is gebonden geworden. Net zo kan in een taal met lexicaal bereik, een vrije variabele ``altijd nog'' gebonden worden door er iets ``omheen'' te zetten.
 
-Bekijk bijvoorbeeld de volgende twee pseudo-code fragmenten. Het linker fragment wordt in het rechter fragment omvat met extra code, waardoor de variabele \textit{editing} gebonden wordt.
+Bekijk bijvoorbeeld de volgende twee pseudo code fragmenten. Het linker fragment wordt in het rechter fragment omvat met extra code, waardoor de variabele \textit{editing} gebonden wordt.
 
 \begin{minipage}[t]{.5\textwidth}
 	\begin{tabular}{rl}
@@ -101,7 +107,7 @@ Bekijk bijvoorbeeld de volgende twee pseudo-code fragmenten. Het linker fragment
 	\end{tabular}
 \end{minipage}
 
-Lexical scoping is vooral belangrijk bij het aanroepen van functies die variabelen daarbuiten aanpassen. Dit kunnen we illustreren met het volgende voorbeeld:
+Lexicaal bereik is vooral belangrijk bij het aanroepen van functies die variabelen daarbuiten aanpassen. Dit kunnen we illustreren met het volgende voorbeeld:
 
 \begin{tabular}{rl}
     \small{1} & \textbf{var} $x = 1$ \\
@@ -117,25 +123,25 @@ Lexical scoping is vooral belangrijk bij het aanroepen van functies die variabel
     \small{11} &  \textbf{print} $x$; \\
 \end{tabular}
 
-In de functie $f$ maken wij een nieuwe, lokale variabele $x$ aan die de globale variabele ``overschaduwd''. Wat gebeurt er nu wanneer we $f$ aanroepen in regel 10? In het geval van lexical scoping wordt $g$ uitgevoerd in de omgeving waarin deze gedefinieerd is, dus de omgeving met $x=1$. De uitvoer is dan ook $1, 2$. In het geval van dynamic scoping zal $g$ de laatst gedeclareerde variabele $x$ gebruiken, dus $x=3$. De uitvoer zal dan $3, 1$ zijn.
+In de functie $f$ maken wij een nieuwe, lokale variabele $x$ aan die de globale variabele ``overschaduwd''. Wat gebeurt er nu wanneer we $f$ aanroepen in regel 10? In het geval van lexicaal bereik wordt $g$ uitgevoerd in de omgeving waarin deze gedefinieerd is, dus de omgeving met $x=1$. De uitvoer is dan ook $1, 2$. In het geval van dynamisch bereik zal $g$ de laatst gedeclareerde variabele $x$ gebruiken, dus $x=3$. De uitvoer zal dan $3, 1$ zijn.
 
-\section*{Introductie Prototype Inheritance}
+\section*{Introductie prototype overerving}
 
-Prototype inheritance verchilt van klassieke overerving door geen onderscheid te maken tussen klassen en instanties. In plaats daarvan kunnen nieuwe objecten, door aan te geven welk ander object hun prototype is, structuur en functionaliteit overerven van willekeurige andere objecten. Deze manier van programmeren is ``losser'', en ``dynamischer'' van aard vergeleken met de stricte scheiding tussen definitie (\emph{class}) en gebruik (\emph{instance}) die van toepassing is bij klassieke overerving zoals bv.~in Java, en daarmee ook een stuk expressiever.
+Prototype overerving verschilt van klassieke overerving door geen onderscheid te maken tussen klassen en instanties. In plaats daarvan kunnen nieuwe objecten, door aan te geven welk ander object hun prototype is, structuur en functionaliteit overerven van willekeurige andere objecten. Deze manier van programmeren is ``losser'', en ``dynamischer'' van aard vergeleken met de strikte scheiding tussen definitie (\emph{class}) en gebruik (\emph{instance}) die van toepassing is bij klassieke overerving zoals bijvoorbeeld in Java, en daarmee ook een stuk expressiever.
 
-De typische manier waarop een nieuw object wordt gemaakt met een ander object als prototype, is door te \textit{clonen}. Dat ziet er bijvoorbeeld als volgt uit:
+De typische manier waarop een nieuw object wordt gemaakt met een ander object als prototype, is door te \textit{klonen}. Dat ziet er bijvoorbeeld als volgt uit:
 
 \begin{tabular}{rl}
-	\small{1} & $y$ = \textbf{clone} bestaand object $x$, \\
-	\small{2} & $\quad$ met extra structuur \& functionaliteit als volgt: \\
-	\small{3} & $\qquad$ \textbf{methode} a() $\dots$ \\
-	\small{4} & $\qquad$ \textbf{variabele} b $\dots$ \\
-	\small{5} & $\qquad$ etc$\dots$
+	\small{1} & $y$ = \textbf{clone} bestaand object $x$; \\
+	\small{2} & voeg nieuwe functionaliteit, bijvoorbeeld: \\
+	\small{3} & \quad \textbf{methode} a()$\dots$ \\
+	\small{4} & \quad \textbf{variabele} b$\dots$ \\
+	\small{5} & \quad et cetera$\dots$
 \end{tabular}
 
-JavaScript implementeert prototype inheritance net iets anders, hoewel bovenstaande methode wel gesimuleerd kan worden. Elke functie ($F$) in JavaScript wordt gezien als een potenti\"ele \textit{constructor}. Met de statement $y$ = \textbf{new} $F()$, wordt een nieuw object $y$ gemaakt, met als prototype het object dat opgeslagen was in $F$.prototype op het moment van evalueren van het statement, en vervolgens wordt $F$ direct uitgevoerd als constructor van dit nieuwe object.
+JavaScript implementeert prototype overerving net iets anders, hoewel bovenstaande methode wel gesimuleerd kan worden. Elke functie ($F$) in JavaScript wordt gezien als een potentiële \textit{constructor}. Met de statement $y$ = \textbf{new} $F()$, wordt een nieuw object $y$ gemaakt, met als prototype het object dat opgeslagen was in $F$.prototype op het moment van evalueren van het statement, en vervolgens wordt $F$ direct uitgevoerd als constructor van dit nieuwe object.
 
-Een veelgebruikte methode om de ``clone-methode'' te simuleren in JavaScript is als volgt:
+Een veelgebruikte methode om de ``kloon-methode'' te simuleren in JavaScript is als volgt:
 
 \begin{tabular}{rl}
 	\small{1} & Object.create = \textbf{function}(proto) \{ \\
