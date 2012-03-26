@@ -1,0 +1,133 @@
+
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage[dutch]{babel}
+\usepackage{amsmath}
+\usepackage{parskip}
+\usepackage{lastpage}
+
+\newlength{\sidlength}
+\settowidth{\sidlength}{4046854}
+\def\Title{Een Natuurlijke Semantiek voor Javascript}
+\def\Tim{Tim Steenvoorden (s\parbox{\sidlength}{\hrulefill})}
+\def\Kelley{Kelley van Evert (s4046854)}
+
+\title{\Title \\ {\Large [\textit{Opzet werkstuk}]}}
+\author{\Tim \\ \Kelley}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\scriptsize \Title}
+\chead{}
+\rhead{\scriptsize [\textit{Opzet werkstuk}]\parbox{.5cm}{\hfill}\today}
+\lfoot{\scriptsize \Tim, \Kelley}
+\cfoot{}
+\rfoot{\scriptsize \thepage/\pageref{LastPage}}
+\addtolength{\headheight}{0cm}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\section*{Onderwerpkeuze, ``vraagstelling'' en verwachtingen}
+
+Het onderwerp van ons werkstuk is een specifieke variant van Object Ori\"entatie. Deze variant is bekend van Javascript, en kenmerkt zich door de volgende twee eigenschappen:
+
+\begin{itemize}
+	\itemsep-5pt
+	\item Lexical Scoping
+	\item Prototype Inheritance
+\end{itemize}
+
+Wij gaan een natuurlijke semantiek ontwikkelen voor een minimale object-ge\"orienteerde taal die de bovenstaande twee taalconstructies ondersteunt. De te ontwerpen taal zal erg op een kleine subset van Javascript lijken.
+
+\textbf{Wij hopen inzicht te krijgen in de manier waarop zulke taalconstructies impact hebben op de natuurlijke semantiek van een object ge\"orienteerde taal.} Daartoe zullen we ook een natuurlijke semantiek ontwikkelen die deze aspecten niet, of anders, ondersteunt. Denk hierbij bijvoorbeeld aan een minimale versie van Java, met klassieke overerving (inheritance) i.p.v.~prototype inheritance, en zonder lexical scoping. Onze bevindingen, bij het ontwerpen van deze natuurlijke semantieken, zullen als resultaat dienen van ons onderzoek.
+
+De natuurlijke semantiek die wij gaan ontwikkelen zal niet veel afwijken van die van While. De voornaamste verschillen \textit{zullen zich in het semantische model voordoen}, en daarmee dus ook de manier waarop de toestand van een programma zich laat representeren. Concrete veranderingen zijn bijvoorbeeld dat
+
+\begin{itemize}
+	\itemsep-5pt
+	\item het ``terminatie'' predikaat ($\longrightarrow$) een andere signatuur zal krijgen;
+	\item er een aantal geheel nieuwe deductieregels bij zullen komen;
+	\item de expressie interpretatie functie $\mathcal{A}$ aangepast en uitgebreid zal worden.
+\end{itemize}
+
+Maar los van deze aanpassingen zal de semantiek in zijn geheel niet fundamenteel veranderen. Terminatie uitspraken blijven van de vorm $\langle \mathit{Statement}, \mathit{state}\rangle \longrightarrow \mathit{state}'$, expressie interpretatie van de vorm $\mathcal{A}{[\![a]\!]}\mathit{state} = \mathit{waarde}$ en de evaluatie van expressies en statements zal strict gescheiden blijven, zoals in While.
+
+Wij verwachten daarmee dus ook het meeste werk te hebben aan het bedenken van een geschikt semantisch model. De syntax zal niet zo'n probleem zijn, aangezien het (1) ter ondersteuning is aan bovengenoemde taalconstructies en dus zal voortvloeien uit de eisen die zich voordoen, en (2) waarschijnlijk niet veel hoeft af te wijken van de syntax van Javascript, maar dan sterk vereenvoudigd.
+
+\section*{Introductie Lexical Scoping}
+
+Lexical scoping biedt grote expressiekracht aan programmeertalen zoals Javascript. De manier waarop lexical scoping werkt lijkt heel erg op de manier waarop in wiskundeformules variabelen worden gebonden, en kan aan de hand van dit voorbeeld goed worden uitgelegd.
+
+Beschouw de volgende (betekenisloze) wiskundige formule:
+
+$$
+	\sum_{x=1}^5{\sqrt{\frac{2x}{n}}}
+$$
+
+Hierin is de variabele $x$ gebonden, en $n$ vrij. De gehele formule bevat vrije variabelen en is dus een open formule. Stel dat we de gehele formule omvatten met een kwantor, waarmee het een uitspraak wordt:
+
+$$
+	\exists_n\; \mathrm{zodanig~dat}\;
+	\sum_{x=1}^5{\sqrt{\frac{2x}{n}}}
+	\le n^2
+$$
+
+Nu referenceert de variabele $n$ naar de $n$ die bij de kwantor staat, en is gebonden geworden. Net zo kan in een taal met lexical scope, een vrije variabele ``altijd nog'' gebonden worden door er iets ``omheen'' te zetten.
+
+Bekijk bijvoorbeeld de volgende twee pseudo-code fragmenten. Het linker fragment wordt in het rechter fragment omvat met extra code, waardoor de variabele \textit{editing} gebonden wordt.
+
+\begin{minipage}[t]{.5\textwidth}
+	\begin{tabular}{rl}
+		\small{1} & \textbf{var} $\ell = 5,$ \\
+		\small{2} \\
+		\small{3} & \phantom{\textbf{var}} handler =
+									\textbf{function} $(e)\; \{$ \\
+		\small{4} & \hspace{30pt} \textbf{if} $(e.\mathrm{code} == 27)$ \\
+		\small{5} & \hspace{45pt} editing = \textsc{False}; \\
+		\small{6} & \phantom{\textbf{var}} $\};$ \\
+	\end{tabular}
+\end{minipage}
+\begin{minipage}[t]{.5\textwidth}
+	\begin{tabular}{rl}
+		\small{1} & \textbf{var} $\ell = 5,$ \\
+		\small{2} & \phantom{\textbf{var}} editing = \textsc{True}, \\
+		\small{3} & \phantom{\textbf{var}} handler =
+									\textbf{function} $(e)\; \{$ \\
+		\small{4} & \hspace{30pt} \textbf{if} $(e.\mathrm{code} == 27)$ \\
+		\small{5} & \hspace{45pt} editing = \textsc{False}; \\
+		\small{6} & \phantom{\textbf{var}} $\};$ \\
+	\end{tabular}
+\end{minipage}
+
+\section*{Introductie Prototype Inheritance}
+
+Prototype inheritance verchilt van klassieke overerving door geen onderscheid te maken tussen klassen en instanties. In plaats daarvan kunnen nieuwe objecten, door aan te geven welk ander object hun prototype is, structuur en functionaliteit overerven van willekeurige andere objecten. Deze manier van programmeren is wat ``losser'', of dynamischer van aard vergeleken met de stricte scheiding tussen definitie en gebruik die van toepassing is bij klassieke overerving zoals bv.~in Java, en daarmee ook een stuk expressiever.
+
+De typische manier waarop een nieuw object wordt gemaakt met een ander object als prototype, is door te \textit{clonen}. Dat ziet er bijvoorbeeld als volgt uit:
+
+\begin{tabular}{rl}
+	\small{1} & $y$ = \textbf{clone} bestaand object $x$, \\
+	\small{2} & $\quad$ met extra structuur \& functionaliteit als volgt: \\
+	\small{3} & $\qquad$ \textbf{methode} a() $\dots$ \\
+	\small{4} & $\qquad$ \textbf{variabele} b $\dots$ \\
+	\small{5} & $\qquad$ etc$\dots$
+\end{tabular}
+
+Javascript implementeert prototype inheritance net iets anders, hoewel bovenstaande methode wel gesimuleerd kan worden. Elke functie ($F$) in Javascript wordt gezien als een potenti\"ele \textit{constructor}. Met de statement $y$ = \textbf{new} $F()$, wordt een nieuw object $y$ gemaakt, met als prototype het object dat opgeslagen was in $F$.prototype op het moment van evalueren van het statement, en vervolgens wordt $F$ direct uitgevoerd als constructor van dit nieuwe object.
+
+Een veelgebruikte methode om de ``clone-methode'' te simuleren in Javascript is als volgt:
+
+\begin{tabular}{rl}
+	\small{1} & Object.create = \textbf{function}(proto) \{ \\
+	\small{2} & $\quad$ \textbf{var} F = \textbf{function}() \{\}; \\
+	\small{3} & $\quad$ F.prototype = proto; \\
+	\small{4} & $\quad$ \textbf{return new} F(); \\
+	\small{5} & \};
+\end{tabular}
+
+\end{document}
