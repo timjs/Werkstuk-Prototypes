@@ -1,0 +1,15 @@
+# Default
+.DS_Store
+*.swp
+*.tmp
+
+# LaTeX
+*.log
+*.aux
+
+# BibTeX
+*.blg
+*.bbl
+
+# Compiled
+*.pdf
