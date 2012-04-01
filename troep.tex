@@ -1,0 +1,76 @@
+\chapter{Andere grammatica's}
+
+\section{Alleen expressies}
+
+\begin{grammar}
+<Statement>  ::= <Statement> <NewLine> <Statement>
+            \alt @if@ <Expression> <Statement> @else@ <Statement>
+            \alt @while@ <Expression> <Statement>
+            \alt @var@ <Slot>
+            \alt <Slot> "=" <Expression>
+            \alt @fun@ <Slot> "(" <Parameters> ")"
+            \alt @obj@ <Slot> @clones@ <Slot>
+
+<Parameters> ::= <Identifier> ", " <Parameters> | <Identifier>
+
+<Arguments>  ::= <Expression> ", " <Arguments>  | <Expression>
+
+<Slot>       ::= <Identifier> "." <Slot> | <Identifier>
+
+<Expression> ::= <Slot>
+            \alt <Slot> "(" <Arguments> ")"
+            \alt <Slot> <Identifier> <Slot>
+
+<Identifier> ::= "a" | "b" | "c" | ... | "+" | "-" | "==" | "<" | ...
+\end{grammar}
+
+\section{Basis grammatica}
+
+\begin{grammar}
+<Statement>  ::= <Statement> <NewLine> <Statement>
+            \alt @if@ <Test> <Statement> @else@ <Statement>
+            \alt @while@ <Test> <Statement>
+            \alt @var@ <Identifier> 
+            \alt <Identifier> "=" <Expression>
+            \alt @fun@ <Identifier> "(" <Parameters> ")"
+            \alt <Identifier> "(" <Arguments> ")"
+            \alt @obj@ <Identifier> @from@ <Identifier>
+
+<Parameters> ::= <Identifier> "," <Parameters> | <Identifier>
+
+<Arguments>  ::= <Expression> "," <Arguments>  | <Expression>
+
+<Expression> ::= <Number>
+            \alt <Identifier>
+            \alt <Expression> <Operator> <Expression>
+
+<Operator>   ::= "+" | "-" | "*" | "/" | "\%"
+
+<Test>       ::= <Boolean>
+            \alt <Test> "\&" <Test>
+            \alt <Test> "|"  <Test>
+            \alt "~" <Test>
+            \alt <Expression> <Compare> <Expression>
+
+<Compare>    ::= "==" | "!=" | "<" | "<=" | ">" | ">="
+
+<Number>     ::= "0" | "1" | "2" | "3" | ...
+
+<Boolean>    ::= @true@ | @false@
+\end{grammar}
+
+
+\begin{program}
+var x
+x = 1
+fun g()
+    print x
+    x = 2
+fun f()
+    var x
+    x = 3
+    g()
+f()
+print x
+\end{program}
+

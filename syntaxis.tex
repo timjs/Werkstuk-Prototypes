@@ -1,0 +1,162 @@
+\chapter{Syntaxis}
+
+\section{Grammatica}
+
+Ik heb er een officiële \textsc{BNF}-grammatica van gemaakt en gezet met het @syntax@-pakket.
+Enkele opmerkingen:
+\begin{description}
+  \item[Statements]
+    \begin{itemize}
+      \item Compositie gebeurt met een nieuwe regel,
+        dit gegeven we aan met \Righttorque.
+        Blokken geven we aan met behulp van inspringen,
+        zodat we geen @end@ nodig hebben of haakjes.
+      \item In plaats van @skip@ kunnen we dus ook \Righttorque gebruiken.
+      \item @if@ en @while@ zijn standaard.
+      \item @print@ om uitvoer van programma's te kunnen testen.
+      \item @var@ is een \emph{declaratie}, en @=@ een \emph{toekenning}.
+      \item @fun f() ...@ is een \emph{definitie}, @f()@ een \emph{aanroep}.
+      \item Om objecten te kunnen klonen heb ik @obj A clones B@ verzonnen.
+        Dit lijkt op het declareren van variabelen met @var@
+        (maar dan @obj@ wegens objecten)
+        en geeft een relatie tussen de objecten weer met @clones@.
+        Dit kunnen we later eventueel uitbreiden naar klassen door
+        @clones@ te vervangen door @extends@.
+    \end{itemize}
+  \item[Parameters \& Argumenten]
+    Spreken redelijk voor zich. Achter de komma staat een spatie, aangegeven met \textvisiblespace.
+  \item[Identifiers \& Slots]
+    \begin{itemize}
+      \item Onze ideeën over \emph{locaties} en \emph{paden}
+        hernoemd naar \emph{slots}. Een slot is een plek waaronder
+        je iets kunt opslaan (variabele, functie, object).
+        Deze term wordt vaak gebruikt bij talen als Lua en IO.
+      \item Identifiers bestaan gewoon uit kleine letters en hoofdletters.
+        (Weet jij nog een goede manier om dit aan te geven zonder het hele
+        alfabet op te noemen?)
+      \item Het lijkt mij een goed idee om de namen van objecten te beginnen
+        met een hoofdletter en variabelen en functies met een kleine.
+    \end{itemize}
+  \item[Expressies \& Operatoren]
+    Alleen gehele getallen. Operatoren zijn standaard aritmetisch.
+  \item[Tests \& Booleans]
+    Speciale syntactische categorie zodat we ze alleen kunnen gebruiken binnen
+    @if@ en @while@. Bevatten standaard logische operatoren.
+    We kunnen de @&@ en @|@ ook vervangen door @&&@ en @||@ of @/\@ en @\/@,
+    wat denk jij?
+    Relaties zijn equivalentie en ordeningen op gehele getallen.
+    Ik heb @true@ en @false@ woordelijk toegevoegd, overbodig of goed idee?
+\end{description}
+
+\begin{grammar}
+<Statement>  ::= <Statement> \Righttorque <Statement>
+            \alt \Righttorque
+            \alt @if@ <Test> <Statement> @else@ <Statement>
+            \alt @while@ <Test> <Statement>
+            \alt @print@ <Expression>
+            \alt @var@ <Slot> 
+            \alt <Slot> "=" <Expression>
+            \alt @fun@ <Slot> "(" <Parameters> ")" <Statement>
+            \alt <Slot> "(" <Arguments> ")"
+            \alt @obj@ <Slot> @clones@ <Slot>
+
+<Parameters> ::= <Identifier> ",\ " <Parameters> | <Identifier>
+
+<Arguments>  ::= <Expression> ",\ " <Arguments>  | <Expression>
+
+<Slot>       ::= <Identifier> "." <Slot> | <Identifier>
+
+<Identifier> ::= "a" | "b" | "c" | \dots
+
+<Expression> ::= <Number>
+            \alt <Slot>
+            \alt <Expression> <Operator> <Expression>
+
+<Operator>   ::= "+" | "-" | "*" | "/" | "\%"
+
+<Number>     ::= "0" | "1" | "2" | "3" | \dots
+
+<Test>       ::= <Boolean>
+            \alt <Test> "\&" <Test>
+            \alt <Test> "|"  <Test>
+            \alt "~" <Test>
+            \alt <Expression> <Relation> <Expression>
+
+<Relation>   ::= "==" | "!=" | "<" | "<=" | ">" | ">="
+
+<Boolean>    ::= @true@ | @false@
+\end{grammar}
+
+\section{Een programma over deuren}
+
+Programma's kunnen we eenvoudig zetten met het @listings@-pakket. We kunnen @\begin{program}@ en @\end{program}@ gebruiken om programma's tussen te schrijven. Daarnaast heb ik het apenstaartje zo ingesteld dat alles tussen twee apenstaartjes in ``code''-modus worden gezet, inclusief het opmaken van sleutelwoorden!
+
+\begin{program}
+obj Door clones Object       // Maak een nieuwe deur
+
+fun Door.open()              // Een functie om de deur te openen
+    print 42
+
+obj LockedDoor clones Door   // Maak een nieuwe gesloten deur...
+var LockedDoor.isLocked
+LockedDoor.isLocked = 1      // ...die dicht is
+
+fun LockedDoor.unlock(code)
+    if code == this.code     // Als de code correct is...
+        isLocked = 0         // ...openen we de deur
+
+fun LockedDoor.open()        // Herdefinieer om isLocked te gebruiken
+    if isLocked == 1
+        print 0
+    else
+        proto.open()         // Expliciete aanroep naar prototype
+
+obj Safe clones LockedDoor   // Maak een kluis...
+var Safe.code
+Safe.code = 1234             // ...en ken een code toe
+
+Safe.unlock(4321)
+Safe.open()                  // Geeft 0, de deur is gesloten
+Safe.unlock(1234)
+Safe.open()                  // Geeft 42, we de juiste code hadden
+\end{program}
+
+\section{Een programma over personen}
+
+\begin{program}
+obj Person clones Object
+
+var Person.total
+Person.total = 0
+
+fun Person.initialize()      // Wordt aangeroepen bij iedere kloon
+    Person.total = Person.total + 1
+
+obj Me clones Person
+var Me.age
+Me.age = 37
+
+obj You clones Person
+var You.age
+You.age = 42
+
+print Person.total           // Geeft 2
+\end{program}
+
+\section{Een programma over scope}
+
+\begin{program}
+var x
+x = 1
+fun g()
+    print x
+    x = 2
+fun f()
+    var x
+    x = 3
+    g()
+f()
+print x
+\end{program}
+
+% vim: spell spl=nl
