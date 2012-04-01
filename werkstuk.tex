@@ -1,0 +1,67 @@
+\documentclass
+  [11pt,
+   paper=a4,
+   cleardouble=plain,
+   chapterprefix=true,
+   %parskip=half,
+   draft=true]
+  {scrbook}
+
+\usepackage[dutch]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{marvosym}
+
+\usepackage{pxfonts}
+
+\usepackage{tikz}
+
+\usepackage{listings}
+\lstdefinelanguage{proto}
+  {keywords={var, obj, clones, fun, print, if, else, while},
+   emph={true,false,this,proto},
+   comment=[l]{//}}
+\lstdefinelanguage{class}[]{proto}
+  {morekeywords={extends},
+   deletekeywords={clones},
+   moreemph={super},
+   deleteemph={proto}}
+\lstnewenvironment{program}{}{}
+\lstMakeShortInline @
+\lstset
+  {language=proto,
+   basicstyle=\small\ttfamily,
+   emphstyle=\scshape,
+   numbers=left,
+   numberstyle=\tiny,
+   numbersep=2em,
+   extendedchars=true}
+
+\usepackage{syntax}
+\setlength{\grammarindent}{8em}
+
+\frenchspacing% Cruciaal!
+
+\begin{document}
+
+\title{Een natuurlijke semantiek voor prototype gebaseerde talen}
+\author{Kelley van Evert \& Tim Steenvoorden}
+\maketitle
+
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+\include{syntaxis}
+%\include{troep}
+
+\backmatter
+
+\end{document}
+
+% vim: spell spl=nl
