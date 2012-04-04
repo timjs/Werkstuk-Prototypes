@@ -2,29 +2,45 @@
 
 \section{Grammatica}
 
-Ik heb er een officiële \textsc{BNF}-grammatica van gemaakt en gezet met het @syntax@-pakket.
+We maken in ons werkstuk, net als in \emph{Nielson en Nielson}, geen gebruik van \emph{concrete syntax}, maar houden ons bezig met de \emph{abstracte syntax}. Hoewel de syntax wel enigszins lijkt op concrete syntax, is de schrijfwijze enkel ter bevordering van de leesbaarheid.
+
+Wij kunnen om deze reden enkele afgekorte/andere schrijfwijzen hanteren, die één of één te vertalen zijn met de syntax die beschreven wordt in onderstaande grammatica. Zo zullen wij in sommige gevallen het gebruik van newlines en indents prefereren over het gebruik van haakjes en puntkomma's. Maar wanneer we afleidingsbomen tekenen zullen we dit niet doen, en zullen we bovendien sommige statements \emph{invouwen}. Onderstaande twee voorbeelden illustreren deze ideeën:
+
+\begin{program}
+fun make(i) returns counter:
+  fun counter() returns i:
+    i = i + 1
+
+var c; c = make(5)
+var d; d = make(42)
+var i; i = c() # i = 6
+var j; j = d() # j = 43
+\end{program}
+
+\begin{program}
+fun m(i) ret cnt: (fun cnt ret i: (i = i + 1))
+var c = m(5), d = m(42), i = c(), j = d()
+\end{program}
+
+(Bovenstaand programma geeft overigens aan dat de scope van een functie moet worden aangemaakt \emph{op het moment van aanroep} i.p.v. van tevoren.)
+
 Enkele opmerkingen:
+
 \begin{description}
-  \item[Statements]
+	\item[Grammatica] Het gebruik van $[\dots]$ in een grammaticaregel betekent dat er twee varianten van de regel zijn: één mét de omsloten $\dots$, en één zonder.
+  \item[Statements] \hfill
     \begin{itemize}
-      \item Compositie gebeurt met een nieuwe regel,
-        dit gegeven we aan met \Righttorque.
-        Blokken geven we aan met behulp van inspringen,
-        zodat we geen @end@ nodig hebben of haakjes.
-      \item In plaats van @skip@ kunnen we dus ook \Righttorque gebruiken.
-      \item @if@ en @while@ zijn standaard.
-      \item @print@ om uitvoer van programma's te kunnen testen.
-      \item @var@ is een \emph{declaratie}, en @=@ een \emph{toekenning}.
-      \item @fun f() ...@ is een \emph{definitie}, @f()@ een \emph{aanroep}.
+    	\item We maken een stricte scheiding tussen \emph{declaratie} (\syntax{@var@ <Slot>}) van variabelen en \emph{toekenning} (\syntax{<Slot> = <Expression>}, \syntax{<Slot\textsubscript1> = <Slot\textsubscript2> "(" <Expressions?> ")"}). Dit omdat (1) we dan minder repetitie in deductieregels zullen hebben en (2) het een logische scheiding is.
       \item Om objecten te kunnen klonen heb ik @obj A clones B@ verzonnen.
         Dit lijkt op het declareren van variabelen met @var@
         (maar dan @obj@ wegens objecten)
         en geeft een relatie tussen de objecten weer met @clones@.
         Dit kunnen we later eventueel uitbreiden naar klassen door
         @clones@ te vervangen door @extends@.
+      \item De @obj@ regel zonder het @clones@ keyword wordt gebruikt om een object te maken zonder prototype (of basis object prototype). (Dit vond ik een elegantere wijze dan het gebruik van @Object@, waarbij deze natuurlijk ook in de grammatica zou moeten voorkomen.)
     \end{itemize}
   \item[Parameters \& Argumenten]
-    Spreken redelijk voor zich. Achter de komma staat een spatie, aangegeven met \textvisiblespace.
+    Ik heb deze hernoemd naar \emph{Identifiers?} en \emph{Expressions?}, waarbij deze nu dus de naam hebben \emph{van wat ze zijn} i.p.v. \emph{wat hun functie is}. Dit omdat ze bijvoorbeeld ook best ergens anders in de grammatica zouden voorkomen, met een andere functie (nu niet, dit is gewoon een fundamenteel argument).
   \item[Identifiers \& Slots]
     \begin{itemize}
       \item Onze ideeën over \emph{locaties} en \emph{paden}
@@ -33,9 +49,9 @@ Enkele opmerkingen:
         Deze term wordt vaak gebruikt bij talen als Lua en IO.
       \item Identifiers bestaan gewoon uit kleine letters en hoofdletters.
         (Weet jij nog een goede manier om dit aan te geven zonder het hele
-        alfabet op te noemen?)
+        alfabet op te noemen?) \emph{(Reguliere expressies zijn hiervoor handig, hoewel de huidige aanpak ook werkt. Ik had problemen op een juiste en mooie manier reguliere expressies weer te geven in deze grammatica ;)}
       \item Het lijkt mij een goed idee om de namen van objecten te beginnen
-        met een hoofdletter en variabelen en functies met een kleine.
+        met een hoofdletter en variabelen en functies met een kleine. \emph{Dit lijkt mij onnodig ingewikkeld, qua construeren van grammatica, terwijl het niet echt belangrijk is voor ons doeleinde. Overigens moeten we functies ook als een soort objecten beschouwen, in de zin dat ze call-by-reference moeten zijn i.p.v. call-by-value.}
     \end{itemize}
   \item[Expressies \& Operatoren]
     Alleen gehele getallen. Operatoren zijn standaard aritmetisch.
@@ -49,40 +65,43 @@ Enkele opmerkingen:
 \end{description}
 
 \begin{grammar}
-<Statement>  ::= <Statement> \Righttorque <Statement>
-            \alt \Righttorque
-            \alt @if@ <Test> <Statement> @else@ <Statement>
-            \alt @while@ <Test> <Statement>
-            \alt @print@ <Expression>
+<Statement>  ::= <Statement>; <Statement>
+            \alt @skip@
+            \alt @if@ <BooleanExpression> @then@ <Statement\textsubscript1> @else@ <Statement\textsubscript2>
+            \alt @while@ <BooleanExpression> @do@ <Statement>
             \alt @var@ <Slot> 
             \alt <Slot> "=" <Expression>
-            \alt @fun@ <Slot> "(" <Parameters> ")" <Statement>
-            \alt <Slot> "(" <Arguments> ")"
-            \alt @obj@ <Slot> @clones@ <Slot>
+            \alt @fun@ <Slot\textsubscript1> "(" <Identifiers?> ")" [@returns@ <Slot\textsubscript2>] ":" "(" <Statement> ")"
+            \alt [<Slot\textsubscript1> =] <Slot\textsubscript2> "(" <Expressions?> ")"
+            \alt @obj@ <Slot\textsubscript1> [@clones@ <Slot\textsubscript2>]
 
-<Parameters> ::= <Identifier> ",\ " <Parameters> | <Identifier>
+<Identifier> ::= "a" | "b" | "c" | \dots | <Identifier> <Identifier> | \dots
 
-<Arguments>  ::= <Expression> ",\ " <Arguments>  | <Expression>
+<Identifiers> ::= <Identifier> | <Identifiers> "," <Identifier>
 
-<Slot>       ::= <Identifier> "." <Slot> | <Identifier>
+<Identifiers?> ::= $\varepsilon$ | <Identifiers>
 
-<Identifier> ::= "a" | "b" | "c" | \dots
+<Expressions>  ::= <Expression> | <Expressions> "," <Expression>
+
+<Expressions?> ::= $\varepsilon$ | <Expressions>
+
+<Slot>       ::= <Identifier> | <Identifier> "." <Slot>
 
 <Expression> ::= <Number>
             \alt <Slot>
             \alt <Expression> <Operator> <Expression>
 
-<Operator>   ::= "+" | "-" | "*" | "/" | "\%"
+<Operator>   ::= $+$ | $-$ | $\times$ | "/" | "\%"
 
 <Number>     ::= "0" | "1" | "2" | "3" | \dots
 
-<Test>       ::= <Boolean>
-            \alt <Test> "\&" <Test>
-            \alt <Test> "|"  <Test>
-            \alt "~" <Test>
+<BooleanExpression> ::= <Boolean>
+            \alt <BooleanExpression> @and@ <BooleanExpression>
+            \alt <BooleanExpression> @or@  <BooleanExpression>
+            \alt @not@ <BooleanExpression>
             \alt <Expression> <Relation> <Expression>
 
-<Relation>   ::= "==" | "!=" | "<" | "<=" | ">" | ">="
+<Relation>   ::= $=$ | $\neq$ | "<" | $\le$ | ">" | $\ge$
 
 <Boolean>    ::= @true@ | @false@
 \end{grammar}
@@ -92,44 +111,44 @@ Enkele opmerkingen:
 Programma's kunnen we eenvoudig zetten met het @listings@-pakket. We kunnen @\begin{program}@ en @\end{program}@ gebruiken om programma's tussen te schrijven. Daarnaast heb ik het apenstaartje zo ingesteld dat alles tussen twee apenstaartjes in ``code''-modus worden gezet, inclusief het opmaken van sleutelwoorden!
 
 \begin{program}
-obj Door clones Object       // Maak een nieuwe deur
+obj Door                     # Maak een nieuwe deur
 
-fun Door.open()              // Een functie om de deur te openen
+fun Door.open()              # Een functie om de deur te openen
     print 42
 
-obj LockedDoor clones Door   // Maak een nieuwe gesloten deur...
+obj LockedDoor clones Door   # Maak een nieuwe gesloten deur...
 var LockedDoor.isLocked
-LockedDoor.isLocked = 1      // ...die dicht is
+LockedDoor.isLocked = 1      # ...die dicht is
 
 fun LockedDoor.unlock(code)
-    if code == this.code     // Als de code correct is...
-        isLocked = 0         // ...openen we de deur
+    if code == this.code     # Als de code correct is...
+        isLocked = 0         # ...openen we de deur
 
-fun LockedDoor.open()        // Herdefinieer om isLocked te gebruiken
+fun LockedDoor.open()        # Herdefinieer om isLocked te gebruiken
     if isLocked == 1
         print 0
     else
-        proto.open()         // Expliciete aanroep naar prototype
+        proto.open()         # Expliciete aanroep naar prototype
 
-obj Safe clones LockedDoor   // Maak een kluis...
+obj Safe clones LockedDoor   # Maak een kluis...
 var Safe.code
-Safe.code = 1234             // ...en ken een code toe
+Safe.code = 1234             # ...en ken een code toe
 
 Safe.unlock(4321)
-Safe.open()                  // Geeft 0, de deur is gesloten
+Safe.open()                  # Geeft 0, de deur is gesloten
 Safe.unlock(1234)
-Safe.open()                  // Geeft 42, we de juiste code hadden
+Safe.open()                  # Geeft 42, we de juiste code hadden
 \end{program}
 
 \section{Een programma over personen}
 
 \begin{program}
-obj Person clones Object
+obj Person
 
 var Person.total
 Person.total = 0
 
-fun Person.initialize()      // Wordt aangeroepen bij iedere kloon
+fun Person.initialize()      # Wordt aangeroepen bij iedere kloon
     Person.total = Person.total + 1
 
 obj Me clones Person
@@ -140,23 +159,7 @@ obj You clones Person
 var You.age
 You.age = 42
 
-print Person.total           // Geeft 2
-\end{program}
-
-\section{Een programma over scope}
-
-\begin{program}
-var x
-x = 1
-fun g()
-    print x
-    x = 2
-fun f()
-    var x
-    x = 3
-    g()
-f()
-print x
+# Person.total = 2
 \end{program}
 
 % vim: spell spl=nl
