@@ -2,52 +2,6 @@
 
 \section{Grammatica}
 
-Ik heb er een officiële \textsc{BNF}-grammatica van gemaakt en gezet met het @syntax@-pakket.
-Enkele opmerkingen:
-\begin{description}
-  \item[Statements]
-    \begin{itemize}
-      \item Compositie gebeurt met een nieuwe regel,
-        dit gegeven we aan met \Righttorque.
-        Blokken geven we aan met behulp van inspringen,
-        zodat we geen @end@ nodig hebben of haakjes.
-      \item In plaats van @skip@ kunnen we dus ook \Righttorque gebruiken.
-      \item @if@ en @while@ zijn standaard.
-      \item @print@ om uitvoer van programma's te kunnen testen.
-      \item @var@ is een \emph{declaratie}, en @=@ een \emph{toekenning}.
-      \item @fun f() ...@ is een \emph{definitie}, @f()@ een \emph{aanroep}.
-      \item Om objecten te kunnen klonen heb ik @obj A clones B@ verzonnen.
-        Dit lijkt op het declareren van variabelen met @var@
-        (maar dan @obj@ wegens objecten)
-        en geeft een relatie tussen de objecten weer met @clones@.
-        Dit kunnen we later eventueel uitbreiden naar klassen door
-        @clones@ te vervangen door @extends@.
-    \end{itemize}
-  \item[Parameters \& Argumenten]
-    Spreken redelijk voor zich. Achter de komma staat een spatie, aangegeven met \textvisiblespace.
-  \item[Identifiers \& Slots]
-    \begin{itemize}
-      \item Onze ideeën over \emph{locaties} en \emph{paden}
-        hernoemd naar \emph{slots}. Een slot is een plek waaronder
-        je iets kunt opslaan (variabele, functie, object).
-        Deze term wordt vaak gebruikt bij talen als Lua en IO.
-      \item Identifiers bestaan gewoon uit kleine letters en hoofdletters.
-        (Weet jij nog een goede manier om dit aan te geven zonder het hele
-        alfabet op te noemen?)
-      \item Het lijkt mij een goed idee om de namen van objecten te beginnen
-        met een hoofdletter en variabelen en functies met een kleine.
-    \end{itemize}
-  \item[Expressies \& Operatoren]
-    Alleen gehele getallen. Operatoren zijn standaard aritmetisch.
-  \item[Tests \& Booleans]
-    Speciale syntactische categorie zodat we ze alleen kunnen gebruiken binnen
-    @if@ en @while@. Bevatten standaard logische operatoren.
-    We kunnen de @&@ en @|@ ook vervangen door @&&@ en @||@ of @/\@ en @\/@,
-    wat denk jij?
-    Relaties zijn equivalentie en ordeningen op gehele getallen.
-    Ik heb @true@ en @false@ woordelijk toegevoegd, overbodig of goed idee?
-\end{description}
-
 \begin{grammar}
 <Statement>  ::= <Statement> ";" <Statement>
             \alt @skip@
@@ -90,8 +44,6 @@ Enkele opmerkingen:
 \end{grammar}
 
 \section{Een programma over deuren}
-
-Programma's kunnen we eenvoudig zetten met het @listings@-pakket. We kunnen @\begin{program}@ en @\end{program}@ gebruiken om programma's tussen te schrijven. Daarnaast heb ik het apenstaartje zo ingesteld dat alles tussen twee apenstaartjes in ``code''-modus worden gezet, inclusief het opmaken van sleutelwoorden!
 
 \begin{program}
 obj Door clones Object       // Maak een nieuwe deur
