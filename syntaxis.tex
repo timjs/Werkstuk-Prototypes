@@ -46,33 +46,33 @@
 \section{Een programma over deuren}
 
 \begin{program}
-obj Door clones Object       // Maak een nieuwe deur
+obj Door clones Object       # Maak een nieuwe deur
 
-fun Door.open()              // Een functie om de deur te openen
+fun Door.open()              # Een functie om de deur te openen
     print 42
 
-obj LockedDoor clones Door   // Maak een nieuwe gesloten deur...
+obj LockedDoor clones Door   # Maak een nieuwe gesloten deur...
 var LockedDoor.isLocked
-LockedDoor.isLocked = 1      // ...die dicht is
+LockedDoor.isLocked = 1      # ...die dicht is
 
 fun LockedDoor.unlock(code)
-    if code == this.code     // Als de code correct is...
-        isLocked = 0         // ...openen we de deur
+    if code == this.code     # Als de code correct is...
+        isLocked = 0         # ...openen we de deur
 
-fun LockedDoor.open()        // Herdefinieer om isLocked te gebruiken
+fun LockedDoor.open()        # Herdefinieer om isLocked te gebruiken
     if isLocked == 1
         print 0
     else
-        proto.open()         // Expliciete aanroep naar prototype
+        proto.open()         # Expliciete aanroep naar prototype
 
-obj Safe clones LockedDoor   // Maak een kluis...
+obj Safe clones LockedDoor   # Maak een kluis...
 var Safe.code
-Safe.code = 1234             // ...en ken een code toe
+Safe.code = 1234             # ...en ken een code toe
 
 Safe.unlock(4321)
-Safe.open()                  // Geeft 0, de deur is gesloten
+Safe.open()                  # Geeft 0, de deur is gesloten
 Safe.unlock(1234)
-Safe.open()                  // Geeft 42, we de juiste code hadden
+Safe.open()                  # Geeft 42, we de juiste code hadden
 \end{program}
 
 \section{Een programma over personen}
@@ -83,7 +83,7 @@ obj Person clones Object
 var Person.total
 Person.total = 0
 
-fun Person.initialize()      // Wordt aangeroepen bij iedere kloon
+fun Person.initialize()      # Wordt aangeroepen bij iedere kloon
     Person.total = Person.total + 1
 
 obj Me clones Person
@@ -94,7 +94,7 @@ obj You clones Person
 var You.age
 You.age = 42
 
-print Person.total           // Geeft 2
+print Person.total           # Geeft 2
 \end{program}
 
 \section{Een programma over scope}
@@ -129,8 +129,8 @@ var d
 d = counter(42)
 
 var i, j
-i = c() // i = 6
-j = d() // j = 43
+i = c() # i = 6
+j = d() # j = 43
 \end{program}
 \end{minipage}
 \begin{minipage}{0.5\textwidth}
@@ -147,8 +147,8 @@ obj d clones Counter
 d.n = 42
 
 
-c.next() // c.n = 6
-d.next() // d.n = 43
+c.next() # c.n = 6
+d.next() # d.n = 43
 \end{program}
 \end{minipage}
 
