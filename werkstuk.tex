@@ -3,7 +3,7 @@
    paper=a4,
    cleardouble=plain,
    chapterprefix=true,
-   parskip=half-,
+   %parskip=half,
    draft=true]
   {scrbook}
 
@@ -17,15 +17,13 @@
 
 \usepackage{pxfonts}
 
-\usepackage{subfig}
-
 \usepackage{tikz}
 
 \usepackage{listings}
 \lstdefinelanguage{proto}
-  {keywords={var, obj, clones, fun, print, if, else, while, then, do, skip, and, or, not, returns},
+  {keywords={var, obj, clones, fun, print, if, else, while},
    emph={true,false,this,proto},
-   comment=[l]{\#}}
+   comment=[l]{//}}
 \lstdefinelanguage{class}[]{proto}
   {morekeywords={extends},
    deletekeywords={clones},
@@ -37,16 +35,13 @@
   {language=proto,
    basicstyle=\small\ttfamily,
    emphstyle=\scshape,
-   commentstyle=\small\color{green!40!black},
    numbers=left,
-   numberstyle=\small\color{black!70},
-   numbersep=1pc,
+   numberstyle=\tiny,
+   numbersep=2em,
    extendedchars=true}
 
-\usepackage[nounderscore]{syntax}
+\usepackage{syntax}
 \setlength{\grammarindent}{8em}
-\renewcommand{\syntleft}{\normalfont\itshape}
-\renewcommand{\syntright}{}
 
 \frenchspacing% Cruciaal!
 
