@@ -49,32 +49,34 @@ Enkele opmerkingen:
 \end{description}
 
 \begin{grammar}
-<Statement>  ::= <Statement> \Righttorque <Statement>
-            \alt \Righttorque
+<Statement>  ::= <Statement> ";" <Statement>
+            \alt @skip@
             \alt @if@ <Test> <Statement> @else@ <Statement>
             \alt @while@ <Test> <Statement>
             \alt @print@ <Expression>
-            \alt @var@ <Slot> 
+            \alt @var@ <Slots> 
             \alt <Slot> "=" <Expression>
-            \alt @fun@ <Slot> "(" <Parameters> ")" <Statement>
-            \alt <Slot> "(" <Arguments> ")"
-            \alt @obj@ <Slot> @clones@ <Slot>
+            \alt @fun@ <Slot> "(" <Identifiers>? ")" [@returns@ <Slot>] <Statement>
+            \alt [<Slot> "="] <Slot> "(" <Expressions>? ")"
+            \alt @obj@ <Slot> [@clones@ <Slot>]
 
-<Parameters> ::= <Identifier> ",\ " <Parameters> | <Identifier>
+<Slot>       ::= <Identifier> | <Identifier> "." <Slot>
 
-<Arguments>  ::= <Expression> ",\ " <Arguments>  | <Expression>
+<Slots>       ::= <Slot> | <Slot> "," <Slots>
 
-<Slot>       ::= <Identifier> "." <Slot> | <Identifier>
+<Identifier> ::= ( "a" | \dots | "z" | "A" | \dots | "Z" | "_" )+
 
-<Identifier> ::= "a" | "b" | "c" | \dots
+<Identifiers> ::= <Identifier> | <Identifier> "," <Identifiers>
 
 <Expression> ::= <Number>
             \alt <Slot>
             \alt <Expression> <Operator> <Expression>
 
+<Expressions> ::= <Expression> | <Expression> "," <Expressions>
+
 <Operator>   ::= "+" | "-" | "*" | "/" | "\%"
 
-<Number>     ::= "0" | "1" | "2" | "3" | \dots
+<Number>     ::= ( "0" | \dots | "9" )+
 
 <Test>       ::= <Boolean>
             \alt <Test> "\&" <Test>
@@ -82,7 +84,7 @@ Enkele opmerkingen:
             \alt "~" <Test>
             \alt <Expression> <Relation> <Expression>
 
-<Relation>   ::= "==" | "!=" | "<" | "<=" | ">" | ">="
+<Relation>   ::= "==" | "/=" | "<" | "<=" | ">" | ">="
 
 <Boolean>    ::= @true@ | @false@
 \end{grammar}
