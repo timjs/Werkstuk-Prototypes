@@ -6,6 +6,7 @@
 # LaTeX
 *.log
 *.aux
+*.toc
 
 # BibTeX
 *.blg
