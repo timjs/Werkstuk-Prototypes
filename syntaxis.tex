@@ -113,4 +113,43 @@ f()
 print x
 \end{program}
 
+\section{Een programma over counters}
+
+\begin{minipage}{0.5\textwidth}
+\begin{program}
+fun counter(n) returns next
+
+    fun next() returns n
+        n = n + 1
+
+var c
+c = counter(5)
+
+var d
+d = counter(42)
+
+var i, j
+i = c() // i = 6
+j = d() // j = 43
+\end{program}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{program}
+obj Counter clones Object
+var Counter.n
+fun Counter.next()
+    n = n + 1
+
+obj c clones Counter
+c.n = 5
+
+obj d clones Counter
+d.n = 42
+
+
+c.next() // c.n = 6
+d.next() // d.n = 43
+\end{program}
+\end{minipage}
+
 % vim: spell spl=nl
