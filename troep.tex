@@ -61,8 +61,6 @@ $\< \mathbf{fun}\;f(y)\;\;\{x=y\}, s, \epsilon \> \to s'$
 
 $\<\texttt{\FUN\ f(y) \{x = y\}}, s, \epsilon\> \to s'$
 
-$\<\syn{fun f(y) {x = y}}, s, \epsilon\> \to s'$
-
 %$\<@fun@ f@(@y@)@ @{@ x @=@ y@}@, s, \epsilon\> \to s'$
 
 $\<\mathtt{fun} f(y) \{x = y\}, s, \epsilon\> \to s'$
@@ -78,10 +76,6 @@ $\<\mathtt{fun} f(y) \{x = y\}, s, \epsilon\> \to s'$
 @$\<$if $T$ $S_1$ else $S_2, s, \epsilon\> \to (s',\epsilon)$@
 
 \<@if b T else F@, $s$, $\epsilon$\> $\to (s',\epsilon)$
-
----
-
-$\<\syn{if T S1 else S2}, s\> \to s'$
 
 $\<\IF\; T\; S_1\; \ELSE\; S_2, s\> \to s'$
 
@@ -106,16 +100,15 @@ $\< \IF T S_1 \ELSE S_2 \> \to s'$
       ($(\tikzchildnode.west) - (0,0.5\tikzleveldistance)$)
       -- ($(\tikzchildnode.east) - (0,0.5\tikzleveldistance)$)
       ($(\tikzparentnode.west) + (0,0.5\tikzleveldistance)$)
-      -- ($(\tikzparentnode.east) + (0,0.5\tikzleveldistance)$)
-    },
+      -- ($(\tikzparentnode.east) + (0,0.5\tikzleveldistance)$) },
     grow'=up,
     level/.style={sibling distance=20em/#1},
     level distance=4ex]
-    \node {$\<\WHILE x \neq 1 \DO y = y \times x\COMP x = x - 1, s_{3,2}\> \to s_{6,1}$}
+  \node {$\<\WHILE x \neq 1 \DO y = y \times x\COMP x = x - 1, s_{3,2}\> \to s_{6,1}$}
     child { node {$\<y = y \times x\COMP x = x - 1, s_{3,2}\> \to s_{6,1}$}
       child { node {$\<y = y \times x, s_{3,2}\> \to s_{6,2}$} }
-    child { node {$\<x = x - 1, s_{6,2}\> \to s_{6,1}$} } }
-  child { node {$\<\WHILE x \neq 1 \DO y = y \times x\COMP x = x - 1, s_{6,1}\> \to s_{6,1}$} };
+      child { node {$\<x = x - 1, s_{6,2}\> \to s_{6,1}$} } }
+    child { node {$\<\WHILE x \neq 1 \DO y = y \times x\COMP x = x - 1, s_{6,1}\> \to s_{6,1}$} };
 \end{tikzpicture}
 
 % vim: ft=context
