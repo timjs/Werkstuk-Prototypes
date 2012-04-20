@@ -58,6 +58,37 @@
 \renewcommand{\syntleft}{\normalfont\itshape}
 \renewcommand{\syntright}{}
 
+\newcommand\newkeyword[2]
+  {\newcommand{#1}
+     {\text{\small\ttfamily\bfseries #2}}}
+\newcommand\newconstant[2]
+  {\newcommand{#1}
+     {\text{\small\ttfamily\scshape #2}}}
+
+\newcommand{\syn}[1]
+  {\ensuremath{\mathit{#1}}}
+
+\newcommand{\COMP}{;\;}
+\newkeyword{\VAR}{var\;}
+\newkeyword{\OBJ}{obj\;}
+\newkeyword{\CLONES}{\;clones\;}
+\newkeyword{\FUN}{fun\;}
+\newkeyword{\RETURNS}{\;returns\;}
+\newkeyword{\IS}{\;is\;}
+\newkeyword{\PRINT}{print\;}
+\newkeyword{\SKIP}{skip}
+\newkeyword{\IF}{if\;}
+\newkeyword{\THEN}{\;then\;}
+\newkeyword{\ELSE}{\;else\;}
+\newkeyword{\WHILE}{while\;}
+\newkeyword{\DO}{\;do\;}
+\newkeyword{\END}{\;end}
+
+\newconstant{\TRUE}{true}
+\newconstant{\FALSE}{false}
+\newconstant{\SELF}{self}
+\newconstant{\PROTO}{proto}
+
 \frenchspacing% Cruciaal!
 \raggedbottom
 
