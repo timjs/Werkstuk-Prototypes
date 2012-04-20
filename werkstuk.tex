@@ -22,8 +22,14 @@
 
 \usepackage{listings}
 \lstdefinelanguage{proto}
-  {keywords={var, obj, clones, fun, returns, print, skip, if, else, while},
-   emph={true,false,this,proto},
+  {keywords={var, obj, clones, fun, returns, is,
+             print, skip,
+             if, then, else, while, do},
+   emph={true, false, this, proto},
+   %literate={==}{{$=$}}1 {/=}{{$\neq$}}1 {<=}{{$\leq$}}1 {>=}{{$\geq$}}1
+   %         {+}{{$+$}}1 {-}{{$-$}}1 {*}{{$\times$}}1 {/}{{$/$}}
+   %         {&}{{$\wedge$}}1 {|}{{$\vee$}}1 {~}{{$\lnot$}}1,
+   comment=[l]{\#}}
    comment=[l]{\#}}
 \lstdefinelanguage{class}[]{proto}
   {morekeywords={extends},
