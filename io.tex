@@ -1,0 +1,203 @@
+\chapter{Vergelijking met IO}
+
+\section{Grammatica}
+
+\begin{grammar}
+<Statement>  ::= <Statement> ";" <Statement>
+            \alt "nil"
+            \alt "if" "(" <Test> "," <Statement> "," <Statement> ")"
+            \alt "while" "(" <Test> "," <Statement> ")"
+            \alt <Expression> "println"
+            \alt <Slot> ":=" <Expression>
+            \alt <Slot>  "=" <Expression>
+            \alt <Slot> ":=" "method" "(" \{ <Identifier> "," \} <Statement> ")"
+            \alt <Slot> ":=" <Slot> "(" [ <Expression> \{ "," <Expression> \} ] ")"
+            \alt <Slot> ":=" <Slot> "clone"
+
+<Slot>       ::= <Identifier> \{ "\ " <Identifier> \}
+
+<Identifier> ::= ( "a" | \dots | "z" | "A" | \dots | "Z" | "_" )+
+
+<Expression> ::= <Number>
+            \alt <Slot>
+            \alt <Expression> <Operator> <Expression>
+
+<Operator>   ::= "+" | "-" | "*" | "/"
+
+<Number>     ::= ( "0" | \dots | "9" )+
+
+<Test>       ::= <Boolean>
+            \alt <Test> "and" "(" <Test> ")"
+            \alt <Test> "or" "(" <Test> ")"
+            \alt "not" "(" <Test> ")"
+            \alt <Expression> <Relation> <Expression>
+
+<Relation>   ::= "==" | "!=" | "<" | "<=" | ">" | ">="
+
+<Boolean>    ::= "true" | "false"
+\end{grammar}
+
+\newpage
+\section{Doors}
+
+\begin{minipage}{0.5\textwidth}
+\begin{program}
+obj Door clones Object
+
+fun Door.open() is
+    print 42
+
+obj LockedDoor clones Door
+var LockedDoor.isLocked
+LockedDoor.isLocked = 1
+
+fun LockedDoor.unlock(code) is
+    if code == this.code then
+        isLocked = 0
+
+fun LockedDoor.open() is
+    if isLocked == 1 then
+        print 0
+    else
+        proto.open()
+
+obj Safe clones LockedDoor
+var Safe.code
+Safe.code = 1234
+
+Safe.unlock(4321)
+Safe.open()
+Safe.unlock(1234)
+Safe.open()
+\end{program}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting[language=io]{doors.io}
+\end{minipage}
+
+\newpage
+\section{Persons}
+
+\begin{minipage}{0.5\textwidth}
+\begin{program}
+obj Person clones Object
+
+var Person.total
+Person.total = 0
+
+fun Person.initialize() is
+    Person.total = Person.total + 1
+
+obj Me clones Person
+var Me.age
+Me.age = 37
+
+obj You clones Person
+var You.age
+You.age = 42
+
+print Person.total
+\end{program}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting[language=io]{persons.io}
+\end{minipage}
+
+\section{Scope}
+
+\begin{minipage}{0.5\textwidth}
+\begin{program}
+var x
+x = 1
+fun g() is
+    print x
+    x = 2
+fun f() is
+    var x # Weghalen geeft dynamic
+    x = 3
+    g()
+f()
+print x
+\end{program}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting[language=io]{scope.io}
+\end{minipage}
+
+\newpage
+\section{Counters}
+
+\begin{minipage}{0.5\textwidth}
+\begin{program}
+fun counter(n) returns next is
+    fun next() returns n is
+        n = n + 1
+
+var c
+c = counter(5)
+
+var d
+d = counter(42)
+
+var i, j
+i = c()
+j = d()
+\end{program}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{lstlisting}[language=io]
+counter := block(n,
+    block(
+        n = n + 1))
+
+
+c := counter call(5)
+
+
+d := counter call(42)
+
+
+i := c call
+j := d call
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{0.5\textwidth}
+\begin{program}
+obj Counter clones Object
+var Counter.n
+fun Counter.next() is
+    n = n + 1
+
+obj c clones Counter
+c.n = 5
+
+obj d clones Counter
+d.n = 42
+
+
+c.next()
+d.next()
+\end{program}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{lstlisting}[language=io]
+Counter := Object clone
+
+Counter next := method(
+    n = n + 1)
+
+c := Counter clone
+
+c n := 5
+
+d := Counter clone
+
+d n := 42
+
+c next
+d next
+\end{lstlisting}
+\end{minipage}
+
+% vim: ft=context
