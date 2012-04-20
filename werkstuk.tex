@@ -4,8 +4,7 @@
    cleardouble=plain,
    chapterprefix=true,
    parskip=half,
-   draft=true,
-  ]
+   draft=true]
   {scrbook}
 
 \usepackage[dutch]{babel}
@@ -14,11 +13,12 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{marvosym}
 
 \usepackage{pxfonts}
 
 \usepackage{tikz}
+\usetikzlibrary{trees}
+\tikzstyle{every picture}=[thick]
 
 \usepackage{listings}
 \lstdefinelanguage{proto}
@@ -51,6 +51,7 @@
    numbers=left,
    numberstyle=\tiny,
    numbersep=2em,
+   mathescape=true,
    extendedchars=true}
 
 \usepackage[nounderscore]{syntax}
@@ -90,7 +91,7 @@
 \newconstant{\PROTO}{proto}
 
 \frenchspacing% Cruciaal!
-\raggedbottom
+\raggedbottom% Handig
 
 \begin{document}
 
@@ -105,10 +106,11 @@
 \mainmatter
 
 \include{syntaxis}
-%\include{troep}
+\include{io}
+\include{regels}
 
 \backmatter
 
 \end{document}
 
-% vim: spell spl=nl
+% vim: ft=context
