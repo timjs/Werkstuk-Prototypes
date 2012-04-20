@@ -30,6 +30,12 @@
    %         {+}{{$+$}}1 {-}{{$-$}}1 {*}{{$\times$}}1 {/}{{$/$}}
    %         {&}{{$\wedge$}}1 {|}{{$\vee$}}1 {~}{{$\lnot$}}1,
    comment=[l]{\#}}
+\lstdefinelanguage{io}
+  {keywords={clone, method, block, call, return,
+             print, println,
+             if, then, else, elsif,
+             loop, repeat, while, for, break, continue},
+   emph={true, false, nil, self, super},
    comment=[l]{\#}}
 \lstdefinelanguage{class}[]{proto}
   {morekeywords={extends},
