@@ -2,65 +2,61 @@
 
 \section{Grammatica}
 
-\begin{grammar}
-<Statement>  ::= <Statement> ";" <Statement>
-            \alt @skip@
-            \alt @if@ <Test> <Statement> @else@ <Statement>
-            \alt @while@ <Test> <Statement>
-            \alt @print@ <Expression>
-            \alt @var@ <Slots> 
-            \alt <Slot> "=" <Expression>
-            \alt @fun@ <Slot> "(" <Identifiers>? ")" [@returns@ <Slot>] <Statement>
-            \alt [<Slot> "="] <Slot> "(" <Expressions>? ")"
-            \alt @obj@ <Slot> [@clones@ <Slot>]
-
-<Slot>       ::= <Identifier> | <Identifier> "." <Slot>
-
-<Slots>       ::= <Slot> | <Slot> "," <Slots>
-
-<Identifier> ::= ( "a" | \dots | "z" | "A" | \dots | "Z" | "_" )+
-
-<Identifiers> ::= <Identifier> | <Identifier> "," <Identifiers>
-
-<Expression> ::= <Number>
-            \alt <Slot>
-            \alt <Expression> <Operator> <Expression>
-
-<Expressions> ::= <Expression> | <Expression> "," <Expressions>
-
-<Operator>   ::= "+" | "-" | "*" | "/" | "\%"
-
-<Number>     ::= ( "0" | \dots | "9" )+
-
-<Test>       ::= <Boolean>
-            \alt <Test> "\&" <Test>
-            \alt <Test> "|"  <Test>
-            \alt "~" <Test>
-            \alt <Expression> <Relation> <Expression>
-
-<Relation>   ::= "==" | "/=" | "<" | "<=" | ">" | ">="
-
-<Boolean>    ::= @true@ | @false@
-\end{grammar}
+\begin{tabular}{lcl}
+\syn{Statement}  &::=& \syn{Statement} $;$ \syn{Statement} \\
+                  &|&  \SKIP \\
+                  &|&  \IF \syn{Test} \THEN \syn{Statement} \ELSE \syn{Statement} \\
+                  &|&  \WHILE \syn{Test} \DO \syn{Statement} \\
+                  &|&  \PRINT \syn{Expression} \\
+                  &|&  \VAR \syn{Slot} \{ $,$ \syn{Slot} \} \\
+                  &|&  \syn{Slot} $=$ \syn{Expression} \\
+                  &|&  \FUN \syn{Slot} $($ [ \syn{Identifier} \{ , \syn{Identifier} \} ] $)$
+                       [\RETURNS \syn{Slot} ] \IS \syn{Statement} \\
+                  &|&  [ \syn{Slot} $=$ ] \syn{Slot}
+                       $($ [ \syn{Expression} \{ $,$ \syn{Expression} \} ] $)$ \\
+                  &|&  \OBJ \syn{Slot} [\CLONES \syn{Slot} ] \\
+                  \\
+\syn{Slot}       &::=& \syn{Identifier} \{ $.$ \syn{Identifier} \} \\
+                  \\
+\syn{Identifier} &::=& ( a | \dots | z | A | \dots | Z | \_ )+ \\
+                  \\
+\syn{Expression} &::=& \syn{Number} \\
+                  &|&  \syn{Slot} \\
+                  &|&  \syn{Expression} \syn{Operator} \syn{Expression} \\
+                  \\
+\syn{Operator}   &::=& $+$ | $-$ | $\times$ | $/$ \\
+                  \\
+\syn{Number}     &::=& ( 0 | \dots | 9 )+ \\
+                  \\
+\syn{Test}       &::=& \syn{Boolean} \\
+                  &|&  \syn{Test} $\wedge$ \syn{Test} \\
+                  &|&  \syn{Test} $\vee$ \\
+                  &|&  $\lnot$ \syn{Test} \\
+                  &|&  \syn{Expression} \syn{Relation} \syn{Expression} \\
+                  \\
+\syn{Relation}   &::=& $=$ | $\neq$ | $<$ | $\le$ | $>$ | $\ge$ \\
+                  \\
+\syn{Boolean}    &::=& \TRUE\ | \FALSE
+\end{tabular}
 
 \section{Een programma over deuren}
 
 \begin{program}
 obj Door clones Object       # Maak een nieuwe deur
 
-fun Door.open()              # Een functie om de deur te openen
+fun Door.open() is           # Een functie om de deur te openen
     print 42
 
 obj LockedDoor clones Door   # Maak een nieuwe gesloten deur...
 var LockedDoor.isLocked
 LockedDoor.isLocked = 1      # ...die dicht is
 
-fun LockedDoor.unlock(code)
-    if code == this.code     # Als de code correct is...
+fun LockedDoor.unlock(code) is
+    if code == this.code then# Als de code correct is...
         isLocked = 0         # ...openen we de deur
 
-fun LockedDoor.open()        # Herdefinieer om isLocked te gebruiken
-    if isLocked == 1
+fun LockedDoor.open() is     # Herdefinieer om isLocked te gebruiken
+    if isLocked == 1 then
         print 0
     else
         proto.open()         # Expliciete aanroep naar prototype
@@ -83,7 +79,7 @@ obj Person clones Object
 var Person.total
 Person.total = 0
 
-fun Person.initialize()      # Wordt aangeroepen bij iedere kloon
+fun Person.initialize() is   # Wordt aangeroepen bij iedere kloon
     Person.total = Person.total + 1
 
 obj Me clones Person
@@ -102,10 +98,10 @@ print Person.total           # Geeft 2
 \begin{program}
 var x
 x = 1
-fun g()
+fun g() is
     print x
     x = 2
-fun f()
+fun f() is
     var x
     x = 3
     g()
@@ -117,9 +113,9 @@ print x
 
 \begin{minipage}{0.5\textwidth}
 \begin{program}
-fun counter(n) returns next
+fun counter(n) returns next is
 
-    fun next() returns n
+    fun next() returns n is
         n = n + 1
 
 var c
@@ -137,7 +133,7 @@ j = d() # j = 43
 \begin{program}
 obj Counter clones Object
 var Counter.n
-fun Counter.next()
+fun Counter.next() is
     n = n + 1
 
 obj c clones Counter
@@ -152,4 +148,4 @@ d.next() # d.n = 43
 \end{program}
 \end{minipage}
 
-% vim: spell spl=nl
+% vim: ft=context
