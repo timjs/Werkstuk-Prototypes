@@ -17,7 +17,7 @@
 \usepackage{pxfonts}
 
 \usepackage{tikz}
-\usetikzlibrary{trees}
+\usetikzlibrary{calc}
 \tikzstyle{every picture}=[thick]
 
 \usepackage{listings}
@@ -49,8 +49,8 @@
    basicstyle=\small\ttfamily,
    emphstyle=\scshape,
    numbers=left,
-   numberstyle=\tiny,
-   numbersep=2em,
+   numberstyle=\small,
+   numbersep=1em,
    mathescape=true,
    extendedchars=true}
 
@@ -90,6 +90,11 @@
 \newconstant{\SELF}{self}
 \newconstant{\PROTO}{proto}
 
+\newcommand{\<}
+  {\ensuremath{\langle}}
+\renewcommand{\>}
+  {\ensuremath{\rangle}}
+
 \frenchspacing% Cruciaal!
 \raggedbottom% Handig
 
@@ -107,7 +112,7 @@
 
 \include{syntaxis}
 \include{io}
-\include{regels}
+\include{troep}
 
 \backmatter
 

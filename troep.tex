@@ -1,76 +1,121 @@
-\chapter{Andere grammatica's}
+\chapter{Troep}
 
-\section{Alleen expressies}
+\section{Regels}
 
-\begin{grammar}
-<Statement>  ::= <Statement> <NewLine> <Statement>
-            \alt @if@ <Expression> <Statement> @else@ <Statement>
-            \alt @while@ <Expression> <Statement>
-            \alt @var@ <Slot>
-            \alt <Slot> "=" <Expression>
-            \alt @fun@ <Slot> "(" <Parameters> ")"
-            \alt @obj@ <Slot> @clones@ <Slot>
+\subsection{While}
 
-<Parameters> ::= <Identifier> ", " <Parameters> | <Identifier>
+@$\<$while not (x = 1) do y = y * x; x = x - 1$, s_{3,2}\> \to s_{6,1}$@
 
-<Arguments>  ::= <Expression> ", " <Arguments>  | <Expression>
+$\<\WHILE x \neq 1 \DO y = y \times x;~ x = x - 1, s_{3,2}\> \to s_{6,1}$
 
-<Slot>       ::= <Identifier> "." <Slot> | <Identifier>
+$\<\mathtt{while}(x \neq 1, y = y \times x;~ x = x - 1), s_{3,2}\> \to s_{6,1}$
 
-<Expression> ::= <Slot>
-            \alt <Slot> "(" <Arguments> ")"
-            \alt <Slot> <Identifier> <Slot>
+$\<\FUN counter(n) \RETURNS next \IS (\FUN next() \RETURNS n \IS n = n + 1), s\>$
 
-<Identifier> ::= "a" | "b" | "c" | ... | "+" | "-" | "==" | "<" | ...
-\end{grammar}
+$\<\FUN counter(n) \RETURNS next \IS \FUN next() \RETURNS n \IS n = n + 1 \END \END, s\>$
 
-\section{Basis grammatica}
+$\<counter := \mathtt{block}(n, \mathtt{block}(n = n + 1)), s\>$
 
-\begin{grammar}
-<Statement>  ::= <Statement> <NewLine> <Statement>
-            \alt @if@ <Test> <Statement> @else@ <Statement>
-            \alt @while@ <Test> <Statement>
-            \alt @var@ <Identifier> 
-            \alt <Identifier> "=" <Expression>
-            \alt @fun@ <Identifier> "(" <Parameters> ")"
-            \alt <Identifier> "(" <Arguments> ")"
-            \alt @obj@ <Identifier> @from@ <Identifier>
-
-<Parameters> ::= <Identifier> "," <Parameters> | <Identifier>
-
-<Arguments>  ::= <Expression> "," <Arguments>  | <Expression>
-
-<Expression> ::= <Number>
-            \alt <Identifier>
-            \alt <Expression> <Operator> <Expression>
-
-<Operator>   ::= "+" | "-" | "*" | "/" | "\%"
-
-<Test>       ::= <Boolean>
-            \alt <Test> "\&" <Test>
-            \alt <Test> "|"  <Test>
-            \alt "~" <Test>
-            \alt <Expression> <Compare> <Expression>
-
-<Compare>    ::= "==" | "!=" | "<" | "<=" | ">" | ">="
-
-<Number>     ::= "0" | "1" | "2" | "3" | ...
-
-<Boolean>    ::= @true@ | @false@
-\end{grammar}
+$\<\VAR x\COMP x=1\COMP
+   \FUN g() \IS (\PRINT x\COMP x=2)\COMP
+   \FUN f() \IS (\VAR x\COMP x=3\COMP g())\COMP
+   f()\COMP
+   \PRINT x,
+s\> \to s'$
 
 
-\begin{program}
-var x
-x = 1
-fun g()
-    print x
-    x = 2
-fun f()
-    var x
-    x = 3
-    g()
-f()
-print x
-\end{program}
+$\<\VAR x\COMP x=1\COMP
+   \FUN g() \IS \PRINT x\COMP x=2 \END\COMP
+   \FUN f() \IS \VAR x\COMP x=3\COMP g() \END\COMP
+   f()\COMP
+   \PRINT x,
+s\> \to s'$
 
+$\<x:=1;~
+   g:=\mathtt{method}(x \mathtt{~print};~ x=2);~
+   f:=\mathtt{method}(x:=3;~ g());~
+   f();~
+   x \mathtt{~print}, 
+s\> \to s'$
+
+$\<x:=1;
+   g:=\mathtt{block}(x \mathtt{~println}; x=2);
+   f:=\mathtt{block}(x:=3; g \mathtt{~call});
+   f \mathtt{~call};
+   x \mathtt{~println}, 
+s\> \to s'$
+
+\subsection{Fun}
+
+\<@fun $f$($y$) {$x$ = $y$}@, $s$, $\epsilon$\> $\to (s',\epsilon)$
+
+@$\<$fun $f$($y$) {$x$ = $y$}$, s, \epsilon\> \to (s',\epsilon)$@
+
+\<@fun f(y) {x = y}@, $s$, $\epsilon$\> $\to (s',\epsilon)$
+
+$\<\FUN f(y) \IS x = y, s, \epsilon\> \to (s', \epsilon)$
+
+---
+
+$\< \mathbf{fun}\;f(y)\;\;\{x=y\}, s, \epsilon \> \to s'$
+
+$\<\texttt{\FUN\ f(y) \{x = y\}}, s, \epsilon\> \to s'$
+
+$\<\syn{fun f(y) {x = y}}, s, \epsilon\> \to s'$
+
+%$\<@fun@ f@(@y@)@ @{@ x @=@ y@}@, s, \epsilon\> \to s'$
+
+$\<\mathtt{fun} f(y) \{x = y\}, s, \epsilon\> \to s'$
+
+\<@fun@ $f$@(@$y$@)@ @{@ $x$@=@$y$ @}@, $s$, $\epsilon$\> $\to s'$
+
+--- ---
+
+\subsection{If}
+
+\<@if $T$ $S_1$ else $S_2$@, $s$, $\epsilon$\> $\to (s',\epsilon)$
+
+@$\<$if $T$ $S_1$ else $S_2, s, \epsilon\> \to (s',\epsilon)$@
+
+\<@if b T else F@, $s$, $\epsilon$\> $\to (s',\epsilon)$
+
+---
+
+$\<\syn{if T S1 else S2}, s\> \to s'$
+
+$\<\IF\; T\; S_1\; \ELSE\; S_2, s\> \to s'$
+
+%$\langle @if@ T S_1 @else@ S_2, s \rangle \to s'$
+
+$\langle$@if T S1 else S2@$\rangle$
+
+@$\langle$ if $T$ $S_1$ else $S_2$ $\rangle$@
+
+\<@if@ $T$ $S_1$ @else@ $S_2$, $s$\> $\to s'$
+
+%$\< @if@\; T\; S_1\; @else@\; S_2, s \> \to s'$
+
+$\< \IF T S_1 \ELSE S_2 \> \to s'$
+
+%\tuple{@if@ $T$ $S_1$ @else@ $S_2$}$\to s'$
+
+\section{Bomen}
+
+\begin{tikzpicture}
+   [edge from parent path={
+      ($(\tikzchildnode.west) - (0,0.5\tikzleveldistance)$)
+      -- ($(\tikzchildnode.east) - (0,0.5\tikzleveldistance)$)
+      ($(\tikzparentnode.west) + (0,0.5\tikzleveldistance)$)
+      -- ($(\tikzparentnode.east) + (0,0.5\tikzleveldistance)$)
+    },
+    grow'=up,
+    level/.style={sibling distance=20em/#1},
+    level distance=4ex]
+    \node {$\<\WHILE x \neq 1 \DO y = y \times x\COMP x = x - 1, s_{3,2}\> \to s_{6,1}$}
+    child { node {$\<y = y \times x\COMP x = x - 1, s_{3,2}\> \to s_{6,1}$}
+      child { node {$\<y = y \times x, s_{3,2}\> \to s_{6,2}$} }
+    child { node {$\<x = x - 1, s_{6,2}\> \to s_{6,1}$} } }
+  child { node {$\<\WHILE x \neq 1 \DO y = y \times x\COMP x = x - 1, s_{6,1}\> \to s_{6,1}$} };
+\end{tikzpicture}
+
+% vim: ft=context
