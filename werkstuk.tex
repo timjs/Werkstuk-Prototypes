@@ -110,9 +110,74 @@
 
 \mainmatter
 
-\include{syntaxis}
-\include{io}
-\include{troep}
+\chapter{Inleiding}
+
+\begin{itemize}
+	\item Motivatie
+	\item JavaScript
+	\item Lexical scope -- vrije/gebeonden variabelen
+	\item Objecten en prototype overerving
+\end{itemize}
+
+\chapter{Notatie en terminologie}
+
+\section{Beschouwing semantisch model}
+
+We definieren in dit werkstuk een natuurlijke semantiek, d.w.z.~een ?-ste orde logica, met axioma's en deductieregels, en een bijbehorende structuur waarin deze zich afspeelt.
+
+Deze structuur, die we ook wel het \emph{semantisch model} zullen noemen, heeft onderstaand opgesomde elementen. Deze worden verderop precies gedefinieerd, onderstaande opsomming geeft slechts een algemeen beeld.
+
+\begin{description}
+	\item[$\mathbb{M}$]\hfill\\ De verzameling mogelijke \emph{geheugens}, welke ook wel als \emph{eindtoestanden} worden geinterpreteerd.
+	\item[$(\mathit{Stm} \times \mathbb{M} \times \mathbb{L} \times \mathbb{L})$]\hfill\\ De verzameling \emph{toestanden}, ook wel \emph{configuraties}.
+	\item[$(\longrightarrow)$]\hfill\\ Een tweeplaatsig predikaat welke als eerste argument een element uit de verzameling van toestanden neemt, en als tweede argument een element uit de verzameling van eindtoestanden $(\mathbb{M}\dots)$. De uitspraak $(S, m, \sigma, \tau) \longrightarrow m'$ moet worden geinterpreteerd worden als:
+	\begin{quote} ``Het programma $S$, met geheugen $m$, in scope $\sigma$ en met als $\mathbf{this}$ object $\tau$, resulteert in eindtoestand $m'$, mits $S$ \emph{correct} is''. \end{quote}
+\end{description}
+
+\section{Notationele conventies}
+
+Terwille van elegantie houden we een aantal gebruikelijke notationele conventies aan:
+
+\begin{enumerate}
+	\item Voor elke twee willekeurige tweestemmige predikaten $\mathsf{S}$ en $\mathsf{T}$ (mogelijk ook $=$), en drie willekeurige elementen $a$, $b$ en $c$, definieren we de afkorting: $$a \operatorname{\mathsf{S}} b \operatorname{\mathsf{T}} c \buildrel{\mathrm{def}}\over{=} a \operatorname{\mathsf{S}} b \land b \operatorname{\mathsf{T}} c$$ in het geval dat deze bewering correct getypeerd is.
+	\item Op eenzelfde manier definieren we ook de volgende afkorting: $$ \{a \in A \mid \phi \} \buildrel{\mathrm{def}}\over{=} \{a \mid a \in A \mid \phi\}$$
+\end{enumerate}
+
+[...]
+
+\chapter{Syntax}
+
+\section{Voorbeeldprogramma's}
+
+[Ter motivatie en duidelijkheid]
+
+\section{Grammatica}
+
+[...en vervolgens helemaal formeel -- even uitleggen van BNF etc..]
+
+\chapter{Semantisch model}
+
+[Stukje bij beetje het semantisch model opbouwen, terwijl we steeds redeneren waarom we dat zo doen..]
+
+\section{Scopes en lexical scope}
+
+[Hierarchieen, outer scopes, bindingen, ``waarden'' kort noemen maar uitstellen tot ``Waarden: referenties en primitieven'']
+
+\section{Objecten en prototype overerving}
+
+[Graaf, bindingen, prototypen]
+
+\section{Waarden: referenties en primitieven}
+
+[Ze worden op dezelfde manier behandeld: objecten by-reference, dus de references zelf by-value, net als primitieven -- vandaar dat ze in dezelfde verzameling waarden zitten.]
+
+\chapter{Case study: [benaming?]}
+
+\chapter{[...]}
+
+%\include{syntaxis}
+%\include{io}
+%\include{troep}
 
 \backmatter
 
