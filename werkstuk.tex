@@ -1,10 +1,5 @@
-\documentclass
-  [11pt,
-   paper=a4,
-   cleardouble=plain,
-   chapterprefix=true,
-   parskip=half]
-  {scrbook}
+\documentclass[11pt,oneside,parskip=half]{scrbook}
+\usepackage[a4paper]{geometry}
 
 \usepackage[dutch]{babel}
 \usepackage[T1]{fontenc}
@@ -17,6 +12,7 @@
 
 \usepackage{tabularx}
 \usepackage{booktabs}
+\usepackage{graphicx}
 
 \usepackage{enumitem}
 
@@ -65,7 +61,7 @@
 
 \newcommand\newkeyword[2]
   {\newcommand{#1}
-     {\text{\small\ttfamily\bfseries #2}}}
+     {\text{\scalebox{.95}{\small\ttfamily\bfseries #2}}}}
 \newcommand\newconstant[2]
   {\newcommand{#1}
      {\text{\small\ttfamily\scshape #2}}}
@@ -74,9 +70,10 @@
   {\ensuremath{\mathit{#1}}}
 
 \newcommand{\COMP}{;\;}
-\newkeyword{\VAR}{var\;}
+\newkeyword{\VAR}{local\;}
 \newkeyword{\OBJ}{obj\;}
 \newkeyword{\CLONES}{\;clones\;}
+\newkeyword{\OBJECT}{\;object}
 \newkeyword{\FUN}{function\;}
 \newkeyword{\RETURNS}{\;returns\;}
 \newkeyword{\IS}{\;is\;}
@@ -119,7 +116,7 @@
 
 \begin{document}
 
-\title{Een natuurlijke semantiek voor prototype gebaseerde talen}
+\title{Een natuurlijke semantiek voor prototype oververing en lexicaal bereik}
 \author{Kelley van Evert \& Tim Steenvoorden}
 \maketitle
 
@@ -164,23 +161,23 @@ Terwille van elegantie houden we een aantal gebruikelijke notationele conventies
 
 [...]
 
-\chapter{Syntax}
+\chapter{Taal en syntax}
 
-In dit hoofdstuk zullen we eerst een aantal mogelijke voorbeeldprogramma's van onze taal beschouwen. Deze dienen informeel een te geven welke aspecten de taal bevat, en hoe die zich gedragen.
+In dit hoofdstuk zullen we de taal presenteren waarvoor we een natuurlijk taal construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst zullen we een aantal voorbeeldprogramma's beschouwen, om zo informeel het karakter van de te formaliseren taal over te brengen. Daarna geven we een rigoreuze definitie met behulp van een BNF grammatica. De structuur van de productieregels van grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
 
-Een voorbeeldprogramma en zijn toelichting worden als volg gepresenteerd:
+Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
 
 	\begin{SyntaxExample}
-		\VAR f \\
+		\VAR f & \textit{- variabelen moeten worden gedeclareerd} \\
 		f = \FUN(i) \RETURNS n \\
 		\IN \VAR n \\
-		\IN n = 2 \times i + 5 \\
+		\IN n = 2 \times (i + 5) \\
 		& \textit{- x bestaat niet in deze scope} \\
 		\VAR x & \textit{- x is ongedefinieerd (maar wel aanwezig)} \\
 		x = f(42) & \textit{- x = 89}
 	\end{SyntaxExample}
 
-Vervolgens zetten we de syntax formeel op met een BNF grammatica. De structuur van de productieregels van grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
+De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
 
 \section{Voorbeeldprogramma's}
 
@@ -200,14 +197,14 @@ Variabelen hebben geen vaste type. Er zijn drie typen waarden in de taal: getall
 		\VAR x \\
 		x = 5 & \textit{- de waarde van } x \textit{ is een getal} \\
 		x = \FUN()\,\{\;\SKIP\;\} & \textit{- de waarde van x is een functie} \\
-		x = \{\;\} & \textit{- de waarde van x is een object}
+		x \OBJECT & \textit{- de waarde van x is een object}
 	\end{SyntaxExample}
 
 De taal is object georienteerd.
 
 	\begin{SyntaxExample}
 		\VAR o \\
-		o = \{\;\} \\
+		o \OBJECT \\
 		& \textit{- o.f is niet gedefinieerd} \\
 		o.f = \FUN()\,\{\;\SKIP\;\} & \textit{- toekenning waarde aan een attribuut van een object} \\
 		& \textit{- o.f is wel gedefinieerd} \\
@@ -285,6 +282,8 @@ Telkens wanneer een functie wordt aangeroepen, wordt een \emph{nieuwe scope} aan
 \section{Waarden: referenties en primitieven}
 
 [Ze worden op dezelfde manier behandeld: objecten by-reference, dus de references zelf by-value, net als primitieven -- vandaar dat ze in dezelfde verzameling waarden zitten.]
+
+\chapter{Natuurlijke Semantiek}
 
 \chapter{Case study: [benaming?]}
 
