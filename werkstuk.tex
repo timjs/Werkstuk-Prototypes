@@ -114,6 +114,16 @@
 \vspace{-.6pc}%
 }
 
+\def\DEF{\buildrel{\text{def}}\over{=}}
+\def\Proto{\sqsubset^p}
+\def\Outer{\sqsubset^s}
+\def\ProtoEq{\sqsubseteq^p}
+\def\OuterEq{\sqsubseteq^s}
+\def\Attr{\mathit{attr}}
+\def\SDef{\mathit{def}}
+\newcommand{\ScopeID}[1]{\ensuremath{(1, #1)}}
+\newcommand{\ObjectID}[1]{\ensuremath{(2, #1)}}
+
 \begin{document}
 
 \title{Een natuurlijke semantiek voor prototype oververing en lexicaal bereik}
@@ -285,7 +295,38 @@ Telkens wanneer een functie wordt aangeroepen, wordt een \emph{nieuwe scope} aan
 
 \chapter{Natuurlijke Semantiek}
 
-\chapter{Case study: [benaming?]}
+\chapter{Case study: Wiskundige formulering}
+
+De vorm van bovenstaand semantisch model geeft een conceptueel sterk beeld van hoe de taal waarschijnlijk geimplementeerd zou worden in een compiler (modulo technische details, etc\dots). Het is ook vrijwel volgens bovenstaande semantiek dat aan informatica studenten object geörienteerde talen worden uitgelegd (referenties, primitieve waarden, \dots). Je kunt echter ook semantisch model maken wat ``wiskundiger van aard'' is. Daar zal dit hoofdstuk over gaan.
+
+Belangrijke informatie, zoals welk object van welk ander object een prototype is en hoe de scopes elkaar bevatten, maar ook welke informatie binnen een object zit opgeslagen en welke variabelen in een scope zijn gedefiniëerd, worden ditmaal door relaties bevat.
+
+Rest nog identificatie van objecten en scopes, deze zal op eenzelfde manier worden behandeld als eerder de ``locaties'' binnen het geheugen: ze moeten identiek zijn, maar verder is het van geen belang hoe ze worden gerepresenteerd. We zullen daarom aannemen dat er twee verzamelingen identifiers zijn, $\mathbb{S}$ en $\mathbb{O}$, waarbij bovendien:
+
+\begin{enumerate}
+	\item Voor beide verzamelingen $X \in \{\mathbb{S}, \mathbb{O}\}$, bestaat er een functie $\textsc{Next}:\mathcal{P}(X) \to X$, zdd $\textsc{Next}(Y) \notin Y$ voor alle $Y \subseteq X$.
+	\item $\mathbb{S} \cap \mathbb{O} = \varnothing$ (Deze eis is niet een technische benodigdheid, maar geeft wel aan dat de semantiek van deze twee soorten identifiers nu eenmaal anders is.)
+\end{enumerate}
+
+De prototype hiërarchie, eveneens de scope hiërarchie, worden natuurlijk heel goed weergegeven door partiële ordeningen. Deze twee relaties zullen zullen we als $\Proto$ en $\Outer$, respectievelijk, noteren, en aannemen:
+
+\begin{enumerate}
+	\item $\Proto$ is een (tweestemmige) partiële ordening op $\mathbb{O}$
+	\item $\Outer$ is een (tweestemmige) partiële ordening op $\mathbb{S}$
+\end{enumerate}
+
+Vervolgens introduceren we de relatie $\Attr \subseteq \mathbb{O} \times \mathit{Id} \times (\mathbb{O} \cup \mathbb{P})$. De uitspraak ``$p[i] = v$'' moet worden gelezen als: $(p, i, v) \in \Attr$. Deze relatie wordt eveneens gebruikt om de ``inhoud'' van objecten weer te geven, als de graafstructuur tussen objecten. Soortgelijk definiëren we de relatie $\SDef \subseteq \mathbb{S} \times \mathit{Id} \times (\mathbb{O} \cup \mathbb{P})$, waarbij de uitspraak ``$\sigma[i] = v$'' moet worden gelezen als: $(\sigma, i, v) \in \SDef$.
+
+Ten alle tijde moeten de prototype en scope hiërarchieën, de inhoud van objecten en scopes, en de laatste indentificaties van objecten en scopes worden bijgehouden, en dit vormt dan het ``geheugen'', of de ``toestand'': $s = (\Attr, \SDef, \Proto, \Outer, p_\mathit{next}, \sigma_\mathit{next})$.
+
+\begin{align*}
+	\left<\SKIP, s, \tau, \sigma\right> &\longrightarrow s \\
+	\left<x = e, s, \tau, \sigma\right> &\longrightarrow s[\; \sigma_d[x] = e \;] \\
+	& \textbf{desda}\; \sigma_d = \max \{\, \sigma' \in \mathbb{S} \mid \sigma'[x] \land \sigma \OuterEq \sigma' \,\} \\
+	\left<x \OBJECT, \tau, \sigma\right> &\longrightarrow s[\; \sigma_d[x] = p \;][\; p_\mathit{next} \mapsto p + 1 \;] \\
+	& \textbf{desda}\; \sigma_d = \max \{\, \sigma' \in \mathbb{S} \mid \sigma'[x] \land \sigma \OuterEq \sigma' \,\} \\
+	& \textbf{en}\; p = {p_\mathit{next}}_s
+\end{align*}
 
 \chapter{[...]}
 
