@@ -8,7 +8,10 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-\usepackage{pxfonts}
+%\usepackage{pxfonts}
+\usepackage{millennial}
+%\usepackage{newcent}
+%\usepackage[utopia]{mathdesign}
 
 \usepackage{tabularx}
 \usepackage{booktabs}
@@ -119,15 +122,16 @@
 \def\Outer{\sqsubset^s}
 \def\ProtoEq{\sqsubseteq^p}
 \def\OuterEq{\sqsubseteq^s}
-\def\Attr{\mathit{attr}}
-\def\SDef{\mathit{def}}
+\def\Attr{\textit{attr}}
+\def\SDef{\textit{def}}
 \newcommand{\ScopeID}[1]{\ensuremath{(1, #1)}}
 \newcommand{\ObjectID}[1]{\ensuremath{(2, #1)}}
 
-\begin{document}
-
 \title{Een natuurlijke semantiek voor prototype oververing en lexicaal bereik}
 \author{Kelley van Evert \& Tim Steenvoorden}
+
+\begin{document}
+
 \maketitle
 
 \frontmatter
@@ -136,203 +140,12 @@
 
 \mainmatter
 
-\chapter{Inleiding}
-
-\begin{itemize}
-	\item Motivatie
-	\item JavaScript
-	\item Lexical scope -- vrije/gebeonden variabelen
-	\item Objecten en prototype overerving
-\end{itemize}
-
-\chapter{Notatie en terminologie}
-
-\section{Beschouwing semantisch model}
-
-We definieren in dit werkstuk een natuurlijke semantiek, d.w.z.~een ?-ste orde logica, met axioma's en deductieregels, en een bijbehorende structuur waarin deze zich afspeelt.
-
-Deze structuur, die we ook wel het \emph{semantisch model} zullen noemen, heeft onderstaand opgesomde elementen. Deze worden verderop precies gedefinieerd, onderstaande opsomming geeft slechts een algemeen beeld.
-
-\begin{description}
-	\item[$\mathbb{M}$]\hfill\\ De verzameling mogelijke \emph{geheugens}, welke ook wel als \emph{eindtoestanden} worden geinterpreteerd.
-	\item[$(\mathit{Stm} \times \mathbb{M} \times \mathbb{L} \times \mathbb{L})$]\hfill\\ De verzameling \emph{toestanden}, ook wel \emph{configuraties}.
-	\item[$(\longrightarrow)$]\hfill\\ Een tweeplaatsig predikaat welke als eerste argument een element uit de verzameling van toestanden neemt, en als tweede argument een element uit de verzameling van eindtoestanden $(\mathbb{M}\dots)$. De uitspraak $(S, m, \sigma, \tau) \longrightarrow m'$ moet worden geinterpreteerd worden als:
-	\begin{quote} ``Het programma $S$, met geheugen $m$, in scope $\sigma$ en met als $\mathbf{this}$ object $\tau$, resulteert in eindtoestand $m'$, mits $S$ \emph{correct} is''. \end{quote}
-\end{description}
-
-\section{Notationele conventies}
-
-Terwille van elegantie houden we een aantal gebruikelijke notationele conventies aan:
-
-\begin{enumerate}
-	\item Voor elke twee willekeurige tweestemmige predikaten $\mathsf{S}$ en $\mathsf{T}$ (mogelijk ook $=$), en drie willekeurige elementen $a$, $b$ en $c$, definieren we de afkorting: $$a \operatorname{\mathsf{S}} b \operatorname{\mathsf{T}} c \buildrel{\mathrm{def}}\over{=} a \operatorname{\mathsf{S}} b \land b \operatorname{\mathsf{T}} c$$ in het geval dat deze bewering correct getypeerd is.
-	\item Op eenzelfde manier definieren we ook de volgende afkorting: $$ \{a \in A \mid \phi \} \buildrel{\mathrm{def}}\over{=} \{a \mid a \in A \mid \phi\}$$
-\end{enumerate}
-
-[...]
-
-\chapter{Taal en syntax}
-
-In dit hoofdstuk zullen we de taal presenteren waarvoor we een natuurlijk taal construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst zullen we een aantal voorbeeldprogramma's beschouwen, om zo informeel het karakter van de te formaliseren taal over te brengen. Daarna geven we een rigoreuze definitie met behulp van een BNF grammatica. De structuur van de productieregels van grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
-
-Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
-
-	\begin{SyntaxExample}
-		\VAR f & \textit{- variabelen moeten worden gedeclareerd} \\
-		f = \FUN(i) \RETURNS n \\
-		\IN \VAR n \\
-		\IN n = 2 \times (i + 5) \\
-		& \textit{- x bestaat niet in deze scope} \\
-		\VAR x & \textit{- x is ongedefinieerd (maar wel aanwezig)} \\
-		x = f(42) & \textit{- x = 89}
-	\end{SyntaxExample}
-
-De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
-
-\section{Voorbeeldprogramma's}
-
-Een variabele moet gedeclareerd worden, en pas daarna kan er een waarde aan worden toegekend.
-
-	\begin{SyntaxExample}
-		& \textit{- x bestaat niet (in deze scope)} \\
-		\VAR x & \textit{- x is ongedefinieerd (maar wel aanwezig)} \\
-		x = 5 & \textit{- x = 5}
-	\end{SyntaxExample}
-
-Het concept van declaratie is juist in deze taal, gezien het lexicaal bereik van variabelen, heel belangrijk. Vergelijk het bovenstaande programma fragment bijvoorbeeld met de volgende situatie.
-
-Variabelen hebben geen vaste type. Er zijn drie typen waarden in de taal: getallen, functies en objecten.
-
-	\begin{SyntaxExample}
-		\VAR x \\
-		x = 5 & \textit{- de waarde van } x \textit{ is een getal} \\
-		x = \FUN()\,\{\;\SKIP\;\} & \textit{- de waarde van x is een functie} \\
-		x \OBJECT & \textit{- de waarde van x is een object}
-	\end{SyntaxExample}
-
-De taal is object georienteerd.
-
-	\begin{SyntaxExample}
-		\VAR o \\
-		o \OBJECT \\
-		& \textit{- o.f is niet gedefinieerd} \\
-		o.f = \FUN()\,\{\;\SKIP\;\} & \textit{- toekenning waarde aan een attribuut van een object} \\
-		& \textit{- o.f is wel gedefinieerd} \\
-		o.n = 5 &
-	\end{SyntaxExample}
-
-Van de drie typen, zijn getallen en functies \emph{primitief}, en objecten \emph{niet primitief}. Primitieve waarde worden zelf gekopieerd (\emph{by-value}), maar van niet-primitieve waarden worden \emph{referenties} gekopieerd (\emph{by-reference}).
-
-	\begin{SyntaxExample}
-		\VAR x;\; x = 6 \\
-		\VAR y;\; y = x & \textit{- x = 6 en y = 6} \\
-		y = 7 & \textit{- x = 6 en y = 7} \\
-		\\
-		\VAR p;\; p.n = 6 \\
-		\VAR q;\; q = p & \textit{- p en q verwijzen nu naar hetzelfde object} \\
-		& \textit{- p.n = 6 en q.n = 6} \\
-		q.n = 7 & \textit{- p.n = 7 en q.n = 7}
-	\end{SyntaxExample}
-
-\subsection{Lexicaal bereik / lexical scope}
-
-Als in een zekere scope een variabele wordt gereferenceerd (nog) niet is gedefinieerd, wordt in omliggende scopes ``gezocht'' naar een definitie van deze variabele.
-
-	\begin{SyntaxExample}
-		\VAR x; \\
-		\VAR f;\; f = \FUN(i) \\
-		\IN x = i + 5 \\
-		\\
-		f(5) & \textit{- x = 10}
-	\end{SyntaxExample}
-
-..maar wanneer deze wel in de huidige scope bestaat, worden omliggende scopes ``met rust gelaten''.
-
-	\begin{SyntaxExample}
-		\VAR x \\
-		\VAR f \\
-		f = \FUN(i) \\
-		\IN \VAR x \\
-		\IN x = i + 5 \\
-		\\
-		f(5) & \textit{- x heeft nog geen waarde}
-	\end{SyntaxExample}
-
-Telkens wanneer een functie wordt aangeroepen, wordt een \emph{nieuwe scope} aangemaakt voor lokale variabelen. Variabelen van deze nieuwe scope kunnen later nog gereferenceerd worden, doordat bijvoorbeeld de functie een lokale functie teruggeeft.
-
-	\begin{SyntaxExample}
-		\VAR f \\
-		f = \FUN(n) \RETURNS g \\
-		\IN \VAR g \\
-		\IN g = \FUN() \RETURNS n \\
-		\IN \IN n = n + 1 \\
-		\\
-		\VAR c \\
-		c = f(5) & \textit{- c() $\rightarrow$ 6, 7, 8, \dots}
-	\end{SyntaxExample}
-
-\fbox{maar dan wat beter geschreven, etc...}
-
-\section{Grammatica}
-
-[...en vervolgens helemaal formeel -- even uitleggen van BNF etc..]
-
-\chapter{Semantisch model}
-
-[Stukje bij beetje het semantisch model opbouwen, terwijl we steeds redeneren waarom we dat zo doen..]
-
-\section{Scopes en lexical scope}
-
-[Hierarchieen, outer scopes, bindingen, ``waarden'' kort noemen maar uitstellen tot ``Waarden: referenties en primitieven'']
-
-\section{Objecten en prototype overerving}
-
-[Graaf, bindingen, prototypen]
-
-\section{Waarden: referenties en primitieven}
-
-[Ze worden op dezelfde manier behandeld: objecten by-reference, dus de references zelf by-value, net als primitieven -- vandaar dat ze in dezelfde verzameling waarden zitten.]
-
-\chapter{Natuurlijke Semantiek}
-
-\chapter{Case study: Wiskundige formulering}
-
-De vorm van bovenstaand semantisch model geeft een conceptueel sterk beeld van hoe de taal waarschijnlijk geimplementeerd zou worden in een compiler (modulo technische details, etc\dots). Het is ook vrijwel volgens bovenstaande semantiek dat aan informatica studenten object geörienteerde talen worden uitgelegd (referenties, primitieve waarden, \dots). Je kunt echter ook semantisch model maken wat ``wiskundiger van aard'' is. Daar zal dit hoofdstuk over gaan.
-
-Belangrijke informatie, zoals welk object van welk ander object een prototype is en hoe de scopes elkaar bevatten, maar ook welke informatie binnen een object zit opgeslagen en welke variabelen in een scope zijn gedefiniëerd, worden ditmaal door relaties bevat.
-
-Rest nog identificatie van objecten en scopes, deze zal op eenzelfde manier worden behandeld als eerder de ``locaties'' binnen het geheugen: ze moeten identiek zijn, maar verder is het van geen belang hoe ze worden gerepresenteerd. We zullen daarom aannemen dat er twee verzamelingen identifiers zijn, $\mathbb{S}$ en $\mathbb{O}$, waarbij bovendien:
-
-\begin{enumerate}
-	\item Voor beide verzamelingen $X \in \{\mathbb{S}, \mathbb{O}\}$, bestaat er een functie $\textsc{Next}:\mathcal{P}(X) \to X$, zdd $\textsc{Next}(Y) \notin Y$ voor alle $Y \subseteq X$.
-	\item $\mathbb{S} \cap \mathbb{O} = \varnothing$ (Deze eis is niet een technische benodigdheid, maar geeft wel aan dat de semantiek van deze twee soorten identifiers nu eenmaal anders is.)
-\end{enumerate}
-
-De prototype hiërarchie, eveneens de scope hiërarchie, worden natuurlijk heel goed weergegeven door partiële ordeningen. Deze twee relaties zullen zullen we als $\Proto$ en $\Outer$, respectievelijk, noteren, en aannemen:
-
-\begin{enumerate}
-	\item $\Proto$ is een (tweestemmige) partiële ordening op $\mathbb{O}$
-	\item $\Outer$ is een (tweestemmige) partiële ordening op $\mathbb{S}$
-\end{enumerate}
-
-Vervolgens introduceren we de relatie $\Attr \subseteq \mathbb{O} \times \mathit{Id} \times (\mathbb{O} \cup \mathbb{P})$. De uitspraak ``$p[i] = v$'' moet worden gelezen als: $(p, i, v) \in \Attr$. Deze relatie wordt eveneens gebruikt om de ``inhoud'' van objecten weer te geven, als de graafstructuur tussen objecten. Soortgelijk definiëren we de relatie $\SDef \subseteq \mathbb{S} \times \mathit{Id} \times (\mathbb{O} \cup \mathbb{P})$, waarbij de uitspraak ``$\sigma[i] = v$'' moet worden gelezen als: $(\sigma, i, v) \in \SDef$.
-
-Ten alle tijde moeten de prototype en scope hiërarchieën, de inhoud van objecten en scopes, en de laatste indentificaties van objecten en scopes worden bijgehouden, en dit vormt dan het ``geheugen'', of de ``toestand'': $s = (\Attr, \SDef, \Proto, \Outer, p_\mathit{next}, \sigma_\mathit{next})$.
-
-\begin{align*}
-	\left<\SKIP, s, \tau, \sigma\right> &\longrightarrow s \\
-	\left<x = e, s, \tau, \sigma\right> &\longrightarrow s[\; \sigma_d[x] = e \;] \\
-	& \textbf{desda}\; \sigma_d = \max \{\, \sigma' \in \mathbb{S} \mid \sigma'[x] \land \sigma \OuterEq \sigma' \,\} \\
-	\left<x \OBJECT, \tau, \sigma\right> &\longrightarrow s[\; \sigma_d[x] = p \;][\; p_\mathit{next} \mapsto p + 1 \;] \\
-	& \textbf{desda}\; \sigma_d = \max \{\, \sigma' \in \mathbb{S} \mid \sigma'[x] \land \sigma \OuterEq \sigma' \,\} \\
-	& \textbf{en}\; p = {p_\mathit{next}}_s
-\end{align*}
-
-\chapter{[...]}
-
-%\include{syntaxis}
-%\include{io}
-%\include{troep}
+\input{inleiding.chapter.tex}
+\input{notatie-en-terminologie.chapter.tex}
+\input{taal-en-syntax.chapter.tex}
+\input{semantisch-model.chapter.tex}
+\input{natuurlijke-semantiek.chapter.tex}
+\input{case-study.chapter.tex}
 
 \backmatter
 
