@@ -6,13 +6,13 @@ In dit hoofdstuk zullen we de taal presenteren waarvoor we een natuurlijk taal c
 Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
 
 	\begin{SyntaxExample}
-		\VAR f & \textit{- variabelen moeten worden gedeclareerd} \\
-		f = \FUN(i) \RETURNS n \\
-		\IN \VAR n \\
-		\IN n = 2 \times (i + 5) \\
-		& \textit{- x bestaat niet in deze scope} \\
-		\VAR x & \textit{- x is ongedefinieerd (maar wel aanwezig)} \\
-		x = f(42) & \textit{- x = 89}
+		\N \VAR f & \textit{- variabelen moeten worden gedeclareerd} \\
+		\N f = \FUN(i) \RETURNS n \\
+		\N \IN \VAR n \\
+		\N \IN n = 2 \times (i + 5) \\
+		\N & \textit{- x bestaat niet in deze scope} \\
+		\N \VAR x & \textit{- x is ongedefinieerd (maar wel aanwezig)} \\
+		\N x = f(42) & \textit{- x = 89}
 	\end{SyntaxExample}
 
 De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
@@ -22,9 +22,9 @@ De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aa
 Een variabele moet gedeclareerd worden, en pas daarna kan er een waarde aan worden toegekend.
 
 	\begin{SyntaxExample}
-		& \textit{- x bestaat niet (in deze scope)} \\
-		\VAR x & \textit{- x is ongedefinieerd (maar wel aanwezig)} \\
-		x = 5 & \textit{- x = 5}
+		\N & \textit{- x bestaat niet (in deze scope)} \\
+		\N \VAR x & \textit{- x is ongedefinieerd (maar wel aanwezig)} \\
+		\N x = 5 & \textit{- x = 5}
 	\end{SyntaxExample}
 
 Het concept van declaratie is juist in deze taal, gezien het lexicaal bereik van variabelen, heel belangrijk. Vergelijk het bovenstaande programma fragment bijvoorbeeld met de volgende situatie.
@@ -32,34 +32,34 @@ Het concept van declaratie is juist in deze taal, gezien het lexicaal bereik van
 Variabelen hebben geen vaste type. Er zijn drie typen waarden in de taal: getallen, functies en objecten.
 
 	\begin{SyntaxExample}
-		\VAR x \\
-		x = 5 & \textit{- de waarde van } x \textit{ is een getal} \\
-		x = \FUN()\,\{\;\SKIP\;\} & \textit{- de waarde van x is een functie} \\
-		x \OBJECT & \textit{- de waarde van x is een object}
+		\N \VAR x \\
+		\N x = 5 & \textit{- de waarde van } x \textit{ is een getal} \\
+		\N x = \FUN()\,\{\;\SKIP\;\} & \textit{- de waarde van x is een functie} \\
+		\N x \OBJECT & \textit{- de waarde van x is een object}
 	\end{SyntaxExample}
 
 De taal is object georienteerd.
 
 	\begin{SyntaxExample}
-		\VAR o \\
-		o \OBJECT \\
-		& \textit{- o.f is niet gedefinieerd} \\
-		o.f = \FUN()\,\{\;\SKIP\;\} & \textit{- toekenning waarde aan een attribuut van een object} \\
-		& \textit{- o.f is wel gedefinieerd} \\
-		o.n = 5 &
+		\N \VAR o \\
+		\N o \OBJECT \\
+		\N & \textit{- o.f is niet gedefinieerd} \\
+		\N o.f = \FUN()\,\{\;\SKIP\;\} & \textit{- toekenning waarde aan object attribuut} \\
+		\N & \textit{- o.f is wel gedefinieerd} \\
+		\N o.n = 5 &
 	\end{SyntaxExample}
 
 Van de drie typen, zijn getallen en functies \emph{primitief}, en objecten \emph{niet primitief}. Primitieve waarde worden zelf gekopieerd (\emph{by-value}), maar van niet-primitieve waarden worden \emph{referenties} gekopieerd (\emph{by-reference}).
 
 	\begin{SyntaxExample}
-		\VAR x;\; x = 6 \\
-		\VAR y;\; y = x & \textit{- x = 6 en y = 6} \\
-		y = 7 & \textit{- x = 6 en y = 7} \\
-		\\
-		\VAR p;\; p.n = 6 \\
-		\VAR q;\; q = p & \textit{- p en q verwijzen nu naar hetzelfde object} \\
-		& \textit{- p.n = 6 en q.n = 6} \\
-		q.n = 7 & \textit{- p.n = 7 en q.n = 7}
+		\N \VAR x;\; x = 6 \\
+		\N \VAR y;\; y = x & \textit{- x = 6 en y = 6} \\
+		\N y = 7 & \textit{- x = 6 en y = 7} \\
+		\N \\
+		\N \VAR p;\; p.n = 6 \\
+		\N \VAR q;\; q = p & \textit{- p en q verwijzen nu naar hetzelfde object} \\
+		\N & \textit{- p.n = 6 en q.n = 6} \\
+		\N q.n = 7 & \textit{- p.n = 7 en q.n = 7}
 	\end{SyntaxExample}
 
 \subsection{Lexicaal bereik / lexical scope}
@@ -67,36 +67,36 @@ Van de drie typen, zijn getallen en functies \emph{primitief}, en objecten \emph
 Als in een zekere scope een variabele wordt gereferenceerd (nog) niet is gedefinieerd, wordt in omliggende scopes ``gezocht'' naar een definitie van deze variabele.
 
 	\begin{SyntaxExample}
-		\VAR x; \\
-		\VAR f;\; f = \FUN(i) \\
-		\IN x = i + 5 \\
-		\\
-		f(5) & \textit{- x = 10}
+		\N \VAR x; \\
+		\N \VAR f;\; f = \FUN(i) \\
+		\N \IN x = i + 5 \\
+		\N \\
+		\N f(5) & \textit{- x = 10}
 	\end{SyntaxExample}
 
 ..maar wanneer deze wel in de huidige scope bestaat, worden omliggende scopes ``met rust gelaten''.
 
 	\begin{SyntaxExample}
-		\VAR x \\
-		\VAR f \\
-		f = \FUN(i) \\
-		\IN \VAR x \\
-		\IN x = i + 5 \\
-		\\
-		f(5) & \textit{- x heeft nog geen waarde}
+		\N \VAR x \\
+		\N \VAR f \\
+		\N f = \FUN(i) \\
+		\N \IN \VAR x \\
+		\N \IN x = i + 5 \\
+		\N \\
+		\N f(5) & \textit{- x heeft nog geen waarde}
 	\end{SyntaxExample}
 
 Telkens wanneer een functie wordt aangeroepen, wordt een \emph{nieuwe scope} aangemaakt voor lokale variabelen. Variabelen van deze nieuwe scope kunnen later nog gereferenceerd worden, doordat bijvoorbeeld de functie een lokale functie teruggeeft.
 
 	\begin{SyntaxExample}
-		\VAR f \\
-		f = \FUN(n) \RETURNS g \\
-		\IN \VAR g \\
-		\IN g = \FUN() \RETURNS n \\
-		\IN \IN n = n + 1 \\
-		\\
-		\VAR c \\
-		c = f(5) & \textit{- c() $\rightarrow$ 6, 7, 8, \dots}
+		\N \VAR f \\
+		\N f = \FUN(n) \RETURNS g \\
+		\N \IN \VAR g \\
+		\N \IN g = \FUN() \RETURNS n \\
+		\N \IN \IN n = n + 1 \\
+		\N \\
+		\N \VAR c \\
+		\N c = f(5) & \textit{- c() $\rightarrow$ 6, 7, 8, \dots}
 	\end{SyntaxExample}
 
 \fbox{maar dan wat beter geschreven, etc...}

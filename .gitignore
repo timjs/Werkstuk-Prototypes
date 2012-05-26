@@ -13,5 +13,4 @@
 *.blg
 *.bbl
 
-# Compiled
-*.pdf
+# Why not store compile too [easier, e.g. you can download the pdf from github]?

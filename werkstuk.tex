@@ -13,11 +13,34 @@
 %\usepackage{newcent}
 %\usepackage[utopia]{mathdesign}
 
-\usepackage{tabularx}
-\usepackage{booktabs}
+\usepackage{tabularx}% tables: equal width columns
+\usepackage{multirow}% tables: rowspan
+\usepackage{booktabs}% tables: \toprule, \bottomrule, ...
 \usepackage{graphicx}
-
+\usepackage{xcolor}
+\usepackage{xargs}
 \usepackage{enumitem}
+
+\usepackage{bussproofs}
+  \def\extraVskip{4pt} % Iets meer verticale ruimte
+  % De volgende commands gebruik ik om op een simpele manier (1) de toegepaste regel aan de rechterkant van de deductieregel te laten zien, en (2) een automatische nummering aan de linkerkant te laten zien.
+  % Normaal gesproken gebruik je \RightLabel en \LeftLabel, maar nu gebruik ik dus: \Label (enkel een label) en \CountedLabel (label en automatische nummering)
+  % Terugzetten op 1 kan met "\setcounter{theLabel}{1}", bijvoorbeeld bij een nieuwe boom
+  \newcounter{theLabel}
+  \setcounter{theLabel}{1}
+  \newcommand{\Label}[1]{
+    \RightLabel{\small #1}
+  }
+  \newcommand{\CountedLabel}[1]{
+    \RightLabel{\small #1}
+    \LeftLabel{\scriptsize \arabic{theLabel}}
+    \addtocounter{theLabel}{1}
+  }
+  % Op een of andere manier moet je in je deductiebomen, de states gaan aangeven. Ik doe dit met doosjes, waarin net genoeg staat dat je iets intuitiever kunt zien wat welke state is, en wat er allemaal in zit.
+  \newcommand{\stateBox}[1]{%
+    \boxed{\mathit{\vphantom{f}#1}}
+  }
+  \newcommand{\emptyStateBox}{\stateBox{\phantom{f}}}
 
 \usepackage{tikz}
 \usetikzlibrary{calc}
@@ -64,10 +87,14 @@
 
 \newcommand\newkeyword[2]
   {\newcommand{#1}
-     {\text{\scalebox{.95}{\small\ttfamily\bfseries #2}}}}
-\newcommand\newconstant[2]
+     {\raisebox{.3pt}{\text{\scalebox{.95}{\small\ttfamily\bfseries #2}}}}}
+\newcommand\newconstant[2]{\newkeyword{#1}{#2}}
+\newcommand{\newnonterminal}[2]
   {\newcommand{#1}
-     {\text{\small\ttfamily\scshape #2}}}
+    {\textit{#2}}}
+\newcommand{\newsemanticset}[2]
+  {\newcommand{#1}
+    {\ensuremath{\mathbb{#2}}}}
 
 \newcommand{\syn}[1]
   {\ensuremath{\mathit{#1}}}
@@ -92,7 +119,17 @@
 \newconstant{\TRUE}{true}
 \newconstant{\FALSE}{false}
 \newconstant{\SELF}{self}
+\newconstant{\THIS}{this}
 \newconstant{\PROTO}{proto}
+
+\newnonterminal{\Stm}{Stm}
+\newnonterminal{\Id}{Id}
+\newnonterminal{\Slot}{Slot}
+\newnonterminal{\Expr}{Expression}
+\newnonterminal{\B}{B}
+
+\newsemanticset{\sM}{M}
+\newsemanticset{\sL}{L}
 
 \def\IN{\quad}
 
@@ -106,7 +143,10 @@
 \frenchspacing% Cruciaal!
 \raggedbottom% Handig
 
+\newcounter{SyntaxExampleNum}
 \newenvironment{SyntaxExample}{%
+\addtocounter{SyntaxExampleNum}{1}%
+\setcounter{SyntaxExampleLineNo}{0}%
 \vspace{-1.6pc}%
 	\begin{equation*}%
 		\begin{array}{l@{\hspace*{.02\textwidth}}|@{\hspace*{.02\textwidth}}l}%
@@ -116,6 +156,34 @@
 	\end{equation*}%
 \vspace{-.6pc}%
 }
+
+\newcounter{SyntaxExampleLineNo}
+\newcommand{\N}{%
+  \addtocounter{SyntaxExampleLineNo}{1}%
+  \text{\color{gray} \scriptsize \Alph{SyntaxExampleNum}.\arabic{SyntaxExampleLineNo}}\;\;%
+}
+
+% todo if second param empty? then don't display scalebox etc..
+\newcommand{\AxiomOrInference}[2]{%
+  \renewcommand{\arraystretch}{1.2}%
+  \begin{minipage}{\textwidth}% prevent page break
+    #1% = \begin{prooftree} ... \end{prooftree}
+    \vspace*{-.5pc}%
+    \hspace*{.45\textwidth}% ideally: .5\textwidth - 1/2 "desda\quad"
+    \scalebox{.85}{%
+      #2%
+    }%
+  \end{minipage}%
+}
+
+\newcommand{\surr}[1]{\ensuremath{\big[\,#1\,\big]}}
+\newcommand{\Surr}[1]{\ensuremath{\big[\!\big[\,#1\,\big]\!\big]}}
+
+% configuration: " <S, m, \sigma, \tau> "
+%\newcommand{\Config}[2]{\left<#1, #2\right>}% -- normaal
+\newcommand{\Config}[2]{\surr{#1}_{#2}}%       -- [ ]m,s,t
+
+\def\BOT{\rotatebox{90}{$\Vdash$}}
 
 \def\DEF{\buildrel{\text{def}}\over{=}}
 \def\Proto{\sqsubset^p}
