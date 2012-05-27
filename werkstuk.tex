@@ -21,6 +21,8 @@
 \usepackage{xargs}
 \usepackage{enumitem}
 
+\usepackage{environ}
+
 \usepackage{bussproofs}
   \def\extraVskip{4pt} % Iets meer verticale ruimte
   % De volgende commands gebruik ik om op een simpele manier (1) de toegepaste regel aan de rechterkant van de deductieregel te laten zien, en (2) een automatische nummering aan de linkerkant te laten zien.
@@ -176,12 +178,33 @@
   \end{minipage}%
 }
 
+\NewEnviron{NSAxiom}[1]{%
+  \renewcommand{\arraystretch}{1.2}%
+  \begin{minipage}{\textwidth}% prevent page break
+  \BODY%
+  \end{minipage}%
+}
+\NewEnviron{NSConditions}{%
+  \vspace*{-.5pc}%
+  \hspace*{.45\textwidth}% ideally: .5\textwidth - 1/2 "desda\quad"
+  \scalebox{.85}{%
+    \begin{tabular}{@{}r@{\quad}l@{}}%
+      \textbf{desda} \BODY%
+    \end{tabular}%
+  }%
+}
+\newcommand{\Cond}[1]{%
+  & #1 \\
+}
+
+\newcommand{\surrAngle}[1]{\ensuremath{\big<\,#1\,\big>}}
 \newcommand{\surr}[1]{\ensuremath{\big[\,#1\,\big]}}
 \newcommand{\Surr}[1]{\ensuremath{\big[\!\big[\,#1\,\big]\!\big]}}
 
 % configuration: " <S, m, \sigma, \tau> "
-%\newcommand{\Config}[2]{\left<#1, #2\right>}% -- normaal
-\newcommand{\Config}[2]{\surr{#1}_{#2}}%       -- [ ]m,s,t
+%\newcommand{\Config}[2]{\left<#1, #2\right>}%  -- normaal
+%\newcommand{\Config}[2]{\surr{#1}_{#2}}%       -- [ ]m,s,t
+\newcommand{\Config}[2]{\surrAngle{#1}_{#2}}%  -- < >m,s,t
 
 \def\BOT{\rotatebox{90}{$\Vdash$}}
 

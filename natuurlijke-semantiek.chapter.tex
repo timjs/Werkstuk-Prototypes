@@ -17,184 +17,219 @@ Deze uitspraak moet je lezen als: ``In de toestand met geheugen $m$, scope $\sig
 
 Een van deze axioma's [object], heeft betrekking tot de productieregel in de grammatica die de $\OBJECT$ ``literal'' introduceert.
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{i \OBJECT}{m, \sigma, \tau}
-    \longrightarrow
-    m''
-  $}
-\end{prooftree}}{\begin{tabular}{@{}r@{\quad}l@{}}
-  \textbf{desda} & $ \textsc{Find}_m(\sigma, i) = \sigma_\text{def} $ \\
-  & $ m' = m \surr{ \sigma_\text{def} \mapsto \big(b_{m(\sigma')}[i\mapsto \omega], p_{m(\sigma')}\big) } $ \\
-  & $ m'' = m' \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $
-\end{tabular}}
+\begin{NSAxiom}{object}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{i \OBJECT}{m, \sigma, \tau}
+      \longrightarrow
+      m''
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \textsc{Find}_m(\sigma, i) = \sigma_\text{def} $}
+    \Cond{$ m' = m \surr{ \sigma_\text{def} \mapsto \big(b_{m(\sigma')}[i\mapsto \omega], p_{m(\sigma')}\big) } $}
+    \Cond{$ m'' = m' \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
 
 Zoals vele axioma's en deductieregels heeft ook dit axioma een aantal voorwaarden waaraan moet worden voldaan. Deze staan eronder genoteerd, elk op een regel.
 
 Wanneer bij een dergelijke opsomming van voorwaarden een nieuwe variabele wordt geïntroduceerd zoals hierboven, met de volgende vorm: $\textbf{desda } \square = \theta \dots$; dan moet deze gelezen worden als: $\textbf{desda } \exists_\theta \big[\, \square = \theta \dots \,\big]$.
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{i \CLONES j}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-\end{prooftree}}{\begin{tabular}{@{}r@{\quad}l@{}}
-  \textbf{desda} & $ \Surr{i}_{m,\sigma,\tau} = \omega_i \in \sL $ \\
-  & $ \Surr{j}_{m,\sigma,\tau} = \omega_j \in \sL $ \\
-  & $ m' = m \surr{ \omega_i \mapsto \big(b_{m(\omega_i)}, \omega_j\big) } $
-\end{tabular}}
+\begin{NSAxiom}{clones}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{i \CLONES j}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \Surr{i}_{m,\sigma,\tau} = \omega_i \in \sL $}
+    \Cond{$ \Surr{j}_{m,\sigma,\tau} = \omega_j \in \sL $}
+    \Cond{$ m' = m \surr{ \omega_i \mapsto \big(b_{m(\omega_i)}, \omega_j\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
 
 bla bla
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{\VAR i}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-\end{prooftree}}{\begin{tabular}{@{}r@{\quad}l@{}}
-  \textbf{desda} & $ m' = m \surr{ \sigma \mapsto \big(b_{m(\sigma)}[i \mapsto \BOT], p_{m(\sigma)}\big) } $
-\end{tabular}}
+\begin{NSAxiom}{declare}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{\VAR i}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ m' = m \surr{ \sigma \mapsto \big(b_{m(\sigma)}[i \mapsto \BOT], p_{m(\sigma)}\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
 
 bla bla
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{\THIS.s = e}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-\end{prooftree}}{\begin{tabular}{@{}r@{\quad}l@{}}
-  \textbf{desda} & $ \textsc{Trav}_m(\tau, s) = (\omega, i) $ \\
-  & $ \Surr{e}_{m, \sigma, \tau} = v $ \\
-  & $ m'= m \surr{ \omega \mapsto \big(b_{m(\omega)}[ i \mapsto v ], p_{m(\omega)}\big) } $
-\end{tabular}}
+\begin{NSAxiom}{assign$^\text{this}$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{\THIS.s = e}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \textsc{Trav}_m(\tau, s) = (\omega, i) $}
+    \Cond{$ \Surr{e}_{m, \sigma, \tau} = v $}
+    \Cond{$ m'= m \surr{ \omega \mapsto \big(b_{m(\omega)}[ i \mapsto v ], p_{m(\omega)}\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
 
 bla bla
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{i = e}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-\end{prooftree}}{\begin{tabular}{@{}r@{\quad}l@{}}
-  \textbf{desda} & $ \sigma_\text{def} = \textsc{Find}_m(\sigma, i) $ \\
-  & $ \Surr{e}_{m, \sigma, \tau} = v $ \\
-  & $ m'= m \surr{ \sigma_\text{def} \mapsto \big(b_{m(\sigma_\text{def})}[ i \mapsto v ], p_{m(\sigma_\text{def})}\big) } $
-\end{tabular}}
+\begin{NSAxiom}{assign$^\text{i}$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{i = e}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \sigma_\text{def} = \textsc{Find}_m(\sigma, i) $}
+    \Cond{$ \Surr{e}_{m, \sigma, \tau} = v $}
+    \Cond{$ m'= m \surr{ \sigma_\text{def} \mapsto \big(b_{m(\sigma_\text{def})}[ i \mapsto v ], p_{m(\sigma_\text{def})}\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
+
 
 bla bla
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{i.s = e}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-\end{prooftree}}{\begin{tabular}{@{}r@{\quad}l@{}}
-  \textbf{desda} & $ \sigma_\text{def} = \textsc{Find}_m(\sigma, i) $ \\
-  & $ b_{m(\sigma_\text{def})}(i) = \omega \in \sL $ \\
-  & $ \textsc{Trav}_m(\omega, s) = (\omega', j) $ \\
-  & $ \Surr{e}_{m, \sigma, \tau} = v $ \\
-  & $ m'= m \surr{ \omega' \mapsto \big(b_{m(\omega')}[ j \mapsto v ], p_{m(\omega')}\big) } $
-\end{tabular}}
+\begin{NSAxiom}{assign$^\text{slot}$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{i.s = e}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \sigma_\text{def} = \textsc{Find}_m(\sigma, i) $}
+    \Cond{$ b_{m(\sigma_\text{def})}(i) = \omega \in \sL $}
+    \Cond{$ \textsc{Trav}_m(\omega, s) = (\omega', j) $}
+    \Cond{$ \Surr{e}_{m, \sigma, \tau} = v $}
+    \Cond{$ m'= m \surr{ \omega' \mapsto \big(b_{m(\omega')}[ j \mapsto v ], p_{m(\omega')}\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
 
 bla bla
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{\SKIP}{m, \sigma, \tau}
-    \longrightarrow
-    m
-  $}
-\end{prooftree}}{}
+\begin{NSAxiom}{skip}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{\SKIP}{m, \sigma, \tau}
+      \longrightarrow
+      m
+    $}
+  \end{prooftree}
+\end{NSAxiom}
 
 bla bla
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{S_1}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-  \AxiomC{$
-    \Config{S_2}{m', \sigma, \tau}
-    \longrightarrow
-    m''
-  $}
-  \BinaryInfC{$
-    \Config{S_1; S_2}{m, \sigma, \tau}
-    \longrightarrow
-    m''
-  $}
-\end{prooftree}}{}
+\begin{NSAxiom}{comp}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{S_1}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+    \AxiomC{$
+      \Config{S_2}{m', \sigma, \tau}
+      \longrightarrow
+      m''
+    $}
+    \BinaryInfC{$
+      \Config{S_1; S_2}{m, \sigma, \tau}
+      \longrightarrow
+      m''
+    $}
+  \end{prooftree}
+\end{NSAxiom}
 
 bla bla
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{S_1}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-  \UnaryInfC{$
-    \Config{\IF (b) \THEN \{ S_1 \} \ELSE \{ S_2 \}}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-\end{prooftree}}{\begin{tabular}{@{}r@{\quad}l@{}}
-  \textbf{desda} & $ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{T} $
-\end{tabular}}
+\begin{NSAxiom}{if$^\text{T}$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{S_1}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+    \UnaryInfC{$
+      \Config{\IF (b) \THEN \{ S_1 \} \ELSE \{ S_2 \}}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{T} $}
+  \end{NSConditions}
+\end{NSAxiom}
 
 bla bla
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{S_2}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-  \UnaryInfC{$
-    \Config{\IF (b) \THEN \{ S_1 \} \ELSE \{ S_2 \}}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-\end{prooftree}}{\begin{tabular}{@{}r@{\quad}l@{}}
-  \textbf{desda} & $ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{F} $
-\end{tabular}}
+\begin{NSAxiom}{if$^\text{F}$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{S_2}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+    \UnaryInfC{$
+      \Config{\IF (b) \THEN \{ S_1 \} \ELSE \{ S_2 \}}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{F} $}
+  \end{NSConditions}
+\end{NSAxiom}
 
 bla bla
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{S_1}{m, \sigma, \tau}
-    \longrightarrow
-    m'
-  $}
-  \AxiomC{$
-    \Config{\WHILE (b) \DO \{ S_1 \}}{m', \sigma, \tau}
-    \longrightarrow
-    m''
-  $}
-  \BinaryInfC{$
-    \Config{\WHILE (b) \DO \{ S_1 \}}{m, \sigma, \tau}
-    \longrightarrow
-    m''
-  $}
-\end{prooftree}}{\begin{tabular}{@{}r@{\quad}l@{}}
-  \textbf{desda} & $ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{T} $
-\end{tabular}}
+\begin{NSAxiom}{while$^\text{T}$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{S_1}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+    \AxiomC{$
+      \Config{\WHILE (b) \DO \{ S_1 \}}{m', \sigma, \tau}
+      \longrightarrow
+      m''
+    $}
+    \BinaryInfC{$
+      \Config{\WHILE (b) \DO \{ S_1 \}}{m, \sigma, \tau}
+      \longrightarrow
+      m''
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{T} $}
+  \end{NSConditions}
+\end{NSAxiom}
 
 bla bla
 
-\AxiomOrInference{\begin{prooftree}
-  \AxiomC{$
-    \Config{\WHILE (b) \DO \{ S_1 \}}{m, \sigma, \tau}
-    \longrightarrow
-    m
-  $}
-\end{prooftree}}{\begin{tabular}{@{}r@{\quad}l@{}}
-  \textbf{desda} & $ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{F} $
-\end{tabular}}
+\begin{NSAxiom}{while$^\text{F}$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{\WHILE (b) \DO \{ S_1 \}}{m, \sigma, \tau}
+      \longrightarrow
+      m
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{F} $}
+  \end{NSConditions}
+\end{NSAxiom}
