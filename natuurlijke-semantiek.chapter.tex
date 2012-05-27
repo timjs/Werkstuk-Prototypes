@@ -122,6 +122,31 @@ bla bla
 
 bla bla
 
+\begin{NSAxiom}{call}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{S_{\!f}}{m', \sigma_{\!f\text{new}}, \omega'}
+      \longrightarrow
+      m''
+    $}
+    \UnaryInfC{$
+      \Config{i.s(e^*)}{m,\sigma,\tau}
+      \longrightarrow
+      m''
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \sigma_\text{def} = \textsc{Find}_m(\sigma, i) $}
+    \Cond{$ b_{m(\sigma_\text{def})}(i) = \omega \in \sL $}
+    \Cond{$ \textsc{Trav}_n(\omega, s) = (\omega', j) $}
+    \Cond{$ (S_{\!f}, I_{\!f}, i_{\!f}, \sigma_{\!f\text{def}}) = f = b_{m(\omega')}(j) $}
+    \Cond{$ \sigma_{\!f\text{new}} = \textsc{Next}_\text{scope}(m) $}
+    \Cond{$ m' = m\surr{ \sigma_{\!f\text{new}} \mapsto \big(\Surr{e^*}^*_{m,\sigma,\tau}(I_{\!f}), \sigma_{\!f\text{def}}\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
+
+bla bla
+
 \begin{NSAxiom}{skip}
   \begin{prooftree}
     \AxiomC{$
