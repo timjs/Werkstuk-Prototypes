@@ -1,6 +1,22 @@
 
 \chapter{Notatie en terminologie}
 
+\section{Functies}
+
+In dit werkstuk identificeren we een functie met zijn grafiek, d.w.z.~een functie $f : X \to Y$ is gelijk aan de verzameling paren $(x, y) \in X \times Y$ waarvoor geldt: $f(x) = y$.
+
+\section{Tupels}
+
+We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, ``lijsten'' van elementen uit een zekere verzameling: \emph{tupels}. Deze tupels worden gerepresenteerd door eindige (partiële) functies $t : \sN \to X$, als X de verzameling element in kwestie is, waaraan nog een paar extra voorwaarden worden gesteld. De verzameling van alle tupels op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
+
+$$ X_{\langle\rangle} \DEF \big\{\, t : \sN \to X \mid \exists_{N \in \sN} \big[ \forall_{n < N}[t(n) \neq \bot] \land \forall_{n\ge N}[t(n) = \bot] \big] \,\big\} $$
+
+We schrijven $\langle\rangle$, maar ook wel $\varnothing$, voor de lege tupel (deze is natuurlijk hetzelfde voor elke waarden verzameling $X$).
+
+We schrijven $\langle x_0, x_1, \dots, x_{N-1}\rangle$ voor de tupel $t$ waarvoor geldt: $\forall_{n < N}[t(n) = x_n]$, en: $\forall_{n \ge N}[t(n) = \bot]$.
+
+Als $t$ een tupel is $\in X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$ voor de tupel $t' = t[N \mapsto x]$, waarbij $N = \min\{n\in\sN \mid t(n) = \bot\}$.
+
 \section{Beschouwing semantisch model}
 
 We definieren in dit werkstuk een natuurlijke semantiek, d.w.z.~een ?-ste orde logica, met axioma's en deductieregels, en een bijbehorende structuur waarin deze zich afspeelt.

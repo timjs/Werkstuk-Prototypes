@@ -130,8 +130,14 @@
 \newnonterminal{\Expr}{Expression}
 \newnonterminal{\B}{B}
 
+\newsemanticset{\sO}{O}
+\newsemanticset{\sS}{S}
+\newsemanticset{\sB}{B}
 \newsemanticset{\sM}{M}
 \newsemanticset{\sL}{L}
+\newsemanticset{\sF}{F}
+\newsemanticset{\sV}{V}
+\newsemanticset{\sN}{N}
 
 \def\IN{\quad}
 
@@ -196,6 +202,8 @@
 \newcommand{\Cond}[1]{%
   & #1 \\
 }
+
+\newcommand{\FiniteFunctions}[2]{\ensuremath{{#1}^{\!\!\raisebox{4pt}{\rotatebox{70}{$\Lsh$}}\!\!#2}}}
 
 \newcommand{\surrAngle}[1]{\ensuremath{\big<\,#1\,\big>}}
 \newcommand{\surr}[1]{\ensuremath{\big[\,#1\,\big]}}
