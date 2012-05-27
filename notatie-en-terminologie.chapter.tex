@@ -1,15 +1,24 @@
-
 \chapter{Notatie en terminologie}
 
 \section{Functies}
 
-In dit werkstuk identificeren we een functie met zijn grafiek, d.w.z.~een functie $f : X \to Y$ is gelijk aan de verzameling paren $(x, y) \in X \times Y$ waarvoor geldt: $f(x) = y$.
+In dit werkstuk identificeren we een functie met zijn grafiek, d.w.z.~een functie $f : X \to Y$ wordt gedefiniëerd door de verzameling paren $(x, y) \in X \times Y$ waarvoor we beweren dat $f(x) = y$. Uiteraard voldoet zo'n verzameling $f \subseteq X \times Y$ aan de voorwaarde dat $\not \exists_{x \in X,\, y_1 \in Y,\, y_2 \in Y} [ (x, y_1) \in f \land (x, y_2) \in f \land y_1 \neq y_2 ] ]$.
 
 \section{Partiële functies}
 
 Vrijwel alle functies die we in dit werkstuk behandelen zijn partiële functies. Wanneer een partiële functie $f$ niet gedefiniëerd is op een zeker punt $x$, schrijven we $f(x) = \bot$. Wanneer het omgekeerde het geval is, schrijven we $f(x) \neq \bot$.
 
 Voor een willekeurige term $\phi = \dots f(x)\dots$, waarbij $f$ een partiële functie is die niet gedefiniëerd is op punt $x$, geldt dat $\phi = \bot$. Op deze manier hoeven we niet iets omslachtigs te schrijven als: ``als $f(x) = \bot$, dan $z = \bot$; anders als $f(x) \neq \bot$, dan $z = \phi$''.
+
+\section{Eindige functies, eindige verzamelingen}
+
+De reden dat de meeste behandelde functies partiëel zijn is omdat meeste onderdelen van ons semantisch model \emph{eindig} van karakter zijn. Zo zou het ongewoon zijn om in een programmeertaal gebruik te maken van oneindige objecten, of scopes waarin oneindig veel variabelen bestaan.
+
+Wanneer we het over een eindige functie $f$ hebben, bedoelen we daarmee dat het domein van die functie een eindige verzameling is. Dit kan worden uitgedrukt door te zeggen dat er een zeker getal $n \in \sN$ bestaat, zó dat $\underbar{n}$ (gedefiniëerd als: $\{m \in \sN \mid m \le n\}$) isomorf is aan het domein van $f$.
+
+$$ f : X \to Y \text{ is ``eindig'' } \DEF \exists_{n \in \sN} \surr{ \underbar{n} \cong \{ x \in X \mid f(x) \neq \bot \} } $$
+
+We schrijven $\FiniteFunctions{Y}{X}$ voor de verzameling functies $\{f : X \to Y \mid f \text{ ``eindig''} \}$.
 
 \section{Tupels}
 
@@ -30,10 +39,10 @@ We definieren in dit werkstuk een natuurlijke semantiek, d.w.z.~een ?-ste orde l
 Deze structuur, die we ook wel het \emph{semantisch model} zullen noemen, heeft onderstaand opgesomde elementen. Deze worden verderop precies gedefinieerd, onderstaande opsomming geeft slechts een algemeen beeld.
 
 \begin{description}
-	\item[$\mathbb{M}$]\hfill\\ De verzameling mogelijke \emph{geheugens}, welke ook wel als \emph{eindtoestanden} worden geinterpreteerd.
-	\item[$(\mathit{Stm} \times \mathbb{M} \times \mathbb{L} \times \mathbb{L})$]\hfill\\ De verzameling \emph{toestanden}, ook wel \emph{configuraties}.
-	\item[$(\longrightarrow)$]\hfill\\ Een tweeplaatsig predikaat welke als eerste argument een element uit de verzameling van toestanden neemt, en als tweede argument een element uit de verzameling van eindtoestanden $(\mathbb{M}\dots)$. De uitspraak $(S, m, \sigma, \tau) \longrightarrow m'$ moet worden geinterpreteerd worden als:
-	\begin{quote} ``Het programma $S$, met geheugen $m$, in scope $\sigma$ en met als $\mathbf{this}$ object $\tau$, resulteert in eindtoestand $m'$, mits $S$ \emph{correct} is''. \end{quote}
+  \item[$\mathbb{M}$]\hfill\\ De verzameling mogelijke \emph{geheugens}, welke ook wel als \emph{eindtoestanden} worden geinterpreteerd.
+  \item[$(\mathit{Stm} \times \mathbb{M} \times \mathbb{L} \times \mathbb{L})$]\hfill\\ De verzameling \emph{toestanden}, ook wel \emph{configuraties}.
+  \item[$(\longrightarrow)$]\hfill\\ Een tweeplaatsig predikaat welke als eerste argument een element uit de verzameling van toestanden neemt, en als tweede argument een element uit de verzameling van eindtoestanden $(\mathbb{M}\dots)$. De uitspraak $(S, m, \sigma, \tau) \longrightarrow m'$ moet worden geinterpreteerd worden als:
+  \begin{quote} ``Het programma $S$, met geheugen $m$, in scope $\sigma$ en met als $\mathbf{this}$ object $\tau$, resulteert in eindtoestand $m'$, mits $S$ \emph{correct} is''. \end{quote}
 \end{description}
 
 \section{Notationele conventies}
@@ -41,8 +50,8 @@ Deze structuur, die we ook wel het \emph{semantisch model} zullen noemen, heeft 
 Terwille van elegantie houden we een aantal gebruikelijke notationele conventies aan:
 
 \begin{enumerate}
-	\item Voor elke twee willekeurige tweestemmige predikaten $\mathsf{S}$ en $\mathsf{T}$ (mogelijk ook $=$), en drie willekeurige elementen $a$, $b$ en $c$, definieren we de afkorting: $$a \operatorname{\mathsf{S}} b \operatorname{\mathsf{T}} c \buildrel{\mathrm{def}}\over{=} a \operatorname{\mathsf{S}} b \land b \operatorname{\mathsf{T}} c$$ in het geval dat deze bewering correct getypeerd is.
-	\item Op eenzelfde manier definieren we ook de volgende afkorting: $$ \{a \in A \mid \phi \} \buildrel{\mathrm{def}}\over{=} \{a \mid a \in A \mid \phi\}$$
+  \item Voor elke twee willekeurige tweestemmige predikaten $\mathsf{S}$ en $\mathsf{T}$ (mogelijk ook $=$), en drie willekeurige elementen $a$, $b$ en $c$, definieren we de afkorting: $$a \operatorname{\mathsf{S}} b \operatorname{\mathsf{T}} c \buildrel{\mathrm{def}}\over{=} a \operatorname{\mathsf{S}} b \land b \operatorname{\mathsf{T}} c$$ in het geval dat deze bewering correct getypeerd is.
+  \item Op eenzelfde manier definieren we ook de volgende afkorting: $$ \{a \in A \mid \phi \} \buildrel{\mathrm{def}}\over{=} \{a \mid a \in A \mid \phi\}$$
 \end{enumerate}
 
 [...]
