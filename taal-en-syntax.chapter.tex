@@ -62,11 +62,11 @@ Van de drie typen, zijn getallen en functies \emph{primitief}, en objecten \emph
 		\N q.n = 7 & \textit{- p.n = 7 en q.n = 7}
 	\end{SyntaxExample}
 
-\subsection{Lexicaal bereik / lexical scope}
+\subsection{Lexical scope}
 
 Als in een zekere scope een variabele wordt gereferenceerd (nog) niet is gedefinieerd, wordt in omliggende scopes ``gezocht'' naar een definitie van deze variabele.
 
-	\begin{SyntaxExample}
+\begin{SyntaxExample}\label{exa:lexical}
 		\N \VAR x; \\
 		\N \VAR f;\; f = \FUN(i) \\
 		\N \IN x = i + 5 \\
@@ -99,8 +99,119 @@ Telkens wanneer een functie wordt aangeroepen, wordt een \emph{nieuwe scope} aan
 		\N c = f(5) & \textit{- c() $\rightarrow$ 6, 7, 8, \dots}
 	\end{SyntaxExample}
 
+\begin{lstlisting}[caption=Een countervoorbeeld,label=exa:counter]
+local f
+f = function(n) returns g
+    local g
+    g = function() returns n
+        n = n + 1
+
+local c
+c = f(5)
+c()                          # $\rightarrow 6, 7, 8, \dots$
+\end{lstlisting}
+
 \fbox{maar dan wat beter geschreven, etc...}
+
+\subsection{Prototype overerving}
+
+Prototype overerving is een eenvoudige en dynamische variant van object-geörienteerd programmeren. Net als in klassieke object-gebaseerde talen is er sprake van een object waarin \emph{attributen} zijn gedefinieerd. Elk object heeft ook een expliciete \emph{ouder} (of \enquote{parent}). Wanneer we binnen een object een attribuut willen evalueren, doen we dit in drie stappen:
+\begin{enumerate}
+  \item Bekijk of het attribuut gedefinieerd is in het object zelf. In dat geval weten we de waarde en leveren deze op.
+  \item Anders zoeken we het attribuut op in de ouder van het object. Ook dan weten we de waarde en leveren deze op.
+  \item Wanneer ook de ouder het attribuut niet bevat, herhalen we de zoektocht voor alle volgende ouders totdat we het attribuut hebben gevonden.
+\end{enumerate}
+Ook hier is dus sprake van een boomstructuur.
+
+Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen is dat de tweede geen onderscheid maakt tussen \emph{klassen} en \emph{instanties}. Een prototype heeft beide functies. Neem bijvoorbeeld het prototype @Deur@:
+\begin{lstlisting}[name=deuren]
+local Deur
+Deur object
+\end{lstlisting}
+We kunnen @Deur@ direct als instantie gebruiken door een attribuut te zetten:
+\begin{lstlisting}[name=deuren]
+Deur.open = 1
+\end{lstlisting}
+Een @Deur@ is standaard open. Maar we kunnen @Deur@ ook als een klasse gebruiken door ervan te erven. In prototype-gebaseerde talen heet dit \emph{klonen}:
+\begin{lstlisting}[name=deuren]
+local GeslotenDeur
+GeslotenDeur object
+GeslotenDeur clones Deur
+\end{lstlisting}
+@GeslotenDeur@ heeft dan alle attributen van @Deur@:
+\begin{lstlisting}[name=deuren]
+GeslotenDeur.open            # => 1
+\end{lstlisting}
+Maar een @GeslotenDeur@ moet natuurlijk gesloten zijn. We zetten zijn attribuut @open@ op @0@:
+\begin{lstlisting}[name=deuren]
+GeslotenDeur.open = 0
+\end{lstlisting}
+Een gewone @Deur@ is nog steeds open:
+\begin{lstlisting}[name=deuren]
+Deur.open                    # => 1
+\end{lstlisting}
+Attributen worden dus per object bewaard. Door @open@ op @0@ te zetten in @GeslotenDeur@ verandert er niks in @Deur@.
+
+We kunnen net zoveel klonen maken van een object als we willen en net zo diep klonen als we willen. Neem een @GlazenDeur@, dit is natuurlijk ook een @Deur@, maar wel doorzichtig:
+\begin{lstlisting}[name=deuren]
+local GlazenDeur
+GlazenDeur object
+GlazenDeur clones Deur
+GlazenDeur.doorzichtig = 1
+\end{lstlisting}
+Een gewone @Deur@ heeft het attribuut @doorzichtig@ niet, en dus een @GeslotenDeur@ ook niet:
+\begin{lstlisting}[name=deuren]
+GeslotenDeur.doorzichtig     # => fout!
+\end{lstlisting}
+Maar we kunnen besluiten dat deuren standaard niet doorzichtig zijn:
+\begin{lstlisting}[name=deuren]
+Deur.doorzichtig = 0
+\end{lstlisting}
+Zodat ook onze @GeslotenDeur@ niet doorzichtig is:
+\begin{lstlisting}[name=deuren]
+GeslotenDeur.doorzichtig     # => 0
+\end{lstlisting}
+Maar er geld nog steeds:
+\begin{lstlisting}[name=deuren]
+GlazenDeur.doorzichtig       # => 1
+\end{lstlisting}
+
+We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde \enquote{blauwdrukken} moeten voldoen. We creëren objecten \enquote{on-the-fly}, alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self.
+
+Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn functies die gekoppeld zijn aan een specifiek object. Stel dat we een @GeslotenDeur@ graag open willen maken. We definiëren:
+\begin{lstlisting}[name=deuren]
+GeslotenDeur.ontsluit = function (poging)
+    if poging == this.code then
+        this.open = 1
+    else
+        this.open = 0
+\end{lstlisting}
+@this@ is hier een expliciete verwijzing naar het huidige object. Op dit moment kunnen we @ontsluit@ nog niet aanroepen op @GeslotenDeur@:
+\begin{lstlisting}[name=deuren]
+GeslotenDeur.ontsluit(1234)  # => fout!
+\end{lstlisting}
+Het attribuut @code@ is immers niet gedefinieerd in @GeslotenDeur@ noch in zijn prototype @Deur@.
+
+We kunnen natuurlijk een @code@ toekennen aan @GeslotenDeur@, maar laten we een specifieke @GeslotenDeur@ maken met een @code@:
+\begin{lstlisting}[name=deuren]
+local Kluis
+Kluis object
+Kluis clones GeslotenDeur
+Kluis.code = 4321
+\end{lstlisting}
+Wanneer we de methode @ontsluit@ aanroepen is deze niet gedefinieerd in @Kluis@, maar wel in zijn prototype @GeslotenDeur@. Die wordt dan uitgevoerd. Een belangrijke observatie is dat @ontsluit@ wel wordt aangeroepen op @Kluis@. Dat betekent dat @this@ verwijst naar @Kluis@ en niet @GeslotenDeur@. Het attribuut @code@ wordt dan wel gevonden!
+\begin{lstlisting}[name=deuren]
+Kluis.ontsluit(1234)
+Kluis.open                   # => 0
+\end{lstlisting}
+Oeps\dots Dat was de verkeerde code, nog een poging:
+\begin{lstlisting}[name=deuren]
+Kluis.ontsluit(4321)
+Kluis.open                   # => 1
+\end{lstlisting}
 
 \section{Grammatica}
 
 [...en vervolgens helemaal formeel -- even uitleggen van BNF etc..]
+
+% vim: spell spl=nl
