@@ -9,7 +9,10 @@
 \usepackage{amssymb}
 
 %\usepackage{pxfonts}
-\usepackage{millennial}
+%\usepackage{millennial}
+\usepackage{fouriernc}
+\usepackage{tgschola}
+\usepackage{tgadventor}
 %\usepackage{newcent}
 %\usepackage[utopia]{mathdesign}
 
@@ -20,6 +23,9 @@
 \usepackage{xcolor}
 \usepackage{xargs}
 \usepackage{enumitem}
+\usepackage{csquotes}
+%\usepackage{setspace}
+%\doublespaced
 
 \usepackage{environ}
 
@@ -50,37 +56,28 @@
 
 \usepackage{listings}
 \lstdefinelanguage{proto}
-  {keywords={var, obj, clones, fun, returns, is,
+  {keywords={local, object, clones, function, returns, is,
              print, skip,
              if, then, else, while, do},
    emph={true, false, this, proto},
    %literate={==}{{$=$}}1 {/=}{{$\neq$}}1 {<=}{{$\leq$}}1 {>=}{{$\geq$}}1
-   %         {+}{{$+$}}1 {-}{{$-$}}1 {*}{{$\times$}}1 {/}{{$/$}}
+   %         {+}{{$+$}}1 {-}{{$-$}}1 {*}{{$\times$}}1 {/}{{$/$}}1
    %         {&}{{$\wedge$}}1 {|}{{$\vee$}}1 {~}{{$\lnot$}}1,
-   comment=[l]{\#}}
-\lstdefinelanguage{io}
-  {keywords={clone, method, block, call, return,
-             print, println,
-             if, then, else, elsif,
-             loop, repeat, while, for, break, continue},
-   emph={true, false, nil, self, super},
-   comment=[l]{\#}}
-\lstdefinelanguage{class}[]{proto}
-  {morekeywords={extends},
-   deletekeywords={clones},
-   moreemph={super},
-   deleteemph={proto}}
-\lstnewenvironment{program}{}{}
+   comment=[l]{--}}
 \lstMakeShortInline @
 \lstset
   {language=proto,
    basicstyle=\small\ttfamily,
+   commentstyle=\color{gray},
+   keywordstyle=\bfseries,
    emphstyle=\scshape,
    numbers=left,
-   numberstyle=\small,
+   numberstyle=\tiny,
    numbersep=1em,
+   xleftmargin=3em,
    mathescape=true,
    extendedchars=true}
+\renewcommand{\lstlistingname}{Voorbeeld}
 
 \usepackage[nounderscore]{syntax}
 \setlength{\grammarindent}{8em}
@@ -102,7 +99,8 @@
   {\ensuremath{\mathit{#1}}}
 
 \newcommand{\COMP}{;\;}
-\newkeyword{\VAR}{local\;}
+\newkeyword{\LOCAL}{local\;}
+\newkeyword{\VAR}{\LOCAL}
 \newkeyword{\OBJ}{obj\;}
 \newkeyword{\CLONES}{\;clones\;}
 \newkeyword{\OBJECT}{\;object}
@@ -215,6 +213,7 @@
 \newcommand{\Config}[2]{\surrAngle{#1}_{#2}}%  -- < >m,s,t
 
 \def\BOT{\rotatebox{90}{$\Vdash$}}
+\let\nil\BOT
 
 \def\DEF{\buildrel{\text{def}}\over{=}}
 \def\Proto{\sqsubset^p}
@@ -250,4 +249,4 @@
 
 \end{document}
 
-% vim: ft=context
+% vim: spell spl=nl
