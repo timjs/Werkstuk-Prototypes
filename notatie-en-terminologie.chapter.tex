@@ -1,8 +1,10 @@
 \chapter{Notatie en terminologie}
 
+In dit hoofdstuk behandelen we een aantal min of meer gebruikelijke wiskundige concepten, die in dit werkstuk vaak zullen terugkeren. Gezien het aard van het onderwerp zullen we bijvoorbeeld vaak over \emph{eindige} functies en verzamelingen willen spreken. Verder hanteren we een aantal specifieke, soms enigszins ``verkorte'', wiskundige schrijfwijzen ten dienste van leesbaarheid en elegantie.
+
 \section{Functies}
 
-In dit werkstuk identificeren we een functie met zijn grafiek, d.w.z.~een functie $f : X \to Y$ wordt gedefiniëerd door de verzameling paren $(x, y) \in X \times Y$ waarvoor we beweren dat $f(x) = y$. Uiteraard voldoet zo'n verzameling $f \subseteq X \times Y$ aan de voorwaarde dat $\not \exists_{x \in X,\, y_1 \in Y,\, y_2 \in Y} [ (x, y_1) \in f \land (x, y_2) \in f \land y_1 \neq y_2 ] ]$.
+In dit werkstuk identificeren we een functie met zijn grafiek, d.w.z.~een functie $f : X \to Y$ wordt gedefiniëerd door de verzameling paren $(x, y) \in X \times Y$ waarvoor we beweren dat $f(x) = y$. Uiteraard voldoet zo'n verzameling $f \subseteq X \times Y$ aan de voorwaarde dat: $$ \not \exists_{x \in X,\, y_1 \in Y,\, y_2 \in Y} \surr{ (x, y_1) \in f \land (x, y_2) \in f \land y_1 \neq y_2 ] } $$ De reden voor deze aanpak is zeker niet fundamenteel: het is gewoonweg handig om $\varnothing$ te schrijven voor een nieuwe, ``lege'', partiële functie.
 
 \section{Partiële functies}
 
@@ -12,7 +14,7 @@ Voor een willekeurige term $\phi = \dots f(x)\dots$, waarbij $f$ een partiële f
 
 \section{Eindige functies, eindige verzamelingen}
 
-De reden dat de meeste behandelde functies partiëel zijn is omdat meeste onderdelen van ons semantisch model \emph{eindig} van karakter zijn. Zo zou het ongewoon zijn om in een programmeertaal gebruik te maken van oneindige objecten, of scopes waarin oneindig veel variabelen bestaan.
+De reden dat de meeste behandelde functies partiëel zijn is omdat meeste onderdelen van ons semantisch model eindig van karakter zijn. Functies worden vaak gebruikt om ``een verzameling variabelen die een bepaalde waarde bevatten'' te representeren, bijvoorbeeld de gedefiniëeerde variabelen in een zekere scope. En het zou ongewoon zijn om in een programmeertaal gebruik te maken van oneindige objecten, of scopes waarin oneindig veel variabelen bestaan.
 
 Wanneer we het over een eindige functie $f$ hebben, bedoelen we daarmee dat het domein van die functie een eindige verzameling is. Dit kan worden uitgedrukt door te zeggen dat er een zeker getal $n \in \sN$ bestaat, zó dat $\underbar{n}$ (gedefiniëerd als: $\{m \in \sN \mid m \le n\}$) isomorf is aan het domein van $f$.
 
@@ -32,26 +34,20 @@ We schrijven $\langle x_0, x_1, \dots, x_{N-1}\rangle$ voor de tupel $t$ waarvoo
 
 Als $t$ een tupel is $\in X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$ voor de tupel $t' = t[N \mapsto x]$, waarbij $N = \min\{n\in\sN \mid t(n) = \bot\}$.
 
-\section{Beschouwing semantisch model}
-
-We definieren in dit werkstuk een natuurlijke semantiek, d.w.z.~een ?-ste orde logica, met axioma's en deductieregels, en een bijbehorende structuur waarin deze zich afspeelt.
-
-Deze structuur, die we ook wel het \emph{semantisch model} zullen noemen, heeft onderstaand opgesomde elementen. Deze worden verderop precies gedefinieerd, onderstaande opsomming geeft slechts een algemeen beeld.
-
-\begin{description}
-  \item[$\mathbb{M}$]\hfill\\ De verzameling mogelijke \emph{geheugens}, welke ook wel als \emph{eindtoestanden} worden geinterpreteerd.
-  \item[$(\mathit{Stm} \times \mathbb{M} \times \mathbb{L} \times \mathbb{L})$]\hfill\\ De verzameling \emph{toestanden}, ook wel \emph{configuraties}.
-  \item[$(\longrightarrow)$]\hfill\\ Een tweeplaatsig predikaat welke als eerste argument een element uit de verzameling van toestanden neemt, en als tweede argument een element uit de verzameling van eindtoestanden $(\mathbb{M}\dots)$. De uitspraak $(S, m, \sigma, \tau) \longrightarrow m'$ moet worden geinterpreteerd worden als:
-  \begin{quote} ``Het programma $S$, met geheugen $m$, in scope $\sigma$ en met als $\mathbf{this}$ object $\tau$, resulteert in eindtoestand $m'$, mits $S$ \emph{correct} is''. \end{quote}
-\end{description}
-
 \section{Notationele conventies}
 
-Terwille van elegantie houden we een aantal gebruikelijke notationele conventies aan:
+Terwille van leesbaarheid en elegantie houden we een aantal gebruikelijke notationele conventies aan.
 
-\begin{enumerate}
-  \item Voor elke twee willekeurige tweestemmige predikaten $\mathsf{S}$ en $\mathsf{T}$ (mogelijk ook $=$), en drie willekeurige elementen $a$, $b$ en $c$, definieren we de afkorting: $$a \operatorname{\mathsf{S}} b \operatorname{\mathsf{T}} c \buildrel{\mathrm{def}}\over{=} a \operatorname{\mathsf{S}} b \land b \operatorname{\mathsf{T}} c$$ in het geval dat deze bewering correct getypeerd is.
-  \item Op eenzelfde manier definieren we ook de volgende afkorting: $$ \{a \in A \mid \phi \} \buildrel{\mathrm{def}}\over{=} \{a \mid a \in A \mid \phi\}$$
-\end{enumerate}
-
-[...]
+\begin{itemize}
+  \item Veel wiskundige formules zijn van de vorm $t_1\; R\; t_2$, waarbij $R$ een zeker predikaat is (mogelijk $=$), en $t_1$ en $t_2$ termen. Dit soort formules zullen we wel vaker ``samenstellen'' tot formules als:
+  \begin{eqnarray}
+    6 = 2 * 3 > 2 \ge 42 - 40 \\
+    f(x) = y \in Y
+  \end{eqnarray}
+  De intentie is enkel een elegante schrijfwijze te hanteren die makkelijk en intuïtief leest. Zo zou een college analyse onverdraaglijk zijn als dergelijke verkortingen niet zouden worden gebruikt. Als we bovenstaande formules uitschrijven krijgen we:
+  \begin{eqnarray}
+    6 = 2 * 3 \land 2 * 3 > 2 \land 2 \ge 42 - 40 \\
+    f(x) = y \land y \in Y
+  \end{eqnarray}
+  \item Bij het definiëren van verzamelingen gebruiken we vaak de volgende voor de hand liggende notatie: $$ \{a \in A \mid \phi \} $$ \dots i.p.v.~het omslachtigere: $$ \{a \mid a \in A \mid \phi\} $$
+\end{itemize}

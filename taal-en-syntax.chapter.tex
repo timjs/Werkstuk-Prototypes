@@ -5,15 +5,17 @@ In dit hoofdstuk zullen we de taal presenteren waarvoor we een natuurlijk taal c
 
 Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
 
-	\begin{SyntaxExample}
-		\N \VAR f & \textit{- variabelen moeten worden gedeclareerd} \\
-		\N f = \FUN(i) \RETURNS n \\
-		\N \IN \VAR n \\
-		\N \IN n = 2 \times (i + 5) \\
-		\N & \textit{- x bestaat niet in deze scope} \\
-		\N \VAR x & \textit{- x is ongedefinieerd (maar wel aanwezig)} \\
-		\N x = f(42) & \textit{- x = 89}
-	\end{SyntaxExample}
+	\begin{CodeFragment}[Het Eerste Voorbeeld]\label{hev}
+		\Line{\VAR f}                      {variabelen moeten worden gedeclareerd}
+		\Line{f = \FUN(i) \RETURNS n}      {}
+		\Line{\IN \VAR n}                  {}
+		\Line{\IN n = 2 \times (i + 5)}    {}
+		\Line{}             {$x$ bestaat niet in deze scope}
+		\Line{\VAR x}                      {$x$ is ongedefinieerd (maar wel aanwezig)}
+		\Line{x = f(42)}                   {$x = 89$}
+	\end{CodeFragment}
+
+Bovenstaand code fragment is code fragment \ref{hev}.
 
 De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
 
@@ -21,83 +23,83 @@ De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aa
 
 Een variabele moet gedeclareerd worden, en pas daarna kan er een waarde aan worden toegekend.
 
-	\begin{SyntaxExample}
-		\N & \textit{- x bestaat niet (in deze scope)} \\
-		\N \VAR x & \textit{- x is ongedefinieerd (maar wel aanwezig)} \\
-		\N x = 5 & \textit{- x = 5}
-	\end{SyntaxExample}
+	\begin{CodeFragment}
+		\Line{}                            {$x$ bestaat niet (in deze scope)}
+		\Line{\VAR x}                      {$x$ is ongedefinieerd (maar wel aanwezig)}
+		\Line{x = 5}                       {$x = 5$}
+	\end{CodeFragment}
 
 Het concept van declaratie is juist in deze taal, gezien het lexicaal bereik van variabelen, heel belangrijk. Vergelijk het bovenstaande programma fragment bijvoorbeeld met de volgende situatie.
 
 Variabelen hebben geen vaste type. Er zijn drie typen waarden in de taal: getallen, functies en objecten.
 
-	\begin{SyntaxExample}
-		\N \VAR x \\
-		\N x = 5 & \textit{- de waarde van } x \textit{ is een getal} \\
-		\N x = \FUN()\,\{\;\SKIP\;\} & \textit{- de waarde van x is een functie} \\
-		\N x \OBJECT & \textit{- de waarde van x is een object}
-	\end{SyntaxExample}
+	\begin{CodeFragment}
+		\Line{\VAR x}                      {}
+		\Line{x = 5}                       {de waarde van $x$ is een getal}
+		\Line{x = \FUN()\,\{\;\SKIP\;\}}   {de waarde van $x$ is een functie}
+		\Line{x \OBJECT}                   {de waarde van x is een object}
+	\end{CodeFragment}
 
 De taal is object georienteerd.
 
-	\begin{SyntaxExample}
-		\N \VAR o \\
-		\N o \OBJECT \\
-		\N & \textit{- o.f is niet gedefinieerd} \\
-		\N o.f = \FUN()\,\{\;\SKIP\;\} & \textit{- toekenning waarde aan object attribuut} \\
-		\N & \textit{- o.f is wel gedefinieerd} \\
-		\N o.n = 5 &
-	\end{SyntaxExample}
+	\begin{CodeFragment}
+		\Line{\VAR o}                      {}
+		\Line{o \OBJECT}                   {}
+		\Line{}                            {o.f is niet gedefinieerd}
+		\Line{o.f = \FUN()\,\{\;\SKIP\;\}} {toekenning waarde aan object attribuut}
+		\Line{}                            {o.f is wel gedefinieerd}
+		\Line{o.n = 5}                     {}
+	\end{CodeFragment}
 
 Van de drie typen, zijn getallen en functies \emph{primitief}, en objecten \emph{niet primitief}. Primitieve waarde worden zelf gekopieerd (\emph{by-value}), maar van niet-primitieve waarden worden \emph{referenties} gekopieerd (\emph{by-reference}).
 
-	\begin{SyntaxExample}
-		\N \VAR x;\; x = 6 \\
-		\N \VAR y;\; y = x & \textit{- x = 6 en y = 6} \\
-		\N y = 7 & \textit{- x = 6 en y = 7} \\
-		\N \\
-		\N \VAR p;\; p.n = 6 \\
-		\N \VAR q;\; q = p & \textit{- p en q verwijzen nu naar hetzelfde object} \\
-		\N & \textit{- p.n = 6 en q.n = 6} \\
-		\N q.n = 7 & \textit{- p.n = 7 en q.n = 7}
-	\end{SyntaxExample}
+	\begin{CodeFragment}
+		\Line{\VAR x;\; x = 6}             {}
+		\Line{\VAR y;\; y = x}             {$x = 6$ en $y = 6$}
+		\Line{y = 7}                       {$x = 6$ en $y = 7$}
+		\Line{}                            {}
+		\Line{\VAR p;\; p.n = 6}           {}
+		\Line{\VAR q;\; q = p}             {$p$ en $q$ verwijzen nu naar hetzelfde object}
+		\Line{}                            {$p.n = 6$ en $q.n = 6$}
+		\Line{q.n = 7}                     {$p.n = 7$ en $q.n = 7$}
+	\end{CodeFragment}
 
 \subsection{Lexical scope}
 
 Als in een zekere scope een variabele wordt gereferenceerd (nog) niet is gedefinieerd, wordt in omliggende scopes ``gezocht'' naar een definitie van deze variabele.
 
-\begin{SyntaxExample}\label{exa:lexical}
-		\N \VAR x; \\
-		\N \VAR f;\; f = \FUN(i) \\
-		\N \IN x = i + 5 \\
-		\N \\
-		\N f(5) & \textit{- x = 10}
-	\end{SyntaxExample}
+  \begin{CodeFragment}\label{exa:lexical}
+		\Line{\VAR x}                      {}
+		\Line{\VAR f;\; f = \FUN(i)}       {}
+		\Line{\IN x = i + 5}               {}
+		\Line{}                            {}
+		\Line{f(5)}                        {$x = 10$}
+	\end{CodeFragment}
 
 ..maar wanneer deze wel in de huidige scope bestaat, worden omliggende scopes ``met rust gelaten''.
 
-	\begin{SyntaxExample}
-		\N \VAR x \\
-		\N \VAR f \\
-		\N f = \FUN(i) \\
-		\N \IN \VAR x \\
-		\N \IN x = i + 5 \\
-		\N \\
-		\N f(5) & \textit{- x heeft nog geen waarde}
-	\end{SyntaxExample}
+	\begin{CodeFragment}
+		\Line{\VAR x}                      {}
+		\Line{\VAR f}                      {}
+		\Line{f = \FUN(i)}                 {}
+		\Line{\IN \VAR x}                  {}
+		\Line{\IN x = i + 5}               {}
+		\Line{}                            {}
+		\Line{f(5)}                        {$x$ heeft nog geen waarde}
+	\end{CodeFragment}
 
 Telkens wanneer een functie wordt aangeroepen, wordt een \emph{nieuwe scope} aangemaakt voor lokale variabelen. Variabelen van deze nieuwe scope kunnen later nog gereferenceerd worden, doordat bijvoorbeeld de functie een lokale functie teruggeeft.
 
-	\begin{SyntaxExample}
-		\N \VAR f \\
-		\N f = \FUN(n) \RETURNS g \\
-		\N \IN \VAR g \\
-		\N \IN g = \FUN() \RETURNS n \\
-		\N \IN \IN n = n + 1 \\
-		\N \\
-		\N \VAR c \\
-		\N c = f(5) & \textit{- c() $\rightarrow$ 6, 7, 8, \dots}
-	\end{SyntaxExample}
+	\begin{CodeFragment}
+		\Line{\VAR f}                      {}
+		\Line{f = \FUN(n) \RETURNS g}      {}
+		\Line{\IN \VAR g}                  {}
+		\Line{\IN g = \FUN() \RETURNS n}   {}
+		\Line{\IN \IN n = n + 1}           {}
+		\Line{}                            {}
+		\Line{\VAR c}                      {}
+		\Line{c = f(5)}                    {$c() \rightarrow 6, 7, 8, \dots$}
+	\end{CodeFragment}
 
 \begin{lstlisting}[caption=Een countervoorbeeld,label=exa:counter]
 local f
@@ -115,15 +117,35 @@ c()                          # $\rightarrow 6, 7, 8, \dots$
 
 \subsection{Prototype overerving}
 
-Prototype overerving is een eenvoudige en dynamische variant van object-geörienteerd programmeren. Net als in klassieke object-gebaseerde talen is er sprake van een object waarin \emph{attributen} zijn gedefinieerd. Elk object heeft ook een expliciete \emph{ouder} (of \enquote{parent}). Wanneer we binnen een object een attribuut willen evalueren, doen we dit in drie stappen:
-\begin{enumerate}
-  \item Bekijk of het attribuut gedefinieerd is in het object zelf. In dat geval weten we de waarde en leveren deze op.
-  \item Anders zoeken we het attribuut op in de ouder van het object. Ook dan weten we de waarde en leveren deze op.
-  \item Wanneer ook de ouder het attribuut niet bevat, herhalen we de zoektocht voor alle volgende ouders totdat we het attribuut hebben gevonden.
-\end{enumerate}
-Ook hier is dus sprake van een boomstructuur.
+\begin{KelleyWouldRemove}
+Prototype overerving is een \KelleySaysNo{eenvoudige en dynamische} variant van object-geörienteerd programmeren. Net als in klassieke object-gebaseerde talen is er sprake van een object waarin \emph{attributen} zijn gedefinieerd. Elk object heeft ook een expliciete \emph{ouder} (of \enquote{parent}). Wanneer we binnen een object een attribuut willen evalueren, doen we dit in drie stappen:
+\end{KelleyWouldRemove}
 
-Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen is dat de tweede geen onderscheid maakt tussen \emph{klassen} en \emph{instanties}. Een prototype heeft beide functies. Neem bijvoorbeeld het prototype @Deur@:
+\begin{KelleyWouldAdd}
+Prototype overerving is een variant van object-geörienteerd programmeren. Het kern-idee van object-geörienteerd programmeren is het concept van een \emph{object}, die ertoe dient een verschijnsel in de werkelijkheid na te bootsen (een reëel object, een patroon, een abstract idee). Het doel is om meer te kunnen programmeren op een conceptueel niveau. Daarmee wordt bijvoorbeeld zowel creatie als onderhoud van de code makkelijker.
+\end{KelleyWouldAdd}
+
+\begin{KelleyWouldAdd}
+Veel objecten zullen natuurlijk gelijke eigenschappen vertonen, of dezelfde structuur hebben. Verder wilt men concepten als specificering en generalisering toepassen op objecten. Deze problemen kunnen op meerdere manieren worden aangepakt. De bekende variant, \emph{class-based}, ook wel \emph{klassieke}, object-oriëntatie richt zich op het concept van een \emph{klasse}, die de structuur en gedrag van een groep objecten specificeert. Objecten van een bepaalde klasse vertonen dan de structuur en gedrag van die klasse, en heten \emph{instanties}. Van specificering is sprake als een klasse eigenschappen van een andere klasse \emph{overerft}. Klassieke object-oriëntatie vind men in talen als Java en C\#.
+\end{KelleyWouldAdd}
+
+\begin{KelleyWouldAdd}
+Een andere aanpak met hetzelfde doel is \emph{prototype overerving}. Daarbij wordt geen scheiding gemaakt tussen de concepten \emph{klasse}, die structuur en gedrag specificeert, en \emph{instantie}, die enkel deze eigenschappen vertoont. In plaats daarvan wordt gewerkt met een prototype structuur, waarbij elk object naar een bepaald \emph{prototype} object referenceert. Nu zijn objecten zelf de dragers van structuur en gedrag. \textit{Deze methode kan als flexibeler worden gezien, maar ook als een wat minder reëel beeld van de werkelijkheid worden opgevat.}
+\end{KelleyWouldAdd}
+
+\begin{KelleyWouldAdd}
+Technisch gezien werkt prototype overerving als volgt. Van elk object is een prototype bekend, of het heeft geen prototype. Wanneer men een attribuut opvraagt van een zeker object, kan de op te leveren waarde procedureel als volgt worden opgevat:
+\end{KelleyWouldAdd}
+
+\begin{enumerate}
+  \item Bekijk of het attribuut gedefiniëerd is in het object zelf. In dat geval weten we de waarde en leveren deze op.
+  \item Anders zoeken we het attribuut op in \KelleySaysNo{de ouder} \KelleySays{het prototype} van het object. Ook dan weten we de waarde en leveren deze op.
+  \item Wanneer ook \KelleySaysNo{de ouder} \KelleySays{het prototype} het attribuut niet bevat, herhalen we de zoektocht voor alle volgende \KelleySaysNo{ouders} \KelleySays{prototypen} totdat we het attribuut hebben gevonden.
+\end{enumerate}
+
+\KelleySaysNo{Ook hier is dus sprake van een boomstructuur.}
+
+Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen is \KelleySays{dus} dat de tweede geen onderscheid maakt tussen \emph{klassen} en \emph{instanties}. Een prototype heeft beide functies. Neem bijvoorbeeld het \KelleySaysNo{prototype} \KelleySays{object} @Deur@\KelleySays{, welke als prototype gebruikt dient te worden}:
 \begin{lstlisting}[name=deuren]
 local Deur
 Deur object
@@ -132,7 +154,7 @@ We kunnen @Deur@ direct als instantie gebruiken door een attribuut te zetten:
 \begin{lstlisting}[name=deuren]
 Deur.open = 1
 \end{lstlisting}
-Een @Deur@ is standaard open. Maar we kunnen @Deur@ ook als een klasse gebruiken door ervan te erven. In prototype-gebaseerde talen heet dit \emph{klonen}:
+Een @Deur@ is standaard open. Maar we kunnen @Deur@ ook als een \KelleySaysNo{klasse} \KelleySays{prototype} gebruiken\KelleySaysNo{ door ervan te erven}. In \KelleySays{de meeste huidige} prototype-gebaseerde talen heet dit \emph{klonen}:
 \begin{lstlisting}[name=deuren]
 local GeslotenDeur
 GeslotenDeur object
@@ -178,7 +200,8 @@ GlazenDeur.doorzichtig       # => 1
 
 We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde \enquote{blauwdrukken} moeten voldoen. We creëren objecten \enquote{on-the-fly}, alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self.
 
-Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn functies die gekoppeld zijn aan een specifiek object. Stel dat we een @GeslotenDeur@ graag open willen maken. We definiëren:
+Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn \KelleySaysNo{functies} \KelleySays{gewoonweg functie attributen} die gekoppeld zijn aan een specifiek object. Stel dat we een @GeslotenDeur@ graag open willen maken. We definiëren:
+
 \begin{lstlisting}[name=deuren]
 GeslotenDeur.ontsluit = function (poging)
     if poging == this.code then
@@ -212,6 +235,62 @@ Kluis.open                   # => 1
 
 \section{Grammatica}
 
-[...en vervolgens helemaal formeel -- even uitleggen van BNF etc..]
+Nu volgt een formele definitie van de syntax van de taal, aan de hand van een BNF grammatica. Nummers zijn als volgt gedefiniëerd:
+%
+\begin{align*}
+  \Num \GrammarDef (0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9)^+
+\end{align*}
+%
+Eigenlijk gebruiken we geen stricte BNF, in deze specifieke gevallen, maar een hele simpele variant, zoals E-BNF, waarbij de ook simpele reguliere expressies toelaten. Bovenstaand voorbeeld maakt dit duidelijk. Voorbeelden van elementen uit $\Num$ zijn ``0'', ``1'', ``235783'' en ``0003''. Voorbeelden van elementen die niet in $\Num$ zitten zijn ``'', ``-6'', ``4.2''.
+
+\emph{Identifiers}, die gebruikt worden als variabel-namen, zijn op eenzelfde manier als volgt gedefiniëerd:
+%
+\begin{align*}
+  \Id \GrammarDef (a \mid b \mid c \mid d \mid \dots)^+
+\end{align*}
+%
+Hierbij moet je je natuurlijk voorstellen dat alle letters uit het alfabet in de grammaticaregel staan op de voordehandliggende manier.
+
+Het is soms ook nodig om meerdere komma-gescheiden variabel-namen te gebruken, of een mogelijk lege-lijst, zoals bij functie definitie. Vandaar de volgende twee productieregels:
+%
+\begin{align*}
+  \Ids \GrammarDef \Id \mid \Ids, \Id \\
+  \MaybeIds \GrammarDef \varepsilon \mid \Ids
+\end{align*}
+%
+Een \emph{slot} is een opeenvolging door punten (``.'') gescheiden identifiers, en wordt gebruikt om ook naar attributen van objecten te kunnen referenceren:
+%
+\begin{align*}
+  \Slot \GrammarDef \Id \mid \Id . \Slot
+\end{align*}
+%
+\emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, zijn als volgt gedefiniëerd:
+%
+\begin{align*}
+  \Expr \GrammarDef \Num \mid \Slot \mid \varnothing \mid \Expr\; (+ \mid - \mid \times \mid /\,)\; \Expr \\
+  \GrammarOr \FUN\pmb{(}\,\MaybeIds\,\pmb{)}\; \GrammarOpt{\RETURNS \Id\;} \pmb{\{}\; \Stm\; \pmb{\}} \\
+  \Exprs \GrammarDef \Expr \mid \Exprs, \Expr \\
+  \ExprsMaybe \GrammarDef \varepsilon \mid \Exprs \\
+  \B \GrammarDef \TRUE \mid \FALSE \\
+  \GrammarOr \B\; (\AND \mid \OR)\; \B \\
+  \GrammarOr \NOT\; \B \\
+  \GrammarOr \Expr\; (=\: \mid\: <\: \mid\: \le\: \mid\: >\: \mid\: \ge)\; \Expr
+\end{align*}
+%
+De kern van de hele grammatica draait om de volgende productieregels, die van \emph{statements}. Een statement is een programma van goede vorm. Het betekent niet nodelijkerwijs dat het programma \emph{valide} is, maar alle valide programma's zitten wel in $\Stm$.
+%
+\begin{align*}
+  \Stm \GrammarDef \Stm; \Stm \\
+  \GrammarOr \SKIP \\
+  \GrammarOr \IF \B \THEN \Stm \ELSE \Stm \\
+  \GrammarOr \WHILE \B \DO \Stm \\
+  \GrammarOr \LOCAL \Id \\
+  \GrammarOr \Slot = \Expr \\
+  \GrammarOr \GrammarOpt{\Slot =} \Id\,\pmb{(}\,\ExprsMaybe\,\pmb{)} \\
+  \GrammarOr \Id \CLONES \Id \\
+  \GrammarOr \Id \OBJECT
+\end{align*}
+%
+Vanwege de focus van dit werkstuk definiëren we niet precies wanneer een programma valide is en wanneer niet.
 
 % vim: spell spl=nl
