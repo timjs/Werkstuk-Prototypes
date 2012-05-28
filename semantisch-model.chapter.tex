@@ -1,5 +1,92 @@
-
 \chapter{Semantisch model}
+
+\section{Bindingen}\label{sec:bindinge}
+
+Aan de basis van ons model ligt het begrip van \emph{bindingen}. Een binding si een functie die aan het syntactisch object \Id\ een \emph{waarde} toekent. De verzameling van alle bindingen definiëren we als 
+  \begin{equation*}
+  \sB \DEF \FiniteFunctions{\sV}{\Id}
+  \end{equation*}
+Wat de waardes $\sV$ precies zijn komen we later uitgebreid op terug in \ref{sec:waardes}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\sN$ deel uitmaken van $\sV$
+
+Een binding $b\in\sB$ is in eerste instantie leeg. Dit geven we aan met $\emptyset$. We willen natuurlijk \Id's kunnen koppelen aan waardes. Hiervoor voeren we een notatie in om $b$ te \emph{updaten}. Om bijvoorbeeld de waarde $5$ toe te kennen aan de \Id\ $x$ zoals in voorbeeld \ref{exa:todo} schrijven we
+\begin{equation*}
+  b[x \mapsto 5]
+\end{equation*}
+zodat wanneer we $x$ \enquote{opvragen} in $b$ we weten dat
+\begin{equation*}
+  b(x) = 5.
+\end{equation*}
+Wanneer we meerdere \Id's willen koppelen aan waardes, bijvoorbeeld $y$ aan $7$ en $z$ aan $9$ kan dat met bovenstaande notatie als volgt
+\begin{equation*}
+  \big(b[y \mapsto 7]\big)[z \mapsto 9].
+\end{equation*}
+Wat we afkorten tot
+\begin{equation*}
+  b[y \mapsto 7, z \mapsto 9].
+\end{equation*}
+
+Bindingen komen veelvuldig terug in ons model. Bij scopes zullen we lokale \emph{variabelen} koppelen aan een waarde. Bij objecten zijn het de \emph{attributen} die een waarde krijgen toegekend. Bij scopes moeten we ook rekening houden met eventuele bindingen in de scope buiten de huidige. Eenzelfde opzet geld voor objecten. Door prototype overerving moeten we op zoek naar een attribuut in het prototype van het huidige object, wanneer het niet gedefinieerd is in het object zelf.
+
+\section{Scope en omliggende scopes}
+
+Zoals in \ref{sec:voorbeelden} informeel is behandeld, zijn scopes goed te representeren met een boomstructuur. Stel we evalueren een variabele $x$ in scope $s$:
+
+\begin{lstlisting}
+x                # De scope waar we ons in bevinden noemen we $s$.
+\end{lstlisting}
+
+Dan zoeken we eerst $x$ op in de binding $b_s$ behorende bij $s$
+\begin{equation}
+  b_s(x).
+\end{equation}
+Zoals ook te zien in \ref{exa:todo} hebben we twee mogelijkheden:
+\begin{enumerate}
+  \item $x$ is gedefinieerd in $b_s$ en we gebruiken de gevonden waarde.
+  \item $x$ is niet gedefinieerd in $b_s$ en we moeten $x$ opzoeken in de omliggende scope.
+\end{enumerate}
+We moeten dus niet alleen de bindingen van de scope zelf bijhouden, maar ook een verwijzing naar zijn \emph{omgevende scope}. Een scope $s$ is dan een paar $(b,\pi)$ met $b$ de bindingen ban de eigen scope en $\pi$ een \emph{verwijzing} naar de omgevende scope (of \emph{parent} scope).
+
+We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen van de omgevende scope. Stel dat we het programma in voorbeeld~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert in $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren in $4$. De scope $s_f$ van functie $f$ heeft een eigen binding $b_f$ die leeg is, $x$ is namelijk niet gedeclareerd als \LOCAL. De omgevende scope $\pi_f$ van functie $f$ verwijst naar scope $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
+
+\begin{lstlisting}[caption=Lexicale scope,label=exa:lexical]
+# Buitenste scope genaamd $s$
+local x
+x = 1
+local f
+f = function () {            # Introduceert nieuwe scope $s_f\label{exa:lexical:def}$.
+    x = 2 * x
+}                            # Einde nieuwe scope
+f()                          # $\rightarrow x = 2\label{exa:lexical:eerste}$
+f()                          # $\rightarrow x = 4\label{exa:lexical:tweede}$
+\end{lstlisting}
+
+Stel dat we geen verwijzing in de scope opslaan maar een kopie van de omgevende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is scope $s_f$ een paar $(b_f,p_f)$ met $b_f,p_f\in\sB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam $f$ en de waarde $1$ onder naam $x$. Wanneer we $x$ aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omgevende scope $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
+
+Een scope $s$ is dus een element uit de verzameling
+\begin{equation*}
+  \sS \DEF \sB \times (\sL_s \cup \{\BOT\}).
+\end{equation*}
+Hierbij zijn $\sB$ de bindingen zoals besproken in §\ref{sec:bindingen}. $\sL_s$ zijn locaties van scopes. Op het begrip locatie komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort \enquote{ultieme} omgevende scope is. Het kan dus zijn dat een scope geen parent heeft. In dat geval zetten we
+\begin{equation*}
+  \pi = \nil.
+\end{equation*}
+We zeggen dat $\pi$ \emph{niet bestaat} of \emph{niks} is. Vandaar dat we het symbool $\nil$ toevoegen aan $\sL_s$.
+
+\section{Objecten en prototype overerving}
+
+\section{Waarden: referenties en primitieven}
+
+[Ze worden op dezelfde manier behandeld: objecten by-reference, dus de references zelf by-value, net als primitieven -- vandaar dat ze in dezelfde verzameling waarden zitten.]
+
+\subsection{Natuurlijke getallen}
+
+\subsection{Functies}
+
+\subsection{Objecten}
+
+\section{Locaties en geheugen}\label{sec:locaties}
+
+\section*{Extra}
 
 \begin{align*}
   \tag*{locaties van scopes en objecten}
@@ -16,16 +103,4 @@
   \sS &\DEF \sB \times (\sL \cup \{\BOT\}) \\
 \end{align*}
 
-[Stukje bij beetje het semantisch model opbouwen, terwijl we steeds redeneren waarom we dat zo doen..]
-
-\section{Scopes en lexical scope}
-
-[Hierarchieen, outer scopes, bindingen, ``waarden'' kort noemen maar uitstellen tot ``Waarden: referenties en primitieven'']
-
-\section{Objecten en prototype overerving}
-
-[Graaf, bindingen, prototypen]
-
-\section{Waarden: referenties en primitieven}
-
-[Ze worden op dezelfde manier behandeld: objecten by-reference, dus de references zelf by-value, net als primitieven -- vandaar dat ze in dezelfde verzameling waarden zitten.]
+% vim: spell spl=nl cole=2
