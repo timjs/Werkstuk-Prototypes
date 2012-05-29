@@ -2,17 +2,16 @@
 
 \section{Bindingen}\label{sec:bindinge}
 
-<<<<<<< HEAD
 % [Tim:] Onderstaande twee paragrafen heb ik gewijzigd zodat de termen "binding" en  "binding groep" zo gebruikt worden zoals wij dat afgesproken hebben.
-Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id\ komt). Bindingen zijn bijvoorbeeld van belang om de gedefiniëerde variabelen binnen een scope vast te leggen, of de attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to \sV$. De verzameling van alle groepen van bindingen definiëren we dus als
+Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id\ komt). Bindingen zijn bijvoorbeeld van belang om de gedefiniëerde variabelen binnen een scope vast te leggen, of de attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to \VV$. De verzameling van alle groepen van bindingen definiëren we dus als
 % [Tim:] Hier staat dus niet meer dat gekke pijltje van \FiniteFunctions, want nu vermelden we in [Notatie en Terminologie] dat alle functies eindig zullen zijn.
-$$ \sB \DEF \sV^\Id $$
+$$ \BB \DEF \VV^\Id $$
 % [Tim:] wat denk jij: "sectie 4.4" of "onderdeel 4.4" of gewoon "4.4" ??
-We komen later terug op wat de waarden $\sV$ precies zijn in sectie \ref{sec:waarden}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\sN$ deel uitmaken van $\sV$.
+We komen later terug op wat de waarden $\VV$ precies zijn in sectie \ref{sec:waarden}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\NN$ deel uitmaken van $\VV$.
 
 % [Tim:] Ik geloof niet dat we in [Semantisch Model] uitvoerig in moeten gaan op het updaten van functies, aangezien dat een syntactische aangelegenheid is, die we het best kunnen beschrijving in [Notatie en Terminologie], en hier slechts even noemen.
 
-%Een groep bindingen $b \in \sB$ is in eerste instantie leeg. Dit geven we aan met $\emptyset$. We willen natuurlijk \Id's kunnen koppelen aan waardes. Hiervoor voeren we een notatie in om $b$ te \emph{updaten}. Om bijvoorbeeld de waarde $5$ toe te kennen aan de \Id\ $x$ zoals in voorbeeld \ref{exa:todo} schrijven we
+%Een groep bindingen $b \in \BB$ is in eerste instantie leeg. Dit geven we aan met $\emptyset$. We willen natuurlijk \Id's kunnen koppelen aan waardes. Hiervoor voeren we een notatie in om $b$ te \emph{updaten}. Om bijvoorbeeld de waarde $5$ toe te kennen aan de \Id\ $x$ zoals in voorbeeld \ref{exa:todo} schrijven we
 %\begin{equation*}
 %  b[x \mapsto 5]
 %\end{equation*}
@@ -35,30 +34,6 @@ Bindingen komen veelvuldig terug in ons model. In scopes worden \emph{variabelen
 % Bij scopes moeten we ook rekening houden met eventuele bindingen in de scope buiten de huidige. Eenzelfde opzet geld voor objecten. Door prototype overerving moeten we op zoek naar een attribuut in het prototype van het huidige object, wanneer het niet gedefinieerd is in het object zelf.
 
 \section{Scope en omliggende scopes}
-=======
-Aan de basis van ons model ligt het begrip van \emph{bindingen}. Een binding si een functie die aan het syntactisch object \Id\ een \emph{waarde} toekent. De verzameling van alle bindingen definiëren we als 
-  \begin{equation*}
-  \BB \DEF \FiniteFunctions{\VV}{\Id}
-  \end{equation*}
-Wat de waardes $\VV$ precies zijn komen we later uitgebreid op terug in \ref{sec:waardes}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\NN$ deel uitmaken van $\VV$
-
-Een binding $b\in\BB$ is in eerste instantie leeg. Dit geven we aan met $\emptyset$. We willen natuurlijk \Id's kunnen koppelen aan waardes. Hiervoor voeren we een notatie in om $b$ te \emph{updaten}. Om bijvoorbeeld de waarde $5$ toe te kennen aan de \Id\ $x$ zoals in voorbeeld \ref{exa:todo} schrijven we
-\begin{equation*}
-  b[x \mapsto 5]
-\end{equation*}
-zodat wanneer we $x$ ``opvragen'' in $b$ we weten dat
-\begin{equation*}
-  b(x) = 5.
-\end{equation*}
-Wanneer we meerdere \Id's willen koppelen aan waardes, bijvoorbeeld $y$ aan $7$ en $z$ aan $9$ kan dat met bovenstaande notatie als volgt
-\begin{equation*}
-  \big(b[y \mapsto 7]\big)[z \mapsto 9].
-\end{equation*}
-Wat we afkorten tot
-\begin{equation*}
-  b[y \mapsto 7, z \mapsto 9].
-\end{equation*}
->>>>>>> waardes en begin geheugens geschreven
 
 % [Tim:] ik wil graag "procedureel als volgt opvatten" oid zeggen, om aan te geven dat zo'n 'procedure' niet het enige perspectief is die men kan nemen.
 %Zoals in \ref{sec:voorbeelden} informeel is behandeld, zijn scopes goed te representeren met een boomstructuur. Stel we evalueren een variabele $x$ in scope $s$:
