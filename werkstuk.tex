@@ -8,11 +8,12 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-%\usepackage{pxfonts}
+%\usepackage{lmodern}
+\usepackage{pxfonts}
 %\usepackage{millennial}
-\usepackage{fouriernc}
-\usepackage{tgschola}
-\usepackage{tgadventor}
+%\usepackage{fouriernc}
+%\usepackage{tgschola}
+%\usepackage{tgadventor}
 %\usepackage{newcent}
 %\usepackage[utopia]{mathdesign}
 
@@ -24,13 +25,12 @@
 \usepackage{xargs}
 \usepackage{enumitem}
 \usepackage{csquotes}
-\usepackage{ulem}
 \usepackage{float}
 \usepackage{ifthen}
 \usepackage[font=small,it]{caption}
 \usepackage{environ}
-\usepackage{setspace}
-\doublespacing
+%\usepackage{setspace}
+%\doublespacing
 
 \usepackage{bussproofs}
   \def\extraVskip{4pt} % Iets meer verticale ruimte
@@ -149,6 +149,9 @@
 \newsemanticset{\sV}{V}
 \newsemanticset{\sN}{N}
 
+\newcommand{\BNF}
+  {\textsc{BNF}}
+
 \def\GrammarDef{::=\;&}
 \def\GrammarOr{\mid\;&}
 \newcommand{\GrammarOpt}[1]{[#1]\;}
@@ -252,21 +255,6 @@
 \def\SDef{\textit{def}}
 \newcommand{\ScopeID}[1]{\ensuremath{(1, #1)}}
 \newcommand{\ObjectID}[1]{\ensuremath{(2, #1)}}
-
-\def\KelleyColor{\color[HTML]{417438}}
-\NewEnviron{Kelley}{{\KelleyColor \BODY}}
-\newcommand{\KelleySaysNo}[1]{{\KelleyColor \sout{#1}}}
-\newcommand{\KelleySays}[1]{{\KelleyColor \uwave{#1}}}
-\NewEnviron{KelleyWouldRemove}{%
-  \begin{minipage}{.1\textwidth}\KelleyColor \ttfamily [rm]\end{minipage}%
-  \begin{minipage}{.9\textwidth}\BODY\end{minipage}%
-  \vspace*{3pt}%
-}
-\NewEnviron{KelleyWouldAdd}{%
-  \begin{minipage}{.1\textwidth}\KelleyColor \ttfamily [add]\end{minipage}%
-  \begin{minipage}{.9\textwidth}\KelleyColor \BODY\end{minipage}%
-  \vspace*{3pt}%
-}
 
 \title{Een natuurlijke semantiek voor prototype oververing en lexicaal bereik}
 \author{Kelley van Evert \& Tim Steenvoorden}
