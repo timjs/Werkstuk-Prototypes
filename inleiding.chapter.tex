@@ -1,9 +1,40 @@
 
 \chapter{Inleiding}
 
-\begin{itemize}
-	\item Motivatie
-	\item JavaScript
-	\item Lexical scope -- vrije/gebeonden variabelen
-	\item Objecten en prototype overerving
-\end{itemize}
+% Wat
+In dit werkstuk presenteren we een natuurlijke semantiek die wij ontworpen hebben om de concepten \emph{lexicaal bereik} en \emph{prototype overerving} in \emph{object-geörienteerde} talen te karakteriseren. Daartoe hebben we een minimale taal ontworpen die geïnspireerd is door de bestaande programmeertalen IO en JavaScript.
+
+% Waarom
+Lexicaal bereik (ook wel \emph{static scoping} genaamd) en prototype overerving zijn mooie fenomenen. Ze zijn ook de fundamenten van ``The World's Most Misunderstood Programming Language'': JavaScript. Maar lexicaal bereik ligt men eigenlijk heel natuurlijk: zo redeneren wiskundigen al meer dan honderd jaar met formules waarin variabelen lexicaal bereik hebben. En prototype overerving is slechts een elegant en simpel alternatief op klassieke overerving, wanneer het gaat om object-geörienteerd programmeren.
+
+% Doel
+Het doel van dit werkstuk is daarom een formele betekenis te geven aan deze concepten, maar dan wel zó dat de interpretatie van de formele uitspraken zo natuurlijk mogelijk en conceptueel verantwoord is. De bedoeling is dus dat je de gewoon Nederlandse interpretatie van een willekeurig axioma of deductieregel tegen zou kunnen komen in een college programmeren:
+
+\begin{multicols}{2}
+  \small
+  \raggedcolumns
+  \setlength{\columnseprule}{.5pt}
+  \scalebox{0.86}{\begin{minipage}{.25\textwidth}
+  \begin{NSAxiom}{object}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{i \OBJECT}{m, \sigma, \tau}
+      \longrightarrow
+      m''
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \textsc{Find}_m(\sigma, i) = \sigma_\text{def} $}
+    \Cond{$ m' = m \surr{ \sigma_\text{def} \mapsto \big(b_{m(\sigma')}[i\mapsto \omega], p_{m(\sigma')}\big) } $}
+    \Cond{$ m'' = m' \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
+  \end{minipage}}
+  
+  \columnbreak
+  
+  \textit{``Zoals jullie weten, moeten we bij statische scope eerst de definie van de variabele zoeken in de huidige en daarna omliggende scopes. Daarna kan een nieuw object worden gemaakt en in de heap gezet, en een \emph{pointer} naar dit object wordt vervolgens in de variabele gestopt\dots''}
+\end{multicols}
+
+% Opzet
+Na het bespreken van een aantal notationele keuzes en terminologie, presenteren we eerst de minimale taal, vervolgens het semantische model en tenslotte de natuurlijke semantiek die de twee voorgaande aan elkaar koppelt. In de case study die erop volgt gaan we uitvoeriger in op \dots
