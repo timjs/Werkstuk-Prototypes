@@ -1,5 +1,5 @@
 
-\chapter{Taal en syntax}
+\chapter{Taal en syntaxis}
 
 In dit hoofdstuk zullen we de taal presenteren waarvoor we een natuurlijk taal construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst zullen we een aantal voorbeeldprogramma's beschouwen, om zo informeel het karakter van de te formaliseren taal over te brengen. Daarna geven we een rigoreuze definitie met behulp van een BNF grammatica. De structuur van de productieregels van grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
 
@@ -127,35 +127,22 @@ c()                          # $\rightarrow 6, 7, 8, \dots$
 
 \subsection{Prototype overerving}
 
-\begin{KelleyWouldRemove}
-Prototype overerving is een \KelleySaysNo{eenvoudige en dynamische} variant van object-geörienteerd programmeren. Net als in klassieke object-gebaseerde talen is er sprake van een object waarin \emph{attributen} zijn gedefinieerd. Elk object heeft ook een expliciete \emph{ouder} (of \enquote{parent}). Wanneer we binnen een object een attribuut willen evalueren, doen we dit in drie stappen:
-\end{KelleyWouldRemove}
+Prototype overerving is een variant van object-geörienteerd programmeren. De kern van object-geörienteerd programmeren is het concept van een \emph{object}, dat ertoe dient een verschijnsel uit de werkelijkheid na te bootsen (een reëel object, een patroon, een abstract idee). Het doel is om meer te kunnen programmeren op een conceptueel niveau. Daarmee wordt bijvoorbeeld zowel creatie als onderhoud van de code makkelijker.
 
-\begin{KelleyWouldAdd}
-Prototype overerving is een variant van object-geörienteerd programmeren. Het kern-idee van object-geörienteerd programmeren is het concept van een \emph{object}, die ertoe dient een verschijnsel in de werkelijkheid na te bootsen (een reëel object, een patroon, een abstract idee). Het doel is om meer te kunnen programmeren op een conceptueel niveau. Daarmee wordt bijvoorbeeld zowel creatie als onderhoud van de code makkelijker.
-\end{KelleyWouldAdd}
+Veel objecten zullen natuurlijk gelijke eigenschappen vertonen, of dezelfde structuur hebben. Verder wilt men concepten als specificering en generalisering toepassen op objecten. Deze problemen kunnen op meerdere manieren worden aangepakt. De bekendste variant is \emph{klasse gebaseerde} object-oriëntatie (ook wel \emph{klassieke object-oriëntatie}) en richt zich op het concept van een \emph{klasse}. Objecten van een bepaalde klasse vertonen de structuur en gedrag van die klasse en heten \emph{instanties}. Van specificering is sprake als een klasse eigenschappen van een andere klasse \emph{overerft}. Klassieke object-oriëntatie vind men in talen als Java en C\#.
 
-\begin{KelleyWouldAdd}
-Veel objecten zullen natuurlijk gelijke eigenschappen vertonen, of dezelfde structuur hebben. Verder wilt men concepten als specificering en generalisering toepassen op objecten. Deze problemen kunnen op meerdere manieren worden aangepakt. De bekende variant, \emph{class-based}, ook wel \emph{klassieke}, object-oriëntatie richt zich op het concept van een \emph{klasse}, die de structuur en gedrag van een groep objecten specificeert. Objecten van een bepaalde klasse vertonen dan de structuur en gedrag van die klasse, en heten \emph{instanties}. Van specificering is sprake als een klasse eigenschappen van een andere klasse \emph{overerft}. Klassieke object-oriëntatie vind men in talen als Java en C\#.
-\end{KelleyWouldAdd}
+Een andere aanpak met hetzelfde doel is \emph{prototype gebaseerde} object-oriëntatie. Daarbij wordt geen scheiding gemaakt tussen de concepten klasse, die structuur en gedrag specificeert, en instantie, die enkel deze eigenschappen vertoont. In plaats daarvan wordt gewerkt met een prototype structuur, waarbij elk object naar een bepaald \emph{prototype}-object refereert. Nu zijn objecten zelf de dragers van structuur en gedrag.
+%Deze methode kan als flexibeler worden gezien, maar ook als een wat minder reëel beeld van de werkelijkheid worden opgevat.
 
-\begin{KelleyWouldAdd}
-Een andere aanpak met hetzelfde doel is \emph{prototype overerving}. Daarbij wordt geen scheiding gemaakt tussen de concepten \emph{klasse}, die structuur en gedrag specificeert, en \emph{instantie}, die enkel deze eigenschappen vertoont. In plaats daarvan wordt gewerkt met een prototype structuur, waarbij elk object naar een bepaald \emph{prototype} object referenceert. Nu zijn objecten zelf de dragers van structuur en gedrag. \textit{Deze methode kan als flexibeler worden gezien, maar ook als een wat minder reëel beeld van de werkelijkheid worden opgevat.}
-\end{KelleyWouldAdd}
-
-\begin{KelleyWouldAdd}
 Technisch gezien werkt prototype overerving als volgt. Van elk object is een prototype bekend, of het heeft geen prototype. Wanneer men een attribuut opvraagt van een zeker object, kan de op te leveren waarde procedureel als volgt worden opgevat:
-\end{KelleyWouldAdd}
 
 \begin{enumerate}
   \item Bekijk of het attribuut gedefiniëerd is in het object zelf. In dat geval weten we de waarde en leveren deze op.
-  \item Anders zoeken we het attribuut op in \KelleySaysNo{de ouder} \KelleySays{het prototype} van het object. Ook dan weten we de waarde en leveren deze op.
-  \item Wanneer ook \KelleySaysNo{de ouder} \KelleySays{het prototype} het attribuut niet bevat, herhalen we de zoektocht voor alle volgende \KelleySaysNo{ouders} \KelleySays{prototypen} totdat we het attribuut hebben gevonden.
+  \item Anders zoeken we het attribuut op in het prototype van het object. Ook dan weten we de waarde en leveren deze op.
+  \item Wanneer ook het prototype het attribuut niet bevat, herhalen we de zoektocht voor alle volgende prototypen totdat we het attribuut hebben gevonden.
 \end{enumerate}
 
-\KelleySaysNo{Ook hier is dus sprake van een boomstructuur.}
-
-Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen is \KelleySays{dus} dat de tweede geen onderscheid maakt tussen \emph{klassen} en \emph{instanties}. Een prototype heeft beide functies. Neem bijvoorbeeld het \KelleySaysNo{prototype} \KelleySays{object} @Deur@\KelleySays{, welke als prototype gebruikt dient te worden}:
+Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen is dus dat de tweede geen onderscheid maakt tussen klassen en instanties. Een prototype heeft beide functies. Neem bijvoorbeeld het object @Deur@:
 
 \newCodeFragment
 
@@ -170,7 +157,7 @@ We kunnen @Deur@ direct als instantie gebruiken door een attribuut te zetten:
   \codeLine{\I{Deur}.\I{open} = 1}
 }
 
-Een @Deur@ is standaard open. Maar we kunnen @Deur@ ook als een \KelleySaysNo{klasse} \KelleySays{prototype} gebruiken\KelleySaysNo{ door ervan te erven}. In \KelleySays{de meeste huidige} prototype-gebaseerde talen heet dit \emph{klonen}:
+Een @Deur@ is standaard open. We kunnen @Deur@ ook als een prototype gebruiken. In prototype-gebaseerde talen heet dit \emph{klonen}:
 
 \codeLines{
   \codeLine{\VAR \I{GeslotenDeur}}
@@ -231,9 +218,9 @@ Maar er geld nog steeds:
   \codeLine{\I{GlazenDeur}.\I{doorzichtig}}[waarde $\to$ 1]
 }
 
-We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde \enquote{blauwdrukken} moeten voldoen. We creëren objecten \enquote{on-the-fly}, alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self.
+We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde ``blauwdrukken'' moeten voldoen. We creëren objecten ``on-the-fly'', alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self.
 
-Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn \KelleySaysNo{functies} \KelleySays{gewoonweg functie attributen} die gekoppeld zijn aan een specifiek object. Stel dat we een @GeslotenDeur@ graag open willen maken. We definiëren:
+Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn functie attributen gekoppeld aan een specifiek object. Stel dat we een @GeslotenDeur@ graag open willen maken. We definiëren:
 
 \codeLines{
   \codeLine{\I{GeslotenDeur}.\I{ontsluit} = \FUN (\I{poging})}
@@ -260,53 +247,52 @@ We kunnen natuurlijk een @code@ toekennen aan @GeslotenDeur@, maar laten we een 
   \codeLine{\I{Kluis}.\I{code} = 4321}
 }
 
-Wanneer we de methode @ontsluit@ aanroepen is deze niet gedefinieerd in @Kluis@, maar wel in zijn prototype @GeslotenDeur@. Die wordt dan uitgevoerd. Een belangrijke observatie is dat @ontsluit@ wel wordt aangeroepen op @Kluis@. Dat betekent dat @this@ verwijst naar @Kluis@ en niet @GeslotenDeur@. Het attribuut @code@ wordt dan wel gevonden!
+Wanneer we de methode @ontsluit@ aanroepen is deze niet gedefinieerd in @Kluis@, maar wel in zijn prototype @GeslotenDeur@. Die wordt dan uitgevoerd. Een belangrijke observatie is dat @ontsluit@ wel wordt aangeroepen op @Kluis@. Dat betekent dat @this@ verwijst naar @Kluis@ en niet @GeslotenDeur@. Het attribuut @code@ wordt dan wel gevonden:
 
 \codeLines{
   \codeLine{\I{Kluis}.\I{ontsluit}(1234)}
   \codeLine{\I{Kluis}.\I{open}}[waarde $\to$ 0]
 }
 
-Oeps\dots Dat was de verkeerde code, nog een poging:
+Helaas was dat de verkeerde code, we proberen het nog een keer:
 
 \codeLines{
   \codeLine{\I{Kluis}.\I{ontsluit}(1234)}
   \codeLine{\I{Kluis}.\I{open}}[waarde $\to$ 1]
 }
 
+%TODO: Meerdere overerving niet mogelijk?
+
 \section{Grammatica}
 
-Nu volgt een formele definitie van de syntax van de taal, aan de hand van een BNF grammatica. Nummers zijn als volgt gedefiniëerd:
-%
+Nu volgt een formele definitie van de syntaxis van de taal, aan de hand van een \BNF\ grammatica. Nummers zijn als volgt gedefiniëerd:
 \begin{align*}
   \Num \GrammarDef (0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9)^+
 \end{align*}
-%
-Eigenlijk gebruiken we geen stricte BNF, in deze specifieke gevallen, maar een hele simpele variant, zoals E-BNF, waarbij de ook simpele reguliere expressies toelaten. Bovenstaand voorbeeld maakt dit duidelijk. Voorbeelden van elementen uit $\Num$ zijn ``0'', ``1'', ``235783'' en ``0003''. Voorbeelden van elementen die niet in $\Num$ zitten zijn ``'', ``-6'', ``4.2''.
+Eigenlijk gebruiken we geen strikte \BNF, in deze specifieke gevallen, maar een hele simpele variant, zoals \textsc{E-BNF}, waarbij de ook simpele reguliere expressies toelaten.%, die ook reguliere expressies toelaat.
+Bovenstaand voorbeeld maakt dit duidelijk. Voorbeelden van elementen uit $\Num$ zijn ``0'', ``1'', ``235783'' en ``0003''. Voorbeelden van elementen die niet in $\Num$ zitten zijn ``'', ``-6'', ``4.2''.
 
-\emph{Identifiers}, die gebruikt worden als variabel-namen, zijn op eenzelfde manier als volgt gedefiniëerd:
-%
+\emph{Identifiers}, die gebruikt worden als variabel-namen,% namen voor variabelen en attributen
+zijn op eenzelfde manier als volgt gedefiniëerd:
 \begin{align*}
   \Id \GrammarDef (a \mid b \mid c \mid d \mid \dots)^+
 \end{align*}
-%
-Hierbij moet je je natuurlijk voorstellen dat alle letters uit het alfabet in de grammaticaregel staan op de voordehandliggende manier.
+Hierbij moet je je natuurlijk% moet men zich
+voorstellen dat alle letters uit het alfabet in de grammaticaregel staan op de voordehandliggende% voor de hand liggende
+manier.
 
-Het is soms ook nodig om meerdere komma-gescheiden variabel-namen te gebruken, of een mogelijk lege-lijst, zoals bij functie definitie. Vandaar de volgende twee productieregels:
-%
+Het is soms ook nodig om meerdere komma-gescheiden namen te gebruiken, of een mogelijk lege lijst, zoals bij functie definities. Vandaar de volgende twee productieregels:
 \begin{align*}
   \Ids \GrammarDef \Id \mid \Ids, \Id \\
   \MaybeIds \GrammarDef \varepsilon \mid \Ids
 \end{align*}
-%
-Een \emph{slot} is een opeenvolging door punten (``.'') gescheiden identifiers, en wordt gebruikt om ook naar attributen van objecten te kunnen referenceren:
-%
+Een \emph{slot}% pad, ook binnen de grammatica veranderen
+is een opeenvolging door punten (``.'') gescheiden identifiers,% opeenvolging van identifiers gescheiden door punten
+en wordt gebruikt om ook naar attributen van objecten te kunnen referenceren:% refereren
 \begin{align*}
   \Slot \GrammarDef \Id \mid \Id . \Slot
 \end{align*}
-%
-\emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, zijn als volgt gedefiniëerd:
-%
+\emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, zijn als volgt gedefiniëerd:% definiëren we als volgt
 \begin{align*}
   \Expr \GrammarDef \Num \mid \Slot \mid \varnothing \mid \Expr\; (+ \mid - \mid \times \mid /\,)\; \Expr \\
   \GrammarOr \FUN\pmb{(}\,\MaybeIds\,\pmb{)}\; \GrammarOpt{\RETURNS \Id\;} \pmb{\{}\; \Stm\; \pmb{\}} \\
@@ -317,21 +303,19 @@ Een \emph{slot} is een opeenvolging door punten (``.'') gescheiden identifiers, 
   \GrammarOr \NOT\; \B \\
   \GrammarOr \Expr\; (=\: \mid\: <\: \mid\: \le\: \mid\: >\: \mid\: \ge)\; \Expr
 \end{align*}
-%
-De kern van de hele grammatica draait om de volgende productieregels, die van \emph{statements}. Een statement is een programma van goede vorm. Het betekent niet nodelijkerwijs dat het programma \emph{valide} is, maar alle valide programma's zitten wel in $\Stm$.
-%
+De kern van de hele grammatica draait om de volgende productieregels, die van \emph{statements}. Een statement is een programma van goede vorm. Het betekent niet nodelijkerwijs% per se / noodzakelijk
+dat het programma \emph{valide} is, maar alle valide programma's zitten wel in $\Stm$.
 \begin{align*}
   \Stm \GrammarDef \Stm; \Stm \\
   \GrammarOr \SKIP \\
   \GrammarOr \IF \B \THEN \Stm \ELSE \Stm \\
   \GrammarOr \WHILE \B \DO \Stm \\
   \GrammarOr \LOCAL \Id \\
+  \GrammarOr \Id \OBJECT
+  \GrammarOr \Id \CLONES \Id \\
   \GrammarOr \Slot = \Expr \\
   \GrammarOr \GrammarOpt{\Slot =} \Id\,\pmb{(}\,\ExprsMaybe\,\pmb{)} \\
-  \GrammarOr \Id \CLONES \Id \\
-  \GrammarOr \Id \OBJECT
 \end{align*}
-%
 Vanwege de focus van dit werkstuk definiëren we niet precies wanneer een programma valide is en wanneer niet.
 
 % vim: spell spl=nl
