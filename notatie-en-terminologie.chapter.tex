@@ -1,48 +1,83 @@
 \chapter{Notatie en terminologie}
 
-In dit hoofdstuk behandelen we zowel een aantal min of meer gebruikelijke wiskundige concepten, als een aantal specifieke notaties en begrippen, die in dit werkstuk vaak zullen terugkeren. Gezien het aard van het onderwerp zullen we bijvoorbeeld vaak over \emph{eindige} functies en verzamelingen willen spreken.
+In dit hoofdstuk behandelen we zowel een aantal min of meer% T: zou min of meer weglaten
+gebruikelijke wiskundige concepten, als een aantal specifieke notaties en begrippen die in dit werkstuk vaak zullen terugkeren. Gezien het aard van het onderwerp zullen we bijvoorbeeld vaak over \emph{eindige} functies en verzamelingen willen% T: overbodig werkwoord?
+spreken.
 
 \section{Functies}
 
-In dit werkstuk identificeren we een functie met zijn grafiek, d.w.z.~een functie $f : X \to Y$ wordt gedefiniëerd door de verzameling paren $(x, y) \in X \times Y$ waarvoor we beweren dat $f(x) = y$. Uiteraard voldoet zo'n verzameling $f \subseteq X \times Y$ aan de voorwaarde dat: $$ \neg \exists_{x \in X,\, y_1 \in Y,\, y_2 \in Y} \surr{ (x, y_1) \in f \land (x, y_2) \in f \land y_1 \neq y_2 ] } $$ De reden voor deze aanpak is zeker niet fundamenteel: het is gewoonweg handig om $\varnothing$ te schrijven voor een nieuwe, ``lege'', partiële functie.
+In dit werkstuk identificeren we een functie met zijn grafiek, d.w.z.% T: voluit
+een functie $f : X \to Y$ wordt gedefiniëerd door de verzameling paren $(x, y) \in X \times Y$ waarvoor we beweren dat $f(x) = y$. Uiteraard voldoet zo'n verzameling $f \subseteq X \times Y$ aan de voorwaarde dat
+\begin{equation*}% T: Heb hier een equation* van gemaakt. $$...$$ geeft vaak andere afstanden om de formule, equation heeft de voorkeur.
+\neg \exists_{x \in X,\, y_1 \in Y,\, y_2 \in Y} \surr{ (x, y_1) \in f \land (x, y_2) \in f \land y_1 \neq y_2 }% T: Hier stond een ] teveel.
+\end{equation*}
+De reden voor deze aanpak is zeker niet fundamenteel: het is gewoonweg handig om $\varnothing$ te schrijven voor een nieuwe, ``lege'', partiële functie.
 
 \section{Partiële functies}
 
-Vrijwel alle functies die we in dit werkstuk behandelen zijn partiële functies. Wanneer een partiële functie $f : X \to Y$ niet gedefiniëerd is op een zeker punt $x$, d.w.z.~$\neg \exists_{y \in Y} \surr { (x, y) \in f }$, schrijven we $f(x) = \bot$. Wanneer het omgekeerde het geval is, schrijven we $f(x) \neq \bot$, of kortweg $f(x) = y$ voor de gecombineerde uitspraak dat $f$ wél gedefiniëerd is op $x$ én dat $(x, y) \in f$.
+Vrijwel alle functies die we in dit werkstuk behandelen zijn partiële functies. Wanneer een partiële functie $f : X \to Y$ niet gedefiniëerd is op een zeker punt $x$, d.w.z.% T: wederom voluit
+$\neg \exists_{y \in Y} \surr { (x, y) \in f }$, schrijven we $f(x) = \bot$. Wanneer het omgekeerde het geval is, schrijven we $f(x) \neq \bot$, of kortweg $f(x) = y$ voor de gecombineerde uitspraak dat $f$ wél gedefiniëerd is op $x$ én dat $(x, y) \in f$.
 
-Voor een willekeurige term $\phi = \dots f(x)\dots$, waarbij $f$ een partiële functie is die niet gedefiniëerd is op punt $x$, geldt dat $\phi = \bot$. Op deze manier hoeven we niet iets omslachtigs te schrijven als: ``als $f(x) = \bot$, dan $z = \bot$; anders als $f(x) \neq \bot$, dan $z = \phi$''. Deze ``verkote schrijfwijze'' stelt ons in staat om op een elegantie manier functie definities op te schrijven. Een voorbeeld:
-%
+Voor een willekeurige term $\phi = \dots f(x)\dots$, waarbij $f$ een partiële functie is die niet gedefiniëerd is op punt $x$, geldt% T: ook?
+dat $\phi = \bot$. Op deze manier hoeven we niet iets omslachtigs te schrijven als:% T: Op deze manier is het niet nodig om te schrijven:
+``als $f(x) = \bot$, dan $z = \bot$; anders als $f(x) \neq \bot$, dan $z = \phi$''. Deze ``verkorte schrijfwijze'' stelt ons in staat om op een elegantie manier functie definities op te schrijven. Een voorbeeld:
 \begin{align*}
   f : \NN \times \NN &\to \NN \\
   f(0, 0) &= 1 \\
   f(n, m + 1) &= f(n, m)
 \end{align*}
-%
-In dit voorbeeld geldt voor alle $m \in \NN$ dat $f(0, m) = 1$, en voor alle $n \in \NN \setminus \{0\}$ is $f(n, m)$ niet gedefiniëerd.
+In dit voorbeeld geldt voor alle $m \in \NN$ dat $f(0, m) = 1$, en% T: nieuw zin?
+voor alle $n \in \NN \setminus \{0\}$ is $f(n, m)$ niet gedefiniëerd.
 
 \section{Eindige functies, eindige verzamelingen}
 
-De reden dat de meeste behandelde functies partiëel zijn is omdat meeste onderdelen van ons semantisch model eindig van karakter zijn. Functies worden vaak gebruikt om ``een verzameling variabelen die een bepaalde waarde bevatten'' te representeren, bijvoorbeeld de gedefiniëeerde variabelen in een zekere scope. En het zou ongewoon zijn om in een programmeertaal gebruik te maken van scopes waarin oneindig veel variabelen kunnen bestaan.
+De reden dat de meeste behandelde functies partiëel% T: partieel
+zijn is omdat meeste onderdelen van ons semantisch model eindig van karakter zijn. Functies worden vaak gebruikt om ``een verzameling variabelen die een bepaalde waarde bevatten'' te representeren, bijvoorbeeld de gedefiniëeerde% T: gedefinieerde
+variabelen in een zekere scope. En% T: weglaten
+het zou ongewoon zijn om in een programmeertaal gebruik te maken van scopes waarin oneindig veel variabelen kunnen bestaan.
 
-Wanneer we het over een eindige functie $f$ hebben, bedoelen we daarmee dat het domein van die functie een eindige verzameling is. Dit kan worden uitgedrukt door te zeggen dat er een zeker getal $n \in \NN$ bestaat, zó dat $\underbar{n}$ (gedefiniëerd als: $\{m \in \NN \mid m \le n\}$) isomorf is aan het domein van $f$.
-
-$$ f : X \to Y \text{ is ``eindig'' } \DEF \exists_{n \in \NN} \surr{ \underbar{n} \cong \{ x \in X \mid f(x) \neq \bot \} } $$
-
+Wanneer we het over een eindige functie $f$ hebben, bedoelen we daarmee dat het domein van die functie een eindige verzameling is. Dit kan worden uitgedrukt door te zeggen dat er een zeker getal $n \in \NN$ bestaat, zó dat $\underbar{n}$ (gedefiniëerd als: $\{m \in \NN \mid m \le n\}$)% T: hier weghalen...
+isomorf% T: isomorf is een sterkere eigenschap dan gelijkmachtig, het behoud namelijk ook de structuur van het object, hebben we dat hier nodig?
+is aan het domein van $f$.
+\begin{align*}
+f : X \to Y \text{ is ``eindig'' } \DEF \exists_{n \in \NN} \surr{ \underbar{n} \cong \{ x \in X \mid f(x) \neq \bot \} }
+\end{align*}
+% T: ...en hier toevoegen als: Hierbij is $\underbar{n}$ gedefinieerd als de verzameling van de eerste $n$ natuurlijke getallen, ofwel $\{m \in \NN \mid m \le n\}$.
 We schrijven $\FiniteFunctions{Y}{X}$ voor de verzameling functies $\{f : X \to Y \mid f \text{ ``eindig''} \}$.
+
+% T: heb de volgende sectie toegevoegd
+\section{Functies uitbreiden}
+
+Het is vaak handig om een functie op een later tijdstip \emph{uit te breiden}. Hiermee we bedoelen dat de functie ongewijzigd blijft op alle punten $(x,y) \in f$, behalve één specifiek punt $x_1$ dat we willen koppelen aan $y_1$ zodat geld
+\begin{equation*}
+f(x_1) = y_1.
+\end{equation*}
+Dit geven we aan in met de notatie:
+\begin{equation*}
+f[x_1 \mapsto y_1].
+\end{equation*}
+Wanneer we meerdere aanpassingen willen maken, bijvoorbeeld $x_2$ koppelen aan $y_2$ en $x_3$ aan $y_3$ kan dat met bovenstaande notatie als volgt
+\begin{equation*}
+\big(f[x_2 \mapsto y_2]\big)[x_3 \mapsto y_3]
+\end{equation*}
+wat we afkorten tot
+\begin{equation*}
+f[x_2 \mapsto y_2, x_3 \mapsto y_3].
+\end{equation*}
 
 \section{Lijsten}
 
-We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige (partiële) functies $t : \NN \to X$ (met X de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
-
-$$ X_{\langle\rangle} \DEF \big\{\, t : \NN \to X \mid \exists_{N \in \NN} \surr{ \forall_{n < N}[t(n) \neq \bot] \land \forall_{n\ge N}[t(n) = \bot] } \,\big\} $$
-
+We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige (partiële) functies $t : \NN \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
+\begin{equation*}
+X_{\langle\rangle} \DEF \big\{\, t : \NN \to X \mid \exists_{N \in \NN} \surr{ \forall_{n < N}[t(n) \neq \bot] \land \forall_{n\ge N}[t(n) = \bot] } \,\big\}
+\end{equation*}
 We schrijven $\langle\rangle$ (maar ook wel $\varnothing$ aangezien het gewoon een lege functie is zoals beschreven in het voorgaande) voor de lege lijst. Deze is natuurlijk altijd hetzelfde, ongeacht welke invulling wordt gekozen voor $X$.
 
 Als $t$ een zekere lijst is, dan zeggen we dat hij van \emph{grootte} $N = \min\{n\in\NN \mid t(n) = \bot\}$ is.
-
 We schrijven $\langle x_0, x_1, \dots, x_{N-1}\rangle$ voor de lijst $t$ van grootte $N$ waarvoor geldt dat $\forall_{n < N}[t(n) = x_n]$.
+Als $t$ een lijst is uit $X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$ voor de lijst $t' = t[N \mapsto x]$, waarbij $N$ de grootte van $t$ is.% T: Hierboven heb je netjes gezegd wat je definieert, namelijk de grootte. Doe dat hier ook, iets van concatenatie of toevoeging.
 
-Als $t$ een lijst is uit $X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$ voor de lijst $t' = t[N \mapsto x]$, waarbij $N$ de grootte van $t$ is.
+% T: Volgens mij worden lijsten in functionele talen meestal wel andersom gedefinieerd namelijk $x:t$. Maar het wiskundig formalise daarvan is natuurlijk anders dan wat je hier hebt beschreven. Er is dan een specifieke constructie functie en het einde van de lijst wordt aangegeven met nil.
 
 \section{Notationele conventies}
 
@@ -50,14 +85,17 @@ Terwille van leesbaarheid en elegantie houden we een aantal gebruikelijke notati
 
 \begin{itemize}
   \item Veel wiskundige formules zijn van de vorm $t_1\; R\; t_2$, waarbij $R$ een zeker predikaat is (mogelijk $=$), en $t_1$ en $t_2$ termen. Dit soort formules zullen we wel vaker ``samenstellen'' tot formules als:
-  \begin{eqnarray}
-    6 = 2 * 3 > 2 \ge 42 - 40 \\
+  \begin{gather*}% T: eqnarray is verouderd en wordt sterk afgeraden! Gebruik altijd align of gather oid. Ik heb ze aangepast.
+    6 = 2 \cdot 3 > 2 \ge 42 - 40 \\% T: Ik heb * door \cdot vervangen
     f(x) = y \in Y
-  \end{eqnarray}
-  De intentie is enkel een elegante schrijfwijze te hanteren die makkelijk en intuïtief leest. Zo zou een college analyse onverdraaglijk zijn als dergelijke verkortingen niet zouden worden gebruikt. Als we bovenstaande formules uitschrijven krijgen we:
-  \begin{eqnarray}
-    6 = 2 * 3 \land 2 * 3 > 2 \land 2 \ge 42 - 40 \\
+  \end{gather*}
+  De intentie is enkel een elegante schrijfwijze te hanteren die makkelijk en intuïtief leest. Zo zou een college analyse onverdraaglijk zijn als dergelijke verkortingen niet zouden worden gebruikt.% T: Deze zin is om Engelbert op zijn plaats en zetten en is niet nodig.
+  Als we bovenstaande formules uitschrijven krijgen we:
+  \begin{gather*}
+    6 = 2 \cdot 3 \land 2 \cdot 3 > 2 \land 2 \ge 42 - 40 \\% T: idem
     f(x) = y \land y \in Y
-  \end{eqnarray}
-  \item Bij het definiëren van verzamelingen gebruiken we vaak de volgende voor de hand liggende notatie: $$ \{a \in A \mid \phi \} $$ \dots i.p.v.~het omslachtigere: $$ \{a \mid a \in A \mid \phi\} $$
+  \end{gather*}
+  \item Bij het definiëren van verzamelingen gebruiken we vaak de volgende voor de hand liggende notatie: $$ \{a \in A \mid \phi \} $$ \dots i.p.v.~het omslachtigere: $$ \{a \mid a \in A \mid \phi\} $$% T: Deze is echt overbodig, dan kan de itemize ook weg.
 \end{itemize}
+
+% vim: syn=latex spell spl=nl cole=1 cocu=nv
