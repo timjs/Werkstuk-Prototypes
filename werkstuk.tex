@@ -70,7 +70,7 @@
   {language=proto,
    basicstyle=\small\ttfamily,
    keywordstyle=\bfseries,
-   emphstyle=\scshape,
+   emphstyle=\bfseries,
    numbers=left,
    numberstyle=\scriptsize\color{gray},
    numbersep=0.5em,
@@ -90,9 +90,9 @@
   {\newcommand{#1}
      {\text{\small\ttfamily\bfseries #2}}}
 \newcommand{\newconstant}[2]
-  %{\newkeyword{#1}{#2}}
-  {\newcommand{#1}
-     {\text{\small\ttfamily\scshape #2}}}
+  {\newkeyword{#1}{#2}}
+  %{\newcommand{#1}
+     %{\text{\small\ttfamily\scshape #2}}}
 \newcommand{\newnonterminal}[2]
   {\newcommand{#1}
     {\textit{#2}}}
