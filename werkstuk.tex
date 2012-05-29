@@ -293,11 +293,12 @@
     {}%
     {. \theCodeFragmentCaption}%
   }~%
+  \\[-1.6pc]%
 }
 \newcommand{\codeLines}[1]{%
   \par
   \vspace{4pt}%
-  \begin{tabular}{@{~~}r@{~~}l@{~~}l@{}}%
+  \begin{tabular}{@{~~}r@{~}!{\color{black!70} \vrule width 1.5pt}@{~~}l@{~~}l@{}}%
     #1%
   \end{tabular}%
   \vspace{4pt}%
@@ -311,7 +312,7 @@
   \ifthenelse{\equal{#3}{}}{}{\lineComment{#3}} \\[-1pt]%
 }
 \newcommand{\lineNum}[1]{%
-  {\color{gray}\scriptsize #1}%
+  {\color{black!50}\scriptsize #1}%
 }
 \newcommand{\lineComment}[1]{%
   \textit{--- \small #1}%
