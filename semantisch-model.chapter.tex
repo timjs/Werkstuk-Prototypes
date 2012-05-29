@@ -2,61 +2,75 @@
 
 \section{Bindingen}\label{sec:bindinge}
 
-Aan de basis van ons model ligt het begrip van \emph{bindingen}. Een binding si een functie die aan het syntactisch object \Id\ een \emph{waarde} toekent. De verzameling van alle bindingen definiëren we als 
-  \begin{equation*}
-  \sB \DEF \FiniteFunctions{\sV}{\Id}
-  \end{equation*}
-Wat de waardes $\sV$ precies zijn komen we later uitgebreid op terug in \ref{sec:waardes}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\sN$ deel uitmaken van $\sV$
+% [Tim:] Onderstaande twee paragrafen heb ik gewijzigd zodat de termen "binding" en  "binding groep" zo gebruikt worden zoals wij dat afgesproken hebben.
+Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id\ komt). Bindingen zijn bijvoorbeeld van belang om de gedefiniëerde variabelen binnen een scope vast te leggen, of de attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to \sV$. De verzameling van alle groepen van bindingen definiëren we dus als
+% [Tim:] Hier staat dus niet meer dat gekke pijltje van \FiniteFunctions, want nu vermelden we in [Notatie en Terminologie] dat alle functies eindig zullen zijn.
+$$ \sB \DEF \sV^\Id $$
+% [Tim:] wat denk jij: "sectie 4.4" of "onderdeel 4.4" of gewoon "4.4" ??
+We komen later terug op wat de waarden $\sV$ precies zijn in sectie \ref{sec:waarden}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\sN$ deel uitmaken van $\sV$.
 
-Een binding $b\in\sB$ is in eerste instantie leeg. Dit geven we aan met $\emptyset$. We willen natuurlijk \Id's kunnen koppelen aan waardes. Hiervoor voeren we een notatie in om $b$ te \emph{updaten}. Om bijvoorbeeld de waarde $5$ toe te kennen aan de \Id\ $x$ zoals in voorbeeld \ref{exa:todo} schrijven we
-\begin{equation*}
-  b[x \mapsto 5]
-\end{equation*}
-zodat wanneer we $x$ ``opvragen'' in $b$ we weten dat
-\begin{equation*}
-  b(x) = 5.
-\end{equation*}
-Wanneer we meerdere \Id's willen koppelen aan waardes, bijvoorbeeld $y$ aan $7$ en $z$ aan $9$ kan dat met bovenstaande notatie als volgt
-\begin{equation*}
-  \big(b[y \mapsto 7]\big)[z \mapsto 9].
-\end{equation*}
-Wat we afkorten tot
-\begin{equation*}
-  b[y \mapsto 7, z \mapsto 9].
-\end{equation*}
+% [Tim:] Ik geloof niet dat we in [Semantisch Model] uitvoerig in moeten gaan op het updaten van functies, aangezien dat een syntactische aangelegenheid is, die we het best kunnen beschrijving in [Notatie en Terminologie], en hier slechts even noemen.
 
-Bindingen komen veelvuldig terug in ons model. Bij scopes zullen we lokale \emph{variabelen} koppelen aan een waarde. Bij objecten zijn het de \emph{attributen} die een waarde krijgen toegekend. Bij scopes moeten we ook rekening houden met eventuele bindingen in de scope buiten de huidige. Eenzelfde opzet geld voor objecten. Door prototype overerving moeten we op zoek naar een attribuut in het prototype van het huidige object, wanneer het niet gedefinieerd is in het object zelf.
+%Een groep bindingen $b \in \sB$ is in eerste instantie leeg. Dit geven we aan met $\emptyset$. We willen natuurlijk \Id's kunnen koppelen aan waardes. Hiervoor voeren we een notatie in om $b$ te \emph{updaten}. Om bijvoorbeeld de waarde $5$ toe te kennen aan de \Id\ $x$ zoals in voorbeeld \ref{exa:todo} schrijven we
+%\begin{equation*}
+%  b[x \mapsto 5]
+%\end{equation*}
+%zodat wanneer we $x$ ``opvragen'' in $b$ we weten dat
+%\begin{equation*}
+%  b(x) = 5.
+%\end{equation*}
+%Wanneer we meerdere \Id's willen koppelen aan waardes, bijvoorbeeld $y$ aan $7$ en $z$ aan $9$ kan dat met bovenstaande notatie als volgt
+%\begin{equation*}
+%  \big(b[y \mapsto 7]\big)[z \mapsto 9].
+%\end{equation*}
+%Wat we afkorten tot
+%\begin{equation*}
+%  b[y \mapsto 7, z \mapsto 9].
+%\end{equation*}
+
+% [Tim:] slechts de tekst wat gereviseerd (passieve vormen, woordherhaling...)
+Bindingen komen veelvuldig terug in ons model. In scopes worden \emph{variabelen} gedeclareerd en aan waarden gekoppeld. Bij objecten zijn het de \emph{attributen} die waarden krijgen toegekend.
+% [Tim:] ik zou deze regel schappen
+% Bij scopes moeten we ook rekening houden met eventuele bindingen in de scope buiten de huidige. Eenzelfde opzet geld voor objecten. Door prototype overerving moeten we op zoek naar een attribuut in het prototype van het huidige object, wanneer het niet gedefinieerd is in het object zelf.
 
 \section{Scope en omliggende scopes}
 
-Zoals in \ref{sec:voorbeelden} informeel is behandeld, zijn scopes goed te representeren met een boomstructuur. Stel we evalueren een variabele $x$ in scope $s$:
-\begin{lstlisting}
-x                # De scope waar we ons in bevinden noemen we $s$.
-\end{lstlisting}
-Dan zoeken we eerst $x$ op in de binding $b_s$ behorende bij $s$
-\begin{equation}
+% [Tim:] ik wil graag "procedureel als volgt opvatten" oid zeggen, om aan te geven dat zo'n 'procedure' niet het enige perspectief is die men kan nemen.
+%Zoals in \ref{sec:voorbeelden} informeel is behandeld, zijn scopes goed te representeren met een boomstructuur. Stel we evalueren een variabele $x$ in scope $s$:
+In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. De evaluatie van een zekere variabele \I{x} in scope $s$ zou dan procedureel als volgt kunnen worden uitgelegd:
+
+\newCodeFragment
+\codeLines{
+  \codeLine{\I{x}}[We bevinden ons in een zekere scope $s$.]
+}
+
+Dan zoeken we \I{x} eerst op in de bindingen groep $b_s$, behorende bij scope $s$.
+$$
   b_s(x).
-\end{equation}
+$$
 Zoals ook te zien in \ref{exa:todo} hebben we twee mogelijkheden:
+
 \begin{enumerate}
-  \item $x$ is gedefinieerd in $b_s$ en we gebruiken de gevonden waarde.
-  \item $x$ is niet gedefinieerd in $b_s$ en we moeten $x$ opzoeken in de omliggende scope.
+  \item \I{x} is gedefinieerd in $b_s$ en we gebruiken de gevonden waarde.
+  \item \I{x} is niet gedefinieerd in $b_s$ en we moeten \I{x} opzoeken in de omliggende scope.
 \end{enumerate}
-We moeten dus niet alleen de bindingen van de scope zelf bijhouden, maar ook een verwijzing naar zijn \emph{omgevende scope}. Een scope $s$ is dan een paar $(b,\pi)$ met $b$ de bindingen ban de eigen scope en $\pi$ een \emph{verwijzing} naar de omgevende scope (of \emph{parent} scope).
 
-We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen van de omgevende scope. Stel dat we het programma in voorbeeld~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert in $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren in $4$. De scope $s_f$ van functie $f$ heeft een eigen binding $b_f$ die leeg is, $x$ is namelijk niet gedeclareerd als \LOCAL. De omgevende scope $\pi_f$ van functie $f$ verwijst naar scope $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
+We moeten dus niet alleen de bindingen van de scope zelf bijhouden, maar ook een verwijzing naar zijn \emph{omgevende scope}. Een scope $s$ is definiëren we dus als een paar $(b,\pi)$, met in $b$ de bindingen en $\pi$ een \emph{verwijzing} naar de omgevende scope (ook wel \emph{parent}, of \emph{outer} scope).
 
-\begin{lstlisting}[caption=Lexicale scope,label=exa:lexical]
-# Buitenste scope genaamd $s$
-local x
-x = 1
-local f
-f = function () {            # Introduceert nieuwe scope $s_f\label{exa:lexical:def}$.
-    x = 2 * x
-}                            # Einde nieuwe scope
-f()                          # $\rightarrow x = 2\label{exa:lexical:eerste}$
-f()                          # $\rightarrow x = 4\label{exa:lexical:tweede}$
-\end{lstlisting}
+We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omgevende scope. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. De scope $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een \LOCAL variabele. De omgevende scope $\pi_f$ van functie $f$ verwijst naar scope $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
+
+\newCodeFragment[exa:lexical][Lexicale scope: opslaan en vinden van variabelen]
+\codeFragmentCaption
+\codeLines{
+  \codeLine{\VAR \I{x}}
+  \codeLine{\I{x} = 1}
+  \codeLine{\VAR \I{f}}
+  \codeLine[exa:lexical:def]{\I{f} = \FUN()}[Introductie nieuwe scope]
+  \codeLine{\IN \I{x} = 2 \times \I{x}}
+  \codeLine{}[Einde nieuwe scope]
+  \codeLine[exa:lexical:eerste]{\I{f}()}[$\I{x} = 2$]
+  \codeLine[exa:lexical:tweede]{\I{f}()}[$\I{x} = 4$]
+}
 
 Stel dat we geen verwijzing in de scope opslaan maar een kopie van de omgevende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is scope $s_f$ een paar $(b_f,p_f)$ met $b_f,p_f\in\sB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam $f$ en de waarde $1$ onder naam $x$. Wanneer we $x$ aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omgevende scope $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
 
@@ -79,6 +93,7 @@ In §\ref{sec:prototypen} hebben we een beeld gekregen van prototype overerving.
 Hierbij zijn $\sB$ weer de bindingen uit §\ref{sec:bindingen} en $\sL_o$ zijn locaties van objecten. We maken dus een strikte scheiding tussen locaties van scopes en locaties van objecten.
 
 \section{Waarden: referenties en primitieven}
+\label{sec:waarden}
 
 [Ze worden op dezelfde manier behandeld: objecten by-reference, dus de references zelf by-value, net als primitieven -- vandaar dat ze in dezelfde verzameling waarden zitten.]
 
