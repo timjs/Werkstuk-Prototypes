@@ -114,7 +114,7 @@ Telkens wanneer een functie wordt aangeroepen, wordt een \emph{nieuwe scope} aan
 
 \begin{lstlisting}[caption=Een countervoorbeeld,label=exa:counter]
 local f
-f = function(n) returns g
+f = function($n$) returns g
     local g
     g = function() returns n
         n = n + 1
