@@ -51,7 +51,7 @@ Variabelen kunnen na declaratie waarden aannemen. Onze taal bevat waarden van dr
 \codeLines{
   \codeLine{\VAR \I{x}}[declaratie zonder type indicatie]
   \codeLine{\I{x} = 5}[type ``natuurlijk getal'']
-  \codeLine{\I{x} = \FUN()\{\dots\}}[type ``functie'']
+  \codeLine{\I{x} = \FUN(\;)\{\dots\}}[type ``functie'']
   \codeLine{\I{x} \OBJECT}[type ``object'', deze rare initiälisatie heeft een reden]
 }
 
@@ -69,7 +69,7 @@ Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele
   \codeLine{\I{x} = 42}
   \codeLine{}
   \codeLine{\VAR \I{f}}
-  \codeLine{\I{f} = \FUN()}
+  \codeLine{\I{f} = \FUN(\;)}
   \codeLine{\IN \dots \I{x} \dots}[waar is deze \I{x} gedefiniëerd?]
 }
 
@@ -80,7 +80,7 @@ Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele
   \codeLine{\I{x} = 42}
   \codeLine{}
   \codeLine{\VAR \I{f}}
-  \codeLine{\I{f} = \FUN()}
+  \codeLine{\I{f} = \FUN(\;)}
   \codeLine{\IN \VAR \I{x}}[dit is de gezochte definitie van \I{x}]
   \codeLine{\IN \I{x} = 43}
   \codeLine{\IN \dots \I{x} \dots}[waar is deze \I{x} gedefiniëerd?]
@@ -88,90 +88,24 @@ Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele
 
 Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de scopes. Het moge duidelijk zijn dat als men ``naar buiten toe'' zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
 
-\subsection{Object oriëntatie en prototype overerving}
+Nieuwe scopes ontstaan in onze taal enkel (en altijd) bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er ``niks gebeurt'' als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer je een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuwe scope aangemaakt, met als \emph{omliggende scope} de scope waarin de functie origineel is gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment \ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe scopes worden aangemaakt bij de definitie van functies, zou de uitvoer van $\I{d}(\;)$ 8 zijn i.p.v.~43.
 
-De taal is object georienteerd.
-
-\newCodeFragment
-\codeLines{
-  \codeLine{\VAR \I{o}}
-  \codeLine{\I{o} \OBJECT}
-  \codeLine{}                            [$\I{o}.\I{f}$ is niet gedefinieerd]
-  \codeLine{\I{o}.\I{f} = \FUN()\,\{\;\SKIP\;\}} [toekenning waarde aan object attribuut]
-  \codeLine{}                            [$\I{o}.\I{f}$ is wel gedefinieerd]
-  \codeLine{\I{o}.\I{n} = 5}
-}
-
-Van de drie typen, zijn getallen en functies \emph{primitief}, en objecten \emph{niet primitief}. Primitieve waarde worden zelf gekopieerd (\emph{by-value}), maar van niet-primitieve waarden worden \emph{referenties} gekopieerd (\emph{by-reference}).
-
-\newCodeFragment
-\codeLines{
-  \codeLine{\VAR \I{x};\; \I{x} = 6}
-  \codeLine{\VAR \I{y};\; \I{y} = \I{x}}             [$\I{x} = 6$ en $\I{y} = 6$]
-  \codeLine{\I{y} = 7}                       [$\I{x} = 6$ en $\I{y} = 7$]
-  \codeLine{}
-  \codeLine{\VAR \I{p};\; \I{p}.\I{n} = 6}
-  \codeLine{\VAR \I{q};\; \I{q} = \I{p}}             [$\I{p}$ en $\I{q}$ verwijzen nu naar hetzelfde object]
-  \codeLine{}                            [$\I{p}.\I{n} = 6$ en $\I{q}.\I{n} = 6$]
-  \codeLine{\I{q}.\I{n} = 7}                     [$\I{p}.\I{n} = 7$ en $\I{q}.\I{n} = 7$]
-}
-
-\subsection{Lexical scope}
-
-Als in een zekere scope een variabele wordt gereferenceerd (nog) niet is gedefinieerd, wordt in omliggende scopes ``gezocht'' naar een definitie van deze variabele.
-
-\newCodeFragment[exa:lexical]
-
-\codeLines{
-  \codeLine{\VAR \I{x}}
-  \codeLine{\VAR \I{f};\; \I{f} = \FUN(i)}
-  \codeLine{\IN \I{x} = \I{i} + 5}
-  \codeLine{}
-  \codeLine{\I{f}(5)}[$\I{x} = 10$]
-}
-
-..maar wanneer deze wel in de huidige scope bestaat, worden omliggende scopes ``met rust gelaten''.
-
-\newCodeFragment
-
-\codeLines{
-  \codeLine{\VAR \I{x}}
-  \codeLine{\VAR \I{f}}
-  \codeLine{\I{f} = \FUN(i)}
-  \codeLine{\IN \VAR \I{x}}
-  \codeLine{\IN \I{x} = \I{i} + 5}
-  \codeLine{}
-  \codeLine{\I{f}(5)}[$\I{x}$ heeft nog geen waarde]
-}
-
-Telkens wanneer een functie wordt aangeroepen, wordt een \emph{nieuwe scope} aangemaakt voor lokale variabelen. Variabelen van deze nieuwe scope kunnen later nog gereferenceerd worden, doordat bijvoorbeeld de functie een lokale functie teruggeeft.
-
-\newCodeFragment
-
+\newCodeFragment[exa:counting][Het belang van creatie van scopes \emph{bij functie applicatie}]
+\codeFragmentCaption
 \codeLines{
   \codeLine{\VAR \I{f}}
   \codeLine{\I{f} = \FUN(n) \RETURNS \I{g}}
   \codeLine{\IN \VAR \I{g}}
-  \codeLine{\IN \I{g} = \FUN() \RETURNS \I{n}}
+  \codeLine{\IN \I{g} = \FUN(\;) \RETURNS \I{n}}
   \codeLine{\IN \IN \I{n} = \I{n} + 1}
   \codeLine{}
   \codeLine{\VAR \I{c}}
-  \codeLine{\I{c} = \I{f}(5)}[$\I{c}() \rightarrow 6, 7, 8, \dots$]
+  \codeLine{\I{c} = \I{f}(5)}
+  \codeLine{\I{c}()}[de eerste aanroep $\I{c}(\;)$ levert eerst 6 op\dots]
+  \codeLine{\I{c}()}[de tweede aanroep $\I{c}(\;)$ levert eerst 7 op\dots]
+  \codeLine{}[]
+  \codeLine{\I{d} = \I{f}(42)}[$\I{d}(\;)$: 43, 44, 45, 46, \dots]
 }
-
-\begin{lstlisting}[caption=Een countervoorbeeld,label=exa:counter]
-local f
-f = function($n$) returns g
-    local g
-    g = function() returns n
-        n = n + 1
-
-local c
-c = f(5)
-c()                          # $\rightarrow 6, 7, 8, \dots$
-\end{lstlisting}
-
-\fbox{maar dan wat beter geschreven, etc...}
 
 \subsection{Prototype overerving}
 
@@ -323,7 +257,7 @@ Bovenstaand voorbeeld maakt dit duidelijk. Voorbeelden van elementen uit $\Num$ 
 \emph{Identifiers}, die gebruikt worden als variabel-namen,% T: namen voor variabelen en attributen
 zijn op eenzelfde manier als volgt gedefiniëerd:
 \begin{align*}
-  \Id \GrammarDef (a \mid b \mid c \mid d \mid \dots)^+
+  \Id \GrammarDef (a \mid b \mid c \mid \dots \mid A \mid B \mid C \mid \dots)^+
 \end{align*}
 Hierbij moet je je natuurlijk% T: moet men zich
 voorstellen dat alle letters uit het alfabet in de grammaticaregel staan op de voordehandliggende% T: voor de hand liggende
