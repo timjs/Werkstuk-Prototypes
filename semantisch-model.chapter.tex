@@ -2,14 +2,20 @@
 
 \section{Bindingen}\label{sec:bindinge}
 
-% [Tim:] Onderstaande twee paragrafen heb ik gewijzigd zodat de termen "binding" en  "binding groep" zo gebruikt worden zoals wij dat afgesproken hebben.
-Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id\ komt). Bindingen zijn bijvoorbeeld van belang om de gedefiniëerde variabelen binnen een scope vast te leggen, of de attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to \VV$. De verzameling van alle groepen van bindingen definiëren we dus als
-% [Tim:] Hier staat dus niet meer dat gekke pijltje van \FiniteFunctions, want nu vermelden we in [Notatie en Terminologie] dat alle functies eindig zullen zijn.
-$$ \BB \DEF \VV^\Id $$
-% [Tim:] wat denk jij: "sectie 4.4" of "onderdeel 4.4" of gewoon "4.4" ??
-We komen later terug op wat de waarden $\VV$ precies zijn in sectie \ref{sec:waarden}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\NN$ deel uitmaken van $\VV$.
+% K: Onderstaande twee paragrafen heb ik gewijzigd zodat de termen "binding" en  "binding groep" zo gebruikt worden zoals wij dat afgesproken hebben.
+% T: check!
+Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id). Bindingen zijn bijvoorbeeld van belang om de gedefiniëerd variabelen binnen een scope vast te leggen, of de attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to \VV$. De verzameling van alle groepen van bindingen definiëren we dus als
+% K: Hier staat dus niet meer dat gekke pijltje van \FiniteFunctions, want nu vermelden we in [Notatie en Terminologie] dat alle functies eindig zullen zijn.
+% T: prima
+\begin{equation*}
+  \BB \DEF \VV^\Id
+\end{equation*}
+% K: wat denk jij: "sectie 4.4" of "onderdeel 4.4" of gewoon "4.4" ??
+% T: Ik heb in de rest van de tekst "§" gebruikt, anders het liefst "sectie". Zet er wel een ~ tussen ipv een spatie, dan weten we zeker dat die niet afgebroken wordt. Heb er nu § van gemaakt.
+We komen later terug op wat de waarden $\VV$ precies zijn in §\ref{sec:waarden}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\NN$ deel uitmaken van $\VV$.
 
-% [Tim:] Ik geloof niet dat we in [Semantisch Model] uitvoerig in moeten gaan op het updaten van functies, aangezien dat een syntactische aangelegenheid is, die we het best kunnen beschrijving in [Notatie en Terminologie], en hier slechts even noemen.
+% K: Ik geloof niet dat we in [Semantisch Model] uitvoerig in moeten gaan op het updaten van functies, aangezien dat een syntactische aangelegenheid is, die we het best kunnen beschrijving in [Notatie en Terminologie], en hier slechts even noemen.
+% T: Dan moeten we dit verplaatsen naar boven.
 
 %Een groep bindingen $b \in \BB$ is in eerste instantie leeg. Dit geven we aan met $\emptyset$. We willen natuurlijk \Id's kunnen koppelen aan waardes. Hiervoor voeren we een notatie in om $b$ te \emph{updaten}. Om bijvoorbeeld de waarde $5$ toe te kennen aan de \Id\ $x$ zoals in voorbeeld \ref{exa:todo} schrijven we
 %\begin{equation*}
@@ -28,27 +34,33 @@ We komen later terug op wat de waarden $\VV$ precies zijn in sectie \ref{sec:waa
 %  b[y \mapsto 7, z \mapsto 9].
 %\end{equation*}
 
-% [Tim:] slechts de tekst wat gereviseerd (passieve vormen, woordherhaling...)
+% K: slechts de tekst wat gereviseerd (passieve vormen, woordherhaling...)
+% T: Ik ben over het algemeen geen fan van passieve vormen, maar in dit geval is het netjes zo.
 Bindingen komen veelvuldig terug in ons model. In scopes worden \emph{variabelen} gedeclareerd en aan waarden gekoppeld. Bij objecten zijn het de \emph{attributen} die waarden krijgen toegekend.
-% [Tim:] ik zou deze regel schappen
+% K: ik zou deze regel schappen
+% T: Dit kan inderdaad ook later.
 % Bij scopes moeten we ook rekening houden met eventuele bindingen in de scope buiten de huidige. Eenzelfde opzet geld voor objecten. Door prototype overerving moeten we op zoek naar een attribuut in het prototype van het huidige object, wanneer het niet gedefinieerd is in het object zelf.
 
 \section{Scope en omliggende scopes}
 
-% [Tim:] ik wil graag "procedureel als volgt opvatten" oid zeggen, om aan te geven dat zo'n 'procedure' niet het enige perspectief is die men kan nemen.
+% K: ik wil graag "procedureel als volgt opvatten" oid zeggen, om aan te geven dat zo'n 'procedure' niet het enige perspectief is die men kan nemen.
 %Zoals in \ref{sec:voorbeelden} informeel is behandeld, zijn scopes goed te representeren met een boomstructuur. Stel we evalueren een variabele $x$ in scope $s$:
-In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. De evaluatie van een zekere variabele \I{x} in scope $s$ zou dan procedureel als volgt kunnen worden uitgelegd:
+% T: Prima, maar deze wil ik wel graag actief "zou kunnen worden uitgelegd" zijn gewoonweg teveel werkworden in een zin.
+%In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. De evaluatie van een zekere variabele \I{x} in scope $s$ zou dan procedureel als volgt kunnen worden uitgelegd:
+In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. Stel we evalueren een variabele \I{x} in scope $s$:
 
 \newCodeFragment
 \codeLines{
   \codeLine{\I{x}}[We bevinden ons in een zekere scope $s$.]
 }
 
-Dan zoeken we \I{x} eerst op in de bindingen groep $b_s$, behorende bij scope $s$.
-$$
+dan kunnen we dit als volgt uitleggen. Eerst zoeken we \I{x} op in de bindingen groep $b_s$, behorende bij scope $s$.
+\begin{equation*}
   b_s(x).
-$$
+\end{equation*}
 Zoals ook te zien in \ref{exa:todo} hebben we twee mogelijkheden:
+
+% T: Heb je al naar de rest gekeken?
 
 \begin{enumerate}
   \item \I{x} is gedefinieerd in $b_s$ en we gebruiken de gevonden waarde.
