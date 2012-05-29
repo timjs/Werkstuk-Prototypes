@@ -30,11 +30,9 @@ Bindingen komen veelvuldig terug in ons model. Bij scopes zullen we lokale \emph
 \section{Scope en omliggende scopes}
 
 Zoals in \ref{sec:voorbeelden} informeel is behandeld, zijn scopes goed te representeren met een boomstructuur. Stel we evalueren een variabele $x$ in scope $s$:
-
 \begin{lstlisting}
 x                # De scope waar we ons in bevinden noemen we $s$.
 \end{lstlisting}
-
 Dan zoeken we eerst $x$ op in de binding $b_s$ behorende bij $s$
 \begin{equation}
   b_s(x).
@@ -64,7 +62,7 @@ Stel dat we geen verwijzing in de scope opslaan maar een kopie van de omgevende 
 
 Een scope $s$ is dus een element uit de verzameling
 \begin{equation*}
-  \sS \DEF \sB \times (\sL_s \cup \{\BOT\}).
+  \sS \DEF \sB \times (\sL_s \cup \{\nil\}).
 \end{equation*}
 Hierbij zijn $\sB$ de bindingen zoals besproken in §\ref{sec:bindingen}. $\sL_s$ zijn locaties van scopes. Op het begrip locatie komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort \enquote{ultieme} omgevende scope is. Het kan dus zijn dat een scope geen parent heeft. In dat geval zetten we
 \begin{equation*}
@@ -73,6 +71,12 @@ Hierbij zijn $\sB$ de bindingen zoals besproken in §\ref{sec:bindingen}. $\sL_s
 We zeggen dat $\pi$ \emph{niet bestaat} of \emph{niks} is. Vandaar dat we het symbool $\nil$ toevoegen aan $\sL_s$.
 
 \section{Objecten en prototype overerving}
+
+In §\ref{sec:prototypen} hebben we een beeld gekregen van prototype overerving. Net als scopes en omgevende scopes, blijken objecten en prototypen te modelleren met een boomstructuur. Geheel in lijn met scopes is een object een paar met daarin zijn eigen bindingen $b$ en een verwijzing naar zijn prototype $\pi$. Natuurlijk kan een object ook geen prototype hebben. Dit geven we weer aan met $\nil$. Een object $o$ is dan een element uit
+\begin{equation*}
+  \sO \DEF \sB \times (\sL \cup \{\nil\}).
+\end{equation*}
+Hierbij zijn $\sB$ weer de bindingen uit §\ref{sec:bindingen} en $\sL_o$ zijn locaties van objecten. We maken dus een strikte scheiding tussen locaties van scopes en locaties van objecten.
 
 \section{Waarden: referenties en primitieven}
 
@@ -92,15 +96,15 @@ We zeggen dat $\pi$ \emph{niet bestaat} of \emph{niks} is. Vandaar dat we het sy
   \tag*{locaties van scopes en objecten}
   \sL &\DEF \{ (n, n) \in \sN^2 \} \\
   \tag*{functies}
-  \sF &\DEF \Stm \times \Id_{\langle\rangle} \times (\Id \cup \{\BOT\}) \times \sL \\
+  \sF &\DEF \Stm \times \Id_{\langle\rangle} \times (\Id \cup \{\nil\}) \times \sL \\
   \tag*{waarden}
   \sV &\DEF \sL \cup \sN \cup \sF \\
   \tag*{binding-verzamelingen}
   \sB &\DEF \FiniteFunctions{\sV}{\Id} \\
   \tag*{objecten}
-  \sO &\DEF \sB \times (\sL \cup \{\BOT\}) \\
+  \sO &\DEF \sB \times (\sL \cup \{\nil\}) \\
   \tag*{scopes}
-  \sS &\DEF \sB \times (\sL \cup \{\BOT\}) \\
+  \sS &\DEF \sB \times (\sL \cup \{\nil\}) \\
 \end{align*}
 
 % vim: spell spl=nl cole=2
