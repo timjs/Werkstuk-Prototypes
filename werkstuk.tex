@@ -9,10 +9,10 @@
 \usepackage{amssymb}
 
 %\usepackage{pxfonts}
-%\usepackage{millennial}
-\usepackage{fouriernc}
-\usepackage{tgschola}
-\usepackage{tgadventor}
+\usepackage{millennial}
+%\usepackage{fouriernc}
+%\usepackage{tgschola}
+%\usepackage{tgadventor}
 %\usepackage{newcent}
 %\usepackage[utopia]{mathdesign}
 
@@ -30,7 +30,7 @@
 \usepackage[font=small,it]{caption}
 \usepackage{environ}
 \usepackage{setspace}
-\doublespacing
+%\doublespacing
 
 \usepackage{bussproofs}
   \def\extraVskip{4pt} % Iets meer verticale ruimte
@@ -87,9 +87,10 @@
 \renewcommand{\syntleft}{\normalfont\itshape}
 \renewcommand{\syntright}{}
 
+\newcommand{\I}[1]{\text{\upshape\small\ttfamily #1}}
 \newcommand\newkeyword[2]
   {\newcommand{#1}
-     {\raisebox{.3pt}{\text{\scalebox{.95}{\small\ttfamily\bfseries #2}}}}}
+     {\text{\small\ttfamily\bfseries #2}}}
 \newcommand\newconstant[2]{\newkeyword{#1}{#2}}
 \newcommand{\newnonterminal}[2]
   {\newcommand{#1}
@@ -154,8 +155,6 @@
 \newcommand{\GrammarOpt}[1]{[#1]\;}
 
 \def\IN{\quad}
-
-\def\I{\textit}
 
 \newcommand{\<}
   {\ensuremath{\langle}}
@@ -270,6 +269,61 @@
 
 \title{Een natuurlijke semantiek voor prototype oververing en lexicaal bereik}
 \author{Kelley van Evert \& Tim Steenvoorden}
+
+% Code fragments
+% Usage:
+%   \newCodeFragment[fraglabel][caption]
+%   \codeFragmentCaption
+%   \codeLines{
+%     \codeLine           {\VAR f}
+%     \codeLine[linelabel]{\VAR f}
+%     \codeLine           {\VAR f}[comment]
+%     \codeLine[linelabel]{\VAR f}[comment]
+%   }
+%   \codeLines{
+%     \codeLine{\VAR f}
+%   }
+%   \ref{fraglabel} -- e.g. "3.1" for the first code fragment in chapter 3
+%   \ref{linelabel} -- e.g. "6" for the sixth line in the code fragment
+\newcounter{ncode}[chapter]
+\renewcommand{\thencode}{\thechapter.\arabic{ncode}}
+\newcommand{\theCodeFragmentCaption}{}
+\newcounter{codeline}[ncode]
+\newcommandx{\newCodeFragment}[2][1=,2=]{% args: [1] label; [2] title = caption
+  \refstepcounter{ncode}%
+  \ifthenelse{\equal{#1}{}}{}{\label{#1}}%
+  \renewcommand{\theCodeFragmentCaption}{#2}%
+}
+\newcommand{\codeFragmentCaption}{%
+  ~\centerline{\small%
+    \textit{Code fragment \thencode}%
+    \ifthenelse{\equal{\theCodeFragmentCaption}{}}%
+    {}%
+    {. \theCodeFragmentCaption}%
+  }~%
+}
+\newcommand{\codeLines}[1]{%
+  \par
+  \vspace{4pt}%
+  \begin{tabular}{@{~~}r@{~~}l@{~~}l@{}}%
+    #1%
+  \end{tabular}%
+  \vspace{4pt}%
+  \par
+}
+\newcommandx{\codeLine}[3][1=,3=]{% args: [1] label; [2] code (math); [3] comment
+  \refstepcounter{codeline}%
+  \ifthenelse{\equal{#1}{}}{}{\label{#1}}%
+  \lineNum{\thecodeline} &%
+  $ #2 $ &%
+  \ifthenelse{\equal{#3}{}}{}{\lineComment{#3}} \\[-1pt]%
+}
+\newcommand{\lineNum}[1]{%
+  {\color{gray}\scriptsize #1}%
+}
+\newcommand{\lineComment}[1]{%
+  \textit{--- \small #1}%
+}
 
 \begin{document}
 

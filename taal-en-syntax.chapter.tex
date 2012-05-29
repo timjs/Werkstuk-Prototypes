@@ -5,17 +5,17 @@ In dit hoofdstuk zullen we de taal presenteren waarvoor we een natuurlijk taal c
 
 Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
 
-	\begin{CodeFragment}[Het Eerste Voorbeeld]\label{hev}
-		\Line{\VAR f}                      {variabelen moeten worden gedeclareerd}
-		\Line{f = \FUN(i) \RETURNS n}      {}
-		\Line{\IN \VAR n}                  {}
-		\Line{\IN n = 2 \times (i + 5)}    {}
-		\Line{}             {$x$ bestaat niet in deze scope}
-		\Line{\VAR x}                      {$x$ is ongedefinieerd (maar wel aanwezig)}
-		\Line{x = f(42)}                   {$x = 89$}
-	\end{CodeFragment}
-
-Bovenstaand code fragment is code fragment \ref{hev}.
+\newCodeFragment[hev][Het eerste voorbeeldprogramma]
+\codeFragmentCaption
+\codeLines{
+  \codeLine{\VAR \I{f}}[$\I{f}$ moet eerst worden gedefiniëerd]
+  \codeLine{\I{f} = \FUN(i) \RETURNS \I{n}}
+  \codeLine{\IN \VAR \I{n}}
+  \codeLine{\IN \I{n} = 2 \times (\I{i} + 5)}
+  \codeLine{}[$\I{x}$ bestaat niet in deze scope]
+  \codeLine{\VAR \I{x}}[$\I{x}$ is ongedefinieerd (maar wel aanwezig)]
+  \codeLine{\I{x} = \I{f}(42)}
+}
 
 De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
 
@@ -23,83 +23,93 @@ De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aa
 
 Een variabele moet gedeclareerd worden, en pas daarna kan er een waarde aan worden toegekend.
 
-	\begin{CodeFragment}
-		\Line{}                            {$x$ bestaat niet (in deze scope)}
-		\Line{\VAR x}                      {$x$ is ongedefinieerd (maar wel aanwezig)}
-		\Line{x = 5}                       {$x = 5$}
-	\end{CodeFragment}
+\newCodeFragment
+\codeLines{
+  \codeLine{}[$\I{x}$ bestaat niet (in deze scope)]
+  \codeLine{\VAR \I{x}}[$\I{x}$ is ongedefinieerd (maar wel aanwezig)]
+  \codeLine{\I{x} = 5}[$\I{x} = 5$]
+}
 
 Het concept van declaratie is juist in deze taal, gezien het lexicaal bereik van variabelen, heel belangrijk. Vergelijk het bovenstaande programma fragment bijvoorbeeld met de volgende situatie.
 
 Variabelen hebben geen vaste type. Er zijn drie typen waarden in de taal: getallen, functies en objecten.
 
-	\begin{CodeFragment}
-		\Line{\VAR x}                      {}
-		\Line{x = 5}                       {de waarde van $x$ is een getal}
-		\Line{x = \FUN()\,\{\;\SKIP\;\}}   {de waarde van $x$ is een functie}
-		\Line{x \OBJECT}                   {de waarde van x is een object}
-	\end{CodeFragment}
+\newCodeFragment
+\codeLines{
+  \codeLine{\VAR \I{x}}
+  \codeLine{\I{x} = 5}                       [de waarde van $\I{x}$ is een getal]
+  \codeLine{\I{x} = \FUN()\,\{\;\SKIP\;\}}   [de waarde van $\I{x}$ is een functie]
+  \codeLine{\I{x} \OBJECT}                   [de waarde van $\I{x}$ is een object]
+}
 
 De taal is object georienteerd.
 
-	\begin{CodeFragment}
-		\Line{\VAR o}                      {}
-		\Line{o \OBJECT}                   {}
-		\Line{}                            {o.f is niet gedefinieerd}
-		\Line{o.f = \FUN()\,\{\;\SKIP\;\}} {toekenning waarde aan object attribuut}
-		\Line{}                            {o.f is wel gedefinieerd}
-		\Line{o.n = 5}                     {}
-	\end{CodeFragment}
+\newCodeFragment
+\codeLines{
+  \codeLine{\VAR \I{o}}
+  \codeLine{\I{o} \OBJECT}
+  \codeLine{}                            [$\I{o}.\I{f}$ is niet gedefinieerd]
+  \codeLine{\I{o}.\I{f} = \FUN()\,\{\;\SKIP\;\}} [toekenning waarde aan object attribuut]
+  \codeLine{}                            [$\I{o}.\I{f}$ is wel gedefinieerd]
+  \codeLine{\I{o}.\I{n} = 5}
+}
 
 Van de drie typen, zijn getallen en functies \emph{primitief}, en objecten \emph{niet primitief}. Primitieve waarde worden zelf gekopieerd (\emph{by-value}), maar van niet-primitieve waarden worden \emph{referenties} gekopieerd (\emph{by-reference}).
 
-	\begin{CodeFragment}
-		\Line{\VAR x;\; x = 6}             {}
-		\Line{\VAR y;\; y = x}             {$x = 6$ en $y = 6$}
-		\Line{y = 7}                       {$x = 6$ en $y = 7$}
-		\Line{}                            {}
-		\Line{\VAR p;\; p.n = 6}           {}
-		\Line{\VAR q;\; q = p}             {$p$ en $q$ verwijzen nu naar hetzelfde object}
-		\Line{}                            {$p.n = 6$ en $q.n = 6$}
-		\Line{q.n = 7}                     {$p.n = 7$ en $q.n = 7$}
-	\end{CodeFragment}
+\newCodeFragment
+\codeLines{
+  \codeLine{\VAR \I{x};\; \I{x} = 6}
+  \codeLine{\VAR \I{y};\; \I{y} = \I{x}}             [$\I{x} = 6$ en $\I{y} = 6$]
+  \codeLine{\I{y} = 7}                       [$\I{x} = 6$ en $\I{y} = 7$]
+  \codeLine{}
+  \codeLine{\VAR \I{p};\; \I{p}.\I{n} = 6}
+  \codeLine{\VAR \I{q};\; \I{q} = \I{p}}             [$\I{p}$ en $\I{q}$ verwijzen nu naar hetzelfde object]
+  \codeLine{}                            [$\I{p}.\I{n} = 6$ en $\I{q}.\I{n} = 6$]
+  \codeLine{\I{q}.\I{n} = 7}                     [$\I{p}.\I{n} = 7$ en $\I{q}.\I{n} = 7$]
+}
 
 \subsection{Lexical scope}
 
 Als in een zekere scope een variabele wordt gereferenceerd (nog) niet is gedefinieerd, wordt in omliggende scopes ``gezocht'' naar een definitie van deze variabele.
 
-  \begin{CodeFragment}\label{exa:lexical}
-		\Line{\VAR x}                      {}
-		\Line{\VAR f;\; f = \FUN(i)}       {}
-		\Line{\IN x = i + 5}               {}
-		\Line{}                            {}
-		\Line{f(5)}                        {$x = 10$}
-	\end{CodeFragment}
+\newCodeFragment[exa:lexical]
+
+\codeLines{
+  \codeLine{\VAR \I{x}}
+  \codeLine{\VAR \I{f};\; \I{f} = \FUN(i)}
+  \codeLine{\IN \I{x} = \I{i} + 5}
+  \codeLine{}
+  \codeLine{\I{f}(5)}[$\I{x} = 10$]
+}
 
 ..maar wanneer deze wel in de huidige scope bestaat, worden omliggende scopes ``met rust gelaten''.
 
-	\begin{CodeFragment}
-		\Line{\VAR x}                      {}
-		\Line{\VAR f}                      {}
-		\Line{f = \FUN(i)}                 {}
-		\Line{\IN \VAR x}                  {}
-		\Line{\IN x = i + 5}               {}
-		\Line{}                            {}
-		\Line{f(5)}                        {$x$ heeft nog geen waarde}
-	\end{CodeFragment}
+\newCodeFragment
+
+\codeLines{
+  \codeLine{\VAR \I{x}}
+  \codeLine{\VAR \I{f}}
+  \codeLine{\I{f} = \FUN(i)}
+  \codeLine{\IN \VAR \I{x}}
+  \codeLine{\IN \I{x} = \I{i} + 5}
+  \codeLine{}
+  \codeLine{\I{f}(5)}[$\I{x}$ heeft nog geen waarde]
+}
 
 Telkens wanneer een functie wordt aangeroepen, wordt een \emph{nieuwe scope} aangemaakt voor lokale variabelen. Variabelen van deze nieuwe scope kunnen later nog gereferenceerd worden, doordat bijvoorbeeld de functie een lokale functie teruggeeft.
 
-	\begin{CodeFragment}
-		\Line{\VAR f}                      {}
-		\Line{f = \FUN(n) \RETURNS g}      {}
-		\Line{\IN \VAR g}                  {}
-		\Line{\IN g = \FUN() \RETURNS n}   {}
-		\Line{\IN \IN n = n + 1}           {}
-		\Line{}                            {}
-		\Line{\VAR c}                      {}
-		\Line{c = f(5)}                    {$c() \rightarrow 6, 7, 8, \dots$}
-	\end{CodeFragment}
+\newCodeFragment
+
+\codeLines{
+  \codeLine{\VAR \I{f}}
+  \codeLine{\I{f} = \FUN(n) \RETURNS \I{g}}
+  \codeLine{\IN \VAR \I{g}}
+  \codeLine{\IN \I{g} = \FUN() \RETURNS \I{n}}
+  \codeLine{\IN \IN \I{n} = \I{n} + 1}
+  \codeLine{}
+  \codeLine{\VAR \I{c}}
+  \codeLine{\I{c} = \I{f}(5)}[$\I{c}() \rightarrow 6, 7, 8, \dots$]
+}
 
 \begin{lstlisting}[caption=Een countervoorbeeld,label=exa:counter]
 local f
@@ -146,92 +156,123 @@ Technisch gezien werkt prototype overerving als volgt. Van elk object is een pro
 \KelleySaysNo{Ook hier is dus sprake van een boomstructuur.}
 
 Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen is \KelleySays{dus} dat de tweede geen onderscheid maakt tussen \emph{klassen} en \emph{instanties}. Een prototype heeft beide functies. Neem bijvoorbeeld het \KelleySaysNo{prototype} \KelleySays{object} @Deur@\KelleySays{, welke als prototype gebruikt dient te worden}:
-\begin{lstlisting}[name=deuren]
-local Deur
-Deur object
-\end{lstlisting}
+
+\newCodeFragment
+
+\codeLines{
+  \codeLine{\VAR \I{Deur}}
+  \codeLine{\I{Deur} \OBJECT}
+}
+
 We kunnen @Deur@ direct als instantie gebruiken door een attribuut te zetten:
-\begin{lstlisting}[name=deuren]
-Deur.open = 1
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\I{Deur}.\I{open} = 1}
+}
+
 Een @Deur@ is standaard open. Maar we kunnen @Deur@ ook als een \KelleySaysNo{klasse} \KelleySays{prototype} gebruiken\KelleySaysNo{ door ervan te erven}. In \KelleySays{de meeste huidige} prototype-gebaseerde talen heet dit \emph{klonen}:
-\begin{lstlisting}[name=deuren]
-local GeslotenDeur
-GeslotenDeur object
-GeslotenDeur clones Deur
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\VAR \I{GeslotenDeur}}
+  \codeLine{\I{GeslotenDeur} \OBJECT}
+	\codeLine{\I{GeslotenDeur} \CLONES \I{Deur}}
+}
+
 @GeslotenDeur@ heeft dan alle attributen van @Deur@:
-\begin{lstlisting}[name=deuren]
-GeslotenDeur.open            # => 1
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\I{GeslotenDeur}.\I{open}}[waarde $\to$ 1]
+}
+
 Maar een @GeslotenDeur@ moet natuurlijk gesloten zijn. We zetten zijn attribuut @open@ op @0@:
-\begin{lstlisting}[name=deuren]
-GeslotenDeur.open = 0
-\end{lstlisting}
+
+\codeLines{
+	\codeLine{\I{GeslotenDeur}.\I{open} = 0}
+}
+
 Een gewone @Deur@ is nog steeds open:
-\begin{lstlisting}[name=deuren]
-Deur.open                    # => 1
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\I{Deur}.\I{open}}[waarde $\to$ 1]
+}
+
 Attributen worden dus per object bewaard. Door @open@ op @0@ te zetten in @GeslotenDeur@ verandert er niks in @Deur@.
 
 We kunnen net zoveel klonen maken van een object als we willen en net zo diep klonen als we willen. Neem een @GlazenDeur@, dit is natuurlijk ook een @Deur@, maar wel doorzichtig:
-\begin{lstlisting}[name=deuren]
-local GlazenDeur
-GlazenDeur object
-GlazenDeur clones Deur
-GlazenDeur.doorzichtig = 1
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\VAR \I{GlazenDeur}}
+  \codeLine{\I{GlazenDeur} \OBJECT}
+  \codeLine{\I{GlazenDeur} \CLONES \I{Deur}}
+  \codeLine{\I{GlazenDeur}.\I{doorzichtig} = 1}
+}
+
 Een gewone @Deur@ heeft het attribuut @doorzichtig@ niet, en dus een @GeslotenDeur@ ook niet:
-\begin{lstlisting}[name=deuren]
-GeslotenDeur.doorzichtig     # => fout!
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\I{GeslotenDeur}.\I{doorzichtig}}[fout!]
+}
+
 Maar we kunnen besluiten dat deuren standaard niet doorzichtig zijn:
-\begin{lstlisting}[name=deuren]
-Deur.doorzichtig = 0
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\I{Deur}.\I{doorzichtig} = 0}
+}
+
 Zodat ook onze @GeslotenDeur@ niet doorzichtig is:
-\begin{lstlisting}[name=deuren]
-GeslotenDeur.doorzichtig     # => 0
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\I{GeslotenDeur}.\I{doorzichtig}}[waarde $\to$ 0]
+}
+
 Maar er geld nog steeds:
-\begin{lstlisting}[name=deuren]
-GlazenDeur.doorzichtig       # => 1
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\I{GlazenDeur}.\I{doorzichtig}}[waarde $\to$ 1]
+}
 
 We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde \enquote{blauwdrukken} moeten voldoen. We creëren objecten \enquote{on-the-fly}, alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self.
 
 Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn \KelleySaysNo{functies} \KelleySays{gewoonweg functie attributen} die gekoppeld zijn aan een specifiek object. Stel dat we een @GeslotenDeur@ graag open willen maken. We definiëren:
 
-\begin{lstlisting}[name=deuren]
-GeslotenDeur.ontsluit = function (poging)
-    if poging == this.code then
-        this.open = 1
-    else
-        this.open = 0
-\end{lstlisting}
+\codeLines{
+  \codeLine{\I{GeslotenDeur}.\I{ontsluit} = \FUN (\I{poging})}
+  \codeLine{\IN \IF (\I{poging} = \THIS.\I{code}) \THEN}
+  \codeLine{\IN \IN \THIS.\I{open} = 1}
+  \codeLine{\IN \ELSE}
+  \codeLine{\IN \IN \THIS.\I{open} = 0}
+}
+
 @this@ is hier een expliciete verwijzing naar het huidige object. Op dit moment kunnen we @ontsluit@ nog niet aanroepen op @GeslotenDeur@:
-\begin{lstlisting}[name=deuren]
-GeslotenDeur.ontsluit(1234)  # => fout!
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\I{GeslotenDeur}.\I{ontsluit}(1234)}[fout!]
+}
+
 Het attribuut @code@ is immers niet gedefinieerd in @GeslotenDeur@ noch in zijn prototype @Deur@.
 
 We kunnen natuurlijk een @code@ toekennen aan @GeslotenDeur@, maar laten we een specifieke @GeslotenDeur@ maken met een @code@:
-\begin{lstlisting}[name=deuren]
-local Kluis
-Kluis object
-Kluis clones GeslotenDeur
-Kluis.code = 4321
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\VAR \I{Kluis}}
+  \codeLine{\I{Kluis} \OBJECT}
+  \codeLine{\I{Kluis} \CLONES \I{GeslotenDeur}}
+  \codeLine{\I{Kluis}.\I{code} = 4321}
+}
+
 Wanneer we de methode @ontsluit@ aanroepen is deze niet gedefinieerd in @Kluis@, maar wel in zijn prototype @GeslotenDeur@. Die wordt dan uitgevoerd. Een belangrijke observatie is dat @ontsluit@ wel wordt aangeroepen op @Kluis@. Dat betekent dat @this@ verwijst naar @Kluis@ en niet @GeslotenDeur@. Het attribuut @code@ wordt dan wel gevonden!
-\begin{lstlisting}[name=deuren]
-Kluis.ontsluit(1234)
-Kluis.open                   # => 0
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\I{Kluis}.\I{ontsluit}(1234)}
+  \codeLine{\I{Kluis}.\I{open}}[waarde $\to$ 0]
+}
+
 Oeps\dots Dat was de verkeerde code, nog een poging:
-\begin{lstlisting}[name=deuren]
-Kluis.ontsluit(4321)
-Kluis.open                   # => 1
-\end{lstlisting}
+
+\codeLines{
+  \codeLine{\I{Kluis}.\I{ontsluit}(1234)}
+  \codeLine{\I{Kluis}.\I{open}}[waarde $\to$ 1]
+}
 
 \section{Grammatica}
 
