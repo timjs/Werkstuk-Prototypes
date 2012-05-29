@@ -143,7 +143,7 @@ Technisch gezien werkt prototype overerving als volgt. Van elk object is een pro
   \item Wanneer ook het prototype het attribuut niet bevat, herhalen we de zoektocht voor alle volgende prototypen totdat we het attribuut hebben gevonden.
 \end{enumerate}
 
-Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen is dus dat de tweede geen onderscheid maakt tussen klassen en instanties. Een prototype heeft beide functies. Neem bijvoorbeeld het object @Deur@:
+Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen is dus dat de tweede geen onderscheid maakt tussen klassen en instanties. Een prototype heeft beide functies. Neem bijvoorbeeld het object \I{Deur}:
 
 \newCodeFragment
 
@@ -152,13 +152,13 @@ Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen 
   \codeLine{\I{Deur} \OBJECT}
 }
 
-We kunnen @Deur@ direct als instantie gebruiken door een attribuut te zetten:
+We kunnen \I{Deur} direct als instantie gebruiken door een attribuut te zetten:
 
 \codeLines{
   \codeLine{\I{Deur}.\I{open} = 1}
 }
 
-Een @Deur@ is standaard open. We kunnen @Deur@ ook als een prototype gebruiken. In prototype-gebaseerde talen heet dit \emph{klonen}:
+Een \I{Deur} is standaard open. We kunnen \I{Deur} ook als een prototype gebruiken. In prototype-gebaseerde talen heet dit \emph{klonen}:
 
 \codeLines{
   \codeLine{\VAR \I{GeslotenDeur}}
@@ -166,27 +166,27 @@ Een @Deur@ is standaard open. We kunnen @Deur@ ook als een prototype gebruiken. 
 	\codeLine{\I{GeslotenDeur} \CLONES \I{Deur}}
 }
 
-@GeslotenDeur@ heeft dan alle attributen van @Deur@:
+\I{GeslotenDeur} heeft dan alle attributen van \I{Deur}:
 
 \codeLines{
   \codeLine{\I{GeslotenDeur}.\I{open}}[waarde $\to$ 1]
 }
 
-Maar een @GeslotenDeur@ moet natuurlijk gesloten zijn. We zetten zijn attribuut @open@ op @0@:
+Maar een \I{GeslotenDeur} moet natuurlijk gesloten zijn. We zetten zijn attribuut \I{open} op @0@:
 
 \codeLines{
 	\codeLine{\I{GeslotenDeur}.\I{open} = 0}
 }
 
-Een gewone @Deur@ is nog steeds open:
+Een gewone \I{Deur} is nog steeds open:
 
 \codeLines{
   \codeLine{\I{Deur}.\I{open}}[waarde $\to$ 1]
 }
 
-Attributen worden dus per object bewaard. Door @open@ op @0@ te zetten in @GeslotenDeur@ verandert er niks in @Deur@.
+Attributen worden dus per object bewaard. Door \I{open} op @0@ te zetten in \I{GeslotenDeur} verandert er niks in \I{Deur}.
 
-We kunnen net zoveel klonen maken van een object als we willen en net zo diep klonen als we willen. Neem een @GlazenDeur@, dit is natuurlijk ook een @Deur@, maar wel doorzichtig:
+We kunnen net zoveel klonen maken van een object als we willen en net zo diep klonen als we willen. Neem een \I{GlazenDeur}, dit is natuurlijk ook een \I{Deur}, maar wel doorzichtig:
 
 \codeLines{
   \codeLine{\VAR \I{GlazenDeur}}
@@ -195,7 +195,7 @@ We kunnen net zoveel klonen maken van een object als we willen en net zo diep kl
   \codeLine{\I{GlazenDeur}.\I{doorzichtig} = 1}
 }
 
-Een gewone @Deur@ heeft het attribuut @doorzichtig@ niet, en dus een @GeslotenDeur@ ook niet:
+Een gewone \I{Deur} heeft het attribuut \I{doorzichtig} niet, en dus een \I{GeslotenDeur} ook niet:
 
 \codeLines{
   \codeLine{\I{GeslotenDeur}.\I{doorzichtig}}[fout!]
@@ -207,7 +207,7 @@ Maar we kunnen besluiten dat deuren standaard niet doorzichtig zijn:
   \codeLine{\I{Deur}.\I{doorzichtig} = 0}
 }
 
-Zodat ook onze @GeslotenDeur@ niet doorzichtig is:
+Zodat ook onze \I{GeslotenDeur} niet doorzichtig is:
 
 \codeLines{
   \codeLine{\I{GeslotenDeur}.\I{doorzichtig}}[waarde $\to$ 0]
@@ -221,7 +221,7 @@ Maar er geld nog steeds:
 
 We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde ``blauwdrukken'' moeten voldoen. We creëren objecten ``on-the-fly'', alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self.
 
-Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn functie attributen gekoppeld aan een specifiek object. Stel dat we een @GeslotenDeur@ graag open willen maken. We definiëren:
+Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn functie attributen gekoppeld aan een specifiek object. Stel dat we een \I{GeslotenDeur} graag open willen maken. We definiëren:
 
 \codeLines{
   \codeLine{\I{GeslotenDeur}.\I{ontsluit} = \FUN (\I{poging})}
@@ -231,15 +231,15 @@ Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn funct
   \codeLine{\IN \IN \THIS.\I{open} = 0}
 }
 
-@this@ is hier een expliciete verwijzing naar het huidige object. Op dit moment kunnen we @ontsluit@ nog niet aanroepen op @GeslotenDeur@:
+\I{this} is hier een expliciete verwijzing naar het huidige object. Op dit moment kunnen we \I{ontsluit} nog niet aanroepen op \I{GeslotenDeur}:
 
 \codeLines{
   \codeLine{\I{GeslotenDeur}.\I{ontsluit}(1234)}[fout!]
 }
 
-Het attribuut @code@ is immers niet gedefinieerd in @GeslotenDeur@ noch in zijn prototype @Deur@.
+Het attribuut \I{code} is immers niet gedefinieerd in \I{GeslotenDeur} noch in zijn prototype \I{Deur}.
 
-We kunnen natuurlijk een @code@ toekennen aan @GeslotenDeur@, maar laten we een specifieke @GeslotenDeur@ maken met een @code@:
+We kunnen natuurlijk een \I{code} toekennen aan \I{GeslotenDeur}, maar laten we een specifieke \I{GeslotenDeur} maken met een \I{code}:
 
 \codeLines{
   \codeLine{\VAR \I{Kluis}}
@@ -248,7 +248,7 @@ We kunnen natuurlijk een @code@ toekennen aan @GeslotenDeur@, maar laten we een 
   \codeLine{\I{Kluis}.\I{code} = 4321}
 }
 
-Wanneer we de methode @ontsluit@ aanroepen is deze niet gedefinieerd in @Kluis@, maar wel in zijn prototype @GeslotenDeur@. Die wordt dan uitgevoerd. Een belangrijke observatie is dat @ontsluit@ wel wordt aangeroepen op @Kluis@. Dat betekent dat @this@ verwijst naar @Kluis@ en niet @GeslotenDeur@. Het attribuut @code@ wordt dan wel gevonden:
+Wanneer we de methode \I{ontsluit} aanroepen is deze niet gedefinieerd in \I{Kluis}, maar wel in zijn prototype \I{GeslotenDeur}. Die wordt dan uitgevoerd. Een belangrijke observatie is dat \I{ontsluit} wel wordt aangeroepen op \I{Kluis}. Dat betekent dat \I{this} verwijst naar \I{Kluis} en niet \I{GeslotenDeur}. Het attribuut \I{code} wordt dan wel gevonden:
 
 \codeLines{
   \codeLine{\I{Kluis}.\I{ontsluit}(1234)}
