@@ -8,8 +8,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-%\usepackage{pxfonts}
-\usepackage{millennial}
+\usepackage{pxfonts}
+%\usepackage{millennial}
 %\usepackage{fouriernc}
 %\usepackage{tgschola}
 %\usepackage{tgadventor}
@@ -86,16 +86,23 @@
 \renewcommand{\syntright}{}
 
 \newcommand{\I}[1]{\text{\upshape\small\ttfamily #1}}
-\newcommand\newkeyword[2]
+
+\newcommand{\newkeyword}[2]
   {\newcommand{#1}
      {\text{\small\ttfamily\bfseries #2}}}
-\newcommand\newconstant[2]{\newkeyword{#1}{#2}}
+\newcommand{\newconstant}[2]
+  %{\newkeyword{#1}{#2}}
+  {\newcommand{#1}
+     {\text{\small\ttfamily\scshape #2}}}
 \newcommand{\newnonterminal}[2]
   {\newcommand{#1}
     {\textit{#2}}}
-\newcommand{\newsemanticset}[2]
-  {\newcommand{#1}
-    {\ensuremath{\mathbb{#2}}}}
+\newcommand{\newset}[1]
+  {\expandafter\newcommand\expandafter{\csname #1#1\endcsname}
+    {\ensuremath{\mathbb{#1}}}}
+\newcommand{\renewset}[1]
+  {\expandafter\renewcommand\expandafter{\csname #1#1\endcsname}
+    {\ensuremath{\mathbb{#1}}}}
 
 \newcommand{\syn}[1]
   {\ensuremath{\mathit{#1}}}
@@ -139,14 +146,14 @@
 \newnonterminal{\B}{BooleanExpression}
 \newnonterminal{\Num}{Num}
 
-\newsemanticset{\sO}{O}
-\newsemanticset{\sS}{S}
-\newsemanticset{\sB}{B}
-\newsemanticset{\sM}{M}
-\newsemanticset{\sL}{L}
-\newsemanticset{\sF}{F}
-\newsemanticset{\sV}{V}
-\newsemanticset{\sN}{N}
+\renewset{S}
+\newset{O}
+\newset{B}
+\newset{M}
+\newset{L}
+\newset{F}
+\newset{V}
+\newset{N}
 
 \newcommand{\BNF}
   {\textsc{BNF}}

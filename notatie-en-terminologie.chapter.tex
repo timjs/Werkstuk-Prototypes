@@ -16,23 +16,23 @@ Voor een willekeurige term $\phi = \dots f(x)\dots$, waarbij $f$ een partiële f
 
 De reden dat de meeste behandelde functies partiëel zijn is omdat meeste onderdelen van ons semantisch model eindig van karakter zijn. Functies worden vaak gebruikt om ``een verzameling variabelen die een bepaalde waarde bevatten'' te representeren, bijvoorbeeld de gedefiniëeerde variabelen in een zekere scope. En het zou ongewoon zijn om in een programmeertaal gebruik te maken van oneindige objecten, of scopes waarin oneindig veel variabelen bestaan.
 
-Wanneer we het over een eindige functie $f$ hebben, bedoelen we daarmee dat het domein van die functie een eindige verzameling is. Dit kan worden uitgedrukt door te zeggen dat er een zeker getal $n \in \sN$ bestaat, zó dat $\underbar{n}$ (gedefiniëerd als: $\{m \in \sN \mid m \le n\}$) isomorf is aan het domein van $f$.
+Wanneer we het over een eindige functie $f$ hebben, bedoelen we daarmee dat het domein van die functie een eindige verzameling is. Dit kan worden uitgedrukt door te zeggen dat er een zeker getal $n \in \NN$ bestaat, zó dat $\underbar{n}$ (gedefiniëerd als: $\{m \in \NN \mid m \le n\}$) isomorf is aan het domein van $f$.
 
-$$ f : X \to Y \text{ is ``eindig'' } \DEF \exists_{n \in \sN} \surr{ \underbar{n} \cong \{ x \in X \mid f(x) \neq \bot \} } $$
+$$ f : X \to Y \text{ is ``eindig'' } \DEF \exists_{n \in \NN} \surr{ \underbar{n} \cong \{ x \in X \mid f(x) \neq \bot \} } $$
 
 We schrijven $\FiniteFunctions{Y}{X}$ voor de verzameling functies $\{f : X \to Y \mid f \text{ ``eindig''} \}$.
 
 \section{Tupels}
 
-We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, ``lijsten'' van elementen uit een zekere verzameling: \emph{tupels}. Deze tupels worden gerepresenteerd door eindige (partiële) functies $t : \sN \to X$, als X de verzameling element in kwestie is, waaraan nog een paar extra voorwaarden worden gesteld. De verzameling van alle tupels op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
+We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, ``lijsten'' van elementen uit een zekere verzameling: \emph{tupels}. Deze tupels worden gerepresenteerd door eindige (partiële) functies $t : \NN \to X$, als X de verzameling element in kwestie is, waaraan nog een paar extra voorwaarden worden gesteld. De verzameling van alle tupels op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
 
-$$ X_{\langle\rangle} \DEF \big\{\, t : \sN \to X \mid \exists_{N \in \sN} \big[ \forall_{n < N}[t(n) \neq \bot] \land \forall_{n\ge N}[t(n) = \bot] \big] \,\big\} $$
+$$ X_{\langle\rangle} \DEF \big\{\, t : \NN \to X \mid \exists_{N \in \NN} \big[ \forall_{n < N}[t(n) \neq \bot] \land \forall_{n\ge N}[t(n) = \bot] \big] \,\big\} $$
 
 We schrijven $\langle\rangle$, maar ook wel $\varnothing$, voor de lege tupel (deze is natuurlijk hetzelfde voor elke waarden verzameling $X$).
 
 We schrijven $\langle x_0, x_1, \dots, x_{N-1}\rangle$ voor de tupel $t$ waarvoor geldt: $\forall_{n < N}[t(n) = x_n]$, en: $\forall_{n \ge N}[t(n) = \bot]$.
 
-Als $t$ een tupel is $\in X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$ voor de tupel $t' = t[N \mapsto x]$, waarbij $N = \min\{n\in\sN \mid t(n) = \bot\}$.
+Als $t$ een tupel is $\in X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$ voor de tupel $t' = t[N \mapsto x]$, waarbij $N = \min\{n\in\NN \mid t(n) = \bot\}$.
 
 \section{Notationele conventies}
 

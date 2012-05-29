@@ -3,7 +3,7 @@
 
 Deze teksten zijn vooral bedoeld als ``tekstvlees'' (lorem ipsum's). We zullen axioma's en deductieregels introduceren waarmee we de relatie $(\longrightarrow)$ definiëren, die de volgende signatuur heeft:
 
-$$ (\longrightarrow) \subseteq (\Stm \times \sM \times \sL \times \sL) \times \sM $$
+$$ (\longrightarrow) \subseteq (\Stm \times \MM \times \LL \times \LL) \times \MM $$
 
 Wanneer we een uitspraak doen van de vorm:
 
@@ -45,8 +45,8 @@ Wanneer bij een dergelijke opsomming van voorwaarden een nieuwe variabele wordt 
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \Surr{i}_{m,\sigma,\tau} = \omega_i \in \sL $}
-    \Cond{$ \Surr{j}_{m,\sigma,\tau} = \omega_j \in \sL $}
+    \Cond{$ \Surr{i}_{m,\sigma,\tau} = \omega_i \in \LL $}
+    \Cond{$ \Surr{j}_{m,\sigma,\tau} = \omega_j \in \LL $}
     \Cond{$ m' = m \surr{ \omega_i \mapsto \big(b_{m(\omega_i)}, \omega_j\big) } $}
   \end{NSConditions}
 \end{NSAxiom}
@@ -113,7 +113,7 @@ bla bla
   \end{prooftree}
   \begin{NSConditions}
     \Cond{$ \sigma_\text{def} = \textsc{Find}_m(\sigma, i) $}
-    \Cond{$ b_{m(\sigma_\text{def})}(i) = \omega \in \sL $}
+    \Cond{$ b_{m(\sigma_\text{def})}(i) = \omega \in \LL $}
     \Cond{$ \textsc{Trav}_m(\omega, s) = (\omega', j) $}
     \Cond{$ \Surr{e}_{m, \sigma, \tau} = v $}
     \Cond{$ m'= m \surr{ \omega' \mapsto \big(b_{m(\omega')}[ j \mapsto v ], p_{m(\omega')}\big) } $}
@@ -137,7 +137,7 @@ bla bla
   \end{prooftree}
   \begin{NSConditions}
     \Cond{$ \sigma_\text{def} = \textsc{Find}_m(\sigma, i) $}
-    \Cond{$ b_{m(\sigma_\text{def})}(i) = \omega \in \sL $}
+    \Cond{$ b_{m(\sigma_\text{def})}(i) = \omega \in \LL $}
     \Cond{$ \textsc{Trav}_n(\omega, s) = (\omega', j) $}
     \Cond{$ (S_{\!f}, I_{\!f}, i_{\!f}, \sigma_{\!f\text{def}}) = f = b_{m(\omega')}(j) $}
     \Cond{$ \sigma_{\!f\text{new}} = \textsc{Next}_\text{scope}(m) $}
