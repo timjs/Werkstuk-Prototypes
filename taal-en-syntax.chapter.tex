@@ -1,11 +1,18 @@
 
 \chapter{Taal en syntaxis}
 
-In dit hoofdstuk zullen we de taal presenteren waarvoor we een natuurlijk taal construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst zullen we een aantal voorbeeldprogramma's beschouwen, om zo informeel het karakter van de te formaliseren taal over te brengen. Daarna geven we een rigoreuze definitie met behulp van een BNF grammatica. De structuur van de productieregels van grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
+In dit hoofdstuk presenteren we de taal presenteren waarvoor we een natuurlijk semantiek construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst beschouwen we een aantal voorbeeldprogramma's, om zo informeel de te formaliseren taal te karakteriseren. Daarna geven we een rigoreuze definitie met behulp van een \BNF\ grammatica.
+
+De structuur van de productieregels van deze grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
+
+Het is belangrijk om te vermelden dat het ons hierbij niet gaat om een ``goed uitziende'' taal te maken, maar enkel om er de essentiële onderdelen in te verwerken die nodig zijn voor ons doeleinde: het formaliseren van lexicaal bereik en prototype overerving met een natuurlijke semantiek. Om diezelfde reden moet de syntaxis van de taal voornamelijk worden beschouwd als wat een mogelijke representatie van een \emph{abstract syntax tree} van een ``echte'' programmeertaal zou kunnen zijn.
+
+\section{Voorbeeldprogramma's}
+\label{sec:voorbeelden}
 
 Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
 
-\newCodeFragment[hev][Het eerste voorbeeldprogramma]
+\newCodeFragment[exa:template][Het eerste voorbeeldprogramma]
 \codeFragmentCaption
 \codeLines{
   \codeLine{\VAR \I{f}}[$\I{f}$ moet eerst worden gedefiniëerd]
@@ -13,35 +20,75 @@ Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
   \codeLine{\IN \VAR \I{n}}
   \codeLine{\IN \I{n} = 2 \times (\I{i} + 5)}
   \codeLine{}[$\I{x}$ bestaat niet in deze scope]
-  \codeLine{\VAR \I{x}}[$\I{x}$ is ongedefinieerd (maar wel aanwezig)]
-  \codeLine{\I{x} = \I{f}(42)}
+  \codeLine{\VAR \I{x}}[\I{x} heeft nog geen waarde, maar is wel gedefiniëerd]
+  \codeLine{\I{x} = \I{f}(42)}[\I{x} heeft nu de waarde 94]
 }
 
 De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
 
-\section{Voorbeeldprogramma's}
-\label{sec:voorbeelden}
+\subsection{Basis}
 
-Een variabele moet gedeclareerd worden, en pas daarna kan er een waarde aan worden toegekend.
+\subsubsection{Declaratie van variabelen}
 
-\newCodeFragment
+Een variabele moet altijd eerst worden gedeclareerd, alvorens er een waarde aan kan worden toegekend of het op andere manieren kan worden gebruikt. Een programma waarin variabelen worden gereferenceerd die nooit zijn gedefiniëerd is niet valide. In code fragment \ref{exa:declaration} zie je hoe declaratie plaatsvindt.
+
+\newCodeFragment[exa:declaration][Declaratie van variabelen]
+\codeFragmentCaption
 \codeLines{
-  \codeLine{}[$\I{x}$ bestaat niet (in deze scope)]
-  \codeLine{\VAR \I{x}}[$\I{x}$ is ongedefinieerd (maar wel aanwezig)]
-  \codeLine{\I{x} = 5}[$\I{x} = 5$]
+  \codeLine{}[\I{x} bestaat (nog) niet]
+  \codeLine{\VAR \I{x}}[\I{x} heeft nog geen waarde, maar is wel gedefiniëerd]
+  \codeLine{\I{x} = 5}[\I{x} bevat nu de waarde 5]
 }
 
-Het concept van declaratie is juist in deze taal, gezien het lexicaal bereik van variabelen, heel belangrijk. Vergelijk het bovenstaande programma fragment bijvoorbeeld met de volgende situatie.
+Het concept van declaratie is juist in deze taal heel belangrijk, gezien het lexicaal bereik van variabelen. Wat lexicaal bereik precies inhoudt wordt weldra behandeld.
 
-Variabelen hebben geen vaste type. Er zijn drie typen waarden in de taal: getallen, functies en objecten.
+\subsubsection{Types}
 
-\newCodeFragment
+Variabelen kunnen na declaratie waarden aannemen. Onze taal bevat waarden van drie types (natuurlijk getal, functie, object), en het onderscheid tussen deze types wordt op \emph{dynamisch} niveau gemaakt i.p.v~op syntactisch niveau. Dat houdt in dat een willekeurige variabele elke willekeurige waarde kan aannemen, van elk willekeurig type. Ook kan het in zijn levensduur waarden van meerder types bevatten. Code fragment \ref{exa:types} geeft dit idee weer.
+
+\newCodeFragment[exa:types][Waarden van verschillende types]
+\codeFragmentCaption
+\codeLines{
+  \codeLine{\VAR \I{x}}[declaratie zonder type indicatie]
+  \codeLine{\I{x} = 5}[type ``natuurlijk getal'']
+  \codeLine{\I{x} = \FUN()\{\dots\}}[type ``functie'']
+  \codeLine{\I{x} \OBJECT}[type ``object'', deze rare initiälisatie heeft een reden]
+}
+
+\subsection{Lexicaal bereik}
+
+De \emph{scope} (ook wel \emph{bereik}) van een variabele in een programma, is het deel van het programma waarin zij kan worden gebruikt. En zijn verschillende manieren om dit bereik te definiëren, een daarvan is \emph{lexicaal bereik} (ook wel \emph{lexical} of \emph{static scoping}) er één.
+
+% [Tim:] ik kan dit niet echt mooi verwoorden ...?
+Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele naam tegenkom, over welke variabele heb ik het dan? Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. Met \emph{lexicaal bereik} wordt deze dus ruwweg in de ``lexicale omgeving'' van de referentie gezocht.
+
+\newCodeFragment[exa:zoek][Zoek de definitie van variabele \I{x}]
+\codeFragmentCaption
+\codeLines{
+  \codeLine{\VAR \I{x}}[dit is de gezochte definitie van \I{x}]
+  \codeLine{\I{x} = 42}
+  \codeLine{}
+  \codeLine{\VAR \I{f}}
+  \codeLine{\I{f} = \FUN()}
+  \codeLine{\IN \dots \I{x} \dots}[waar is deze \I{x} gedefiniëerd?]
+}
+
+\newCodeFragment[exa:zoek2][Zoek de definitie van variabele \I{x}]
+\codeFragmentCaption
 \codeLines{
   \codeLine{\VAR \I{x}}
-  \codeLine{\I{x} = 5}                       [de waarde van $\I{x}$ is een getal]
-  \codeLine{\I{x} = \FUN()\,\{\;\SKIP\;\}}   [de waarde van $\I{x}$ is een functie]
-  \codeLine{\I{x} \OBJECT}                   [de waarde van $\I{x}$ is een object]
+  \codeLine{\I{x} = 42}
+  \codeLine{}
+  \codeLine{\VAR \I{f}}
+  \codeLine{\I{f} = \FUN()}
+  \codeLine{\IN \VAR \I{x}}[dit is de gezochte definitie van \I{x}]
+  \codeLine{\IN \I{x} = 43}
+  \codeLine{\IN \dots \I{x} \dots}[waar is deze \I{x} gedefiniëerd?]
 }
+
+Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de scopes. Het moge duidelijk zijn dat als men ``naar buiten toe'' zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
+
+\subsection{Object oriëntatie en prototype overerving}
 
 De taal is object georienteerd.
 
