@@ -29,13 +29,13 @@ Vervolgens moet er gevalsonderscheiding worden gedaan voor de volgende situaties
 
 \begin{enumerate}
   \item \id{x} is gedefiniëerd in $b_s$, dus gebruiken we de gevonden waarde.
-  \item \id{x} is niet gedefiniëerd in $b_s$, dus moeten we \id{x} opzoeken in de omgevend bereik.
+  \item \id{x} is niet gedefiniëerd in $b_s$, dus moeten we \id{x} opzoeken in de omliggend bereik.
 \end{enumerate}
 
-Hieruit blijkt dat we voor een willekeurig bereik niet alleen zijn eigen bindingen moeten bijhouden, maar ook een verwijzing naar zijn \emph{omgevend bereik}. Een bereik $s$ definiëren we daarom als een paar $(b, \pi)$, met $b$ de bindingen en $\pi$ een \emph{verwijzing} naar de omgevend bereik (ook wel \emph{parent}).
+Hieruit blijkt dat we voor een willekeurig bereik niet alleen zijn eigen bindingen moeten bijhouden, maar ook een verwijzing naar zijn \emph{omliggend bereik}. Een bereik $s$ definiëren we daarom als een paar $(b, \pi)$, met $b$ de bindingen en $\pi$ een \emph{verwijzing} naar de omliggend bereik (ook wel \emph{parent}).
 % "outer bereik" ;)
 
-We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omgevend bereik. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. Het bereik $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een \LOCAL variabele. De omgevend bereik $\pi_f$ van functie $f$ verwijst naar bereik $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
+We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omliggend bereik. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. Het bereik $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een \LOCAL variabele. De omliggend bereik $\pi_f$ van functie $f$ verwijst naar bereik $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
 
 \newCodeFragment[exa:lexical][Lexicaal bereik: opslaan en vinden van variabelen]
 \codeFragmentCaption
@@ -50,7 +50,7 @@ We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopi
   \codeLine[exa:lexical:tweede]{\id{f}()}[$\id{x} = 4$]
 }
 
-Stel nu dat we geen verwijzing in het bereik opslaan, maar een kopie van de omgevende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is bereik $s_f$ een paar $(b_f, p_f)$ met $b_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omgevend bereik $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
+Stel nu dat we geen verwijzing in het bereik opslaan, maar een kopie van de omliggende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is bereik $s_f$ een paar $(b_f, p_f)$ met $b_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omliggend bereik $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
 
 Een bereik $s$ is dus een element uit de verzameling
 %
@@ -58,12 +58,12 @@ Een bereik $s$ is dus een element uit de verzameling
   \SS \DEF \BB \times (\LLs \cup \{\nil\}).
 \end{equation*}
 %
-Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van bereiken. Op het begrip ``locatie'' komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort ``ultiem'' omgevend bereik is. Het kan dus zijn dat een bereik geen parent heeft. Voor dat geval introduceren we het unieke element $\nil$. De beoogde interpretatie van een bereik van de vorm $(b, \nil)$ is dan dat het geen omgevend bereik heeft.
+Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van bereiken. Op het begrip ``locatie'' komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort ``ultiem'' omliggend bereik is. Het kan dus zijn dat een bereik geen parent heeft. Voor dat geval introduceren we het unieke element $\nil$. De beoogde interpretatie van een bereik van de vorm $(b, \nil)$ is dan dat het geen omliggend bereik heeft.
 
 \section{Objecten en prototype overerving [TODO]}
 \label{sec:sem-objecten}
 
-In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overerving. Net als bereik en omgevend bereik, worden objecten en hun prototypen het best gemodelleerd met een boomstructuur. Geheel in lijn met bereiken is een object een paar met daarin zijn eigen bindingen $b$ en een verwijzing naar zijn prototype $\pi$. Natuurlijk kan een object ook geen prototype hebben. Dit geven we weer aan met $\nil$. Een object $o$ is dus een element uit
+In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overerving. Net als bereik en omliggend bereik, worden objecten en hun prototypen het best gemodelleerd met een boomstructuur. Geheel in lijn met bereiken is een object een paar met daarin zijn eigen bindingen $b$ en een verwijzing naar zijn prototype $\pi$. Natuurlijk kan een object ook geen prototype hebben. Dit geven we weer aan met $\nil$. Een object $o$ is dus een element uit
 %
 \begin{equation*}
   \OO \DEF \BB \times (\LLo \cup \{\nil\}).
