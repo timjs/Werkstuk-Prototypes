@@ -62,7 +62,7 @@ Een bereik $s$ is dus een element uit de verzameling
 %
 Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van bereiken. Op het begrip ``locatie'' komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort ``ultiem'' omliggend bereik is. Het kan dus zijn dat een bereik geen parent heeft. Voor dat geval introduceren we het unieke element $\nil$. De beoogde interpretatie van een bereik van de vorm $(b, \nil)$ is dan dat het geen omliggend bereik heeft.
 
-\section{Objecten en prototype overerving [TODO]}
+\section{Objecten en prototype overerving}
 \label{sec:sem-objecten}
 
 In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overerving. Net als bereik en omliggend bereik, worden objecten en hun prototypen het best gemodelleerd met een boomstructuur. Geheel in lijn met bereiken is een object een paar met daarin zijn eigen bindingen $b$ en een verwijzing naar zijn prototype $\pi$. Natuurlijk kan een object ook geen prototype hebben. Dit geven we weer aan met $\nil$. Een object $o$ is dus een element uit
@@ -74,8 +74,6 @@ In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overer
 Hierbij is $\BB$ weer de verzamelingen bindinggroepen uit §\ref{sec:bindingen} en $\LLo$ zijn ditmaal locaties van objecten.
 
 Hoewel het semantische model voor objecten en hun prototypen vrijwel identiek is aan het semantische model voor bereiken, hebben ze een andere betekenis. Om deze gelijkheid te benadrukken gebruiken we voor beide modellen een aantal zelfde letters, en om de ongelijkheid te benadrukken subscripten we de locatie verzamelingen ($\LLo$ en $\LLs$).
-
-TODO
 
 \section{Functies}
 \label{sec:sem-functies}
