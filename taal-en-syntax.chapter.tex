@@ -1,11 +1,10 @@
 
 \chapter{Taal en syntaxis}
 
-In dit hoofdstuk presenteren we de taal presenteren waarvoor we een natuurlijk semantiek construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst beschouwen we een aantal voorbeeldprogramma's, om zo informeel de te formaliseren taal te karakteriseren. Daarna geven we een rigoreuze definitie met behulp van een \BNF\ grammatica.
+In dit hoofdstuk presenteren we de taal waarvoor we een natuurlijk semantiek construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst beschouwen we een aantal voorbeeldprogramma's, om zo informeel de te formaliseren taal te karakteriseren. Daarna geven we een rigoureuze definitie met behulp van een \BNF\ grammatica.
 
 De structuur van de productieregels van deze grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
-
-Het is belangrijk om te vermelden dat het ons hierbij niet gaat om een ``goed uitziende'' taal te maken, maar enkel om er de essentiële onderdelen in te verwerken die nodig zijn voor ons doeleinde: het formaliseren van lexicaal bereik en prototype overerving met een natuurlijke semantiek. Om diezelfde reden moet de syntaxis van de taal voornamelijk worden beschouwd als wat een mogelijke representatie van een \emph{abstract syntax tree} van een ``echte'' programmeertaal zou kunnen zijn.
+Het is belangrijk om te vermelden dat het hierbij niet gaat om een taal te maken die er ``mooi'' uit ziet. Het doel is om de essentiële onderdelen te verwerken die nodig zijn om lexicaal bereik en prototype overerving te formaliseren met een natuurlijke semantiek. Om dezelfde reden moet de syntaxis van de taal worden beschouwd als een mogelijke representatie van een \emph{abstract syntax tree} van een ``echte'' programmeertaal. We zullen dan ook, waar mogelijk, puntkomma's en haakjes weglaten. Het gebruik van regeleindes en inspringen van blokken geeft, naar ons idee, binder belemmering bij het lezen van een programma.% T: Wat vind je van deze omschrijving?
 
 \section{Voorbeeldprogramma's}
 \label{sec:voorbeelden}
@@ -30,7 +29,7 @@ De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aa
 
 \subsubsection{Declaratie van variabelen}
 
-Een variabele moet altijd eerst worden gedeclareerd, alvorens er een waarde aan kan worden toegekend of het op andere manieren kan worden gebruikt. Een programma waarin variabelen worden gereferenceerd die nooit zijn gedefiniëerd is niet valide. In code fragment \ref{exa:declaration} zie je hoe declaratie plaatsvindt.
+Een variabele moet altijd eerst worden gedeclareerd. Daarna kan er een waarde aan worden toegekend of kan het op andere manieren worden gebruikt. Een programma waarin variabelen worden gebruikt die nooit zijn gedefiniëerd is niet valide. In code fragment~\ref{exa:declaration} staat een voorbeeld van declaratie.
 
 \newCodeFragment[exa:declaration][Declaratie van variabelen]
 \codeFragmentCaption
@@ -44,7 +43,13 @@ Het concept van declaratie is juist in deze taal heel belangrijk, gezien het lex
 
 \subsubsection{Types}
 
-Variabelen kunnen na declaratie waarden aannemen. Onze taal bevat waarden van drie types (natuurlijk getal, functie, object), en het onderscheid tussen deze types wordt op \emph{dynamisch} niveau gemaakt i.p.v~op syntactisch niveau. Dat houdt in dat een willekeurige variabele elke willekeurige waarde kan aannemen, van elk willekeurig type. Ook kan het in zijn levensduur waarden van meerder types bevatten. Code fragment \ref{exa:types} geeft dit idee weer.
+Variabelen kunnen na declaratie waarden aannemen. Onze taal bevat waarden van drie types:
+\begin{itemize}
+  \item natuurlijk getal
+  \item functie
+  \item object
+\end{itemize}% T: Ben je het met deze opsomming eens?
+Het onderscheid tussen deze types wordt op \emph{dynamisch} niveau gemaakt in plaats van op syntactisch niveau. Dat houdt in dat een willekeurige variabele elke willekeurige waarde kan aannemen, van elk willekeurig type. Ook kan het in zijn levensduur waarden van meerder types bevatten. Code fragment~\ref{exa:types} geeft dit weer.
 
 \newCodeFragment[exa:types][Waarden van verschillende types]
 \codeFragmentCaption
@@ -52,15 +57,16 @@ Variabelen kunnen na declaratie waarden aannemen. Onze taal bevat waarden van dr
   \codeLine{\VAR \id{x}}[declaratie zonder type indicatie]
   \codeLine{\id{x} = 5}[type ``natuurlijk getal'']
   \codeLine{\id{x} = \FUN(\;)\{\dots\}}[type ``functie'']
-  \codeLine{\id{x} \OBJECT}[type ``object'', deze rare initiälisatie heeft een reden]
+  \codeLine{\id{x} \OBJECT}[type ``object'', aan \id{x} kunnen nu attributen worden toegevoegd]% T: dit lijkt mij beter
+  % deze rare initiälisatie heeft een reden
 }
 
 \subsection{Lexicaal bereik}
 
-De \emph{scope} (ook wel \emph{bereik}) van een variabele in een programma, is het deel van het programma waarin zij kan worden gebruikt. En zijn verschillende manieren om dit bereik te definiëren, een daarvan is \emph{lexicaal bereik} (ook wel \emph{lexical} of \emph{static scoping}) er één.
-
-% [Tim:] ik kan dit niet echt mooi verwoorden ...?
-Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele naam tegenkom, over welke variabele heb ik het dan? Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. Met \emph{lexicaal bereik} wordt deze dus ruwweg in de ``lexicale omgeving'' van de referentie gezocht.
+Het \emph{bereik} (ook wel \emph{scope}) van een variabele, is dat deel van het programma waarin zij zichtbaar is. Er zijn verschillende manieren om dit bereik te definiëren. Een daarvan is \emph{lexicaal bereik} (ook wel \emph{lexical} of \emph{static scoping}) dat expliciet gebruikt wordt door JavaScript.
+%Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele naam tegenkom, over welke variabele heb ik het dan? Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. Met \emph{lexicaal bereik} wordt deze dus ruwweg in de ``lexicale omgeving'' van de referentie gezocht.% T: Dit was idd een beetje rommelig en heb ik herschreven.
+De vraag die we ons stellen is: ``Als ik de naam van een variabele tegen kom, over welke variabele heb ik het dan?'' Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. We zien dat het sleutelwoord \LOCAL\ hier een cruciale rol in speelt. De plaats waar een variabele gedeclareerd is, geeft zijn bereik aan. Wanneer een variabele niet in het lokale bereik is gedeclareerd, zoeken we die op in het \emph{omliggende bereik}: het bereik dat lexicaal gezien om het locale bereik heen ligt.
+Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van inspringing in onderstaande voorbeelden komt overeen met de boomstructuur van de bereiken.% T: ook dit kan mooier, maar de eerdere tekst is warrig en past niet in de stijl
 
 \newCodeFragment[exa:zoek][Zoek de definitie van variabele \id{x}]
 \codeFragmentCaption
@@ -86,11 +92,11 @@ Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele
   \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
 }
 
-Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de scopes. Het moge duidelijk zijn dat als men ``naar buiten toe'' zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
+%Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de scopes. Het moge duidelijk zijn dat als men ``naar buiten toe'' zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
 
-Nieuwe scopes ontstaan in onze taal enkel (en altijd) bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er ``niks gebeurt'' als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer je een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuwe scope aangemaakt, met als \emph{omliggende scope} de scope waarin de functie origineel is gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment \ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe scopes worden aangemaakt bij de definitie van functies, zou de uitvoer van $\id{d}(\;)$ 8 zijn i.p.v.~43.
+Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er ``niks gebeurt'' als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer je een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuw bereik aangemaakt, met als omliggend bereik het bereik waarin de functie was gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment~\ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe bereiken worden aangemaakt bij de definitie van functies, zou de uitvoer van $\id{d}(\;)$ 8 zijn in plaats van 43.
 
-\newCodeFragment[exa:counting][Het belang van creatie van scopes \emph{bij functie applicatie}]
+\newCodeFragment[exa:counting][Het belang van creatie van bereiken bij functie applicatie]
 \codeFragmentCaption
 \codeLines{
   \codeLine{\VAR \id{f}}
@@ -102,7 +108,7 @@ Nieuwe scopes ontstaan in onze taal enkel (en altijd) bij functie applicatie. Ee
   \codeLine{\VAR \id{c}}
   \codeLine{\id{c} = \id{f}(5)}
   \codeLine{\id{c}()}[de eerste aanroep $\id{c}(\;)$ levert eerst 6 op\dots]
-  \codeLine{\id{c}()}[de tweede aanroep $\id{c}(\;)$ levert eerst 7 op\dots]
+  \codeLine{\id{c}()}[de tweede aanroep $\id{c}(\;)$ levert daarna 7 op\dots]
   \codeLine{}[]
   \codeLine{\id{d} = \id{f}(42)}[$\id{d}(\;)$: 43, 44, 45, 46, \dots]
 }
@@ -133,7 +139,7 @@ Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen 
   \codeLine{\id{Deur} \OBJECT}
 }
 
-We kunnen \id{Deur} direct als instantie gebruiken door een attribuut te zetten:
+We declareren eerst een locale variabele die we vervolgens initialiseren als een object. Vanaf nu kunnen we \id{Deur} als instantie gebruiken door een attribuut te zetten:
 
 \codeLines{
   \codeLine{\id{Deur}.\id{open} = 1}
@@ -247,7 +253,7 @@ Helaas was dat de verkeerde code, we proberen het nog een keer:
 
 \section{Grammatica}
 
-Nu volgt een formele definitie van de syntaxis van de taal, aan de hand van een \BNF\ grammatica. Nummers zijn als volgt gedefiniëerd:
+Nu volgt een formele definitie van de syntaxis van de taal, aan de hand van een \BNF\ grammatica. Getallen zijn als volgt gedefiniëerd:
 %
 \begin{align*}
   \Num \GrammarDef (0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9)^+
