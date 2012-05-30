@@ -8,13 +8,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-%\usepackage{pxfonts}
+%\usepackage{lmodern}
 \usepackage{millennial}
-%\usepackage{fouriernc}
-%\usepackage{tgschola}
-%\usepackage{tgadventor}
-%\usepackage{newcent}
-%\usepackage[utopia]{mathdesign}
+\usepackage{tgadventor}
 
 \usepackage{tabularx}% tables: equal width columns
 \usepackage{multirow}% tables: rowspan
@@ -103,6 +99,9 @@
 \newcommand{\renewset}[1]
   {\expandafter\renewcommand\expandafter{\csname #1#1\endcsname}
     {\ensuremath{\mathbb{#1}}}}
+\newcommand{\newbool}[1]
+  {\expandafter\newcommand\expandafter{\csname #1\endcsname}
+    {\ensuremath{\mathbf{#1}}}}
 
 \newcommand{\syn}[1]
   {\ensuremath{\mathit{#1}}}
@@ -143,7 +142,7 @@
 \newnonterminal{\Expr}{Expression}
 \newnonterminal{\Exprs}{Expressions}
 \newnonterminal{\ExprsMaybe}{MaybeExpressions}
-\newnonterminal{\B}{BooleanExpression}
+\newnonterminal{\BExpr}{BooleanExpression}
 \newnonterminal{\Num}{Num}
 
 \renewset{S}
@@ -154,6 +153,9 @@
 \newset{F}
 \newset{V}
 \newset{N}
+
+\newbool{T}
+\newbool{F}
 
 \newcommand{\BNF}
   {\textsc{bnf}}
@@ -239,13 +241,15 @@
 \newcommand{\FiniteFunctions}[2]{\ensuremath{\text{``eindige''~}{#1}^{#2}}}
 
 \newcommand{\surrAngle}[1]{\ensuremath{\big<\,#1\,\big>}}
+\newcommand{\SurrAngle}[1]{\ensuremath{\big<\!\big<\,#1\,\big>\!\big>}}
 \newcommand{\surr}[1]{\ensuremath{\big[\,#1\,\big]}}
 \newcommand{\Surr}[1]{\ensuremath{\big[\!\big[\,#1\,\big]\!\big]}}
 
 % configuration: " <S, m, \sigma, \tau> "
 %\newcommand{\Config}[2]{\left<#1, #2\right>}%  -- normaal
 %\newcommand{\Config}[2]{\surr{#1}_{#2}}%       -- [ ]m,s,t
-\newcommand{\Config}[2]{\surrAngle{#1}_{#2}}%  -- < >m,s,t
+%\newcommand{\Config}[2]{\surrAngle{#1}_{#2}}%  -- < >m,s,t
+\newcommand{\Config}[2]{\SurrAngle{#1}_{#2}}%  -- << >>m,s,t % T: als test... weet niet hoe het er met millenial uit ziet
 
 \def\BOT{\rotatebox{90}{$\Vdash$}}
 \let\nil\BOT

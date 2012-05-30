@@ -280,18 +280,18 @@ en wordt gebruikt om ook naar attributen van objecten te kunnen referenceren:% T
   \GrammarOr \FUN\pmb{(}\,\MaybeIds\,\pmb{)}\; \GrammarOpt{\RETURNS \Id\;} \pmb{\{}\; \Stm\; \pmb{\}} \\
   \Exprs \GrammarDef \Expr \mid \Exprs, \Expr \\
   \ExprsMaybe \GrammarDef \varepsilon \mid \Exprs \\
-  \B \GrammarDef \TRUE \mid \FALSE \\
-  \GrammarOr \B\; (\AND \mid \OR)\; \B \\
-  \GrammarOr \NOT\; \B \\
+  \BExpr \GrammarDef \TRUE \mid \FALSE \\
+  \GrammarOr \BExpr\; (\AND \mid \OR)\; \BExpr \\
+  \GrammarOr \NOT\; \BExpr \\
   \GrammarOr \Expr\; (=\: \mid\: <\: \mid\: \le\: \mid\: >\: \mid\: \ge)\; \Expr
 \end{align*}
 De kern van de hele grammatica draait om de volgende productieregels, die van \emph{statements}. Een statement is een programma van goede vorm. Het betekent niet nodelijkerwijs% T: per se / noodzakelijk
 dat het programma \emph{valide} is, maar alle valide programma's zitten wel in $\Stm$.
 \begin{align*}
-  \Stm \GrammarDef \Stm; \Stm \\
-  \GrammarOr \SKIP \\
-  \GrammarOr \IF \B \THEN \Stm \ELSE \Stm \\
-  \GrammarOr \WHILE \B \DO \Stm \\
+  \Stm \GrammarDef \SKIP \\
+  \GrammarOr \Stm; \Stm \\
+  \GrammarOr \IF \BExpr \THEN \Stm \ELSE \Stm \\
+  \GrammarOr \WHILE \BExpr \DO \Stm \\
   \GrammarOr \LOCAL \Id \\
   \GrammarOr \Id \OBJECT \\
   \GrammarOr \Id \CLONES \Id \\
