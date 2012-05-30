@@ -340,6 +340,15 @@
   \textit{--- \small #1}%
 }
 
+\newlength{\NoBreakCurrentParskip}
+\NewEnviron{NoBreak}{%
+  \setlength{\NoBreakCurrentParskip}{\parskip}%
+  \begin{minipage}{\textwidth}%
+    \setlength{\parskip}{\NoBreakCurrentParskip}%
+    \BODY
+  \end{minipage}%
+}
+
 \begin{document}
 
 \maketitle

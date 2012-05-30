@@ -2,24 +2,24 @@
 
 \section{Bindingen}\label{sec:bindingen}
 
-Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id). Bindingen zijn bijvoorbeeld van belang om de gedefiniëerd variabelen binnen een scope vast te leggen, of de attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to \VV$. De verzameling van alle groepen van bindingen definiëren we dus als
+Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id). Bindingen zijn bijvoorbeeld van belang om de gedefiniëerd variabelen binnen een bereik vast te leggen, of de attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to \VV$. De verzameling van alle groepen van bindingen definiëren we dus als
 \begin{equation*}
   \BB \DEF \FiniteFunctions{\VV}{\Id}
 \end{equation*}
 We komen later terug op wat de waarden $\VV$ precies zijn in §\ref{sec:waarden}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\NN$ deel uitmaken van $\VV$.
 
-Bindingen komen veelvuldig terug in ons model. In scopes worden \emph{variabelen} gedeclareerd en aan waarden gekoppeld. Bij objecten zijn het de \emph{attributen} die waarden krijgen toegekend.
+Bindingen komen veelvuldig terug in ons model. In bereiken worden \emph{variabelen} gedeclareerd en aan waarden gekoppeld. Bij objecten zijn het de \emph{attributen} die waarden krijgen toegekend.
 
-\section{Scope en omliggende scopes}
+\section{Bereik en omliggende bereiken}
 
-In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. Stel we evalueren een variabele \id{x} in scope $s$:
+In sectie \ref{sec:voorbeelden} is informeel gebleken dat bereiken conceptueel goed te zien zijn als een boomstructuur. Stel we evalueren een variabele \id{x} in bereik $s$:
 
 \newCodeFragment
 \codeLines{
-  \codeLine{\id{x}}[We bevinden ons in een zekere scope $s$.]
+  \codeLine{\id{x}}[We bevinden ons in een zeker bereik $s$.]
 }
 
-dan kunnen we dit als volgt uitleggen. Eerst zoeken we \id{x} op in de bindingen groep $b_s$, behorende bij scope $s$.
+dan kunnen we dit als volgt uitleggen. Eerst zoeken we \id{x} op in de bindingen groep $b_s$, behorende bij bereik $s$.
 %
 \begin{equation*}
   b_s(x).
@@ -29,39 +29,41 @@ Vervolgens moet er gevalsonderscheiding worden gedaan voor de volgende situaties
 
 \begin{enumerate}
   \item \id{x} is gedefiniëerd in $b_s$, dus gebruiken we de gevonden waarde.
-  \item \id{x} is niet gedefiniëerd in $b_s$, dus moeten we \id{x} opzoeken in de omgevende scope.
+  \item \id{x} is niet gedefiniëerd in $b_s$, dus moeten we \id{x} opzoeken in de omgevend bereik.
 \end{enumerate}
 
-Hieruit blijkt dat we voor een willekeurige scope niet alleen zijn eigen bindingen moeten bijhouden, maar ook een verwijzing naar zijn \emph{omgevende scope}. Een scope $s$ definiëren we daarom als een paar $(b, \pi)$, met $b$ de bindingen en $\pi$ een \emph{verwijzing} naar de omgevende scope (ook wel \emph{parent}, of \emph{outer} scope).
+Hieruit blijkt dat we voor een willekeurig bereik niet alleen zijn eigen bindingen moeten bijhouden, maar ook een verwijzing naar zijn \emph{omgevend bereik}. Een bereik $s$ definiëren we daarom als een paar $(b, \pi)$, met $b$ de bindingen en $\pi$ een \emph{verwijzing} naar de omgevend bereik (ook wel \emph{parent}).
+% "outer bereik" ;)
 
-We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omgevende scope. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. De scope $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een \LOCAL variabele. De omgevende scope $\pi_f$ van functie $f$ verwijst naar scope $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
+We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omgevend bereik. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. Het bereik $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een \LOCAL variabele. De omgevend bereik $\pi_f$ van functie $f$ verwijst naar bereik $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
 
-\newCodeFragment[exa:lexical][Lexicale scope: opslaan en vinden van variabelen]
+\newCodeFragment[exa:lexical][Lexicaal bereik: opslaan en vinden van variabelen]
 \codeFragmentCaption
 \codeLines{
   \codeLine{\VAR \id{x}}
   \codeLine{\id{x} = 1}
   \codeLine{\VAR \id{f}}
-  \codeLine[exa:lexical:def]{\id{f} = \FUN()}[Introductie nieuwe scope]
+  \codeLine[exa:lexical:def]{\id{f} = \FUN()}[Introductie nieuw bereik]
   \codeLine{\IN \id{x} = 2 \times \id{x}}
-  \codeLine{}[Einde nieuwe scope]
+  \codeLine{}[Einde nieuw bereik]
   \codeLine[exa:lexical:eerste]{\id{f}()}[$\id{x} = 2$]
   \codeLine[exa:lexical:tweede]{\id{f}()}[$\id{x} = 4$]
 }
 
-Stel nu dat we geen verwijzing in de scope opslaan, maar een kopie van de omgevende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is scope $s_f$ een paar $(b_f, p_f)$ met $b_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omgevende scope $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
+Stel nu dat we geen verwijzing in het bereik opslaan, maar een kopie van de omgevende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is bereik $s_f$ een paar $(b_f, p_f)$ met $b_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omgevend bereik $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
 
-Een scope $s$ is dus een element uit de verzameling
+Een bereik $s$ is dus een element uit de verzameling
 %
 \begin{equation*}
   \SS \DEF \BB \times (\LLs \cup \{\nil\}).
 \end{equation*}
 %
-Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van scopes. Op het begrip ``locatie'' komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort ``ultieme'' omgevende scope is. Het kan dus zijn dat een scope geen parent heeft. Voor dat geval introduceren we het unieke element $\nil$. De beoogde interpretatie van een scope van de vorm $(b, \nil)$ is dan dat het geen omgevende scope heeft.
+Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van bereiken. Op het begrip ``locatie'' komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort ``ultiem'' omgevend bereik is. Het kan dus zijn dat een bereik geen parent heeft. Voor dat geval introduceren we het unieke element $\nil$. De beoogde interpretatie van een bereik van de vorm $(b, \nil)$ is dan dat het geen omgevend bereik heeft.
 
-\section{Objecten en prototype overerving}
+\section{Objecten en prototype overerving [TODO]}
+\label{sec:sem-objecten}
 
-In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overerving. Net als scopes en omgevende scopes, worden objecten en hun prototypen het best gemodelleerd met een boomstructuur. Geheel in lijn met scopes is een object een paar met daarin zijn eigen bindingen $b$ en een verwijzing naar zijn prototype $\pi$. Natuurlijk kan een object ook geen prototype hebben. Dit geven we weer aan met $\nil$. Een object $o$ is dus een element uit
+In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overerving. Net als bereik en omgevend bereik, worden objecten en hun prototypen het best gemodelleerd met een boomstructuur. Geheel in lijn met bereiken is een object een paar met daarin zijn eigen bindingen $b$ en een verwijzing naar zijn prototype $\pi$. Natuurlijk kan een object ook geen prototype hebben. Dit geven we weer aan met $\nil$. Een object $o$ is dus een element uit
 %
 \begin{equation*}
   \OO \DEF \BB \times (\LLo \cup \{\nil\}).
@@ -69,97 +71,119 @@ In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overer
 %
 Hierbij is $\BB$ weer de verzamelingen bindinggroepen uit §\ref{sec:bindingen} en $\LLo$ zijn ditmaal locaties van objecten.
 
-Hoewel het semantische model voor objecten en hun prototypen vrijwel identiek is aan het semantische model voor scopes, hebben ze een andere betekenis. Om deze gelijkheid te benadrukken gebruiken we voor beide modellen een aantal zelfde letters, en om de ongelijkheid te benadrukken subscripten we de locatie verzamelingen ($\LLo$ en $\LLs$).
-
-\section{Waarden: referenties en primitieven}
-\label{sec:waarden}
-
-In voorgaande paragrafen spraken we over waarden $\VV$ en locaties $\LL$ ($\LLs$ voor scopes $\LLo$ voor objecten). We hebben de exacte definities hiervan in het midden gelaten. Een waarde $v \in \VV$ is iets wat we toekennen aan een \Id\ met behulp van een binding. In §\ref{subsec:taal-types} is uitgelegd hoe de taal over verschillende typen data kan spreken. In onze taal komen drie typen data voor: getallen, functies en objecten. Er is echter een verschil in de manier waarop wij ze behandelen.
-
-Wat gebeurt er wanneer we bovenstaande waardes opnieuw toekennen aan andere variabelen? Allereerst een natuurlijk getal, deze is het eenvoudigst:
-\begin{lstlisting}
-local m
-m = n
-\end{lstlisting}
-Op dit moment hebben zowel @m@ als @n@ waarde @5@. Wanneer we aan @m@ een andere waarde toekennen, gebeurt er niets met @n@. Omgekeerd geld hetzelfde. We kunnen dus simpelweg de waarde van @n@ \emph{kopiëren} en in @m@ stoppen. Onze waardes $\VV$ bevatten dus sowieso $\NN$:
-\begin{equation*}
-  \VV \DEF \NN
-\end{equation*}
-
-Voor functies geld eigenlijk hetzelfde:
-\begin{lstlisting}
-local g
-g = f
-\end{lstlisting}
-@g@ heeft nu als waarde een kopie van de functie in variabele @f@. Beiden kunnen we aanroepen:
-\begin{lstlisting}
-f(4)                         # => 8
-g(6)                         # => 12
-\end{lstlisting}
-Dus $\VV$ bevat ook functies:
-\begin{equation*}
-  \VV \DEF \NN \cup \VV
-\end{equation*}
-
-Helaas gaat dit \emph{niet} op voor objecten. Stel dat @A@ een attribuut @x@ heeft
-\begin{lstlisting}
-A.x = 7
-\end{lstlisting}
-en we koppelen een nieuwe variabele $B$ aan het object in $A$:
-\begin{lstlisting}
-local B
-B = A
-\end{lstlisting}
-Nu heeft @B@ sowieso dezelfde attributen als @A@:
-\begin{lstlisting}
-B.x                          # => 7
-\end{lstlisting}
-Maar als we @x@ in @B@ ophogen
-\begin{lstlisting}
-B.x = 8
-\end{lstlisting}
-moet dit in @A@ natuurlijk ook gebeuren:
-\begin{lstlisting}
-A.x                          # => 8
-\end{lstlisting}
-Wanneer we zomaar een kopie van de waarde in @A@ aan @B@ toekennen, zou het attribuut @A.x@ niet gewijzigd worden. Een oplossing is om in plaats van een kopie van een object een \emph{referentie} naar een object aan een variabele te koppelen. Dit zijn dus niet elementen uit $\OO$ zelf, maar uit $\LLo$. Dat betekend dat objecten niet op dezelfde manier worden behandeld als getallen en functies, maar de \emph{locaties} van objecten wel. Voor de waardes krijgen we dus
-\begin{equation*}
-  \VV \DEF \LLo \cup \NN \cup \VV.
-\end{equation*}
-
-Primitieve waardes in onze taal koppelen we \emph{by-value}. Dit zijn natuurlijke getallen en functies. Objecten daarentegen worden \emph{by-reference} gekoppeld. Deze referenties zijn elementen uit $\LLo$. Achter de schermen worden deze gebruikt om objecten door te geven en worden op hun beurt wel \emph{by-reference} gekoppeld.
-
-\section{Functies}
-\label{model-functies}
+Hoewel het semantische model voor objecten en hun prototypen vrijwel identiek is aan het semantische model voor bereiken, hebben ze een andere betekenis. Om deze gelijkheid te benadrukken gebruiken we voor beide modellen een aantal zelfde letters, en om de ongelijkheid te benadrukken subscripten we de locatie verzamelingen ($\LLo$ en $\LLs$).
 
 TODO
 
-\section{Locaties en geheugen}\label{sec:locaties}
+\section{Functies [TODO]}
+\label{sec:sem-functies}
 
-Uit de redenaties over referenties volgt dat we een plaats moeten hebben om alle objecten op te slaan. Dit noemen we het \emph{geheugen voor objecten} $m_o$. Voor een gegeven locatie $\omega\in\LLo$ kunnen we het bijbehorende object in een geheugen $m_o$ opzoeken met
+TODO
+
+\section{Waarden en data}
+\label{sec:waarden}
+% K: Ik vond de vertelvorm waarin jij uitlegde wat waarden en locaties en primitieve waarden etc zijn toch enigszins "kinderachtig". Ik geloof dat een intuitieve terminologie [ik ben nu gesettled voor <data> en <waarden>, maar dat kunnen we veranderen..] en een wat meer "beschouwende" (i.p.v. uitleggende) tekst stukken beter werkt. Ik heb daarom deze sectie vrijwel helemaal herschreven, ik hoop dat je dat niet erg vindt! En overigens moet jij natuurlijk deze tekst weer ff onder handen nemen, want ik ben er zeker niet al te zeker over ;) Zo heb ik het over dat een programma "spreekt" over data: ??
+
+In voorgaande paragrafen spraken we over waarden $\VV$ en locaties $\LL$ ($\LLs$ voor bereiken, $\LLo$ voor objecten). We hebben de exacte definities hiervan in het midden gelaten. Wat wel duidelijk is dat een waarde $v \in \VV$ is iets wat we toekennen aan een \Id\ met behulp van een binding.
+
+In §\ref{subsec:taal-types} is uitgelegd hoe de taal over verschillende typen data kan spreken. In onze taal komen namelijk drie typen \emph{data} voor: getallen, functies en objecten. Er is echter een verschil in de manier waarop wij ze behandelen in het semantisch model. Deze verschillende aanpak ik bekend aan iedereen die een keer object-geörienteerd geprogrammeerd heeft.
+
+Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil tussen twee soorten typen data: primitieve waarden en objecten. Primitieve waarden moeten worden opgevat als de ``atomen'' waaruit programma's en objecten worden opgebouwd. Denk aan natuurlijke getallen of strengen.
+
+\begin{NoBreak}
+  \newCodeFragment[exa:prititive-values-numbers][Toekenning van primitieve waarden: Getallen]
+  \codeFragmentCaption
+  \codeLines{
+    \codeLine{\VAR \id{x}}
+    \codeLine{\id{x} = 5}[de primitieve waarde ``5'' wordt aan variabele \id{x} toegekend]
+    \codeLine{}
+    \codeLine{\VAR \id{y}}
+    \codeLine{\id{y} = \id{x}}[nu bevat ook \id{y} de primitieve waarde ``5'']
+    \codeLine{}
+    \codeLine{\id{x} = 6}[\id{x} bevat ``6'', maar \id{y} bevat nog steeds ``5'']
+  }
+\end{NoBreak}
+
+In onze taal zijn ook functies primitieve waarden. Zoals in \ref{sec:sem-functies} wordt beschreven, beschouwen we een functie als een ``atomair'' element met de volgende informatie: (1) parameters, (2) mogelijkerwijs een return variabele, (3) code en (4) bereik van definitie. Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complexe structuren. Het volgende voorbeeld illustreert deze gedachte:
+
+\begin{NoBreak}
+  \newCodeFragment[exa:prititive-values-functions][Toekenning van primitieve waarden: Functies]
+  \codeFragmentCaption
+  \codeLines{
+    \codeLine{\VAR \id{x}}
+    \codeLine{\id{x} = \FUN (\;) \{ \SKIP \}}
+    \codeLine{}
+    \codeLine{\VAR \id{y}}
+    \codeLine{\id{y} = \id{x}}
+    \codeLine{}
+    \codeLine{\id{x} = \FUN(\id{z}) \{ \id{z} = 5 \}}[\id{x} bevat de nieuwe functie met één argument,]
+    \codeLine{}[maar \id{y} bevat nog steeds de oude \SKIP-functie]
+  }
+\end{NoBreak}
+
+Objecten worden anders behandeld. Het idee van een object is dat een zekere ``entiteit'' voorstelt. Deze entiteit kan een nabootsing zijn van een objecten uit de reële wereld, maar kan ook iets abstracts zijn. Net als objecten uit de reële wereld, zou een object in een programma moeten kunnen veranderen in de loop der tijd, maar nog wel ``hetzelfde ding zijn als tevoren''. Het volgende code fragmentje illustreert dit idee:
+
+\begin{NoBreak}
+  \newCodeFragment[exa:prititive-values-functions][Toekenning van primitieve waarden: Functies]
+  \codeFragmentCaption
+  \codeLines{
+    \codeLine{\VAR \id{x}}
+    \codeLine{\id{x} \OBJECT}
+    \codeLine{\id{x}.\id{n} = 5}
+    \codeLine{}
+    \codeLine{\VAR \id{y}}
+    \codeLine{\id{y} = \id{x}}[\id{y} ``verwijst'' nu naar hetzelfde object als \id{x}]
+    \codeLine{}
+    \codeLine{\id{x}.\id{n} = 6}[omdat \id{x} en \id{y} naar hetzelfde object verwijzen: $\id{y}.\id{n} = 6$]
+  }
+\end{NoBreak}
+
+In zekere zin zijn \id{x} en \id{y} immateriëel, omdat ze op deze manier ``vervangbaar'' zijn. Dit in tegenstelling to \id{n}. Het zijn dan ook verschillende dingen: \id{x} en \id{y} zijn variabelen; \id{n} is een attribuut van een zeker object waar \id{x} en \id{y} toevallig naar verwijzen.
+
+Het verwijzen van een variabele naar een object wordt in onze semantiek bewerkstelligd door het object ``ergens'' op te slaan, en de locatie ervan als waarde aan de variabele toe te kennen.
+
+Om samen te vatten:
+
+\begin{description}
+  \item[Data] De wereld van data waarover een programma spreekt bevat getallen, functies en objecten.
+  \item[Waarden] Een waarde is wat er in ons semantisch model aan een variabele wordt toegekend, dit met behulp van een binding. Primitieve waarden (getallen, functies) zijn zelf waarden. Om in een programma over objecten te spreken, wordt de locatie van een object ook als waarde beschouwd.
+\end{description}
+
+De definitie van de verzameling van alle waarden (locaties van objecten, getallen en functies) is dus als volgt:
+
+\begin{equation*}
+  \VV \DEF \LLo \cup \NN \cup \FF
+\end{equation*}
+
+\section{Locaties en geheugen}
+\label{sec:locaties}
+
+Uit de redenaties over referenties volgt dat we een plaats moeten hebben om alle objecten op te slaan. Dit noemen we het \emph{geheugen voor objecten} $m_o$. Voor een gegeven locatie $\omega\in\LLo$ kunnen we het bijbehorende object in een geheugen $m_o$ opzoeken:
+%
 \begin{equation*}
   m_o(\omega).
 \end{equation*}
+%
 Een geheugen is dus een functie van locaties naar objecten. De verzameling van alle geheugens definiëren we als
+%
 \begin{equation*}
-  \MMo \DEF \OO^{\LLo}.
+  \MMo \DEF \FiniteFunctions{\OO}{\LLo}
 \end{equation*}
-Dan is $m_o$ een element hier uit.
 
 \section*{Extra}
 
 \begin{align*}
-  \tag*{locaties van scopes en objecten}
+  \tag*{locaties van scopes en objecten, DONE}
   \LL &\DEF \{ (n, n) \in \NN^2 \} \\
   \tag*{functies}
   \FF &\DEF \Stm \times \Id_{\langle\rangle} \times (\Id \cup \{\nil\}) \times \LL \\
-  \tag*{waarden}
+  \tag*{waarden, DONE}
   \VV &\DEF \LL \cup \NN \cup \FF \\
-  \tag*{binding-verzamelingen}
+  \tag*{bindinggroepen, DONE}
   \BB &\DEF \FiniteFunctions{\VV}{\Id} \\
-  \tag*{objecten}
+  \tag*{objecten, DONE}
   \OO &\DEF \BB \times (\LL \cup \{\nil\}) \\
-  \tag*{scopes}
+  \tag*{scopes, DONE}
   \SS &\DEF \BB \times (\LL \cup \{\nil\}) \\
 \end{align*}
 
