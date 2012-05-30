@@ -279,7 +279,7 @@ Het is soms ook nodig om meerdere komma-gescheiden namen te gebruiken, of een mo
   \MaybeIds \GrammarDef \varepsilon \mid \Ids
 \end{align*}
 %
-Een \emph{pad} is een opeenvolging van identifiers gescheiden door punten en wordt gebruikt om ook naar attributen van objecten te kunnen refereren:
+Een \emph{pad} is een opeenvolging van \Ids\ gescheiden door punten en wordt gebruikt om ook naar attributen van objecten te kunnen refereren:
 %
 \begin{align*}
   \Path \GrammarDef \Id \mid \Id . \Path
@@ -312,7 +312,7 @@ De kern van de hele grammatica draait om de volgende productieregel voor \emph{s
   \GrammarOr \GrammarOpt{\Path =} \Id\,\pmb{(}\,\MaybeExprs\,\pmb{)}
 \end{align*}
 %
-Merk op dat in delen van deze productieregel \Id's staan waar men misschien een \Path\ had verwacht. Zo zou het wenselijk lijken om bijvoorbeeld ``$\id{a}.\id{b} \CLONES \id{c}.\id{d}$'' als een programma van goede vorm te beschouwen. Er zijn twee redenen waarom we dit echter niet hebben gedaan. Ten eerste worden de axioma's en deductieregels ingewikkelder en daarmee minder elegant, of er zijn er meer nodig. Maar belangrijker nog, is het niet essentiëel voor de taal. Voor elk programma zoals ``$\id{a}.\id{b} \CLONES \id{c}.\id{d}$'', bestaat er een equivalent programma zónder zulke paden:
+Merk op dat in delen van deze productieregel \Id's staan waar men misschien een \Path\ had verwacht. Zo zou het wenselijk lijken om bijvoorbeeld ``$\id{a}.\id{b} \CLONES \id{c}.\id{d}$'' als een programma van goede vorm te beschouwen. Er zijn twee redenen waarom we dit niet hebben gedaan. Allereerst worden de axioma's en deductieregels ingewikkelder en daarmee minder elegant, of er zijn er meer nodig. Maar belangrijker nog: het is niet essentieel voor de taal. Voor elk programma zoals ``$\id{a}.\id{b} \CLONES \id{c}.\id{d}$'', bestaat er een equivalent programma zónder zulke paden:
 
 \begin{minipage}[t]{.5\textwidth}
   \newCodeFragment
