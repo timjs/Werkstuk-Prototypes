@@ -1,42 +1,9 @@
 
 \chapter{Natuurlijke Semantiek}
 
-%Deze teksten zijn vooral bedoeld als ``tekstvlees'' (lorem ipsum's). We zullen axioma's en deductieregels introduceren waarmee we de relatie $(\longrightarrow)$ definiëren, die de volgende signatuur heeft:
+\section{Expressies}
 
-%$$ (\longrightarrow) \subseteq (\Stm \times \MM \times \LL \times \LL) \times \MM $$
-
-%Wanneer we een uitspraak doen van de vorm:
-
-%$$ \Config{S}{m,\sigma,\tau} \longrightarrow m' $$
-
-%..dan bedoelen we daarmee dat:
-
-%$$ \big(\,(S,m,\sigma,\tau), m'\,\big) \in (\longrightarrow) $$
-
-Deze uitspraak moet je lezen als: ``In de toestand met geheugen $m$, scope $\sigma$ en \emph{this} object $\tau$, termineert het statement $S$, waarbij het resultaat-geheugen $m'$ is.''
-
-Een van deze axioma's [object], heeft betrekking tot de productieregel in de grammatica die de $\OBJECT$ ``literal'' introduceert.
-
-\begin{NSAxiom}{object}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{i \OBJECT}{m, \sigma, \tau}
-      \longrightarrow
-      m''
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \textsc{Find}_m(\sigma, i) = \sigma_\text{def} $}
-    \Cond{$ m' = m \surr{ \sigma_\text{def} \mapsto \big(b_{m(\sigma')}[i\mapsto \omega], p_{m(\sigma')}\big) } $}
-    \Cond{$ m'' = m' \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
-  \end{NSConditions}
-\end{NSAxiom}
-
-Zoals vele axioma's en deductieregels heeft ook dit axioma een aantal voorwaarden waaraan moet worden voldaan. Deze staan eronder genoteerd, elk op een regel.
-
-Wanneer bij een dergelijke opsomming van voorwaarden een nieuwe variabele wordt geïntroduceerd zoals hierboven, met de volgende vorm: $\textbf{desda } \square = \theta \dots$; dan moet deze gelezen worden als: $\textbf{desda } \exists_\theta \big[\, \square = \theta \dots \,\big]$.
-
-\section{}
+\section{Statements}
 
 Laten we beginnen met de simpelste constructie in onze taal, het lege statement \SKIP. Deze heeft de vorm van een axioma.
 
@@ -129,8 +96,7 @@ bla bla
   \end{NSConditions}
 \end{NSAxiom}
 
-
-\section{Regels}
+\section*{Regels}
 
 \begin{NSAxiom}{clones}
   \begin{prooftree}
@@ -285,5 +251,41 @@ bla bla
     \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{F} $}
   \end{NSConditions}
 \end{NSAxiom}
+
+%Deze teksten zijn vooral bedoeld als ``tekstvlees'' (lorem ipsum's). We zullen axioma's en deductieregels introduceren waarmee we de relatie $(\longrightarrow)$ definiëren, die de volgende signatuur heeft:
+
+%$$ (\longrightarrow) \subseteq (\Stm \times \MM \times \LL \times \LL) \times \MM $$
+
+%Wanneer we een uitspraak doen van de vorm:
+
+%$$ \Config{S}{m,\sigma,\tau} \longrightarrow m' $$
+
+%..dan bedoelen we daarmee dat:
+
+%$$ \big(\,(S,m,\sigma,\tau), m'\,\big) \in (\longrightarrow) $$
+
+Deze uitspraak moet je lezen als: ``In de toestand met geheugen $m$, scope $\sigma$ en \emph{this} object $\tau$, termineert het statement $S$, waarbij het resultaat-geheugen $m'$ is.''
+
+Een van deze axioma's [object], heeft betrekking tot de productieregel in de grammatica die de $\OBJECT$ ``literal'' introduceert.
+
+\begin{NSAxiom}{object}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{i \OBJECT}{m, \sigma, \tau}
+      \longrightarrow
+      m''
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \textsc{Find}_m(\sigma, i) = \sigma_\text{def} $}
+    \Cond{$ m' = m \surr{ \sigma_\text{def} \mapsto \big(b_{m(\sigma')}[i\mapsto \omega], p_{m(\sigma')}\big) } $}
+    \Cond{$ m'' = m' \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
+
+Zoals vele axioma's en deductieregels heeft ook dit axioma een aantal voorwaarden waaraan moet worden voldaan. Deze staan eronder genoteerd, elk op een regel.
+
+Wanneer bij een dergelijke opsomming van voorwaarden een nieuwe variabele wordt geïntroduceerd zoals hierboven, met de volgende vorm: $\textbf{desda } \square = \theta \dots$; dan moet deze gelezen worden als: $\textbf{desda } \exists_\theta \big[\, \square = \theta \dots \,\big]$.
+
 
 % vim: syn=latex spell spl=nl cole=1 cocu=nv
