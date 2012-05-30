@@ -77,10 +77,30 @@ Hoewel het semantische model voor objecten en hun prototypen vrijwel identiek is
 
 TODO
 
-\section{Functies [TODO]}
+\section{Functies}
 \label{sec:sem-functies}
 
-TODO
+Van een functie moeten een aantal dingen bekend zijn:
+\begin{description}
+  \item[Code] De code (ook wel \emph{body}) van de functie is natuurlijk simpelweg een \Stm.
+  %
+  \item[Argumenten] Deze worden gerepresenteerd door een lijst van elementen uit \Id. In het programma zelf is deze lijst een \MaybeIds. We definiëren daarom de triviale functie $\textsc{Ids} : \MaybeIds \to \Id_{\langle\rangle}$ op de volgende manier:
+  \begin{align*}
+    \textsc{Ids}(\varepsilon) &= \langle\rangle \\
+    \textsc{Ids}(i) &= \{(0, i)\} \\
+    \textsc{Ids}(i^+, i) &= \textsc{Ids}(i^+) : i
+  \end{align*}
+  \dots waarbij we $i^+$ als meta-variabele gebruiken voor een element uit \Ids.
+  %
+  \item[Return variabele] Mogelijk gebruikt de functie een return variabele, dit wordt gerepresenteerd door een element uit $(\Id \cup \{\nil\})$, waarbij $\nil$ de betekenis draagt dat er van geen return variabele sprake is.
+  %
+  \item[Bereik van definitie] Het is belangrijk om van een functie zijn bereik van originele definitie te weten. Dit is het kern-idee van lexicaal bereik. Het kan best zo zijn dat een zekere functie $f$ op een zekere lexical plek in het programma is gedefiniëerd, en vervolgens door toedoen van het programma in een andere context wordt uitgevoerd. Maar het is dan belangrijk dat het lexicale bereik van de originele definitie nog bekend is, om vrije variabelen in de code van de functie op te kunnen zoeken in omgevende bereiken. Dit bereik wordt gerepresenteerd door de locatie van het bereik, een element uit \LLs.
+\end{description}
+
+Een functie is daarom simpelweg een viertupel met bovenstaande informatie. De verzameling functies is gedefiniëerd als:
+\begin{equation*}
+  \FF \DEF \Stm \times \Id_{\langle\rangle} \times (\Id \cup \{\nil\}) \times \LL
+\end{equation*}
 
 \section{Waarden en data}
 \label{sec:waarden}
@@ -209,21 +229,21 @@ Er is ook een hulpfunctie nodig om een pad te doorlopen. De hulpfunctie $\textsc
 \end{equation*}
 %
 
-\section*{Overzicht}
-
-\begin{align*}
-  \tag*{locaties van scopes en objecten, DONE}
-  \LL &\DEF \{ (n, n) \in \NN^2 \} \\
-  \tag*{functies}
-  \FF &\DEF \Stm \times \Id_{\langle\rangle} \times (\Id \cup \{\nil\}) \times \LL \\
-  \tag*{waarden, DONE}
-  \VV &\DEF \LL \cup \NN \cup \FF \\
-  \tag*{bindinggroepen, DONE}
-  \BB &\DEF \FiniteFunctions{\VV}{\Id} \\
-  \tag*{objecten, DONE}
-  \OO &\DEF \BB \times (\LL \cup \{\nil\}) \\
-  \tag*{scopes, DONE}
-  \SS &\DEF \BB \times (\LL \cup \{\nil\}) \\
-\end{align*}
+%\section*{Overzicht}
+%
+%\begin{align*}
+%  \tag*{locaties van scopes en objecten, DONE}
+%  \LL &\DEF \{ (n, n) \in \NN^2 \} \\
+%  \tag*{functies}
+%  \FF &\DEF \Stm \times \Id_{\langle\rangle} \times (\Id \cup \{\nil\}) \times \LL \\
+%  \tag*{waarden, DONE}
+%  \VV &\DEF \LL \cup \NN \cup \FF \\
+%  \tag*{bindinggroepen, DONE}
+%  \BB &\DEF \FiniteFunctions{\VV}{\Id} \\
+%  \tag*{objecten, DONE}
+%  \OO &\DEF \BB \times (\LL \cup \{\nil\}) \\
+%  \tag*{scopes, DONE}
+%  \SS &\DEF \BB \times (\LL \cup \{\nil\}) \\
+%\end{align*}
 
 % vim: syn=latex spell spl=nl cole=1 cocu=nv
