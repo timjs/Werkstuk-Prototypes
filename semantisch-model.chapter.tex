@@ -37,18 +37,20 @@ Hieruit blijkt dat we voor een willekeurig bereik niet alleen zijn eigen binding
 
 We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omliggend bereik. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. Het bereik $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een \LOCAL variabele. De omliggend bereik $\pi_f$ van functie $f$ verwijst naar bereik $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
 
-\newCodeFragment[exa:lexical][Lexicaal bereik: opslaan en vinden van variabelen]
-\codeFragmentCaption
-\codeLines{
-  \codeLine{\VAR \id{x}}
-  \codeLine{\id{x} = 1}
-  \codeLine{\VAR \id{f}}
-  \codeLine[exa:lexical:def]{\id{f} = \FUN()}[Introductie nieuw bereik]
-  \codeLine{\IN \id{x} = 2 \times \id{x}}
-  \codeLine{}[Einde nieuw bereik]
-  \codeLine[exa:lexical:eerste]{\id{f}()}[$\id{x} = 2$]
-  \codeLine[exa:lexical:tweede]{\id{f}()}[$\id{x} = 4$]
-}
+\begin{NoBreak}
+  \newCodeFragment[exa:lexical][Lexicaal bereik: opslaan en terugvinden van variabelen]
+  \codeFragmentCaption
+  \codeLines{
+    \codeLine{\VAR \id{x}}
+    \codeLine{\id{x} = 1}
+    \codeLine{\VAR \id{f}}
+    \codeLine[exa:lexical:def]{\id{f} = \FUN()}[Introductie nieuw bereik]
+    \codeLine{\IN \id{x} = 2 \times \id{x}}
+    \codeLine{}[Einde nieuw bereik]
+    \codeLine[exa:lexical:eerste]{\id{f}()}[$\id{x} = 2$]
+    \codeLine[exa:lexical:tweede]{\id{f}()}[$\id{x} = 4$]
+  }
+\end{NoBreak}
 
 Stel nu dat we geen verwijzing in het bereik opslaan, maar een kopie van de omliggende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is bereik $s_f$ een paar $(b_f, p_f)$ met $b_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omliggend bereik $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
 
@@ -172,6 +174,42 @@ Een geheugen is dus een functie van locaties naar objecten. De verzameling van a
 \begin{equation*}
   \MMo \DEF \FiniteFunctions{\OO}{\LLo}
 \end{equation*}
+
+\section{Hulpfuncties}
+
+We introduceren nu een aantal hulpfuncties om de logica van bepaalde delen van het semantische model te omvatten en beschrijven.
+
+Zoals eerder beschreven, moet de definitie van een variabele eerst gezocht worden in het huidige bereik, en daarna in omgevende bereiken. Deze procedure manifesteert zich in de hulpfunctie $\textsc{Find}_\text{scope} : \MMs \times \LLs \times \Id \to \LLs$, die we als volgt gedefiniëren:
+%
+\begin{equation*}
+  \textsc{Find}_\text{scope}(\ms, \sigma, i) = \begin{cases}
+    \sigma & \textbf{als } b_{\ms(\sigma)}(i) \neq \bot \\
+    \bot & \textbf{als } p_{\ms(\sigma)} = \nil \\
+    \textsc{Find}_\text{scope}(\ms, p_{\ms(\sigma)}, i) & \textbf{anders}
+  \end{cases}
+\end{equation*}
+%
+Voor het doorzoeken van de prototype hiërarchie naar een attribuut hebben we een hulpfunctie $\textsc{Find}_\text{proto} : \MMo \times \LLo \times \Id \to \LLo$, die identiek is aan $\textsc{Find}_\text{scope}$, behalve dat het werkt met de relevante object-gerelateerde verzamelingen.
+%
+\begin{equation*}
+  \textsc{Find}_\text{proto}(\mo, \omega, i) = \begin{cases}
+    \omega & \textbf{als } b_{\mo(\omega)}(i) \neq \bot \\
+    \bot & \textbf{als } p_{\mo(\omega)} = \nil \\
+    \textsc{Find}_\text{proto}(\mo, p_{\mo(\omega)}, i) & \textbf{anders}
+  \end{cases}
+\end{equation*}
+%
+Er is ook een hulpfunctie nodig om een pad te doorlopen. De hulpfunctie $\textsc{Trav} : \MMo \times \LLo \times \Path \to \LLo \times \Id$ levert de locatie van het ``laastste'' object op en de laatste identifier van het pad (wat mogelijk naar niet noodzakelijk een attribuut is van dat laatste object), gegeven het objectgeheugen, een locatie voor het ``begin'' object, en een pad.
+%
+\begin{equation*}
+  \textsc{Trav}(\mo, \omega, p) = \begin{cases}
+    (\omega, p) & \textbf{als } p \in \Id \\
+    \textsc{Trav}(\mo, \omega', p') & \textbf{als } p = i.p' \\
+     & \textbf{ én } \textsc{Find}_\text{proto}(\mo, \omega, i) = \omega' \in \LLo \\
+    \bot & \textbf{anders}
+  \end{cases}
+\end{equation*}
+%
 
 \section*{Extra}
 
