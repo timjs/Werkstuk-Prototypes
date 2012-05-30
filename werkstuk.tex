@@ -300,6 +300,7 @@
 %   \ref{linelabel} -- e.g. "6" for the sixth line in the code fragment
 \newcounter{ncode}[chapter]
 \renewcommand{\thencode}{\thechapter.\arabic{ncode}}
+% FIXME: caption kan op vorige pagina blijven staan
 \newcommand{\theCodeFragmentCaption}{}
 \newcounter{codeline}[ncode]
 \newcommandx{\newCodeFragment}[2][1=,2=]{% args: [1] label; [2] title = caption
@@ -347,14 +348,15 @@
 
 \tableofcontents
 
+\input inleiding.chapter
+
 \mainmatter
 
-\input{inleiding.chapter.tex}
-\input{notatie-en-terminologie.chapter.tex}
-\input{taal-en-syntax.chapter.tex}
-\input{semantisch-model.chapter.tex}
-\input{natuurlijke-semantiek.chapter.tex}
-\input{case-study.chapter.tex}
+\input notatie-en-terminologie.chapter
+\input taal-en-syntax.chapter
+\input semantisch-model.chapter
+\input natuurlijke-semantiek.chapter
+%\input case-study.chapter
 
 \backmatter
 

@@ -96,6 +96,7 @@ Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van i
 
 Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er ``niks gebeurt'' als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer je een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuw bereik aangemaakt, met als omliggend bereik het bereik waarin de functie was gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment~\ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe bereiken worden aangemaakt bij de definitie van functies, zou de uitvoer van $\id{d}(\;)$ 8 zijn in plaats van 43.
 
+% FIXME: caption blijft op vorige pagina staan
 \newCodeFragment[exa:counting][Het belang van creatie van bereiken bij functie applicatie]
 \codeFragmentCaption
 \codeLines{
