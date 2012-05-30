@@ -15,13 +15,13 @@ Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
 \newCodeFragment[exa:template][Het eerste voorbeeldprogramma]
 \codeFragmentCaption
 \codeLines{
-  \codeLine{\VAR \I{f}}[$\I{f}$ moet eerst worden gedefiniëerd]
-  \codeLine{\I{f} = \FUN(i) \RETURNS \I{n}}
-  \codeLine{\IN \VAR \I{n}}
-  \codeLine{\IN \I{n} = 2 \times (\I{i} + 5)}
-  \codeLine{}[$\I{x}$ bestaat niet in deze scope]
-  \codeLine{\VAR \I{x}}[\I{x} heeft nog geen waarde, maar is wel gedefiniëerd]
-  \codeLine{\I{x} = \I{f}(42)}[\I{x} heeft nu de waarde 94]
+  \codeLine{\VAR \id{f}}[$\id{f}$ moet eerst worden gedefiniëerd]
+  \codeLine{\id{f} = \FUN(i) \RETURNS \id{n}}
+  \codeLine{\IN \VAR \id{n}}
+  \codeLine{\IN \id{n} = 2 \times (\id{i} + 5)}
+  \codeLine{}[$\id{x}$ bestaat niet in deze scope]
+  \codeLine{\VAR \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
+  \codeLine{\id{x} = \id{f}(42)}[\id{x} heeft nu de waarde 94]
 }
 
 De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
@@ -35,9 +35,9 @@ Een variabele moet altijd eerst worden gedeclareerd, alvorens er een waarde aan 
 \newCodeFragment[exa:declaration][Declaratie van variabelen]
 \codeFragmentCaption
 \codeLines{
-  \codeLine{}[\I{x} bestaat (nog) niet]
-  \codeLine{\VAR \I{x}}[\I{x} heeft nog geen waarde, maar is wel gedefiniëerd]
-  \codeLine{\I{x} = 5}[\I{x} bevat nu de waarde 5]
+  \codeLine{}[\id{x} bestaat (nog) niet]
+  \codeLine{\VAR \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
+  \codeLine{\id{x} = 5}[\id{x} bevat nu de waarde 5]
 }
 
 Het concept van declaratie is juist in deze taal heel belangrijk, gezien het lexicaal bereik van variabelen. Wat lexicaal bereik precies inhoudt wordt weldra behandeld.
@@ -49,10 +49,10 @@ Variabelen kunnen na declaratie waarden aannemen. Onze taal bevat waarden van dr
 \newCodeFragment[exa:types][Waarden van verschillende types]
 \codeFragmentCaption
 \codeLines{
-  \codeLine{\VAR \I{x}}[declaratie zonder type indicatie]
-  \codeLine{\I{x} = 5}[type ``natuurlijk getal'']
-  \codeLine{\I{x} = \FUN(\;)\{\dots\}}[type ``functie'']
-  \codeLine{\I{x} \OBJECT}[type ``object'', deze rare initiälisatie heeft een reden]
+  \codeLine{\VAR \id{x}}[declaratie zonder type indicatie]
+  \codeLine{\id{x} = 5}[type ``natuurlijk getal'']
+  \codeLine{\id{x} = \FUN(\;)\{\dots\}}[type ``functie'']
+  \codeLine{\id{x} \OBJECT}[type ``object'', deze rare initiälisatie heeft een reden]
 }
 
 \subsection{Lexicaal bereik}
@@ -62,49 +62,49 @@ De \emph{scope} (ook wel \emph{bereik}) van een variabele in een programma, is h
 % [Tim:] ik kan dit niet echt mooi verwoorden ...?
 Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele naam tegenkom, over welke variabele heb ik het dan? Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. Met \emph{lexicaal bereik} wordt deze dus ruwweg in de ``lexicale omgeving'' van de referentie gezocht.
 
-\newCodeFragment[exa:zoek][Zoek de definitie van variabele \I{x}]
+\newCodeFragment[exa:zoek][Zoek de definitie van variabele \id{x}]
 \codeFragmentCaption
 \codeLines{
-  \codeLine{\VAR \I{x}}[dit is de gezochte definitie van \I{x}]
-  \codeLine{\I{x} = 42}
+  \codeLine{\VAR \id{x}}[dit is de gezochte definitie van \id{x}]
+  \codeLine{\id{x} = 42}
   \codeLine{}
-  \codeLine{\VAR \I{f}}
-  \codeLine{\I{f} = \FUN(\;)}
-  \codeLine{\IN \dots \I{x} \dots}[waar is deze \I{x} gedefiniëerd?]
+  \codeLine{\VAR \id{f}}
+  \codeLine{\id{f} = \FUN(\;)}
+  \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
 }
 
-\newCodeFragment[exa:zoek2][Zoek de definitie van variabele \I{x}]
+\newCodeFragment[exa:zoek2][Zoek de definitie van variabele \id{x}]
 \codeFragmentCaption
 \codeLines{
-  \codeLine{\VAR \I{x}}
-  \codeLine{\I{x} = 42}
+  \codeLine{\VAR \id{x}}
+  \codeLine{\id{x} = 42}
   \codeLine{}
-  \codeLine{\VAR \I{f}}
-  \codeLine{\I{f} = \FUN(\;)}
-  \codeLine{\IN \VAR \I{x}}[dit is de gezochte definitie van \I{x}]
-  \codeLine{\IN \I{x} = 43}
-  \codeLine{\IN \dots \I{x} \dots}[waar is deze \I{x} gedefiniëerd?]
+  \codeLine{\VAR \id{f}}
+  \codeLine{\id{f} = \FUN(\;)}
+  \codeLine{\IN \VAR \id{x}}[dit is de gezochte definitie van \id{x}]
+  \codeLine{\IN \id{x} = 43}
+  \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
 }
 
 Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de scopes. Het moge duidelijk zijn dat als men ``naar buiten toe'' zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
 
-Nieuwe scopes ontstaan in onze taal enkel (en altijd) bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er ``niks gebeurt'' als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer je een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuwe scope aangemaakt, met als \emph{omliggende scope} de scope waarin de functie origineel is gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment \ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe scopes worden aangemaakt bij de definitie van functies, zou de uitvoer van $\I{d}(\;)$ 8 zijn i.p.v.~43.
+Nieuwe scopes ontstaan in onze taal enkel (en altijd) bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er ``niks gebeurt'' als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer je een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuwe scope aangemaakt, met als \emph{omliggende scope} de scope waarin de functie origineel is gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment \ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe scopes worden aangemaakt bij de definitie van functies, zou de uitvoer van $\id{d}(\;)$ 8 zijn i.p.v.~43.
 
 \newCodeFragment[exa:counting][Het belang van creatie van scopes \emph{bij functie applicatie}]
 \codeFragmentCaption
 \codeLines{
-  \codeLine{\VAR \I{f}}
-  \codeLine{\I{f} = \FUN(n) \RETURNS \I{g}}
-  \codeLine{\IN \VAR \I{g}}
-  \codeLine{\IN \I{g} = \FUN(\;) \RETURNS \I{n}}
-  \codeLine{\IN \IN \I{n} = \I{n} + 1}
+  \codeLine{\VAR \id{f}}
+  \codeLine{\id{f} = \FUN(n) \RETURNS \id{g}}
+  \codeLine{\IN \VAR \id{g}}
+  \codeLine{\IN \id{g} = \FUN(\;) \RETURNS \id{n}}
+  \codeLine{\IN \IN \id{n} = \id{n} + 1}
   \codeLine{}
-  \codeLine{\VAR \I{c}}
-  \codeLine{\I{c} = \I{f}(5)}
-  \codeLine{\I{c}()}[de eerste aanroep $\I{c}(\;)$ levert eerst 6 op\dots]
-  \codeLine{\I{c}()}[de tweede aanroep $\I{c}(\;)$ levert eerst 7 op\dots]
+  \codeLine{\VAR \id{c}}
+  \codeLine{\id{c} = \id{f}(5)}
+  \codeLine{\id{c}()}[de eerste aanroep $\id{c}(\;)$ levert eerst 6 op\dots]
+  \codeLine{\id{c}()}[de tweede aanroep $\id{c}(\;)$ levert eerst 7 op\dots]
   \codeLine{}[]
-  \codeLine{\I{d} = \I{f}(42)}[$\I{d}(\;)$: 43, 44, 45, 46, \dots]
+  \codeLine{\id{d} = \id{f}(42)}[$\id{d}(\;)$: 43, 44, 45, 46, \dots]
 }
 
 \subsection{Prototype overerving}
@@ -124,123 +124,123 @@ Technisch gezien werkt prototype overerving als volgt. Van elk object is een pro
   \item Wanneer ook het prototype het attribuut niet bevat, herhalen we de zoektocht voor alle volgende prototypen totdat we het attribuut hebben gevonden.
 \end{enumerate}
 
-Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen is dus dat de tweede geen onderscheid maakt tussen klassen en instanties. Een prototype heeft beide functies. Neem bijvoorbeeld het object \I{Deur}:
+Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen is dus dat de tweede geen onderscheid maakt tussen klassen en instanties. Een prototype heeft beide functies. Neem bijvoorbeeld het object \id{Deur}:
 
 \newCodeFragment
 
 \codeLines{
-  \codeLine{\VAR \I{Deur}}
-  \codeLine{\I{Deur} \OBJECT}
+  \codeLine{\VAR \id{Deur}}
+  \codeLine{\id{Deur} \OBJECT}
 }
 
-We kunnen \I{Deur} direct als instantie gebruiken door een attribuut te zetten:
+We kunnen \id{Deur} direct als instantie gebruiken door een attribuut te zetten:
 
 \codeLines{
-  \codeLine{\I{Deur}.\I{open} = 1}
+  \codeLine{\id{Deur}.\id{open} = 1}
 }
 
-Een \I{Deur} is standaard open. We kunnen \I{Deur} ook als een prototype gebruiken. In prototype-gebaseerde talen heet dit \emph{klonen}:
+Een \id{Deur} is standaard open. We kunnen \id{Deur} ook als een prototype gebruiken. In prototype-gebaseerde talen heet dit \emph{klonen}:
 
 \codeLines{
-  \codeLine{\VAR \I{GeslotenDeur}}
-  \codeLine{\I{GeslotenDeur} \OBJECT}
-	\codeLine{\I{GeslotenDeur} \CLONES \I{Deur}}
+  \codeLine{\VAR \id{GeslotenDeur}}
+  \codeLine{\id{GeslotenDeur} \OBJECT}
+	\codeLine{\id{GeslotenDeur} \CLONES \id{Deur}}
 }
 
-\I{GeslotenDeur} heeft dan alle attributen van \I{Deur}:
+\id{GeslotenDeur} heeft dan alle attributen van \id{Deur}:
 
 \codeLines{
-  \codeLine{\I{GeslotenDeur}.\I{open}}[waarde $\to$ 1]
+  \codeLine{\id{GeslotenDeur}.\id{open}}[waarde $\to$ 1]
 }
 
-Maar een \I{GeslotenDeur} moet natuurlijk gesloten zijn. We zetten zijn attribuut \I{open} op @0@:
+Maar een \id{GeslotenDeur} moet natuurlijk gesloten zijn. We zetten zijn attribuut \id{open} op @0@:
 
 \codeLines{
-	\codeLine{\I{GeslotenDeur}.\I{open} = 0}
+	\codeLine{\id{GeslotenDeur}.\id{open} = 0}
 }
 
-Een gewone \I{Deur} is nog steeds open:
+Een gewone \id{Deur} is nog steeds open:
 
 \codeLines{
-  \codeLine{\I{Deur}.\I{open}}[waarde $\to$ 1]
+  \codeLine{\id{Deur}.\id{open}}[waarde $\to$ 1]
 }
 
-Attributen worden dus per object bewaard. Door \I{open} op @0@ te zetten in \I{GeslotenDeur} verandert er niks in \I{Deur}.
+Attributen worden dus per object bewaard. Door \id{open} op @0@ te zetten in \id{GeslotenDeur} verandert er niks in \id{Deur}.
 
-We kunnen net zoveel klonen maken van een object als we willen en net zo diep klonen als we willen. Neem een \I{GlazenDeur}, dit is natuurlijk ook een \I{Deur}, maar wel doorzichtig:
+We kunnen net zoveel klonen maken van een object als we willen en net zo diep klonen als we willen. Neem een \id{GlazenDeur}, dit is natuurlijk ook een \id{Deur}, maar wel doorzichtig:
 
 \codeLines{
-  \codeLine{\VAR \I{GlazenDeur}}
-  \codeLine{\I{GlazenDeur} \OBJECT}
-  \codeLine{\I{GlazenDeur} \CLONES \I{Deur}}
-  \codeLine{\I{GlazenDeur}.\I{doorzichtig} = 1}
+  \codeLine{\VAR \id{GlazenDeur}}
+  \codeLine{\id{GlazenDeur} \OBJECT}
+  \codeLine{\id{GlazenDeur} \CLONES \id{Deur}}
+  \codeLine{\id{GlazenDeur}.\id{doorzichtig} = 1}
 }
 
-Een gewone \I{Deur} heeft het attribuut \I{doorzichtig} niet, en dus een \I{GeslotenDeur} ook niet:
+Een gewone \id{Deur} heeft het attribuut \id{doorzichtig} niet, en dus een \id{GeslotenDeur} ook niet:
 
 \codeLines{
-  \codeLine{\I{GeslotenDeur}.\I{doorzichtig}}[fout!]
+  \codeLine{\id{GeslotenDeur}.\id{doorzichtig}}[fout!]
 }
 
 Maar we kunnen besluiten dat deuren standaard niet doorzichtig zijn:
 
 \codeLines{
-  \codeLine{\I{Deur}.\I{doorzichtig} = 0}
+  \codeLine{\id{Deur}.\id{doorzichtig} = 0}
 }
 
-Zodat ook onze \I{GeslotenDeur} niet doorzichtig is:
+Zodat ook onze \id{GeslotenDeur} niet doorzichtig is:
 
 \codeLines{
-  \codeLine{\I{GeslotenDeur}.\I{doorzichtig}}[waarde $\to$ 0]
+  \codeLine{\id{GeslotenDeur}.\id{doorzichtig}}[waarde $\to$ 0]
 }
 
 Maar er geld nog steeds:
 
 \codeLines{
-  \codeLine{\I{GlazenDeur}.\I{doorzichtig}}[waarde $\to$ 1]
+  \codeLine{\id{GlazenDeur}.\id{doorzichtig}}[waarde $\to$ 1]
 }
 
 We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde ``blauwdrukken'' moeten voldoen. We creëren objecten ``on-the-fly'', alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self.
 
-Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn functie attributen gekoppeld aan een specifiek object. Stel dat we een \I{GeslotenDeur} graag open willen maken. We definiëren:
+Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn functie attributen gekoppeld aan een specifiek object. Stel dat we een \id{GeslotenDeur} graag open willen maken. We definiëren:
 
 \codeLines{
-  \codeLine{\I{GeslotenDeur}.\I{ontsluit} = \FUN (\I{poging})}
-  \codeLine{\IN \IF (\I{poging} = \THIS.\I{code}) \THEN}
-  \codeLine{\IN \IN \THIS.\I{open} = 1}
+  \codeLine{\id{GeslotenDeur}.\id{ontsluit} = \FUN (\id{poging})}
+  \codeLine{\IN \IF (\id{poging} = \THIS.\id{code}) \THEN}
+  \codeLine{\IN \IN \THIS.\id{open} = 1}
   \codeLine{\IN \ELSE}
-  \codeLine{\IN \IN \THIS.\I{open} = 0}
+  \codeLine{\IN \IN \THIS.\id{open} = 0}
 }
 
-\I{this} is hier een expliciete verwijzing naar het huidige object. Op dit moment kunnen we \I{ontsluit} nog niet aanroepen op \I{GeslotenDeur}:
+\id{this} is hier een expliciete verwijzing naar het huidige object. Op dit moment kunnen we \id{ontsluit} nog niet aanroepen op \id{GeslotenDeur}:
 
 \codeLines{
-  \codeLine{\I{GeslotenDeur}.\I{ontsluit}(1234)}[fout!]
+  \codeLine{\id{GeslotenDeur}.\id{ontsluit}(1234)}[fout!]
 }
 
-Het attribuut \I{code} is immers niet gedefinieerd in \I{GeslotenDeur} noch in zijn prototype \I{Deur}.
+Het attribuut \id{code} is immers niet gedefinieerd in \id{GeslotenDeur} noch in zijn prototype \id{Deur}.
 
-We kunnen natuurlijk een \I{code} toekennen aan \I{GeslotenDeur}, maar laten we een specifieke \I{GeslotenDeur} maken met een \I{code}:
+We kunnen natuurlijk een \id{code} toekennen aan \id{GeslotenDeur}, maar laten we een specifieke \id{GeslotenDeur} maken met een \id{code}:
 
 \codeLines{
-  \codeLine{\VAR \I{Kluis}}
-  \codeLine{\I{Kluis} \OBJECT}
-  \codeLine{\I{Kluis} \CLONES \I{GeslotenDeur}}
-  \codeLine{\I{Kluis}.\I{code} = 4321}
+  \codeLine{\VAR \id{Kluis}}
+  \codeLine{\id{Kluis} \OBJECT}
+  \codeLine{\id{Kluis} \CLONES \id{GeslotenDeur}}
+  \codeLine{\id{Kluis}.\id{code} = 4321}
 }
 
-Wanneer we de methode \I{ontsluit} aanroepen is deze niet gedefinieerd in \I{Kluis}, maar wel in zijn prototype \I{GeslotenDeur}. Die wordt dan uitgevoerd. Een belangrijke observatie is dat \I{ontsluit} wel wordt aangeroepen op \I{Kluis}. Dat betekent dat \I{this} verwijst naar \I{Kluis} en niet \I{GeslotenDeur}. Het attribuut \I{code} wordt dan wel gevonden:
+Wanneer we de methode \id{ontsluit} aanroepen is deze niet gedefinieerd in \id{Kluis}, maar wel in zijn prototype \id{GeslotenDeur}. Die wordt dan uitgevoerd. Een belangrijke observatie is dat \id{ontsluit} wel wordt aangeroepen op \id{Kluis}. Dat betekent dat \id{this} verwijst naar \id{Kluis} en niet \id{GeslotenDeur}. Het attribuut \id{code} wordt dan wel gevonden:
 
 \codeLines{
-  \codeLine{\I{Kluis}.\I{ontsluit}(1234)}
-  \codeLine{\I{Kluis}.\I{open}}[waarde $\to$ 0]
+  \codeLine{\id{Kluis}.\id{ontsluit}(1234)}
+  \codeLine{\id{Kluis}.\id{open}}[waarde $\to$ 0]
 }
 
 Helaas was dat de verkeerde code, we proberen het nog een keer:
 
 \codeLines{
-  \codeLine{\I{Kluis}.\I{ontsluit}(1234)}
-  \codeLine{\I{Kluis}.\I{open}}[waarde $\to$ 1]
+  \codeLine{\id{Kluis}.\id{ontsluit}(1234)}
+  \codeLine{\id{Kluis}.\id{open}}[waarde $\to$ 1]
 }
 
 %TODO: Meerdere overerving niet mogelijk?
@@ -272,14 +272,14 @@ Een \emph{slot}% T: pad, ook binnen de grammatica veranderen
 is een opeenvolging door punten (``.'') gescheiden identifiers,% T: opeenvolging van identifiers gescheiden door punten
 en wordt gebruikt om ook naar attributen van objecten te kunnen referenceren:% T: refereren
 \begin{align*}
-  \Slot \GrammarDef \Id \mid \Id . \Slot
+  \Path \GrammarDef \Id \mid \Id . \Path
 \end{align*}
 \emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, zijn als volgt gedefiniëerd:% T: definiëren we als volgt
 \begin{align*}
-  \Expr \GrammarDef \Num \mid \Slot \mid \varnothing \mid \Expr\; (+ \mid - \mid \times \mid /\,)\; \Expr \\
+  \Expr \GrammarDef \Num \mid \Path \mid \varnothing \mid \Expr\; (+ \mid - \mid \times \mid /\,)\; \Expr \\
   \GrammarOr \FUN\pmb{(}\,\MaybeIds\,\pmb{)}\; \GrammarOpt{\RETURNS \Id\;} \pmb{\{}\; \Stm\; \pmb{\}} \\
   \Exprs \GrammarDef \Expr \mid \Exprs, \Expr \\
-  \ExprsMaybe \GrammarDef \varepsilon \mid \Exprs \\
+  \MaybeExprs \GrammarDef \varepsilon \mid \Exprs \\
   \BExpr \GrammarDef \TRUE \mid \FALSE \\
   \GrammarOr \BExpr\; (\AND \mid \OR)\; \BExpr \\
   \GrammarOr \NOT\; \BExpr \\
@@ -295,8 +295,8 @@ dat het programma \emph{valide} is, maar alle valide programma's zitten wel in $
   \GrammarOr \LOCAL \Id \\
   \GrammarOr \Id \OBJECT \\
   \GrammarOr \Id \CLONES \Id \\
-  \GrammarOr \Slot = \Expr \\
-  \GrammarOr \GrammarOpt{\Slot =} \Id\,\pmb{(}\,\ExprsMaybe\,\pmb{)} \\
+  \GrammarOr \Path = \Expr \\
+  \GrammarOr \GrammarOpt{\Path =} \Id\,\pmb{(}\,\MaybeExprs\,\pmb{)} \\
 \end{align*}
 Vanwege de focus van dit werkstuk definiëren we niet precies wanneer een programma valide is en wanneer niet.
 % T: Nog iets over dat we vaak \Id\ gebruiken in plaats van \Path om het ons makkelijker te maken.

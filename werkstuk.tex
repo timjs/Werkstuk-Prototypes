@@ -8,9 +8,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-%\usepackage{lmodern}
-\usepackage{millennial}
-\usepackage{tgadventor}
+\usepackage{lmodern}
+%\usepackage{millennial}
+%\usepackage{tgadventor}
 
 \usepackage{tabularx}% tables: equal width columns
 \usepackage{multirow}% tables: rowspan
@@ -28,25 +28,25 @@
 %\doublespacing
 
 \usepackage{bussproofs}
-  \def\extraVskip{4pt} % Iets meer verticale ruimte
-  % De volgende commands gebruik ik om op een simpele manier (1) de toegepaste regel aan de rechterkant van de deductieregel te laten zien, en (2) een automatische nummering aan de linkerkant te laten zien.
-  % Normaal gesproken gebruik je \RightLabel en \LeftLabel, maar nu gebruik ik dus: \Label (enkel een label) en \CountedLabel (label en automatische nummering)
-  % Terugzetten op 1 kan met "\setcounter{theLabel}{1}", bijvoorbeeld bij een nieuwe boom
-  \newcounter{theLabel}
-  \setcounter{theLabel}{1}
-  \newcommand{\Label}[1]{
-    \RightLabel{\small #1}
-  }
-  \newcommand{\CountedLabel}[1]{
-    \RightLabel{\small #1}
-    \LeftLabel{\scriptsize \arabic{theLabel}}
-    \addtocounter{theLabel}{1}
-  }
-  % Op een of andere manier moet je in je deductiebomen, de states gaan aangeven. Ik doe dit met doosjes, waarin net genoeg staat dat je iets intuitiever kunt zien wat welke state is, en wat er allemaal in zit.
-  \newcommand{\stateBox}[1]{%
-    \boxed{\mathit{\vphantom{f}#1}}
-  }
-  \newcommand{\emptyStateBox}{\stateBox{\phantom{f}}}
+\def\extraVskip{4pt} % Iets meer verticale ruimte
+% De volgende commands gebruik ik om op een simpele manier (1) de toegepaste regel aan de rechterkant van de deductieregel te laten zien, en (2) een automatische nummering aan de linkerkant te laten zien.
+% Normaal gesproken gebruik je \RightLabel en \LeftLabel, maar nu gebruik ik dus: \Label (enkel een label) en \CountedLabel (label en automatische nummering)
+% Terugzetten op 1 kan met "\setcounter{theLabel}{1}", bijvoorbeeld bij een nieuwe boom
+\newcounter{theLabel}
+\setcounter{theLabel}{1}
+\newcommand{\Label}[1]{
+  \RightLabel{\small #1}
+}
+\newcommand{\CountedLabel}[1]{
+  \RightLabel{\small #1}
+  \LeftLabel{\scriptsize \arabic{theLabel}}
+  \addtocounter{theLabel}{1}
+}
+% Op een of andere manier moet je in je deductiebomen, de states gaan aangeven. Ik doe dit met doosjes, waarin net genoeg staat dat je iets intuitiever kunt zien wat welke state is, en wat er allemaal in zit.
+\newcommand{\stateBox}[1]{%
+  \boxed{\mathit{\vphantom{f}#1}}
+}
+\newcommand{\emptyStateBox}{\stateBox{\phantom{f}}}
 
 \usepackage{tikz}
 \usetikzlibrary{calc}
@@ -62,7 +62,7 @@
    %         {+}{{$+$}}1 {-}{{$-$}}1 {*}{{$\times$}}1 {/}{{$/$}}1
    %         {&}{{$\wedge$}}1 {|}{{$\vee$}}1 {~}{{$\lnot$}}1,
    comment=[l]{--}}
-\lstMakeShortInline @
+\lstMakeShortInline @ %@
 \lstset
   {language=proto,
    basicstyle=\small\ttfamily,
@@ -80,8 +80,6 @@
 \setlength{\grammarindent}{8em}
 \renewcommand{\syntleft}{\normalfont\itshape}
 \renewcommand{\syntright}{}
-
-\newcommand{\I}[1]{\text{\upshape\small\ttfamily #1}}
 
 \newcommand{\newkeyword}[2]
   {\newcommand{#1}
@@ -103,8 +101,8 @@
   {\expandafter\newcommand\expandafter{\csname #1\endcsname}
     {\ensuremath{\mathbf{#1}}}}
 
-\newcommand{\syn}[1]
-  {\ensuremath{\mathit{#1}}}
+\newcommand{\id}[1]
+  {\text{\ttfamily\small\upshape #1}}
 
 \newcommand{\COMP}{;\;}
 \newkeyword{\LOCAL}{local\;}
@@ -134,16 +132,16 @@
 \newconstant{\OR}{or}
 \newconstant{\NOT}{not}
 
-\newnonterminal{\Stm}{Stm}
-\newnonterminal{\Id}{Id}
-\newnonterminal{\Ids}{Ids}
-\newnonterminal{\MaybeIds}{MaybeIds}
-\newnonterminal{\Slot}{Slot}
+\newnonterminal{\Stm}{Statement}
+\newnonterminal{\Id}{Identifier}
+\newnonterminal{\Ids}{Identifiers}
+\newnonterminal{\MaybeIds}{MaybeIdentifiers}
+\newnonterminal{\Path}{Path}
 \newnonterminal{\Expr}{Expression}
 \newnonterminal{\Exprs}{Expressions}
-\newnonterminal{\ExprsMaybe}{MaybeExpressions}
+\newnonterminal{\MaybeExprs}{MaybeExpressions}
 \newnonterminal{\BExpr}{BooleanExpression}
-\newnonterminal{\Num}{Num}
+\newnonterminal{\Num}{Number}
 
 \renewset{S}
 \newset{O}
@@ -156,6 +154,11 @@
 
 \newbool{T}
 \newbool{F}
+
+\newcommand{\ms}
+  {\ensuremath{m_{\text{s}}}}
+\newcommand{\mo}
+  {\ensuremath{m_{\text{o}}}}
 
 \newcommand{\BNF}
   {\textsc{bnf}}

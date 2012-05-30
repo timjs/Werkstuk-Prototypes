@@ -43,45 +43,45 @@ Laten we beginnen met de simpelste constructie in onze taal, het lege statement 
 \begin{NSAxiom}{skip}
   \begin{prooftree}
     \AxiomC{$
-      \Config{\SKIP}{m_s, m_o, \sigma, \tau}
+      \Config{\SKIP}{\ms, \mo, \sigma, \tau}
       \longrightarrow
-      (m_s, m_o)
+      (\ms, \mo)
     $}
   \end{prooftree}
 \end{NSAxiom}
 
 Zoals we kunnen zien zijn onze uitspraken van de vorm
 \begin{equation*}
-  \Config{S}{m_s,m_o,\sigma,\tau} \longrightarrow (m_s',m_o').
+  \Config{S}{\ms,\mo,\sigma,\tau} \longrightarrow (\ms',\mo').
 \end{equation*}
 Hiermee bedoelen we dat
 \begin{equation*}
-\big(\,(S,m_s,m_o,\sigma,\tau), (m_s',m_o')\,\big) \in (\longrightarrow),
+\big(\,(S,\ms,\mo,\sigma,\tau), (\ms',\mo')\,\big) \in (\longrightarrow),
 \end{equation*}
 waarbij $\longrightarrow$ de volgende signatuur heeft 
 \begin{equation*}
   (\longrightarrow) \subseteq (\Stm \times \MM_s \times \MM_o \times \LL_s \times \LL_o) \times (\MM_s \times \MM_o).
 \end{equation*}
-Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(m_s,m_o)\in(\MM_s,\MM_o)$ met als extra informatie de locatie van de huidige scope $\sigma\in\LL_s$ en de locatie van het huidige \THIS-object $\tau\in\MM_o$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(m_s',m_o')\in(\MM_s,\MM_o)$. \SKIP\ verandert niets aan de toestand zodat $(m_s',m_o')=(m_s,m_o)$.
+Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MM_s,\MM_o)$ met als extra informatie de locatie van de huidige scope $\sigma\in\LL_s$ en de locatie van het huidige \THIS-object $\tau\in\MM_o$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MM_s,\MM_o)$. \SKIP\ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$.
 
 Voor het samenstellen van statements hebben we een regel nodig.
 
 \begin{NSAxiom}{comp}
   \begin{prooftree}
     \AxiomC{$
-      \Config{S_1}{m_s, m_o, \sigma, \tau}
+      \Config{S_1}{\ms, \mo, \sigma, \tau}
       \longrightarrow
-      (m_s', m_o')
+      (\ms', \mo')
     $}
     \AxiomC{$
-      \Config{S_2}{m_s', m_o', \sigma, \tau}
+      \Config{S_2}{\ms', \mo', \sigma, \tau}
       \longrightarrow
-      (m_s'', m_o'')
+      (\ms'', \mo'')
     $}
     \BinaryInfC{$
-      \Config{S_1; S_2}{m_s, m_o, \sigma, \tau}
+      \Config{S_1; S_2}{\ms, \mo, \sigma, \tau}
       \longrightarrow
-      (m_s'', m_o'')
+      (\ms'', \mo'')
     $}
   \end{prooftree}
 \end{NSAxiom}
@@ -94,18 +94,18 @@ De controlestructuur \IF\ heeft twee regels, een voor het geval dat de \BExpr\ e
 \begin{NSAxiom}{if$^\T$}
   \begin{prooftree}
     \AxiomC{$
-      \Config{S_1}{m_s, m_o, \sigma, \tau}
+      \Config{S_1}{\ms, \mo, \sigma, \tau}
       \longrightarrow
-      (m_s', m_o')
+      (\ms', \mo')
     $}
     \UnaryInfC{$
-      \Config{\IF b \THEN  S_1 \ELSE S_2 }{m_s, m_o, \sigma, \tau}
+      \Config{\IF b \THEN  S_1 \ELSE S_2 }{\ms, \mo, \sigma, \tau}
       \longrightarrow
-      (m_s', m_o')
+      (\ms', \mo')
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{m_s, m_o,\sigma,\tau} = \T $}
+    \Cond{$ \Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \T $}
   \end{NSConditions}
 \end{NSAxiom}
 
@@ -114,18 +114,18 @@ bla bla
 \begin{NSAxiom}{if$^\F$}
   \begin{prooftree}
     \AxiomC{$
-      \Config{S_2}{m_s, m_o, \sigma, \tau}
+      \Config{S_2}{\ms, \mo, \sigma, \tau}
       \longrightarrow
-      (m_s', m_o')
+      (\ms', \mo')
     $}
     \UnaryInfC{$
-      \Config{\IF b \THEN S_1 \ELSE S_2 }{m_s, m_o, \sigma, \tau}
+      \Config{\IF b \THEN S_1 \ELSE S_2 }{\ms, \mo, \sigma, \tau}
       \longrightarrow
-      (m_s', m_o')
+      (\ms', \mo')
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{m_s, m_o,\sigma,\tau} = \F $}
+    \Cond{$ \Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \F $}
   \end{NSConditions}
 \end{NSAxiom}
 

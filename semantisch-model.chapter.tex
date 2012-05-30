@@ -46,15 +46,15 @@ Bindingen komen veelvuldig terug in ons model. In scopes worden \emph{variabelen
 % K: ik wil graag "procedureel als volgt opvatten" oid zeggen, om aan te geven dat zo'n 'procedure' niet het enige perspectief is die men kan nemen.
 %Zoals in \ref{sec:voorbeelden} informeel is behandeld, zijn scopes goed te representeren met een boomstructuur. Stel we evalueren een variabele $x$ in scope $s$:
 % T: Prima, maar deze wil ik wel graag actief "zou kunnen worden uitgelegd" zijn gewoonweg teveel werkworden in een zin.
-%In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. De evaluatie van een zekere variabele \I{x} in scope $s$ zou dan procedureel als volgt kunnen worden uitgelegd:
-In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. Stel we evalueren een variabele \I{x} in scope $s$:
+%In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. De evaluatie van een zekere variabele \id{x} in scope $s$ zou dan procedureel als volgt kunnen worden uitgelegd:
+In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. Stel we evalueren een variabele \id{x} in scope $s$:
 
 \newCodeFragment
 \codeLines{
-  \codeLine{\I{x}}[We bevinden ons in een zekere scope $s$.]
+  \codeLine{\id{x}}[We bevinden ons in een zekere scope $s$.]
 }
 
-dan kunnen we dit als volgt uitleggen. Eerst zoeken we \I{x} op in de bindingen groep $b_s$, behorende bij scope $s$.
+dan kunnen we dit als volgt uitleggen. Eerst zoeken we \id{x} op in de bindingen groep $b_s$, behorende bij scope $s$.
 \begin{equation*}
   b_s(x).
 \end{equation*}
@@ -63,8 +63,8 @@ Zoals ook te zien in \ref{exa:todo} hebben we twee mogelijkheden:
 % T: Heb je al naar de rest gekeken?
 
 \begin{enumerate}
-  \item \I{x} is gedefinieerd in $b_s$ en we gebruiken de gevonden waarde.
-  \item \I{x} is niet gedefinieerd in $b_s$ en we moeten \I{x} opzoeken in de omliggende scope.
+  \item \id{x} is gedefinieerd in $b_s$ en we gebruiken de gevonden waarde.
+  \item \id{x} is niet gedefinieerd in $b_s$ en we moeten \id{x} opzoeken in de omliggende scope.
 \end{enumerate}
 
 We moeten dus niet alleen de bindingen van de scope zelf bijhouden, maar ook een verwijzing naar zijn \emph{omgevende scope}. Een scope $s$ is definiëren we dus als een paar $(b,\pi)$, met in $b$ de bindingen en $\pi$ een \emph{verwijzing} naar de omgevende scope (ook wel \emph{parent}, of \emph{outer} scope).
@@ -74,14 +74,14 @@ We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopi
 \newCodeFragment[exa:lexical][Lexicale scope: opslaan en vinden van variabelen]
 \codeFragmentCaption
 \codeLines{
-  \codeLine{\VAR \I{x}}
-  \codeLine{\I{x} = 1}
-  \codeLine{\VAR \I{f}}
-  \codeLine[exa:lexical:def]{\I{f} = \FUN()}[Introductie nieuwe scope]
-  \codeLine{\IN \I{x} = 2 \times \I{x}}
+  \codeLine{\VAR \id{x}}
+  \codeLine{\id{x} = 1}
+  \codeLine{\VAR \id{f}}
+  \codeLine[exa:lexical:def]{\id{f} = \FUN()}[Introductie nieuwe scope]
+  \codeLine{\IN \id{x} = 2 \times \id{x}}
   \codeLine{}[Einde nieuwe scope]
-  \codeLine[exa:lexical:eerste]{\I{f}()}[$\I{x} = 2$]
-  \codeLine[exa:lexical:tweede]{\I{f}()}[$\I{x} = 4$]
+  \codeLine[exa:lexical:eerste]{\id{f}()}[$\id{x} = 2$]
+  \codeLine[exa:lexical:tweede]{\id{f}()}[$\id{x} = 4$]
 }
 
 Stel dat we geen verwijzing in de scope opslaan maar een kopie van de omgevende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is scope $s_f$ een paar $(b_f,p_f)$ met $b_f,p_f\in\BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam $f$ en de waarde $1$ onder naam $x$. Wanneer we $x$ aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omgevende scope $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
