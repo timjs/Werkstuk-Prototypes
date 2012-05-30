@@ -5,6 +5,8 @@
 
 \section{Statements}
 
+\subsection{Basis}
+
 Laten we beginnen met de simpelste constructie in onze taal, het lege statement \SKIP. Deze heeft de vorm van een axioma.
 
 \begin{NSAxiom}{skip}
@@ -53,10 +55,12 @@ Voor het samenstellen van statements hebben we een regel nodig.
   \end{prooftree}
 \end{NSAxiom}
 
-In dit geval geven we aan dat, wanneer we een een compositie hebben van de statements $S_1$ en $S_2$, we eerst $S_1$ evalueren% T: Dit is niet het juiste woord, weten even geen betere...
+In dit geval geven we aan dat, wanneer we een een compositie hebben van de statements $S_1$ en $S_2$, we eerst $S_1$ uitvoeren% T: Dit is niet het juiste woord, weten even geen betere...
 en daarna $S_2$. Tijdens dit proces ontstaan nieuwe toestanden, waar we natuurlijk rekening mee moeten houden. De geheugens worden dan ook netjes doorgesluisd.
 
-De controlestructuur \IF\ heeft twee regels, een voor het geval dat de \BExpr\ evalueert in \T\ en een voor het geval dat deze evalueert in \F.
+Voor de controlestructuur \IF\ hebben we twee regels nodig. De eerste is voor het geval dat de \BExpr\ evalueert in \T, dan moet namelijk het statement van het \THEN-deel worden uitgevoerd. Wanneer de \BExpr\ evalueert in \F\ moet het \ELSE-deel worden uitgevoerd.
+Er moet dus aan een extra voorwaarde worden voldaan om deze regels toe te mogen passen. Dit zal vaker voorkomen bij de komende deductieregels. We noteren deze extra voorwaarden onder de regel of het axioma.
+%Zoals vele axioma's en deductieregels heeft dit axioma een aantal voorwaarden waaraan voldaan moet worden. Deze staan eronder genoteerd, elk op een regel.  
 
 \begin{NSAxiom}{if$^\T$}
   \begin{prooftree}
@@ -76,7 +80,7 @@ De controlestructuur \IF\ heeft twee regels, een voor het geval dat de \BExpr\ e
   \end{NSConditions}
 \end{NSAxiom}
 
-bla bla
+en:
 
 \begin{NSAxiom}{if$^\F$}
   \begin{prooftree}
@@ -96,24 +100,49 @@ bla bla
   \end{NSConditions}
 \end{NSAxiom}
 
-\section*{Regels}
+Eenzelfde tactiek passen we toe bij een \WHILE-loop.
 
-\begin{NSAxiom}{clones}
+\begin{NSAxiom}{while$^\T$}
   \begin{prooftree}
     \AxiomC{$
-      \Config{i \CLONES j}{m, \sigma, \tau}
+      \Config{S_1}{\ms, \mo, \sigma, \tau}
       \longrightarrow
-      m'
+      (\ms',\mo')
+    $}
+    \AxiomC{$
+      \Config{\WHILE b \DO S_1 }{\ms', \mo', \sigma, \tau}
+      \longrightarrow
+      (\ms'',\mo'')
+    $}
+    \BinaryInfC{$
+      \Config{\WHILE b \DO S_1 }{\ms, \mo, \sigma, \tau}
+      \longrightarrow
+      (\ms'',\mo'')
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \Surr{i}_{m,\sigma,\tau} = \omega_i \in \LL $}
-    \Cond{$ \Surr{j}_{m,\sigma,\tau} = \omega_j \in \LL $}
-    \Cond{$ m' = m \surr{ \omega_i \mapsto \big(b_{m(\omega_i)}, \omega_j\big) } $}
+    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \T $}
   \end{NSConditions}
 \end{NSAxiom}
 
-bla bla
+en:
+
+\begin{NSAxiom}{while$^\F$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{\WHILE b \DO S_1 }{\ms, \mo, \sigma, \tau}
+      \longrightarrow
+      (\ms, \mo)
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \Surr{b}^\text{B}_{\ms,\mo,\sigma,\tau} = \F $}
+  \end{NSConditions}
+\end{NSAxiom}
+
+\subsection{Variabelen}
+
+We komen nu bij een interessanter deel van de taal, namelijk het \emph{declareren} van variabelen en het \emph{toekennen} van waarden. Dit gaat allemaal over scopes
 
 \begin{NSAxiom}{declare}
   \begin{prooftree}
@@ -127,25 +156,6 @@ bla bla
     \Cond{$ m' = m \surr{ \sigma \mapsto \big(b_{m(\sigma)}[i \mapsto \BOT], p_{m(\sigma)}\big) } $}
   \end{NSConditions}
 \end{NSAxiom}
-
-bla bla
-
-\begin{NSAxiom}{assign$^\text{this}$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{\THIS.s = e}{m, \sigma, \tau}
-      \longrightarrow
-      m'
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \textsc{Trav}_m(\tau, s) = (\omega, i) $}
-    \Cond{$ \Surr{e}_{m, \sigma, \tau} = v $}
-    \Cond{$ m'= m \surr{ \omega \mapsto \big(b_{m(\omega)}[ i \mapsto v ], p_{m(\omega)}\big) } $}
-  \end{NSConditions}
-\end{NSAxiom}
-
-bla bla
 
 \begin{NSAxiom}{assign$^\text{i}$}
   \begin{prooftree}
@@ -162,8 +172,9 @@ bla bla
   \end{NSConditions}
 \end{NSAxiom}
 
+\subsection{Objecten}
 
-bla bla
+Bij attributen gaat dit net iets anders, we hebben de hulp nodig van extra functies en voorwaarden. Zo moeten we rekening houden met het doorlopen van een pad en het speciale geval onderscheiden dat het eerste deel van het pad \THIS\ is.
 
 \begin{NSAxiom}{assign$^\text{slot}$}
   \begin{prooftree}
@@ -182,7 +193,52 @@ bla bla
   \end{NSConditions}
 \end{NSAxiom}
 
-bla bla
+\begin{NSAxiom}{assign$^\text{this}$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{\THIS.s = e}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \textsc{Trav}_m(\tau, s) = (\omega, i) $}
+    \Cond{$ \Surr{e}_{m, \sigma, \tau} = v $}
+    \Cond{$ m'= m \surr{ \omega \mapsto \big(b_{m(\omega)}[ i \mapsto v ], p_{m(\omega)}\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
+
+\begin{NSAxiom}{object}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{i \OBJECT}{m, \sigma, \tau}
+      \longrightarrow
+      m''
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \textsc{Find}_m(\sigma, i) = \sigma_\text{def} $}
+    \Cond{$ m' = m \surr{ \sigma_\text{def} \mapsto \big(b_{m(\sigma')}[i\mapsto \omega], p_{m(\sigma')}\big) } $}
+    \Cond{$ m'' = m' \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
+
+\begin{NSAxiom}{clones}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{i \CLONES j}{m, \sigma, \tau}
+      \longrightarrow
+      m'
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \Surr{i}_{m,\sigma,\tau} = \omega_i \in \LL $}
+    \Cond{$ \Surr{j}_{m,\sigma,\tau} = \omega_j \in \LL $}
+    \Cond{$ m' = m \surr{ \omega_i \mapsto \big(b_{m(\omega_i)}, \omega_j\big) } $}
+  \end{NSConditions}
+\end{NSAxiom}
+
+\subsection{Functies}
 
 \begin{NSAxiom}{call}
   \begin{prooftree}
@@ -207,50 +263,7 @@ bla bla
   \end{NSConditions}
 \end{NSAxiom}
 
-bla bla
-
-bla bla
-
-bla bla
-bla bla
-
-\begin{NSAxiom}{while$^\text{T}$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{S_1}{m, \sigma, \tau}
-      \longrightarrow
-      m'
-    $}
-    \AxiomC{$
-      \Config{\WHILE (b) \DO \{ S_1 \}}{m', \sigma, \tau}
-      \longrightarrow
-      m''
-    $}
-    \BinaryInfC{$
-      \Config{\WHILE (b) \DO \{ S_1 \}}{m, \sigma, \tau}
-      \longrightarrow
-      m''
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{T} $}
-  \end{NSConditions}
-\end{NSAxiom}
-
-bla bla
-
-\begin{NSAxiom}{while$^\text{F}$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{\WHILE (b) \DO \{ S_1 \}}{m, \sigma, \tau}
-      \longrightarrow
-      m
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{F} $}
-  \end{NSConditions}
-\end{NSAxiom}
+\section*{Extra}
 
 %Deze teksten zijn vooral bedoeld als ``tekstvlees'' (lorem ipsum's). We zullen axioma's en deductieregels introduceren waarmee we de relatie $(\longrightarrow)$ definiëren, die de volgende signatuur heeft:
 
@@ -268,24 +281,6 @@ Deze uitspraak moet je lezen als: ``In de toestand met geheugen $m$, scope $\sig
 
 Een van deze axioma's [object], heeft betrekking tot de productieregel in de grammatica die de $\OBJECT$ ``literal'' introduceert.
 
-\begin{NSAxiom}{object}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{i \OBJECT}{m, \sigma, \tau}
-      \longrightarrow
-      m''
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \textsc{Find}_m(\sigma, i) = \sigma_\text{def} $}
-    \Cond{$ m' = m \surr{ \sigma_\text{def} \mapsto \big(b_{m(\sigma')}[i\mapsto \omega], p_{m(\sigma')}\big) } $}
-    \Cond{$ m'' = m' \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
-  \end{NSConditions}
-\end{NSAxiom}
-
-Zoals vele axioma's en deductieregels heeft ook dit axioma een aantal voorwaarden waaraan moet worden voldaan. Deze staan eronder genoteerd, elk op een regel.
-
-Wanneer bij een dergelijke opsomming van voorwaarden een nieuwe variabele wordt geïntroduceerd zoals hierboven, met de volgende vorm: $\textbf{desda } \square = \theta \dots$; dan moet deze gelezen worden als: $\textbf{desda } \exists_\theta \big[\, \square = \theta \dots \,\big]$.
-
+Wanneer bij een dergelijke opsomming van voorwaarden een nieuwe variabele wordt geïntroduceerd zoals hierboven, met de volgende vorm: $\textbf{desda } \square = \theta \dots$; dan moet deze gelezen worden als: $\textbf{desda } \exists_\theta \surr{ \square = \theta \dots }$.
 
 % vim: syn=latex spell spl=nl cole=1 cocu=nv
