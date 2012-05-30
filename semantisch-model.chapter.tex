@@ -1,52 +1,17 @@
 \chapter{Semantisch model}
 
-\section{Bindingen}\label{sec:bindinge}
+\section{Bindingen}\label{sec:bindingen}
 
-% K: Onderstaande twee paragrafen heb ik gewijzigd zodat de termen "binding" en  "binding groep" zo gebruikt worden zoals wij dat afgesproken hebben.
-% T: check!
 Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id). Bindingen zijn bijvoorbeeld van belang om de gedefiniëerd variabelen binnen een scope vast te leggen, of de attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to \VV$. De verzameling van alle groepen van bindingen definiëren we dus als
-% K: Hier staat dus niet meer dat gekke pijltje van \FiniteFunctions, want nu vermelden we in [Notatie en Terminologie] dat alle functies eindig zullen zijn.
-% T: prima
 \begin{equation*}
-  \BB \DEF \VV^\Id
+  \BB \DEF \FiniteFunctions{\VV}{\Id}
 \end{equation*}
-% K: wat denk jij: "sectie 4.4" of "onderdeel 4.4" of gewoon "4.4" ??
-% T: Ik heb in de rest van de tekst "§" gebruikt, anders het liefst "sectie". Zet er wel een ~ tussen ipv een spatie, dan weten we zeker dat die niet afgebroken wordt. Heb er nu § van gemaakt.
 We komen later terug op wat de waarden $\VV$ precies zijn in §\ref{sec:waarden}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\NN$ deel uitmaken van $\VV$.
 
-% K: Ik geloof niet dat we in [Semantisch Model] uitvoerig in moeten gaan op het updaten van functies, aangezien dat een syntactische aangelegenheid is, die we het best kunnen beschrijving in [Notatie en Terminologie], en hier slechts even noemen.
-% T: Ik heb dit naar de sectie "Functies uitbreiden" in "Notatie en terminologie" verplaats.
-
-%Een groep bindingen $b \in \BB$ is in eerste instantie leeg. Dit geven we aan met $\emptyset$. We willen natuurlijk \Id's kunnen koppelen aan waardes. Hiervoor voeren we een notatie in om $b$ te \emph{updaten}. Om bijvoorbeeld de waarde $5$ toe te kennen aan de \Id\ $x$ zoals in voorbeeld \ref{exa:todo} schrijven we
-%\begin{equation*}
-%  b[x \mapsto 5]
-%\end{equation*}
-%zodat wanneer we $x$ ``opvragen'' in $b$ we weten dat
-%\begin{equation*}
-%  b(x) = 5.
-%\end{equation*}
-%Wanneer we meerdere \Id's willen koppelen aan waardes, bijvoorbeeld $y$ aan $7$ en $z$ aan $9$ kan dat met bovenstaande notatie als volgt
-%\begin{equation*}
-%  \big(b[y \mapsto 7]\big)[z \mapsto 9].
-%\end{equation*}
-%Wat we afkorten tot
-%\begin{equation*}
-%  b[y \mapsto 7, z \mapsto 9].
-%\end{equation*}
-
-% K: slechts de tekst wat gereviseerd (passieve vormen, woordherhaling...)
-% T: Ik ben over het algemeen geen fan van passieve vormen, maar in dit geval is het netjes zo.
 Bindingen komen veelvuldig terug in ons model. In scopes worden \emph{variabelen} gedeclareerd en aan waarden gekoppeld. Bij objecten zijn het de \emph{attributen} die waarden krijgen toegekend.
-% K: ik zou deze regel schappen
-% T: Dit kan inderdaad ook later.
-% Bij scopes moeten we ook rekening houden met eventuele bindingen in de scope buiten de huidige. Eenzelfde opzet geld voor objecten. Door prototype overerving moeten we op zoek naar een attribuut in het prototype van het huidige object, wanneer het niet gedefinieerd is in het object zelf.
 
 \section{Scope en omliggende scopes}
 
-% K: ik wil graag "procedureel als volgt opvatten" oid zeggen, om aan te geven dat zo'n 'procedure' niet het enige perspectief is die men kan nemen.
-%Zoals in \ref{sec:voorbeelden} informeel is behandeld, zijn scopes goed te representeren met een boomstructuur. Stel we evalueren een variabele $x$ in scope $s$:
-% T: Prima, maar deze wil ik wel graag actief "zou kunnen worden uitgelegd" zijn gewoonweg teveel werkworden in een zin.
-%In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. De evaluatie van een zekere variabele \id{x} in scope $s$ zou dan procedureel als volgt kunnen worden uitgelegd:
 In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goed te zien zijn als een boomstructuur. Stel we evalueren een variabele \id{x} in scope $s$:
 
 \newCodeFragment
@@ -55,19 +20,19 @@ In sectie \ref{sec:voorbeelden} is informeel gebleken dat scopes conceptueel goe
 }
 
 dan kunnen we dit als volgt uitleggen. Eerst zoeken we \id{x} op in de bindingen groep $b_s$, behorende bij scope $s$.
+%
 \begin{equation*}
   b_s(x).
 \end{equation*}
-Zoals ook te zien in \ref{exa:todo} hebben we twee mogelijkheden:
-
-% T: Heb je al naar de rest gekeken?
+%
+Vervolgens moet er gevalsonderscheiding worden gedaan voor de volgende situaties:
 
 \begin{enumerate}
-  \item \id{x} is gedefinieerd in $b_s$ en we gebruiken de gevonden waarde.
-  \item \id{x} is niet gedefinieerd in $b_s$ en we moeten \id{x} opzoeken in de omliggende scope.
+  \item \id{x} is gedefiniëerd in $b_s$, dus gebruiken we de gevonden waarde.
+  \item \id{x} is niet gedefiniëerd in $b_s$, dus moeten we \id{x} opzoeken in de omgevende scope.
 \end{enumerate}
 
-We moeten dus niet alleen de bindingen van de scope zelf bijhouden, maar ook een verwijzing naar zijn \emph{omgevende scope}. Een scope $s$ is definiëren we dus als een paar $(b,\pi)$, met in $b$ de bindingen en $\pi$ een \emph{verwijzing} naar de omgevende scope (ook wel \emph{parent}, of \emph{outer} scope).
+Hieruit blijkt dat we voor een willekeurige scope niet alleen zijn eigen bindingen moeten bijhouden, maar ook een verwijzing naar zijn \emph{omgevende scope}. Een scope $s$ definiëren we daarom als een paar $(b, \pi)$, met $b$ de bindingen en $\pi$ een \emph{verwijzing} naar de omgevende scope (ook wel \emph{parent}, of \emph{outer} scope).
 
 We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omgevende scope. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. De scope $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een \LOCAL variabele. De omgevende scope $\pi_f$ van functie $f$ verwijst naar scope $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
 
@@ -84,42 +49,34 @@ We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopi
   \codeLine[exa:lexical:tweede]{\id{f}()}[$\id{x} = 4$]
 }
 
-Stel dat we geen verwijzing in de scope opslaan maar een kopie van de omgevende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is scope $s_f$ een paar $(b_f,p_f)$ met $b_f,p_f\in\BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam $f$ en de waarde $1$ onder naam $x$. Wanneer we $x$ aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omgevende scope $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
+Stel nu dat we geen verwijzing in de scope opslaan, maar een kopie van de omgevende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is scope $s_f$ een paar $(b_f, p_f)$ met $b_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omgevende scope $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
 
 Een scope $s$ is dus een element uit de verzameling
+%
 \begin{equation*}
   \SS \DEF \BB \times (\LLs \cup \{\nil\}).
 \end{equation*}
-Hierbij zijn $\BB$ de bindingen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van scopes. Op het begrip locatie komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort ``ultieme'' omgevende scope is. Het kan dus zijn dat een scope geen parent heeft. In dat geval zetten we
-\begin{equation*}
-  \pi = \nil.
-\end{equation*}
-We zeggen dat $\pi$ \emph{niet bestaat} of \emph{niks} is. Vandaar dat we het symbool $\nil$ toevoegen aan $\LLs$.
+%
+Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van scopes. Op het begrip ``locatie'' komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort ``ultieme'' omgevende scope is. Het kan dus zijn dat een scope geen parent heeft. Voor dat geval introduceren we het unieke element $\nil$. De beoogde interpretatie van een scope van de vorm $(b, \nil)$ is dan dat het geen omgevende scope heeft.
 
 \section{Objecten en prototype overerving}
 
-In §\ref{sec:prototypen} hebben we een beeld gekregen van prototype overerving. Net als scopes en omgevende scopes, blijken objecten en prototypen te modelleren met een boomstructuur. Geheel in lijn met scopes is een object een paar met daarin zijn eigen bindingen $b$ en een verwijzing naar zijn prototype $\pi$. Natuurlijk kan een object ook geen prototype hebben. Dit geven we weer aan met $\nil$. Een object $o$ is dan een element uit
+In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overerving. Net als scopes en omgevende scopes, worden objecten en hun prototypen het best gemodelleerd met een boomstructuur. Geheel in lijn met scopes is een object een paar met daarin zijn eigen bindingen $b$ en een verwijzing naar zijn prototype $\pi$. Natuurlijk kan een object ook geen prototype hebben. Dit geven we weer aan met $\nil$. Een object $o$ is dus een element uit
+%
 \begin{equation*}
-  \OO \DEF \BB \times (\LL \cup \{\nil\}).
+  \OO \DEF \BB \times (\LLo \cup \{\nil\}).
 \end{equation*}
-Hierbij zijn $\BB$ weer de bindingen uit §\ref{sec:bindingen} en $\LLo$ zijn locaties van objecten. We maken dus een strikte scheiding tussen locaties van scopes en locaties van objecten.
+%
+Hierbij is $\BB$ weer de verzamelingen bindinggroepen uit §\ref{sec:bindingen} en $\LLo$ zijn ditmaal locaties van objecten.
 
-\section{Functies}
+Hoewel het semantische model voor objecten en hun prototypen vrijwel identiek is aan het semantische model voor scopes, hebben ze een andere betekenis. Om deze gelijkheid te benadrukken gebruiken we voor beide modellen een aantal zelfde letters, en om de ongelijkheid te benadrukken subscripten we de locatie verzamelingen ($\LLo$ en $\LLs$).
 
 \section{Waarden: referenties en primitieven}
 \label{sec:waarden}
 
-In voorgaande paragrafen spraken we telkens over waardes $\VV$ en locaties $\LL$ ($\LLs$ voor scopes $\LLo$ voor objecten). We hebben de exacte definities hiervan in het midden gelaten. Een waarde $v\in\VV$ is iets wat we toekennen aan een \Id\ met behulp van een binding. Bindingen waren immers functies van \Id\ naar waardes. In de voorbeelden van §\ref{sec:voorbeelden} zijn we verschillende waardes tegengekomen:
-\begin{lstlisting}
-local n
-n = 5                        # Natuurlijke getallen
-local f
-f = function (x) returns y   # Functies
-    y = 2 * x
-local A
-A object                     # Objecten
-\end{lstlisting}
-In onze taal komen dus drie typen waardes voor. Er is echter een verschil in de manier waarop wij ze behandelen. Wat gebeurt er wanneer we bovenstaande waardes opnieuw toekennen aan andere variabelen? Allereerst een natuurlijk getal, deze is het eenvoudigst:
+In voorgaande paragrafen spraken we over waarden $\VV$ en locaties $\LL$ ($\LLs$ voor scopes $\LLo$ voor objecten). We hebben de exacte definities hiervan in het midden gelaten. Een waarde $v \in \VV$ is iets wat we toekennen aan een \Id\ met behulp van een binding. In §\ref{subsec:taal-types} is uitgelegd hoe de taal over verschillende typen data kan spreken. In onze taal komen drie typen data voor: getallen, functies en objecten. Er is echter een verschil in de manier waarop wij ze behandelen.
+
+Wat gebeurt er wanneer we bovenstaande waardes opnieuw toekennen aan andere variabelen? Allereerst een natuurlijk getal, deze is het eenvoudigst:
 \begin{lstlisting}
 local m
 m = n
@@ -171,6 +128,11 @@ Wanneer we zomaar een kopie van de waarde in @A@ aan @B@ toekennen, zou het attr
 \end{equation*}
 
 Primitieve waardes in onze taal koppelen we \emph{by-value}. Dit zijn natuurlijke getallen en functies. Objecten daarentegen worden \emph{by-reference} gekoppeld. Deze referenties zijn elementen uit $\LLo$. Achter de schermen worden deze gebruikt om objecten door te geven en worden op hun beurt wel \emph{by-reference} gekoppeld.
+
+\section{Functies}
+\label{model-functies}
+
+TODO
 
 \section{Locaties en geheugen}\label{sec:locaties}
 
