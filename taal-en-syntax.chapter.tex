@@ -11,6 +11,7 @@ Het is belangrijk om te vermelden dat het hierbij niet gaat om een taal te maken
 
 Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
 
+\begin{NoBreak}
 \newCodeFragment[exa:template][Het eerste voorbeeldprogramma]
 \codeFragmentCaption
 \codeLines{
@@ -22,6 +23,7 @@ Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
   \codeLine{\VAR \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
   \codeLine{\id{x} = \id{f}(42)}[\id{x} heeft nu de waarde 94]
 }
+\end{NoBreak}
 
 De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
 
@@ -31,6 +33,7 @@ De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aa
 
 Een variabele moet altijd eerst worden gedeclareerd. Daarna kan er een waarde aan worden toegekend of kan het op andere manieren worden gebruikt. Een programma waarin variabelen worden gebruikt die nooit zijn gedefiniëerd is niet valide. In code fragment~\ref{exa:declaration} staat een voorbeeld van declaratie.
 
+\begin{NoBreak}
 \newCodeFragment[exa:declaration][Declaratie van variabelen]
 \codeFragmentCaption
 \codeLines{
@@ -38,6 +41,7 @@ Een variabele moet altijd eerst worden gedeclareerd. Daarna kan er een waarde aa
   \codeLine{\VAR \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
   \codeLine{\id{x} = 5}[\id{x} bevat nu de waarde 5]
 }
+\end{NoBreak}
 
 Het concept van declaratie is juist in deze taal heel belangrijk, gezien het lexicaal bereik van variabelen. Wat lexicaal bereik precies inhoudt wordt weldra behandeld.
 
@@ -52,6 +56,7 @@ Variabelen kunnen na declaratie waarden aannemen. Onze taal bevat waarden van dr
 \end{itemize}% T: Ben je het met deze opsomming eens?
 Het onderscheid tussen deze types wordt op \emph{dynamisch} niveau gemaakt in plaats van op syntactisch niveau. Dat houdt in dat een willekeurige variabele elke willekeurige waarde kan aannemen, van elk willekeurig type. Ook kan het in zijn levensduur waarden van meerder types bevatten. Code fragment~\ref{exa:types} geeft dit weer.
 
+\begin{NoBreak}
 \newCodeFragment[exa:types][Waarden van verschillende types]
 \codeFragmentCaption
 \codeLines{
@@ -61,6 +66,7 @@ Het onderscheid tussen deze types wordt op \emph{dynamisch} niveau gemaakt in pl
   \codeLine{\id{x} \OBJECT}[type ``object'', aan \id{x} kunnen nu attributen worden toegevoegd]% T: dit lijkt mij beter
   % deze rare initiälisatie heeft een reden
 }
+\end{NoBreak}
 
 \subsection{Lexicaal bereik}
 
@@ -69,6 +75,7 @@ Het \emph{bereik} (ook wel \emph{scope}) van een variabele, is dat deel van het 
 De vraag die we ons stellen is: ``Als ik de naam van een variabele tegen kom, over welke variabele heb ik het dan?'' Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. We zien dat het sleutelwoord \LOCAL\ hier een cruciale rol in speelt. De plaats waar een variabele gedeclareerd is, geeft zijn bereik aan. Wanneer een variabele niet in het lokale bereik is gedeclareerd, zoeken we die op in het \emph{omliggende bereik}: het bereik dat lexicaal gezien om het locale bereik heen ligt.
 Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van inspringing in onderstaande voorbeelden komt overeen met de boomstructuur van de bereiken.% T: ook dit kan mooier, maar de eerdere tekst is warrig en past niet in de stijl
 
+\begin{NoBreak}
 \newCodeFragment[exa:zoek][Zoek de definitie van variabele \id{x}]
 \codeFragmentCaption
 \codeLines{
@@ -79,7 +86,9 @@ Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van i
   \codeLine{\id{f} = \FUN(\;)}
   \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
 }
+\end{NoBreak}
 
+\begin{NoBreak}
 \newCodeFragment[exa:zoek2][Zoek de definitie van variabele \id{x}]
 \codeFragmentCaption
 \codeLines{
@@ -92,12 +101,13 @@ Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van i
   \codeLine{\IN \id{x} = 43}
   \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
 }
+\end{NoBreak}
 
 %Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de scopes. Het moge duidelijk zijn dat als men ``naar buiten toe'' zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
 
 Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er ``niks gebeurt'' als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer je een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuw bereik aangemaakt, met als omliggend bereik het bereik waarin de functie was gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment~\ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe bereiken worden aangemaakt bij de definitie van functies, zou de uitvoer van $\id{d}(\;)$ 8 zijn in plaats van 43.
 
-% FIXME: caption blijft op vorige pagina staan
+\begin{NoBreak}
 \newCodeFragment[exa:counting][Het belang van creatie van bereiken bij functie applicatie]
 \codeFragmentCaption
 \codeLines{
@@ -114,6 +124,7 @@ Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie
   \codeLine{}[]
   \codeLine{\id{d} = \id{f}(42)}[$\id{d}(\;)$: 43, 44, 45, 46, \dots]
 }
+\end{NoBreak}
 
 \subsection{Prototype overerving en object oriëntatie}
 \label{sec:taal-prototypen}
