@@ -107,7 +107,7 @@ Nieuwe scopes ontstaan in onze taal enkel (en altijd) bij functie applicatie. Ee
   \codeLine{\id{d} = \id{f}(42)}[$\id{d}(\;)$: 43, 44, 45, 46, \dots]
 }
 
-\subsection{Prototype overerving}
+\subsection{Prototype overerving en object oriëntatie}
 
 Prototype overerving is een variant van object-geörienteerd programmeren. De kern van object-geörienteerd programmeren is het concept van een \emph{object}, dat ertoe dient een verschijnsel uit de werkelijkheid na te bootsen (een reëel object, een patroon, een abstract idee). Het doel is om meer te kunnen programmeren op een conceptueel niveau. Daarmee wordt bijvoorbeeld zowel creatie als onderhoud van de code makkelijker.
 
@@ -248,33 +248,36 @@ Helaas was dat de verkeerde code, we proberen het nog een keer:
 \section{Grammatica}
 
 Nu volgt een formele definitie van de syntaxis van de taal, aan de hand van een \BNF\ grammatica. Nummers zijn als volgt gedefiniëerd:
+%
 \begin{align*}
   \Num \GrammarDef (0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9)^+
 \end{align*}
-Eigenlijk gebruiken we geen strikte \BNF, in deze specifieke gevallen, maar een hele simpele variant, zoals \textsc{e-bnf}, waarbij de ook simpele reguliere expressies toelaten.% T:, die ook reguliere expressies toelaat.
-Bovenstaand voorbeeld maakt dit duidelijk. Voorbeelden van elementen uit $\Num$ zijn ``0'', ``1'', ``235783'' en ``0003''. Voorbeelden van elementen die niet in $\Num$ zitten zijn ``'', ``-6'', ``4.2''.
+%
+Eigenlijk gebruiken we geen strikte \BNF, in deze specifieke gevallen, maar een hele simpele variant, zoals \textsc{e-bnf}, die ook reguliere expressies toelaat. Bovenstaand voorbeeld maakt dit duidelijk. Voorbeelden van elementen uit $\Num$ zijn ``0'', ``1'', ``235783'' en ``0003''. Voorbeelden van elementen die niet in $\Num$ zitten zijn ``'', ``-6'', ``4.2''.
 
-\emph{Identifiers}, die gebruikt worden als variabel-namen,% T: namen voor variabelen en attributen
-zijn op eenzelfde manier als volgt gedefiniëerd:
+\emph{Identifiers}, die gebruikt worden als namen voor variabelen en attributen, zijn op eenzelfde manier als volgt gedefiniëerd:
+%
 \begin{align*}
   \Id \GrammarDef (a \mid b \mid c \mid \dots \mid A \mid B \mid C \mid \dots)^+
 \end{align*}
-Hierbij moet je je natuurlijk% T: moet men zich
-voorstellen dat alle letters uit het alfabet in de grammaticaregel staan op de voordehandliggende% T: voor de hand liggende
-manier.
+%
+Hierbij moet men zich voorstellen dat alle letters uit het alfabet in de grammaticaregel staan op de voor de hand liggende manier.
 
 Het is soms ook nodig om meerdere komma-gescheiden namen te gebruiken, of een mogelijk lege lijst, zoals bij functie definities. Vandaar de volgende twee productieregels:
+%
 \begin{align*}
   \Ids \GrammarDef \Id \mid \Ids, \Id \\
   \MaybeIds \GrammarDef \varepsilon \mid \Ids
 \end{align*}
-Een \emph{slot}% T: pad, ook binnen de grammatica veranderen
-is een opeenvolging door punten (``.'') gescheiden identifiers,% T: opeenvolging van identifiers gescheiden door punten
-en wordt gebruikt om ook naar attributen van objecten te kunnen referenceren:% T: refereren
+%
+Een \emph{pad} is een opeenvolging van identifiers gescheiden door punten en wordt gebruikt om ook naar attributen van objecten te kunnen refereren:
+%
 \begin{align*}
   \Path \GrammarDef \Id \mid \Id . \Path
 \end{align*}
-\emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, zijn als volgt gedefiniëerd:% T: definiëren we als volgt
+%
+\emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, definiëren we als volgt:
+%
 \begin{align*}
   \Expr \GrammarDef \Num \mid \Path \mid \varnothing \mid \Expr\; (+ \mid - \mid \times \mid /\,)\; \Expr \\
   \GrammarOr \FUN\pmb{(}\,\MaybeIds\,\pmb{)}\; \GrammarOpt{\RETURNS \Id\;} \pmb{\{}\; \Stm\; \pmb{\}} \\
@@ -285,8 +288,9 @@ en wordt gebruikt om ook naar attributen van objecten te kunnen referenceren:% T
   \GrammarOr \NOT\; \BExpr \\
   \GrammarOr \Expr\; (=\: \mid\: <\: \mid\: \le\: \mid\: >\: \mid\: \ge)\; \Expr
 \end{align*}
-De kern van de hele grammatica draait om de volgende productieregels, die van \emph{statements}. Een statement is een programma van goede vorm. Het betekent niet nodelijkerwijs% T: per se / noodzakelijk
-dat het programma \emph{valide} is, maar alle valide programma's zitten wel in $\Stm$.
+%
+De kern van de hele grammatica draait om de volgende productieregel voor \emph{statements}. Een statement is een programma van goede vorm. Het betekent niet noodzakelijk dat het programma \emph{valide} is, maar alle valide programma's zitten wel in $\Stm$. (Vanwege de focus van dit werkstuk definiëren we niet precies wanneer een programma valide is en wanneer niet.)
+%
 \begin{align*}
   \Stm \GrammarDef \SKIP \\
   \GrammarOr \Stm; \Stm \\
@@ -296,10 +300,30 @@ dat het programma \emph{valide} is, maar alle valide programma's zitten wel in $
   \GrammarOr \Id \OBJECT \\
   \GrammarOr \Id \CLONES \Id \\
   \GrammarOr \Path = \Expr \\
-  \GrammarOr \GrammarOpt{\Path =} \Id\,\pmb{(}\,\MaybeExprs\,\pmb{)} \\
+  \GrammarOr \GrammarOpt{\Path =} \Id\,\pmb{(}\,\MaybeExprs\,\pmb{)}
 \end{align*}
-Vanwege de focus van dit werkstuk definiëren we niet precies wanneer een programma valide is en wanneer niet.
-% T: Nog iets over dat we vaak \Id\ gebruiken in plaats van \Path om het ons makkelijker te maken.
-% T: Is er een reden dat we "Statements" afkorten tot "Stm", "Identifiers" tot "Id", "Numbers" tot "Num" en "Expression" niet tot "Expr"? Allemaal voluit lijkt mij het handigste, dan zijn ze ook goed te gebruiken in de tekst.
+%
+Merk op dat in delen van deze productieregel \Id's staan waar men misschien een \Path\ had verwacht. Zo zou het wenselijk lijken om bijvoorbeeld ``$\id{a}.\id{b} \CLONES \id{c}.\id{d}$'' als een programma van goede vorm te beschouwen. Er zijn twee redenen waarom we dit echter niet hebben gedaan. Ten eerste worden de axioma's en deductieregels ingewikkelder en daarmee minder elegant, of er zijn er meer nodig. Maar belangrijker nog, is het niet essentiëel voor de taal. Voor elk programma zoals ``$\id{a}.\id{b} \CLONES \id{c}.\id{d}$'', bestaat er een equivalent programma zónder zulke paden:
+
+\begin{minipage}[t]{.5\textwidth}
+  \newCodeFragment
+  \codeLines{
+    \codeLine{\id{a}.\id{b} \CLONES \id{c}.\id{d}}
+  }
+\end{minipage}
+\begin{minipage}[t]{.5\textwidth}
+  \newCodeFragment
+  \codeLines{
+    \codeLine{\VAR x}
+    \codeLine{x = \id{a}.\id{b}}
+    \codeLine{}
+    \codeLine{\VAR y}
+    \codeLine{y = \id{c}.\id{d}}
+    \codeLine{}
+    \codeLine{x \CLONES y}
+  }
+\end{minipage}
+
+Hierin moeten $x$ en $y$ ``vers'' gekozen worden.
 
 % vim: syn=latex spell spl=nl cole=1 cocu=nv
