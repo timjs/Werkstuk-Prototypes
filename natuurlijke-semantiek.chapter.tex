@@ -142,7 +142,7 @@ en:
 
 \subsection{Variabelen}
 
-We komen nu bij een interessanter deel van de taal, namelijk het \emph{declareren} van variabelen en het \emph{toekennen} van waarden. Dit gaat allemaal over scopes
+We komen nu bij een interessanter deel van de taal, namelijk het \emph{declareren} van variabelen en het \emph{toekennen} van waarden. In deze sectie gaan we dus alleen de bereiken modificeren. Aan de basis hiervan ligt het declareren van een variabele met \LOCAL. We willen in het huidige bereik de eigen bindingen zó aanpassen, dat de \Id\ die we declareren gekoppeld wordt aan $\nil$ (de variabele bevat immers nog geen expliciete waarde). Voordat we dit kunnen doen, moeten we bereik $\sigma$ opzoeken in het geheugen voor bereiken $\ms$ met $\ms(\sigma)$. Vervolgens passen we de binding hiervan aan (zie notatie in §\ref{sec:bereiken} en §\ref{sec:uitbreiden}). Met de verwijzing naar het omliggend bereik $\pi$ doen we niks. Dit paar van uitgebreide bindingen en oud omliggend bereik zetten we terug in het geheugen $\ms$ op plek $\sigma$.
 
 \begin{NSAxiom}{declare}
   \begin{prooftree}
@@ -156,6 +156,8 @@ We komen nu bij een interessanter deel van de taal, namelijk het \emph{declarere
     \Cond{$ \ms' = \ms \surr{ \sigma \mapsto \big(b_{\ms(\sigma)}[i \mapsto \BOT], p_{\ms(\sigma)}\big) } $}
   \end{NSConditions}
 \end{NSAxiom}
+
+Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we dit met dezelfde aanpassingstechniek als hierboven. Er is echter één groot verschil. Voordat we een waarde aan een variabele kunnen koppelen, moeten we eerst het bereik vinden waarin deze gedeclareerd is. Dit hoeft niet het huidige bereik te zijn en dus zoeken we deze op met de hulpfunctie $\textsc{Find}_\text{scope}$. Daarnaast moeten we natuurlijk de expressie aan de rechter kant van het is-teken evalueren.
 
 \begin{NSAxiom}{assign$^\text{i}$}
   \begin{prooftree}
@@ -174,7 +176,7 @@ We komen nu bij een interessanter deel van de taal, namelijk het \emph{declarere
 
 \subsection{Objecten}
 
-Bij attributen gaat dit net iets anders, we hebben de hulp nodig van extra functies en voorwaarden. Zo moeten we rekening houden met het doorlopen van een pad en het speciale geval onderscheiden dat het eerste deel van het pad \THIS\ is.
+Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van andere functies en we moeten rekening houden met het doorlopen van een pad. Daarnaast is er nog het speciale geval dat het eerste deel van het pad \THIS\ is. Natuurlijk gebeuren al deze aanpassingen in het geheugen voor objecten $\mo$ en gebruiken we locaties van objecten $\omega\in\LLo$ in plaats van locaties van bereiken.
 
 \begin{NSAxiom}{assign$^\text{slot}$}
   \begin{prooftree}
@@ -208,6 +210,8 @@ Bij attributen gaat dit net iets anders, we hebben de hulp nodig van extra funct
   \end{NSConditions}
 \end{NSAxiom}
 
+Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat. In §\ref{sec:waarden} is uitgebreid besproken dat er een significant verschil is tussen primitieve waarden en objecten. Toch gaat dit op bijna dezelfde manier als het toekennen van een primitieve waarde. De locatie $\omega$ van een object $o$ kan immers wel op dezelfde manier worden behandeld. Wat wel moet gebeuren is het aanmaken van een nieuw, leeg object in het geheugen voor objecten. Zo een leeg object heeft de vorm $(\varnothing, \nil)$. De bindingen zijn immers leeg en er is nog geen prototype gedefinieerd.
+
 \begin{NSAxiom}{object}
   \begin{prooftree}
     \AxiomC{$
@@ -223,6 +227,8 @@ Bij attributen gaat dit net iets anders, we hebben de hulp nodig van extra funct
     \Cond{$ \mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
   \end{NSConditions}
 \end{NSAxiom}
+
+Het definiëren van een prototype gaat met het \CLONES-statement. Hiervoor zoeken we simpelweg de locaties $\omega_i$ en $\omega_j$ van de twee objecten op. Vervolgens zetten we in het geheugen dat het prototype van het object in $\omega_i$ de locatie $\omega_j$ is.
 
 \begin{NSAxiom}{clones}
   \begin{prooftree}
