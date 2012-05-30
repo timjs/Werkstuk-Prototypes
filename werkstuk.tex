@@ -81,9 +81,12 @@
 \renewcommand{\syntleft}{\normalfont\itshape}
 \renewcommand{\syntright}{}
 
+\newcommand{\newmathcommand}[2]
+  {\newcommand{#1}
+    {\ensuremath{#2}}}
 \newcommand{\newkeyword}[2]
   {\newcommand{#1}
-     {\text{\small\ttfamily\bfseries #2}}}
+    {\text{\small\ttfamily\bfseries #2}}}
 \newcommand{\newconstant}[2]
   {\newkeyword{#1}{#2}}
   %{\newcommand{#1}
@@ -155,10 +158,19 @@
 \newbool{T}
 \newbool{F}
 
-\newcommand{\ms}
-  {\ensuremath{m_{\text{s}}}}
-\newcommand{\mo}
-  {\ensuremath{m_{\text{o}}}}
+\newmathcommand{\LLs}
+  {\LL_{\text{s}}}
+\newmathcommand{\LLo}
+  {\LL_{\text{o}}}
+\newmathcommand{\MMs}
+  {\MM_{\text{s}}}
+\newmathcommand{\MMo}
+  {\MM_{\text{o}}}
+
+\newmathcommand{\ms}
+  {m_{\text{s}}}
+\newmathcommand{\mo}
+  {m_{\text{o}}}
 
 \newcommand{\BNF}
   {\textsc{bnf}}

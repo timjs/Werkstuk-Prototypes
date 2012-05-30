@@ -27,9 +27,9 @@ Hiermee bedoelen we dat
 \end{equation*}
 waarbij $\longrightarrow$ de volgende signatuur heeft 
 \begin{equation*}
-  (\longrightarrow) \subseteq (\Stm \times \MM_s \times \MM_o \times \LL_s \times \LL_o) \times (\MM_s \times \MM_o).
+  (\longrightarrow) \subseteq (\Stm \times \MMs \times \MMo \times \LLs \times \LLo) \times (\MMs \times \MMo).
 \end{equation*}
-Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MM_s,\MM_o)$ met als extra informatie de locatie van de huidige scope $\sigma\in\LL_s$ en de locatie van het huidige \THIS-object $\tau\in\MM_o$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MM_s,\MM_o)$. \SKIP\ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$.
+Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$ met als extra informatie de locatie van de huidige scope $\sigma\in\LLs$ en de locatie van het huidige \THIS-object $\tau\in\MMo$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MMs,\MMo)$. \SKIP\ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$.
 
 Voor het samenstellen van statements hebben we een regel nodig.
 

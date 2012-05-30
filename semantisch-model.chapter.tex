@@ -88,13 +88,13 @@ Stel dat we geen verwijzing in de scope opslaan maar een kopie van de omgevende 
 
 Een scope $s$ is dus een element uit de verzameling
 \begin{equation*}
-  \SS \DEF \BB \times (\LL_s \cup \{\nil\}).
+  \SS \DEF \BB \times (\LLs \cup \{\nil\}).
 \end{equation*}
-Hierbij zijn $\BB$ de bindingen zoals besproken in §\ref{sec:bindingen}. $\LL_s$ zijn locaties van scopes. Op het begrip locatie komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort ``ultieme'' omgevende scope is. Het kan dus zijn dat een scope geen parent heeft. In dat geval zetten we
+Hierbij zijn $\BB$ de bindingen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van scopes. Op het begrip locatie komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort ``ultieme'' omgevende scope is. Het kan dus zijn dat een scope geen parent heeft. In dat geval zetten we
 \begin{equation*}
   \pi = \nil.
 \end{equation*}
-We zeggen dat $\pi$ \emph{niet bestaat} of \emph{niks} is. Vandaar dat we het symbool $\nil$ toevoegen aan $\LL_s$.
+We zeggen dat $\pi$ \emph{niet bestaat} of \emph{niks} is. Vandaar dat we het symbool $\nil$ toevoegen aan $\LLs$.
 
 \section{Objecten en prototype overerving}
 
@@ -102,14 +102,14 @@ In §\ref{sec:prototypen} hebben we een beeld gekregen van prototype overerving.
 \begin{equation*}
   \OO \DEF \BB \times (\LL \cup \{\nil\}).
 \end{equation*}
-Hierbij zijn $\BB$ weer de bindingen uit §\ref{sec:bindingen} en $\LL_o$ zijn locaties van objecten. We maken dus een strikte scheiding tussen locaties van scopes en locaties van objecten.
+Hierbij zijn $\BB$ weer de bindingen uit §\ref{sec:bindingen} en $\LLo$ zijn locaties van objecten. We maken dus een strikte scheiding tussen locaties van scopes en locaties van objecten.
 
 \section{Functies}
 
 \section{Waarden: referenties en primitieven}
 \label{sec:waarden}
 
-In voorgaande paragrafen spraken we telkens over waardes $\VV$ en locaties $\LL$ ($\LL_s$ voor scopes $\LL_o$ voor objecten). We hebben de exacte definities hiervan in het midden gelaten. Een waarde $v\in\VV$ is iets wat we toekennen aan een \Id\ met behulp van een binding. Bindingen waren immers functies van \Id\ naar waardes. In de voorbeelden van §\ref{sec:voorbeelden} zijn we verschillende waardes tegengekomen:
+In voorgaande paragrafen spraken we telkens over waardes $\VV$ en locaties $\LL$ ($\LLs$ voor scopes $\LLo$ voor objecten). We hebben de exacte definities hiervan in het midden gelaten. Een waarde $v\in\VV$ is iets wat we toekennen aan een \Id\ met behulp van een binding. Bindingen waren immers functies van \Id\ naar waardes. In de voorbeelden van §\ref{sec:voorbeelden} zijn we verschillende waardes tegengekomen:
 \begin{lstlisting}
 local n
 n = 5                        # Natuurlijke getallen
@@ -165,22 +165,22 @@ moet dit in @A@ natuurlijk ook gebeuren:
 \begin{lstlisting}
 A.x                          # => 8
 \end{lstlisting}
-Wanneer we zomaar een kopie van de waarde in @A@ aan @B@ toekennen, zou het attribuut @A.x@ niet gewijzigd worden. Een oplossing is om in plaats van een kopie van een object een \emph{referentie} naar een object aan een variabele te koppelen. Dit zijn dus niet elementen uit $\OO$ zelf, maar uit $\LL_o$. Dat betekend dat objecten niet op dezelfde manier worden behandeld als getallen en functies, maar de \emph{locaties} van objecten wel. Voor de waardes krijgen we dus
+Wanneer we zomaar een kopie van de waarde in @A@ aan @B@ toekennen, zou het attribuut @A.x@ niet gewijzigd worden. Een oplossing is om in plaats van een kopie van een object een \emph{referentie} naar een object aan een variabele te koppelen. Dit zijn dus niet elementen uit $\OO$ zelf, maar uit $\LLo$. Dat betekend dat objecten niet op dezelfde manier worden behandeld als getallen en functies, maar de \emph{locaties} van objecten wel. Voor de waardes krijgen we dus
 \begin{equation*}
-  \VV \DEF \LL_o \cup \NN \cup \VV.
+  \VV \DEF \LLo \cup \NN \cup \VV.
 \end{equation*}
 
-Primitieve waardes in onze taal koppelen we \emph{by-value}. Dit zijn natuurlijke getallen en functies. Objecten daarentegen worden \emph{by-reference} gekoppeld. Deze referenties zijn elementen uit $\LL_o$. Achter de schermen worden deze gebruikt om objecten door te geven en worden op hun beurt wel \emph{by-reference} gekoppeld.
+Primitieve waardes in onze taal koppelen we \emph{by-value}. Dit zijn natuurlijke getallen en functies. Objecten daarentegen worden \emph{by-reference} gekoppeld. Deze referenties zijn elementen uit $\LLo$. Achter de schermen worden deze gebruikt om objecten door te geven en worden op hun beurt wel \emph{by-reference} gekoppeld.
 
 \section{Locaties en geheugen}\label{sec:locaties}
 
-Uit de redenaties over referenties volgt dat we een plaats moeten hebben om alle objecten op te slaan. Dit noemen we het \emph{geheugen voor objecten} $m_o$. Voor een gegeven locatie $\omega\in\LL_o$ kunnen we het bijbehorende object in een geheugen $m_o$ opzoeken met
+Uit de redenaties over referenties volgt dat we een plaats moeten hebben om alle objecten op te slaan. Dit noemen we het \emph{geheugen voor objecten} $m_o$. Voor een gegeven locatie $\omega\in\LLo$ kunnen we het bijbehorende object in een geheugen $m_o$ opzoeken met
 \begin{equation*}
   m_o(\omega).
 \end{equation*}
 Een geheugen is dus een functie van locaties naar objecten. De verzameling van alle geheugens definiëren we als
 \begin{equation*}
-  \MM_o \DEF \OO^{\LL_o}.
+  \MMo \DEF \OO^{\LLo}.
 \end{equation*}
 Dan is $m_o$ een element hier uit.
 
