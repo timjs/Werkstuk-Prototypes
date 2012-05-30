@@ -1,17 +1,17 @@
 
 \chapter{Natuurlijke Semantiek}
 
-Deze teksten zijn vooral bedoeld als ``tekstvlees'' (lorem ipsum's). We zullen axioma's en deductieregels introduceren waarmee we de relatie $(\longrightarrow)$ definiëren, die de volgende signatuur heeft:
+%Deze teksten zijn vooral bedoeld als ``tekstvlees'' (lorem ipsum's). We zullen axioma's en deductieregels introduceren waarmee we de relatie $(\longrightarrow)$ definiëren, die de volgende signatuur heeft:
 
-$$ (\longrightarrow) \subseteq (\Stm \times \MM \times \LL \times \LL) \times \MM $$
+%$$ (\longrightarrow) \subseteq (\Stm \times \MM \times \LL \times \LL) \times \MM $$
 
-Wanneer we een uitspraak doen van de vorm:
+%Wanneer we een uitspraak doen van de vorm:
 
-$$ \Config{S}{m,\sigma,\tau} \longrightarrow m' $$
+%$$ \Config{S}{m,\sigma,\tau} \longrightarrow m' $$
 
-..dan bedoelen we daarmee dat:
+%..dan bedoelen we daarmee dat:
 
-$$ \big(\,(S,m,\sigma,\tau), m'\,\big) \in (\longrightarrow) $$
+%$$ \big(\,(S,m,\sigma,\tau), m'\,\big) \in (\longrightarrow) $$
 
 Deze uitspraak moet je lezen als: ``In de toestand met geheugen $m$, scope $\sigma$ en \emph{this} object $\tau$, termineert het statement $S$, waarbij het resultaat-geheugen $m'$ is.''
 
@@ -35,6 +35,102 @@ Een van deze axioma's [object], heeft betrekking tot de productieregel in de gra
 Zoals vele axioma's en deductieregels heeft ook dit axioma een aantal voorwaarden waaraan moet worden voldaan. Deze staan eronder genoteerd, elk op een regel.
 
 Wanneer bij een dergelijke opsomming van voorwaarden een nieuwe variabele wordt geïntroduceerd zoals hierboven, met de volgende vorm: $\textbf{desda } \square = \theta \dots$; dan moet deze gelezen worden als: $\textbf{desda } \exists_\theta \big[\, \square = \theta \dots \,\big]$.
+
+\section{}
+
+Laten we beginnen met de simpelste constructie in onze taal, het lege statement \SKIP. Deze heeft de vorm van een axioma.
+
+\begin{NSAxiom}{skip}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{\SKIP}{m_s, m_o, \sigma, \tau}
+      \longrightarrow
+      (m_s, m_o)
+    $}
+  \end{prooftree}
+\end{NSAxiom}
+
+Zoals we kunnen zien zijn onze uitspraken van de vorm
+\begin{equation*}
+  \Config{S}{m_s,m_o,\sigma,\tau} \longrightarrow (m_s',m_o').
+\end{equation*}
+Hiermee bedoelen we dat
+\begin{equation*}
+\big(\,(S,m_s,m_o,\sigma,\tau), (m_s',m_o')\,\big) \in (\longrightarrow),
+\end{equation*}
+waarbij $\longrightarrow$ de volgende signatuur heeft 
+\begin{equation*}
+  (\longrightarrow) \subseteq (\Stm \times \MM_s \times \MM_o \times \LL_s \times \LL_o) \times (\MM_s \times \MM_o).
+\end{equation*}
+Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(m_s,m_o)\in(\MM_s,\MM_o)$ met als extra informatie de locatie van de huidige scope $\sigma\in\LL_s$ en de locatie van het huidige \THIS-object $\tau\in\MM_o$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(m_s',m_o')\in(\MM_s,\MM_o)$. \SKIP\ verandert niets aan de toestand zodat $(m_s',m_o')=(m_s,m_o)$.
+
+Voor het samenstellen van statements hebben we een regel nodig.
+
+\begin{NSAxiom}{comp}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{S_1}{m_s, m_o, \sigma, \tau}
+      \longrightarrow
+      (m_s', m_o')
+    $}
+    \AxiomC{$
+      \Config{S_2}{m_s', m_o', \sigma, \tau}
+      \longrightarrow
+      (m_s'', m_o'')
+    $}
+    \BinaryInfC{$
+      \Config{S_1; S_2}{m_s, m_o, \sigma, \tau}
+      \longrightarrow
+      (m_s'', m_o'')
+    $}
+  \end{prooftree}
+\end{NSAxiom}
+
+In dit geval geven we aan dat, wanneer we een een compositie hebben van de statements $S_1$ en $S_2$, we eerst $S_1$ evalueren% T: Dit is niet het juiste woord, weten even geen betere...
+en daarna $S_2$. Tijdens dit proces ontstaan nieuwe toestanden, waar we natuurlijk rekening mee moeten houden. De geheugens worden dan ook netjes doorgesluisd.
+
+De controlestructuur \IF\ heeft twee regels, een voor het geval dat de \BExpr\ evalueert in \T\ en een voor het geval dat deze evalueert in \F.
+
+\begin{NSAxiom}{if$^\T$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{S_1}{m_s, m_o, \sigma, \tau}
+      \longrightarrow
+      (m_s', m_o')
+    $}
+    \UnaryInfC{$
+      \Config{\IF b \THEN  S_1 \ELSE S_2 }{m_s, m_o, \sigma, \tau}
+      \longrightarrow
+      (m_s', m_o')
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \Surr{b}^\text{B}_{m_s, m_o,\sigma,\tau} = \T $}
+  \end{NSConditions}
+\end{NSAxiom}
+
+bla bla
+
+\begin{NSAxiom}{if$^\F$}
+  \begin{prooftree}
+    \AxiomC{$
+      \Config{S_2}{m_s, m_o, \sigma, \tau}
+      \longrightarrow
+      (m_s', m_o')
+    $}
+    \UnaryInfC{$
+      \Config{\IF b \THEN S_1 \ELSE S_2 }{m_s, m_o, \sigma, \tau}
+      \longrightarrow
+      (m_s', m_o')
+    $}
+  \end{prooftree}
+  \begin{NSConditions}
+    \Cond{$ \Surr{b}^\text{B}_{m_s, m_o,\sigma,\tau} = \F $}
+  \end{NSConditions}
+\end{NSAxiom}
+
+
+\section{Regels}
 
 \begin{NSAxiom}{clones}
   \begin{prooftree}
@@ -147,78 +243,9 @@ bla bla
 
 bla bla
 
-\begin{NSAxiom}{skip}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{\SKIP}{m, \sigma, \tau}
-      \longrightarrow
-      m
-    $}
-  \end{prooftree}
-\end{NSAxiom}
-
 bla bla
 
-\begin{NSAxiom}{comp}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{S_1}{m, \sigma, \tau}
-      \longrightarrow
-      m'
-    $}
-    \AxiomC{$
-      \Config{S_2}{m', \sigma, \tau}
-      \longrightarrow
-      m''
-    $}
-    \BinaryInfC{$
-      \Config{S_1; S_2}{m, \sigma, \tau}
-      \longrightarrow
-      m''
-    $}
-  \end{prooftree}
-\end{NSAxiom}
-
 bla bla
-
-\begin{NSAxiom}{if$^\text{T}$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{S_1}{m, \sigma, \tau}
-      \longrightarrow
-      m'
-    $}
-    \UnaryInfC{$
-      \Config{\IF (b) \THEN \{ S_1 \} \ELSE \{ S_2 \}}{m, \sigma, \tau}
-      \longrightarrow
-      m'
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{T} $}
-  \end{NSConditions}
-\end{NSAxiom}
-
-bla bla
-
-\begin{NSAxiom}{if$^\text{F}$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{S_2}{m, \sigma, \tau}
-      \longrightarrow
-      m'
-    $}
-    \UnaryInfC{$
-      \Config{\IF (b) \THEN \{ S_1 \} \ELSE \{ S_2 \}}{m, \sigma, \tau}
-      \longrightarrow
-      m'
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \mathbf{F} $}
-  \end{NSConditions}
-\end{NSAxiom}
-
 bla bla
 
 \begin{NSAxiom}{while$^\text{T}$}
