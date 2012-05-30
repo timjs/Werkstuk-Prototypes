@@ -177,9 +177,8 @@ Een geheugen is dus een functie van locaties naar objecten. De verzameling van a
 
 \section{Hulpfuncties}
 
-We introduceren nu een aantal hulpfuncties om de logica van bepaalde delen van het semantische model te omvatten en beschrijven.
-
-Zoals eerder beschreven, moet de definitie van een variabele eerst gezocht worden in het huidige bereik, en daarna in omgevende bereiken. Deze procedure manifesteert zich in de hulpfunctie $\textsc{Find}_\text{scope} : \MMs \times \LLs \times \Id \to \LLs$, die we als volgt gedefiniëren:
+We introduceren nu een aantal hulpfuncties om de logica van bepaalde delen van het semantische model te omvatten en te beschrijven.
+Zoals eerder beschreven, moet de definitie van een variabele eerst gezocht worden in het huidige bereik, en daarna in omliggende bereiken. Deze procedure manifesteert zich in de hulpfunctie $\textsc{Find}_\text{scope} : \MMs \times \LLs \times \Id \to \LLs$, die we als volgt definiëren:
 %
 \begin{equation*}
   \textsc{Find}_\text{scope}(\ms, \sigma, i) = \begin{cases}
@@ -189,7 +188,7 @@ Zoals eerder beschreven, moet de definitie van een variabele eerst gezocht worde
   \end{cases}
 \end{equation*}
 %
-Voor het doorzoeken van de prototype hiërarchie naar een attribuut hebben we een hulpfunctie $\textsc{Find}_\text{proto} : \MMo \times \LLo \times \Id \to \LLo$, die identiek is aan $\textsc{Find}_\text{scope}$, behalve dat het werkt met de relevante object-gerelateerde verzamelingen.
+Voor het doorzoeken van de prototype hiërarchie naar een attribuut hebben we een hulpfunctie $\textsc{Find}_\text{proto} : \MMo \times \LLo \times \Id \to \LLo$, die identiek is aan $\textsc{Find}_\text{scope}$, behalve dat deze werkt met de relevante object-gerelateerde verzamelingen.
 %
 \begin{equation*}
   \textsc{Find}_\text{proto}(\mo, \omega, i) = \begin{cases}
@@ -199,19 +198,18 @@ Voor het doorzoeken van de prototype hiërarchie naar een attribuut hebben we ee
   \end{cases}
 \end{equation*}
 %
-Er is ook een hulpfunctie nodig om een pad te doorlopen. De hulpfunctie $\textsc{Trav} : \MMo \times \LLo \times \Path \to \LLo \times \Id$ levert de locatie van het ``laastste'' object op en de laatste identifier van het pad (wat mogelijk naar niet noodzakelijk een attribuut is van dat laatste object), gegeven het objectgeheugen, een locatie voor het ``begin'' object, en een pad.
+Er is ook een hulpfunctie nodig om een pad te doorlopen. De hulpfunctie $\textsc{Trav} : \MMo \times \LLo \times \Path \to \LLo \times \Id$ levert de locatie van het laatste object op en de laatste \Id\ van het pad (wat mogelijk naar niet noodzakelijk een attribuut is van dat laatste object), gegeven het objectgeheugen, een locatie voor het ``begin'' object, en een pad.
 %
 \begin{equation*}
   \textsc{Trav}(\mo, \omega, p) = \begin{cases}
     (\omega, p) & \textbf{als } p \in \Id \\
-    \textsc{Trav}(\mo, \omega', p') & \textbf{als } p = i.p' \\
-     & \textbf{ én } \textsc{Find}_\text{proto}(\mo, \omega, i) = \omega' \in \LLo \\
+    \textsc{Trav}(\mo, \omega', p') & \textbf{als } p = i.p' \textbf{ en } \textsc{Find}_\text{proto}(\mo, \omega, i) = \omega' \in \LLo \\
     \bot & \textbf{anders}
   \end{cases}
 \end{equation*}
 %
 
-\section*{Extra}
+\section*{Overzicht}
 
 \begin{align*}
   \tag*{locaties van scopes en objecten, DONE}
