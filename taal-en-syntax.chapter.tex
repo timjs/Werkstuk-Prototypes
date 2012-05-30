@@ -285,7 +285,7 @@ Een \emph{pad} is een opeenvolging van identifiers gescheiden door punten en wor
 \emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, definiëren we als volgt:
 %
 \begin{align*}
-  \Expr \GrammarDef \Num \mid \Path \mid \varnothing \mid \Expr\; (+ \mid - \mid \times \mid /\,)\; \Expr \\
+  \Expr \GrammarDef \Num \mid \Path \mid \Expr\; (+ \mid - \mid \times \mid /\,)\; \Expr \\
   \GrammarOr \FUN\pmb{(}\,\MaybeIds\,\pmb{)}\; \GrammarOpt{\RETURNS \Id\;} \pmb{\{}\; \Stm\; \pmb{\}} \\
   \Exprs \GrammarDef \Expr \mid \Exprs, \Expr \\
   \MaybeExprs \GrammarDef \varepsilon \mid \Exprs \\
