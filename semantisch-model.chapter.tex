@@ -86,9 +86,8 @@ TODO
 
 In voorgaande paragrafen spraken we over waarden $\VV$ en locaties $\LL$ ($\LLs$ voor bereiken, $\LLo$ voor objecten). We hebben de exacte definities hiervan in het midden gelaten. Wat wel duidelijk is dat een waarde $v \in \VV$ is iets wat we toekennen aan een \Id\ met behulp van een binding.
 
-In §\ref{subsec:taal-types} is uitgelegd hoe de taal over verschillende typen data kan spreken. In onze taal komen namelijk drie typen \emph{data} voor: getallen, functies en objecten. Er is echter een verschil in de manier waarop wij ze behandelen in het semantisch model. Deze verschillende aanpak ik bekend aan iedereen die een keer object-geörienteerd geprogrammeerd heeft.
-
-Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil tussen twee soorten typen data: primitieve waarden en objecten. Primitieve waarden moeten worden opgevat als de ``atomen'' waaruit programma's en objecten worden opgebouwd. Denk aan natuurlijke getallen of strengen.
+In §\ref{subsec:taal-types} is uitgelegd hoe de taal met verschillende typen data omgaat. In onze taal komen namelijk drie typen \emph{data} voor: getallen, functies en objecten. Er is echter een verschil in de manier waarop wij ze behandelen in het semantisch model. Deze verschillende aanpak ik bekend aan iedereen die een keer object-geörienteerd geprogrammeerd heeft.
+Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil tussen twee soorten data: primitieve waarden en objecten. Primitieve waarden vatten we op als de ``atomen'' waaruit programma's en objecten worden opgebouwd. Denk aan natuurlijke getallen of woorden.
 
 \begin{NoBreak}
   \newCodeFragment[exa:prititive-values-numbers][Toekenning van primitieve waarden: Getallen]
@@ -104,7 +103,14 @@ Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil
   }
 \end{NoBreak}
 
-In onze taal zijn ook functies primitieve waarden. Zoals in \ref{sec:sem-functies} wordt beschreven, beschouwen we een functie als een ``atomair'' element met de volgende informatie: (1) parameters, (2) mogelijkerwijs een return variabele, (3) code en (4) bereik van definitie. Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complexe structuren. Het volgende voorbeeld illustreert deze gedachte:
+In onze taal zijn ook functies primitieve waarden. Zoals in \ref{sec:sem-functies} wordt beschreven, beschouwen we een functie als een ``atomair'' element met de volgende informatie:
+\begin{itemize}
+  \item parameters
+  \item mogelijkerwijs een return variabele
+  \item code
+  \item bereik van definitie
+\end{itemize}
+Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complexe structuren. Het volgende voorbeeld illustreert deze gedachte:
 
 \begin{NoBreak}
   \newCodeFragment[exa:prititive-values-functions][Toekenning van primitieve waarden: Functies]
@@ -121,8 +127,7 @@ In onze taal zijn ook functies primitieve waarden. Zoals in \ref{sec:sem-functie
   }
 \end{NoBreak}
 
-Objecten worden anders behandeld. Het idee van een object is dat een zekere ``entiteit'' voorstelt. Deze entiteit kan een nabootsing zijn van een objecten uit de reële wereld, maar kan ook iets abstracts zijn. Net als objecten uit de reële wereld, zou een object in een programma moeten kunnen veranderen in de loop der tijd, maar nog wel ``hetzelfde ding zijn als tevoren''. Het volgende code fragmentje illustreert dit idee:
-
+Objecten worden anders behandeld. Het idee van een object is dat dit een zekere ``entiteit'' voorstelt. Deze entiteit kan een nabootsing zijn van een objecten uit de reële wereld, maar kan ook iets abstracts zijn. Net als objecten uit de reële wereld, kan een object in een programma veranderen in de loop der tijd maar nog wel ``hetzelfde ding zijn als tevoren''. Het volgende code fragment illustreert dit idee:
 \begin{NoBreak}
   \newCodeFragment[exa:prititive-values-functions][Toekenning van primitieve waarden: Functies]
   \codeFragmentCaption
@@ -138,14 +143,12 @@ Objecten worden anders behandeld. Het idee van een object is dat een zekere ``en
   }
 \end{NoBreak}
 
-In zekere zin zijn \id{x} en \id{y} immateriëel, omdat ze op deze manier ``vervangbaar'' zijn. Dit in tegenstelling to \id{n}. Het zijn dan ook verschillende dingen: \id{x} en \id{y} zijn variabelen; \id{n} is een attribuut van een zeker object waar \id{x} en \id{y} toevallig naar verwijzen.
-
-Het verwijzen van een variabele naar een object wordt in onze semantiek bewerkstelligd door het object ``ergens'' op te slaan, en de locatie ervan als waarde aan de variabele toe te kennen.
+In zekere zin zijn \id{x} en \id{y} immaterieel, omdat ze op deze manier ``vervangbaar'' zijn. Dit in tegenstelling to \id{n}. Het zijn dan ook verschillende dingen: \id{x} en \id{y} zijn variabelen; \id{n} is een attribuut van een zeker object waar zowel \id{x} en \id{y} naar verwijzen.
+Het verwijzen van een variabele naar een object wordt in onze semantiek bewerkstelligd door het object ergens op te slaan, en de locatie ervan als waarde aan de variabele toe te kennen.
 
 Om samen te vatten:
-
 \begin{description}
-  \item[Data] De wereld van data waarover een programma spreekt bevat getallen, functies en objecten.
+  \item[Data] De wereld van data waar een programma mee om gaat bevat getallen, functies en objecten.
   \item[Waarden] Een waarde is wat er in ons semantisch model aan een variabele wordt toegekend, dit met behulp van een binding. Primitieve waarden (getallen, functies) zijn zelf waarden. Om in een programma over objecten te spreken, wordt de locatie van een object ook als waarde beschouwd.
 \end{description}
 
