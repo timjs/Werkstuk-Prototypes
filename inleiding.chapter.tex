@@ -2,10 +2,7 @@
 \chapter{Inleiding}
 
 % Wat
-In dit werkstuk presenteren we een natuurlijke semantiek die wij ontworpen hebben om de concepten \emph{lexicaal bereik} en \emph{prototype overerving} in object-geörienteerde talen te karakteriseren. Daartoe hebben we een minimale taal ontworpen die geïnspireerd is door de bestaande programmeertalen JavaScript en IO.
-% T: Deze regels toegevoegd:
-JavaScript is een dynamische, prototype-gebaseerde taal die veelvuldig wordt gebruikt bij het ontwikkelen van internettoepassingen. Een opvallende functie van JavaScript is het gebruik van lexicaal bereik.
-IO is een onderzoekstaal door Steve Dekorte. Het belangrijkste kenmerk van deze taal is het prototype-gebaseerde object model.
+In dit werkstuk presenteren we een natuurlijke semantiek die wij ontworpen hebben om de concepten \emph{lexicaal bereik} en \emph{prototype overerving} in object-geörienteerde talen te karakteriseren. Daartoe hebben we een minimale taal ontworpen die geïnspireerd is door de bestaande programmeertalen JavaScript en IO. JavaScript is een dynamische, prototype-gebaseerde taal die veelvuldig wordt gebruikt bij het ontwikkelen van internettoepassingen. Een opvallende functie van JavaScript is het gebruik van lexicaal bereik. IO is een onderzoekstaal door Steve Dekorte. Het belangrijkste kenmerk van deze taal is het prototype-gebaseerde object model.
 
 % Waarom
 Lexicaal bereik (ook wel \emph{static scoping} genaamd) en prototype overerving zijn mooie fenomenen. Ze zijn ook de fundamenten van ``The World's Most Misunderstood Programming Language'': JavaScript. Maar lexicaal bereik ligt men eigenlijk heel natuurlijk: zo redeneren wiskundigen al meer dan honderd jaar met formules waarin variabelen lexicaal bereik hebben. En prototype overerving is slechts een elegant en simpel alternatief op klassieke overerving, wanneer het gaat om object-geörienteerd programmeren.
@@ -13,6 +10,7 @@ Lexicaal bereik (ook wel \emph{static scoping} genaamd) en prototype overerving 
 % Doel
 Het doel van dit werkstuk is daarom een formele betekenis te geven aan deze concepten, maar dan wel zó dat de interpretatie van de formele uitspraken zo natuurlijk mogelijk en conceptueel verantwoord is. De bedoeling is dat men de gewoon Nederlandse interpretatie van een willekeurig axioma of deductieregel tegen zou kunnen komen in een college programmeren:
 
+% html: skip
 \begin{multicols}{2}
   \small
   \raggedcolumns
@@ -39,6 +37,7 @@ Het doel van dit werkstuk is daarom een formele betekenis te geven aan deze conc
   
   \textit{``Zoals jullie weten, moeten we bij statische scope eerst de definitie van de variabele zoeken in de huidige en daarna omliggende bereiken. Daarna maken we ruimte vrij in het geheugen en kan een nieuw object worden gemaakt. Een verwijzing naar dit object wordt vervolgens in de variabele gestopt\dots''}
 \end{multicols}
+% /html
 
 % Opzet
 Na het bespreken van een aantal notationele keuzes en terminologie, presenteren we eerst de minimale taal, vervolgens het semantische model en tenslotte de natuurlijke semantiek die de twee voorgaande aan elkaar koppelt. In de case study die erop volgt proberen we een andere wiskundige aanpak te belichten om de semantiek te beschrijven.
