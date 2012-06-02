@@ -1,4 +1,31 @@
 
+/*
+  Each line consists of at most 1 token (some line are ignored).
+  Tokens and their attributes:
+   - blankline
+   - htmlinsert           filename
+   - comment              comment
+   - codeline             label, codeline, comment
+   - newCodeFragment      label, title
+   - codeFragmentCaption
+   - chapter              title
+   - section              title
+   - subsection           title
+   - subsubsection        title
+   - label                label
+   - displaymath          env, raw
+   - text                 line
+   - item                 item (opt), text
+   - itemize.begin
+   - itemize.end
+   - description.begin
+   - description.end
+   - enumerate.begin
+   - enumerate.end
+   - codelines.begin
+   - codelines.end
+*/
+
 var c = function (x) {
       console.log(x);
       return x;
@@ -38,8 +65,6 @@ var c = function (x) {
     ignoreRules = [
       /^[ ]*\\begin\{NoBreak\}/,
       /^[ ]*\\end\{NoBreak\}/,
-      /^[ ]*\\begin\{codelines\}/,
-      /^[ ]*\\end\{codelines\}/,
       // \begin{htmlskip} --> \end{htmlskip}
       function (lines) {
         if (lines[0].indexOf("\\begin{htmlskip}") < 0) return false;
@@ -72,6 +97,7 @@ var c = function (x) {
         
         return { name: "comment", comment: comment.join("\n") };
       },
+      // \codeLine[LABEL]{CODELINE}[COMMENT]
       function (lines) {
         var m = lines[0].match(/^[ ]*\\codeLine(?:\[([^\]]*)\])?\{/);
         if (!m) return false;
@@ -80,8 +106,8 @@ var c = function (x) {
             label    = m[1] || ("label" + uid()),
             codeline = line.slice(m[0].length, -1),
             comment  = "";
+        
         if (line[line.length - 1] == "]") {
-        } else {
           var depth = 0;
           for (var i = 0; i < codeline.length; i++) {
             if (codeline[i] == "{") {
@@ -90,7 +116,7 @@ var c = function (x) {
               depth--;
             }
             if (depth == -1) {
-              comment = codeline.slice(i + 1);
+              comment = codeline.slice(i + 2);
               codeline = codeline.slice(0, i);
               break;
             }
@@ -108,12 +134,21 @@ var c = function (x) {
         lines.splice(0, 1);
         return { name: "newCodeFragment", label: m[1], title: m[2] };
       },
-      [/^[ ]*\\codeFragmentCaption/,       "codeFragmentCaption"],
-      [/^[ ]*\\chapter\{([^\}]*)\}/,       "chapter",       [ [1, "title"] ]],
-      [/^[ ]*\\section\{([^\}]*)\}/,       "section",       [ [1, "title"] ]],
-      [/^[ ]*\\subsection\{([^\}]*)\}/,    "subsection",    [ [1, "title"] ]],
-      [/^[ ]*\\subsubsection\{([^\}]*)\}/, "subsubsection", [ [1, "title"] ]],
-      [/^[ ]*\\label\{([^\}]*)\}/,         "label",         [ [1, "label"] ]],
+      [/^[ ]*\\codeFragmentCaption/,           "codeFragmentCaption"],
+      [/^[ ]*\\chapter\{([^\}]*)\}/,           "chapter",       [ [1, "title"] ]],
+      [/^[ ]*\\section\{([^\}]*)\}/,           "section",       [ [1, "title"] ]],
+      [/^[ ]*\\subsection\{([^\}]*)\}/,        "subsection",    [ [1, "title"] ]],
+      [/^[ ]*\\subsubsection\{([^\}]*)\}/,     "subsubsection", [ [1, "title"] ]],
+      [/^[ ]*\\label\{([^\}]*)\}/,             "label",         [ [1, "label"] ]],
+      [/^[ ]*\\item(?:\[([^\]]*)\])?[ ]*(.*)/, "item",          [ [1, "item"], [2, "text"] ]],
+      [/^[ ]*\\begin\{itemize\}/,              "itemize.begin"],
+      [/^[ ]*\\end\{itemize\}/,                "itemize.end"],
+      [/^[ ]*\\begin\{description\}/,          "description.begin"],
+      [/^[ ]*\\end\{description\}/,            "description.end"],
+      [/^[ ]*\\begin\{enumerate\}/,            "enumerate.begin"],
+      [/^[ ]*\\end\{enumerate\}/,              "enumerate.end"],
+      [/^[ ]*\\begin\{codelines\}/,            "codelines.begin"],
+      [/^[ ]*\\end\{codelines\}/,              "codelines.end"],
       // displaymath environments
       function (lines) {
         var env,
@@ -124,8 +159,9 @@ var c = function (x) {
             do {
               n++;
             } while (lines[n].indexOf("\\end{" + env + "}") < 0);
+            n++;
             
-            return { name: "displaymath", raw: lines.splice(0, n).join("\n") };
+            return { name: "displaymath", env: env, raw: lines.splice(0, n).join("\n") };
           }
         }
         return false;

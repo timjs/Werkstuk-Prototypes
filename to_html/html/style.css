@@ -1,14 +1,83 @@
 
+@font-face {
+    font-family: 'GentiumBasicRegular';
+    src: url('GenBasR-webfont.eot');
+    src: url('GenBasR-webfont.eot?#iefix') format('embedded-opentype'),
+         url('GenBasR-webfont.woff') format('woff'),
+         url('GenBasR-webfont.ttf') format('truetype'),
+         url('GenBasR-webfont.svg#GentiumBasicRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'GentiumBasicItalic';
+    src: url('GenBasI-webfont.eot');
+    src: url('GenBasI-webfont.eot?#iefix') format('embedded-opentype'),
+         url('GenBasI-webfont.woff') format('woff'),
+         url('GenBasI-webfont.ttf') format('truetype'),
+         url('GenBasI-webfont.svg#GentiumBasicItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'GentiumBasicBold';
+    src: url('GenBasB-webfont.eot');
+    src: url('GenBasB-webfont.eot?#iefix') format('embedded-opentype'),
+         url('GenBasB-webfont.woff') format('woff'),
+         url('GenBasB-webfont.ttf') format('truetype'),
+         url('GenBasB-webfont.svg#GentiumBasicBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'GentiumBasicBoldItalic';
+    src: url('GenBasBI-webfont.eot');
+    src: url('GenBasBI-webfont.eot?#iefix') format('embedded-opentype'),
+         url('GenBasBI-webfont.woff') format('woff'),
+         url('GenBasBI-webfont.ttf') format('truetype'),
+         url('GenBasBI-webfont.svg#GentiumBasicBoldItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 body {
   margin:0;
   padding:0;
+  font-family:GentiumBasicRegular, "Times new Roman", serif;
+  font-size:20px;
+  color:#333;
 }
-
+.rm {
+  font-family:GentiumBasicRegular, "Times new Roman", serif !important;
+  font-size:20px;
+}
+.em,
+em,
+.it {
+  font-family:GentiumBasicItalic, "Times new Roman", serif;
+}
+strong,
+.bf {
+  font-family:GentiumBasicBold, "Times new Roman", serif;
+}
+.sc{
+  font-family:GentiumBasicBold, "Times new Roman", serif;
+  /* gentuim does not support small-caps */
+}
+.it .em {
+  font-family:GentiumBasicRegular, "Times new Roman", serif;
+}
 .wrap {
   width:800px;
   margin:0 auto;
 }
-
 h1 {
   margin:30px 0 10px 0;
   font-family:Helvetica, Arial, sans-serif;
@@ -16,40 +85,81 @@ h1 {
   text-align:center;
   color:#333;
 }
-
 p.author {
   margin:10px 0;
   text-align:center;
   font-size:18px;
 }
-
 h2 {
-  margin:60px 0 40px 0;
+  margin:80px 0 40px 0;
   font-family:Helvetica, Arial, sans-serif;
   font-size:50px;
   text-rendering:optimizeLegibility;
+  color:#000;
 }
-
+h3 {
+  margin:50px 0 20px 0;
+  font-family:Helvetica, Arial, sans-serif;
+  font-size:30px;
+  text-rendering:optimizeLegibility;
+  color:#000;
+}
+h4 {
+  margin:40px 0 20px 0;
+  font-family:Helvetica, Arial, sans-serif;
+  font-size:23px;
+  text-rendering:optimizeLegibility;
+  color:#000;
+}
+h5 {
+  margin:30px 0 20px 0;
+  font-family:Helvetica, Arial, sans-serif;
+  font-size:18px;
+  text-rendering:optimizeLegibility;
+  color:#000;
+}
+h2 .num,
+h3 .num,
+h4 .num,
+h5 .num {
+  margin-right:15px;
+}
 p, blockquote {
   margin:20px 0;
-  font-family:"Times new Roman", serif;
-  font-size:20px;
   text-align:justify;
   line-height:130%;
-  color:#333;
 }
-
 blockquote {
   margin:0;
-  font-style:italic;
+  font-family:GentiumBasicItalic;
   color:#777;
   font-size:18px;
 }
-
 .cols .col {
   float:left;
 }
-
 .bottom {
   height:200px;
+}
+
+
+/* code fragments */
+.code-fragment {
+  border-collapse:collapse;
+}
+.code-fragment td {
+  padding:2px 15px;
+}
+.code-fragment td.lineno {
+  padding:2px 10px;
+  border-right:3px solid #333;
+}
+.code-fragment .lit {
+  font-family:Consolas, monospace;
+  font-size:19px;
+  font-weight:bold;
+}
+.code-fragment .indent {
+  width:20px;
+  display:inline-block;
 }
