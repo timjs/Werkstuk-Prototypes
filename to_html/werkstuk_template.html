@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Een natuurlijke semantiek voor prototype oververing en lexicaal bereik</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  </style>
+</head>
+<body>
+
+<h1>Een natuurlijke semantiek voor prototype oververing en lexicaal bereik</h1>
+<p class="author">Kelley van Evert &amp; Tim Steenvoorden</p>
+
+<div class="wrap">
+  {BODY}
+</div>
+
+<div class="bottom"></div>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [
+        ['$','$']
+      ]
+    },
+    TeX: {
+      Macros: {
+        id: ["\\class{rm}{\\text{#1}}", 1],
+        NN: "\\mathbb{N}",
+        DEF: "\\buildrel{\\class{rm}{\\text{def}}}\\over{=}",
+        FiniteFunctions: ["\\class{rm}{\\text{“eindige” }} {#1}^{#2}", 2],
+        surr: ["\\big[\\,#1\\,\\big]", 1],
+        Surr: ["\\big[\\!\\big[\\,#1\\,\\big]\\!\\big]", 1],
+        CLONES:     ["\\textbf{ clones }"],
+        LOCAL:      ["\\textbf{local }"],
+        VAR:        ["\\textbf{local }"],
+        OBJECT:     ["\\textbf{ object }"],
+        FUN:        ["\\textbf{fun }"],
+        RETURNS:    ["\\textbf{ returns }"],
+        IS:         ["\\textbf{ is }"],
+        PRINT:      ["\\textbf{ print }"],
+        SKIP:       ["\\textbf{ skip }"],
+        THIS:       ["\\textbf{this}"],
+        IF:         ["\\textbf{ if }"],
+        THEN:       ["\\textbf{ then }"],
+        ELSE:       ["\\textbf{ else }"],
+        WHILE:      ["\\textbf{ while }"],
+        DO:         ["\\textbf{ do }"],
+        IN:         ["\\quad"],
+        END:        ["\\textbf{ end }"],
+        TRUE:       ["\\textbf{ true }"],
+        FALSE:      ["\\textbf{ false }"],
+        AND:        ["\\textbf{ and }"],
+        OR:         ["\\textbf{ or }"],
+        NOT:        ["\\textbf{ not }"],
+        Stm:        ["\\textit{ Statement }"],
+        Id:         ["\\textit{ Identifier }"],
+        Ids:        ["\\textit{ Identifiers }"],
+        MaybeIds:   ["\\textit{ MaybeIdentifiers }"],
+        Path:       ["\\textit{ Path }"],
+        Expr:       ["\\textit{ Expression }"],
+        Exprs:      ["\\textit{ Expressions }"],
+        MaybeExprs: ["\\textit{ MaybeExpressions }"],
+        BExpr:      ["\\textit{ BooleanExpression }"],
+        Num:        ["\\textit{ Number }"],
+        GrammarDef:  "::=\\;&",
+        GrammarOr:   "\\mid\\;&",
+        GrammarOpt: ["[#1]\\;", 1],
+      }
+    }
+  });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</body>
+</html>
