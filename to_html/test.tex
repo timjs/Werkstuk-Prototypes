@@ -1,0 +1,30 @@
+
+\chapter{Taal en syntaxis}
+
+In dit hoofdstuk presenteren we de taal waarvoor we een natuurlijk semantiek construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst beschouwen we een aantal voorbeeldprogramma's, om zo informeel de te formaliseren taal te karakteriseren. Daarna geven we een rigoureuze definitie met behulp van een \BNF\ grammatica.
+
+De structuur van de productieregels van deze grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
+Het is belangrijk om te vermelden dat het hierbij niet gaat om een taal te maken die er ``mooi'' uit ziet. Het doel is om de essentiële onderdelen te verwerken die nodig zijn om lexicaal bereik en prototype overerving te formaliseren met een natuurlijke semantiek. Om dezelfde reden moet de syntaxis van de taal worden beschouwd als een mogelijke representatie van een \emph{abstract syntax tree} van een ``echte'' programmeertaal. We zullen dan ook, waar mogelijk, puntkomma's en haakjes weglaten. Het gebruik van regeleindes en inspringen van blokken geeft, naar ons idee, binder belemmering bij het lezen van een programma.% T: Wat vind je van deze omschrijving? MOOI
+
+\section{Voorbeeldprogramma's}
+\label{sec:voorbeelden}
+
+Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
+
+\begin{NoBreak}
+\newCodeFragment[exa:template][Het eerste voorbeeldprogramma]
+\codeFragmentCaption
+\begin{codelines}
+  \codeLine{\VAR \id{f}}[$\id{f}$ moet eerst worden gedefiniëerd]
+  \codeLine{\id{f} = \FUN(i) \RETURNS \id{n}}
+  \codeLine{\IN \VAR \id{n}}
+  \codeLine{\IN \id{n} = 2 \times (\id{i} + 5)}
+  \codeLine{}[$\id{x}$ bestaat niet in deze scope]
+  \codeLine{\VAR \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
+  \codeLine{\id{x} = \id{f}(42)}[\id{x} heeft nu de waarde 94]
+\end{codelines}
+\end{NoBreak}
+
+De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
+
+\subsection{Basis}

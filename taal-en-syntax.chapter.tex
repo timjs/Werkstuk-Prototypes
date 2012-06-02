@@ -4,7 +4,7 @@
 In dit hoofdstuk presenteren we de taal waarvoor we een natuurlijk semantiek construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst beschouwen we een aantal voorbeeldprogramma's, om zo informeel de te formaliseren taal te karakteriseren. Daarna geven we een rigoureuze definitie met behulp van een \BNF\ grammatica.
 
 De structuur van de productieregels van deze grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
-Het is belangrijk om te vermelden dat het hierbij niet gaat om een taal te maken die er ``mooi'' uit ziet. Het doel is om de essentiële onderdelen te verwerken die nodig zijn om lexicaal bereik en prototype overerving te formaliseren met een natuurlijke semantiek. Om dezelfde reden moet de syntaxis van de taal worden beschouwd als een mogelijke representatie van een \emph{abstract syntax tree} van een ``echte'' programmeertaal. We zullen dan ook, waar mogelijk, puntkomma's en haakjes weglaten. Het gebruik van regeleindes en inspringen van blokken geeft, naar ons idee, binder belemmering bij het lezen van een programma.% T: Wat vind je van deze omschrijving?
+Het is belangrijk om te vermelden dat het hierbij niet gaat om een taal te maken die er ``mooi'' uit ziet. Het doel is om de essentiële onderdelen te verwerken die nodig zijn om lexicaal bereik en prototype overerving te formaliseren met een natuurlijke semantiek. Om dezelfde reden moet de syntaxis van de taal worden beschouwd als een mogelijke representatie van een \emph{abstract syntax tree} van een ``echte'' programmeertaal. We zullen dan ook, waar mogelijk, puntkomma's en haakjes weglaten. Het gebruik van regeleindes en inspringen van blokken geeft, naar ons idee, binder belemmering bij het lezen van een programma.% T: Wat vind je van deze omschrijving? MOOI
 
 \section{Voorbeeldprogramma's}
 \label{sec:voorbeelden}
@@ -14,7 +14,7 @@ Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
 \begin{NoBreak}
 \newCodeFragment[exa:template][Het eerste voorbeeldprogramma]
 \codeFragmentCaption
-\codeLines{
+\begin{codelines}
   \codeLine{\VAR \id{f}}[$\id{f}$ moet eerst worden gedefiniëerd]
   \codeLine{\id{f} = \FUN(i) \RETURNS \id{n}}
   \codeLine{\IN \VAR \id{n}}
@@ -22,7 +22,7 @@ Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
   \codeLine{}[$\id{x}$ bestaat niet in deze scope]
   \codeLine{\VAR \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
   \codeLine{\id{x} = \id{f}(42)}[\id{x} heeft nu de waarde 94]
-}
+\end{codelines}
 \end{NoBreak}
 
 De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
@@ -36,11 +36,11 @@ Een variabele moet altijd eerst worden gedeclareerd. Daarna kan er een waarde aa
 \begin{NoBreak}
 \newCodeFragment[exa:declaration][Declaratie van variabelen]
 \codeFragmentCaption
-\codeLines{
+\begin{codelines}
   \codeLine{}[\id{x} bestaat (nog) niet]
   \codeLine{\VAR \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
   \codeLine{\id{x} = 5}[\id{x} bevat nu de waarde 5]
-}
+\end{codelines}
 \end{NoBreak}
 
 Het concept van declaratie is juist in deze taal heel belangrijk, gezien het lexicaal bereik van variabelen. Wat lexicaal bereik precies inhoudt wordt weldra behandeld.
@@ -53,19 +53,18 @@ Variabelen kunnen na declaratie waarden aannemen. Onze taal bevat waarden van dr
   \item natuurlijk getal
   \item functie
   \item object
-\end{itemize}% T: Ben je het met deze opsomming eens?
+\end{itemize}% T: Ben je het met deze opsomming eens? JA
 Het onderscheid tussen deze types wordt op \emph{dynamisch} niveau gemaakt in plaats van op syntactisch niveau. Dat houdt in dat een willekeurige variabele elke willekeurige waarde kan aannemen, van elk willekeurig type. Ook kan het in zijn levensduur waarden van meerder types bevatten. Code fragment~\ref{exa:types} geeft dit weer.
 
 \begin{NoBreak}
 \newCodeFragment[exa:types][Waarden van verschillende types]
 \codeFragmentCaption
-\codeLines{
+\begin{codelines}
   \codeLine{\VAR \id{x}}[declaratie zonder type indicatie]
   \codeLine{\id{x} = 5}[type ``natuurlijk getal'']
   \codeLine{\id{x} = \FUN(\;)\{\dots\}}[type ``functie'']
-  \codeLine{\id{x} \OBJECT}[type ``object'', aan \id{x} kunnen nu attributen worden toegevoegd]% T: dit lijkt mij beter
-  % deze rare initiälisatie heeft een reden
-}
+  \codeLine{\id{x} \OBJECT}[type ``object'', aan \id{x} kunnen nu attributen worden toegevoegd]
+\end{codelines}
 \end{NoBreak}
 
 \subsection{Lexicaal bereik}
@@ -78,20 +77,20 @@ Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van i
 \begin{NoBreak}
 \newCodeFragment[exa:zoek][Zoek de definitie van variabele \id{x}]
 \codeFragmentCaption
-\codeLines{
+\begin{codelines}
   \codeLine{\VAR \id{x}}[dit is de gezochte definitie van \id{x}]
   \codeLine{\id{x} = 42}
   \codeLine{}
   \codeLine{\VAR \id{f}}
   \codeLine{\id{f} = \FUN(\;)}
   \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
-}
+\end{codelines}
 \end{NoBreak}
 
 \begin{NoBreak}
 \newCodeFragment[exa:zoek2][Zoek de definitie van variabele \id{x}]
 \codeFragmentCaption
-\codeLines{
+\begin{codelines}
   \codeLine{\VAR \id{x}}
   \codeLine{\id{x} = 42}
   \codeLine{}
@@ -100,7 +99,7 @@ Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van i
   \codeLine{\IN \VAR \id{x}}[dit is de gezochte definitie van \id{x}]
   \codeLine{\IN \id{x} = 43}
   \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
-}
+\end{codelines}
 \end{NoBreak}
 
 %Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de scopes. Het moge duidelijk zijn dat als men ``naar buiten toe'' zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
@@ -110,7 +109,7 @@ Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie
 \begin{NoBreak}
 \newCodeFragment[exa:counting][Het belang van creatie van bereiken bij functie applicatie]
 \codeFragmentCaption
-\codeLines{
+\begin{codelines}
   \codeLine{\VAR \id{f}}
   \codeLine{\id{f} = \FUN(n) \RETURNS \id{g}}
   \codeLine{\IN \VAR \id{g}}
@@ -123,7 +122,7 @@ Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie
   \codeLine{\id{c}()}[de tweede aanroep $\id{c}(\;)$ levert daarna 7 op\dots]
   \codeLine{}[]
   \codeLine{\id{d} = \id{f}(42)}[$\id{d}(\;)$: 43, 44, 45, 46, \dots]
-}
+\end{codelines}
 \end{NoBreak}
 
 \subsection{Prototype overerving en object oriëntatie}
@@ -148,120 +147,120 @@ Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen 
 
 \newCodeFragment
 
-\codeLines{
+\begin{codelines}
   \codeLine{\VAR \id{Deur}}
   \codeLine{\id{Deur} \OBJECT}
-}
+\end{codelines}
 
 We declareren eerst een locale variabele die we vervolgens initialiseren als een object. Vanaf nu kunnen we \id{Deur} als instantie gebruiken door een attribuut te zetten:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{Deur}.\id{open} = 1}
-}
+\end{codelines}
 
 Een \id{Deur} is standaard open. We kunnen \id{Deur} ook als een prototype gebruiken. In prototype-gebaseerde talen heet dit \emph{klonen}:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\VAR \id{GeslotenDeur}}
   \codeLine{\id{GeslotenDeur} \OBJECT}
 	\codeLine{\id{GeslotenDeur} \CLONES \id{Deur}}
-}
+\end{codelines}
 
 \id{GeslotenDeur} heeft dan alle attributen van \id{Deur}:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{GeslotenDeur}.\id{open}}[waarde $\to$ 1]
-}
+\end{codelines}
 
 Maar een \id{GeslotenDeur} moet natuurlijk gesloten zijn. We zetten zijn attribuut \id{open} op @0@:
 
-\codeLines{
+\begin{codelines}
 	\codeLine{\id{GeslotenDeur}.\id{open} = 0}
-}
+\end{codelines}
 
 Een gewone \id{Deur} is nog steeds open:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{Deur}.\id{open}}[waarde $\to$ 1]
-}
+\end{codelines}
 
 Attributen worden dus per object bewaard. Door \id{open} op @0@ te zetten in \id{GeslotenDeur} verandert er niks in \id{Deur}.
 
 We kunnen net zoveel klonen maken van een object als we willen en net zo diep klonen als we willen. Neem een \id{GlazenDeur}, dit is natuurlijk ook een \id{Deur}, maar wel doorzichtig:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\VAR \id{GlazenDeur}}
   \codeLine{\id{GlazenDeur} \OBJECT}
   \codeLine{\id{GlazenDeur} \CLONES \id{Deur}}
   \codeLine{\id{GlazenDeur}.\id{doorzichtig} = 1}
-}
+\end{codelines}
 
 Een gewone \id{Deur} heeft het attribuut \id{doorzichtig} niet, en dus een \id{GeslotenDeur} ook niet:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{GeslotenDeur}.\id{doorzichtig}}[fout!]
-}
+\end{codelines}
 
 Maar we kunnen besluiten dat deuren standaard niet doorzichtig zijn:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{Deur}.\id{doorzichtig} = 0}
-}
+\end{codelines}
 
 Zodat ook onze \id{GeslotenDeur} niet doorzichtig is:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{GeslotenDeur}.\id{doorzichtig}}[waarde $\to$ 0]
-}
+\end{codelines}
 
 Maar er geld nog steeds:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{GlazenDeur}.\id{doorzichtig}}[waarde $\to$ 1]
-}
+\end{codelines}
 
 We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde ``blauwdrukken'' moeten voldoen. We creëren objecten ``on-the-fly'', alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self.
 
 Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn functie attributen gekoppeld aan een specifiek object. Stel dat we een \id{GeslotenDeur} graag open willen maken. We definiëren:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{GeslotenDeur}.\id{ontsluit} = \FUN (\id{poging})}
   \codeLine{\IN \IF (\id{poging} = \THIS.\id{code}) \THEN}
   \codeLine{\IN \IN \THIS.\id{open} = 1}
   \codeLine{\IN \ELSE}
   \codeLine{\IN \IN \THIS.\id{open} = 0}
-}
+\end{codelines}
 
 \id{this} is hier een expliciete verwijzing naar het huidige object. Op dit moment kunnen we \id{ontsluit} nog niet aanroepen op \id{GeslotenDeur}:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{GeslotenDeur}.\id{ontsluit}(1234)}[fout!]
-}
+\end{codelines}
 
 Het attribuut \id{code} is immers niet gedefinieerd in \id{GeslotenDeur} noch in zijn prototype \id{Deur}.
 
 We kunnen natuurlijk een \id{code} toekennen aan \id{GeslotenDeur}, maar laten we een specifieke \id{GeslotenDeur} maken met een \id{code}:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\VAR \id{Kluis}}
   \codeLine{\id{Kluis} \OBJECT}
   \codeLine{\id{Kluis} \CLONES \id{GeslotenDeur}}
   \codeLine{\id{Kluis}.\id{code} = 4321}
-}
+\end{codelines}
 
 Wanneer we de methode \id{ontsluit} aanroepen is deze niet gedefinieerd in \id{Kluis}, maar wel in zijn prototype \id{GeslotenDeur}. Die wordt dan uitgevoerd. Een belangrijke observatie is dat \id{ontsluit} wel wordt aangeroepen op \id{Kluis}. Dat betekent dat \id{this} verwijst naar \id{Kluis} en niet \id{GeslotenDeur}. Het attribuut \id{code} wordt dan wel gevonden:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{Kluis}.\id{ontsluit}(1234)}
   \codeLine{\id{Kluis}.\id{open}}[waarde $\to$ 0]
-}
+\end{codelines}
 
 Helaas was dat de verkeerde code, we proberen het nog een keer:
 
-\codeLines{
+\begin{codelines}
   \codeLine{\id{Kluis}.\id{ontsluit}(1234)}
   \codeLine{\id{Kluis}.\id{open}}[waarde $\to$ 1]
-}
+\end{codelines}
 
 %TODO: Meerdere overerving niet mogelijk?
 
@@ -325,24 +324,26 @@ De kern van de hele grammatica draait om de volgende productieregel voor \emph{s
 %
 Merk op dat in delen van deze productieregel \Id's staan waar men misschien een \Path\ had verwacht. Zo zou het wenselijk lijken om bijvoorbeeld ``$\id{a}.\id{b} \CLONES \id{c}.\id{d}$'' als een programma van goede vorm te beschouwen. Er zijn twee redenen waarom we dit niet hebben gedaan. Allereerst worden de axioma's en deductieregels ingewikkelder en daarmee minder elegant, of er zijn er meer nodig. Maar belangrijker nog: het is niet essentieel voor de taal. Voor elk programma zoals ``$\id{a}.\id{b} \CLONES \id{c}.\id{d}$'', bestaat er een equivalent programma zónder zulke paden:
 
-\begin{minipage}[t]{.5\textwidth}
-  \newCodeFragment
-  \codeLines{
-    \codeLine{\id{a}.\id{b} \CLONES \id{c}.\id{d}}
-  }
-\end{minipage}
-\begin{minipage}[t]{.5\textwidth}
-  \newCodeFragment
-  \codeLines{
-    \codeLine{\VAR x}
-    \codeLine{x = \id{a}.\id{b}}
-    \codeLine{}
-    \codeLine{\VAR y}
-    \codeLine{y = \id{c}.\id{d}}
-    \codeLine{}
-    \codeLine{x \CLONES y}
-  }
-\end{minipage}
+\begin{htmlskip}
+  \begin{minipage}[t]{.5\textwidth}
+    \newCodeFragment
+    \codeLines{
+      \codeLine{\id{a}.\id{b} \CLONES \id{c}.\id{d}}
+    }
+  \end{minipage}
+  \begin{minipage}[t]{.5\textwidth}
+    \newCodeFragment
+    \codeLines{
+      \codeLine{\VAR x}
+      \codeLine{x = \id{a}.\id{b}}
+      \codeLine{}
+      \codeLine{\VAR y}
+      \codeLine{y = \id{c}.\id{d}}
+      \codeLine{}
+      \codeLine{x \CLONES y}
+    }
+  \end{minipage}
+\end{htmlskip}
 
 Hierin moeten $x$ en $y$ ``vers'' gekozen worden.
 

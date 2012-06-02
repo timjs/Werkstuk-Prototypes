@@ -10,34 +10,35 @@ Lexicaal bereik (ook wel \emph{static scoping} genaamd) en prototype overerving 
 % Doel
 Het doel van dit werkstuk is daarom een formele betekenis te geven aan deze concepten, maar dan wel zó dat de interpretatie van de formele uitspraken zo natuurlijk mogelijk en conceptueel verantwoord is. De bedoeling is dat men de gewoon Nederlandse interpretatie van een willekeurig axioma of deductieregel tegen zou kunnen komen in een college programmeren:
 
-% html: skip
-\begin{multicols}{2}
-  \small
-  \raggedcolumns
-  \setlength{\columnseprule}{.5pt}
-  \scalebox{0.84}{\begin{minipage}{.25\textwidth}
-    \begin{NSAxiom}{object}
-      \begin{prooftree}
-        \AxiomC{$
-          \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
-          \longrightarrow
-          (\ms', \mo')
-        $}
-      \end{prooftree}
-      \begin{NSConditions}
-        \Cond{$ \textsc{Find}_\text{scope}(\ms, \sigma, i) = \sigma_\text{def} $}
-        \Cond{$ \omega = \textsc{Next}_\text{object}(\mo) $}
-        \Cond{$ \ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], p_{\ms(\sigma')}\big) } $}
-        \Cond{$ \mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
-      \end{NSConditions}
-    \end{NSAxiom}
-  \end{minipage}}
-  
-  \columnbreak
-  
-  \textit{``Zoals jullie weten, moeten we bij statische scope eerst de definitie van de variabele zoeken in de huidige en daarna omliggende bereiken. Daarna maken we ruimte vrij in het geheugen en kan een nieuw object worden gemaakt. Een verwijzing naar dit object wordt vervolgens in de variabele gestopt\dots''}
-\end{multicols}
-% /html
+\begin{htmlskip}
+  \begin{multicols}{2}
+    \small
+    \raggedcolumns
+    \setlength{\columnseprule}{.5pt}
+    \scalebox{0.84}{\begin{minipage}{.25\textwidth}
+      \begin{NSAxiom}{object}
+        \begin{prooftree}
+          \AxiomC{$
+            \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
+            \longrightarrow
+            (\ms', \mo')
+          $}
+        \end{prooftree}
+        \begin{NSConditions}
+          \Cond{$ \textsc{Find}_\text{scope}(\ms, \sigma, i) = \sigma_\text{def} $}
+          \Cond{$ \omega = \textsc{Next}_\text{object}(\mo) $}
+          \Cond{$ \ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], p_{\ms(\sigma')}\big) } $}
+          \Cond{$ \mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
+        \end{NSConditions}
+      \end{NSAxiom}
+    \end{minipage}}
+    
+    \columnbreak
+    
+    \textit{``Zoals jullie weten, moeten we bij statische scope eerst de definitie van de variabele zoeken in de huidige en daarna omliggende bereiken. Daarna maken we ruimte vrij in het geheugen en kan een nieuw object worden gemaakt. Een verwijzing naar dit object wordt vervolgens in de variabele gestopt\dots''}
+  \end{multicols}
+\end{htmlskip}
+\htmlinsert{somehtmlreplacement.html}
 
 % Opzet
 Na het bespreken van een aantal notationele keuzes en terminologie, presenteren we eerst de minimale taal, vervolgens het semantische model en tenslotte de natuurlijke semantiek die de twee voorgaande aan elkaar koppelt. In de case study die erop volgt proberen we een andere wiskundige aanpak te belichten om de semantiek te beschrijven.

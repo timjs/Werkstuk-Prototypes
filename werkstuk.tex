@@ -1,3 +1,4 @@
+
 \documentclass[11pt,oneside,parskip=half]{scrbook}
 \usepackage[a4paper]{geometry}
 
@@ -42,44 +43,6 @@
   \LeftLabel{\scriptsize \arabic{theLabel}}
   \addtocounter{theLabel}{1}
 }
-% Op een of andere manier moet je in je deductiebomen, de states gaan aangeven. Ik doe dit met doosjes, waarin net genoeg staat dat je iets intuitiever kunt zien wat welke state is, en wat er allemaal in zit.
-\newcommand{\stateBox}[1]{%
-  \boxed{\mathit{\vphantom{f}#1}}
-}
-\newcommand{\emptyStateBox}{\stateBox{\phantom{f}}}
-
-\usepackage{tikz}
-\usetikzlibrary{calc}
-\tikzstyle{every picture}=[thick]
-
-\usepackage{listings}
-\lstdefinelanguage{proto}
-  {keywords={local, object, clones, function, returns, is,
-             print, skip,
-             if, then, else, while, do},
-   emph={true, false, this, proto},
-   %literate={==}{{$=$}}1 {/=}{{$\neq$}}1 {<=}{{$\leq$}}1 {>=}{{$\geq$}}1
-   %         {+}{{$+$}}1 {-}{{$-$}}1 {*}{{$\times$}}1 {/}{{$/$}}1
-   %         {&}{{$\wedge$}}1 {|}{{$\vee$}}1 {~}{{$\lnot$}}1,
-   comment=[l]{--}}
-\lstMakeShortInline @ %@
-\lstset
-  {language=proto,
-   basicstyle=\small\ttfamily,
-   keywordstyle=\bfseries,
-   emphstyle=\bfseries,
-   numbers=left,
-   numberstyle=\scriptsize\color{gray},
-   numbersep=0.5em,
-   xleftmargin=1.5em,
-   mathescape=true,
-   extendedchars=true}
-\renewcommand{\lstlistingname}{Voorbeeld}
-
-\usepackage[nounderscore]{syntax}
-\setlength{\grammarindent}{8em}
-\renewcommand{\syntleft}{\normalfont\itshape}
-\renewcommand{\syntright}{}
 
 \newcommand{\newmathcommand}[2]
   {\newcommand{#1}
@@ -317,6 +280,15 @@
   }~%
   \\[-1.6pc]%
 }
+\NewEnviron{codelines}{%
+  \par
+  \vspace{4pt}%
+  \begin{tabular}{@{~~}r@{~}!{\color{black!70} \vrule width 1.5pt}@{~~}l@{~~}l@{}}%
+    \BODY%
+  \end{tabular}%
+  \vspace{4pt}%
+  \par
+}
 \newcommand{\codeLines}[1]{%
   \par
   \vspace{4pt}%
@@ -348,6 +320,9 @@
     \BODY
   \end{minipage}%
 }
+
+\NewEnviron{htmlskip}{\BODY}
+\newcommand{\htmlinsert}[1]{}
 
 \begin{document}
 
