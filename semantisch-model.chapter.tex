@@ -170,13 +170,13 @@ Het verwijzen van een variabele naar een object wordt in onze semantiek bewerkst
 Om samen te vatten:
 \begin{description}
   \item[Data] De wereld van data waar een programma mee om gaat bevat getallen, functies en objecten.
-  \item[Waarden] Een waarde is wat er in ons semantisch model aan een variabele wordt toegekend, dit met behulp van een binding. Primitieve waarden (getallen, functies) zijn zelf waarden. Om in een programma over objecten te spreken, wordt de locatie van een object ook als waarde beschouwd.
+  \item[Waarden] Een waarde is wat er in ons semantisch model aan een variabele wordt toegekend, dit met behulp van een binding. Primitieve waarden (getallen, functies) zijn zelf waarden. Om in een programma over objecten te spreken, wordt de locatie van een object ook als waarde beschouwd. Wanneer een variabele nog geen waarde toegekend heeft gekregen, bevat het ``nog geen waarde'': $\nil$.
 \end{description}
 
 De definitie van de verzameling van alle waarden (locaties van objecten, getallen en functies) is dus als volgt:
 
 \begin{equation*}
-  \VV \DEF \LLo \cup \NN \cup \FF
+  \VV \DEF \LLo \cup \NN \cup \FF \cup \{\nil\}
 \end{equation*}
 
 \section{Locaties en geheugen}

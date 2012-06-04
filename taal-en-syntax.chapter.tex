@@ -4,7 +4,7 @@
 In dit hoofdstuk presenteren we de taal waarvoor we een natuurlijk semantiek construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst beschouwen we een aantal voorbeeldprogramma's, om zo informeel de te formaliseren taal te karakteriseren. Daarna geven we een rigoureuze definitie met behulp van een \BNF\ grammatica.
 
 De structuur van de productieregels van deze grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
-Het is belangrijk om te vermelden dat het hierbij niet gaat om een taal te maken die er ``mooi'' uit ziet. Het doel is om de essentiële onderdelen te verwerken die nodig zijn om lexicaal bereik en prototype overerving te formaliseren met een natuurlijke semantiek. Om dezelfde reden moet de syntaxis van de taal worden beschouwd als een mogelijke representatie van een \emph{abstract syntax tree} van een ``echte'' programmeertaal. We zullen dan ook, waar mogelijk, puntkomma's en haakjes weglaten. Het gebruik van regeleindes en inspringen van blokken geeft, naar ons idee, binder belemmering bij het lezen van een programma.% T: Wat vind je van deze omschrijving? MOOI
+Het is belangrijk om te vermelden dat het er hierbij niet gaat om een taal te maken die er ``mooi'' uit ziet. De taal bevat enkel onderdelen die essentiëel zijn voor het modelleren en formaliseren van lexicaal bereik en prototype overerving. Om dezelfde reden moet de syntaxis van de taal worden beschouwd als een mogelijke representatie van een \emph{abstract syntax tree} van een ``echte'' programmeertaal. We zullen dan ook, waar mogelijk, puntkomma's en haakjes weglaten. Het gebruik van regeleindes en inspringen van blokken geeft, naar ons idee, binder belemmering bij het lezen van een programma.
 
 \section{Voorbeeldprogramma's}
 \label{sec:voorbeelden}
@@ -16,7 +16,7 @@ Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
 \codeFragmentCaption
 \begin{codelines}
   \codeLine{\VAR \id{f}}[$\id{f}$ moet eerst worden gedefiniëerd]
-  \codeLine{\id{f} = \FUN(i) \RETURNS \id{n}}
+  \codeLine{\id{f} = \FUN(\id{i}) \RETURNS \id{n}}
   \codeLine{\IN \VAR \id{n}}
   \codeLine{\IN \id{n} = 2 \times (\id{i} + 5)}
   \codeLine{}[$\id{x}$ bestaat niet in deze scope]
@@ -48,16 +48,16 @@ Het concept van declaratie is juist in deze taal heel belangrijk, gezien het lex
 \subsubsection{Types}
 \label{subsec:taal-types}
 
-Variabelen kunnen na declaratie waarden aannemen. Onze taal bevat waarden van drie types:
+Variabelen kunnen na declaratie waarden aannemen. Onze taal zal sprkene over drie typen data:
 \begin{itemize}
-  \item natuurlijk getal
-  \item functie
-  \item object
-\end{itemize}% T: Ben je het met deze opsomming eens? JA
-Het onderscheid tussen deze types wordt op \emph{dynamisch} niveau gemaakt in plaats van op syntactisch niveau. Dat houdt in dat een willekeurige variabele elke willekeurige waarde kan aannemen, van elk willekeurig type. Ook kan het in zijn levensduur waarden van meerder types bevatten. Code fragment~\ref{exa:types} geeft dit weer.
+  \item getallen
+  \item functies
+  \item objecten
+\end{itemize}
+Een speciale waarde $\nil$ wordt gebruikt om aan te geven dat een variabele nog geen data toegekend heeft gekregen. Het onderscheid tussen deze typen wordt op \emph{dynamisch} niveau gemaakt in plaats van op syntactisch niveau. Dat houdt in dat een willekeurige variabele data van willekeurige typen kan aannemen. Ook kan het in zijn levensduur data van meerdere typen bevatten. Code fragment~\ref{exa:types} geeft dit weer.
 
 \begin{NoBreak}
-\newCodeFragment[exa:types][Waarden van verschillende types]
+\newCodeFragment[exa:types][Waarden van verschillende typen]
 \codeFragmentCaption
 \begin{codelines}
   \codeLine{\VAR \id{x}}[declaratie zonder type indicatie]
@@ -262,8 +262,6 @@ Helaas was dat de verkeerde code, we proberen het nog een keer:
   \codeLine{\id{Kluis}.\id{open}}[waarde $\to$ 1]
 \end{codelines}
 
-%TODO: Meerdere overerving niet mogelijk?
-
 \section{Formele definitie}
 
 Nu volgt een formele definitie van de syntaxis van de taal, aan de hand van een \BNF\ grammatica. Getallen zijn als volgt gedefiniëerd:
@@ -295,6 +293,8 @@ Een \emph{pad} is een opeenvolging van \Ids\ gescheiden door punten en wordt geb
   \Path \GrammarDef \Id \mid \Id . \Path
 \end{align*}
 %
+We introduceren geen speciale syntax om naar het \emph{this} object te refereren, maar zullen een pad dat begint met de identifier ``this'' beschouwen als een pad binnen het \emph{this} object. Merk op dat als een ``this'' op een andere plek in een pad wordt gebruikt, er wel gewoon gesproken wordt over zeker ``this'' attribuut van een zeker object: alleen vooraan een pad is deze speciale betekenis van toepassing.
+
 \emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, definiëren we als volgt:
 %
 \begin{align*}
