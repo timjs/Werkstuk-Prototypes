@@ -1,9 +1,95 @@
-
 \chapter{Natuurlijke Semantiek}
 
 \section{Expressies}
 
-\dots Komt nog \dots
+\subsection{Gewoone}
+
+\begin{equation*}
+  \Express{\;}{} \; \MMs \times \MMo \times \LLs \times \LLo \rightarrow \VV
+\end{equation*}
+
+\begin{equation*}
+  \Express{n}{\ms,\mo,\sigma,\tau} = \Express[N]{n}{}
+\end{equation*}
+
+\begin{align*}
+  \Express{e_1 \circ e_2}{\ms,\mo,\sigma,\tau}
+  &= n_1 \circ n_2
+  \;\forall_{\circ\in\{+,-,\times,/\}}\\
+  &\desda \Express{e_i}{\ms,\mo,\sigma,\tau} = n_i \;\forall_{i\in\{1,2\}}
+\end{align*}
+
+\begin{equation*}
+  \Express{i}{\ms,\mo,\sigma,\tau} = \Finds(\ms,\sigma,i)
+\end{equation*}
+
+\begin{align*}
+  \Express{i.p}{\ms,\mo,\sigma,\tau} &= v \\
+                                     &\desda
+  \begin{aligned}
+    \Express{i}{\ms,\mo,\sigma,\tau} &= \omega \in \LLo \\
+                 \Trav(\mo,\omega,p) &= (\omega'\in\LLo,j) \\
+                   \Findo(\omega',j) &= \omega'' \\
+                    \mo(\omega'')(j) &= v
+  \end{aligned}
+\end{align*}
+
+\begin{equation*}
+  \Express{\THIS}{\ms,\mo,\sigma,\tau} = \tau
+\end{equation*}
+
+\begin{align*}
+  \Express{\THIS.p}{\ms,\mo,\sigma,\tau} &= v \\
+                                     &\desda
+  \begin{aligned}
+                 \Trav(\mo,\tau,p) &= (\omega\in\LLo,j) \\
+                   \Findo(\omega,j) &= \omega' \\
+                    \mo(\omega')(j) &= v
+  \end{aligned}
+\end{align*}
+
+\begin{equation*}
+  \Express{\FUN (i^+) \{S\}}{\ms,\mo,\sigma,\tau} = (\sigma, i^+, S, \nil)
+\end{equation*}
+
+\begin{equation*}
+  \Express{\FUN (i^+) \RETURNS j \{S\}}{\ms,\mo,\sigma,\tau} = (\sigma, i^+, S, j)
+\end{equation*}
+
+\subsection{Boolse}
+
+\begin{equation*}
+  \Express[B]{\;}{} \; \MMs \times \MMo \times \LLs \times \LLo \rightarrow {\T,\F}
+\end{equation*}
+
+\begin{equation*}
+  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} = \T
+\end{equation*}
+
+\begin{equation*}
+  \Express[B]{\FALSE}{\ms,\mo,\sigma,\tau} = \F
+\end{equation*}
+
+\begin{equation*}
+  \Express[B]{b_1 \AND b_2}{\ms,\mo,\sigma,\tau}
+  = \Express[B]{b_1}{\ms,\mo,\sigma,\tau} \land \Express[B]{b_2}{\ms,\mo,\sigma,\tau}
+\end{equation*}
+
+\begin{equation*}
+  \Express[B]{b_1 \OR b_2}{\ms,\mo,\sigma,\tau}
+  = \Express[B]{b_1}{\ms,\mo,\sigma,\tau} \lor \Express[B]{b_2}{\ms,\mo,\sigma,\tau}
+\end{equation*}
+
+\begin{equation*}
+  \Express[B]{\NOT b}{\ms,\mo,\sigma,\tau}
+  = \lnot \Express[B]{b}{\ms,\mo,\sigma,\tau}
+\end{equation*}
+
+\begin{equation*}
+  \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau}
+  = \Express{e_1}{\ms,\mo,\sigma,\tau} \sim \Express{e_2}{\ms,\mo,\sigma,\tau}
+  \;\forall_{\sim\in\{=,\neq,<,\le,>,\ge\}}
+\end{equation*}
 
 \section{Statements}
 
@@ -159,7 +245,7 @@ We komen nu bij een interessanter deel van de taal, namelijk het \emph{declarere
   \end{NSConditions}
 \end{NSAxiom}
 
-Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we dit met dezelfde aanpassingstechniek als hierboven. Er is echter één groot verschil. Voordat we een waarde aan een variabele kunnen koppelen, moeten we eerst het bereik vinden waarin deze gedeclareerd is. Dit hoeft niet het huidige bereik te zijn en dus zoeken we deze op met de hulpfunctie $\textsc{Find}_\text{scope}$. Daarnaast moeten we natuurlijk de expressie aan de rechter kant van het is-teken evalueren.
+Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we dit met dezelfde aanpassingstechniek als hierboven. Er is echter één groot verschil. Voordat we een waarde aan een variabele kunnen koppelen, moeten we eerst het bereik vinden waarin deze gedeclareerd is. Dit hoeft niet het huidige bereik te zijn en dus zoeken we deze op met de hulpfunctie $\Finds$. Daarnaast moeten we natuurlijk de expressie aan de rechter kant van het is-teken evalueren.
 
 \begin{NSAxiom}{assign$^\text{i}$}
   \begin{prooftree}
@@ -170,7 +256,7 @@ Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we 
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \sigma_\text{def} = \textsc{Find}_\text{scope}(\ms, \sigma, i) $}
+    \Cond{$ \sigma_\text{def} = \Finds(\ms, \sigma, i) $}
     \Cond{$ \Surr{e}_{\ms, \mo, \sigma, \tau} = v $}
     \Cond{$ \ms'= \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma_\text{def})}[ i \mapsto v ], p_{\ms(\sigma_\text{def})}\big) } $}
   \end{NSConditions}
@@ -189,9 +275,9 @@ Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van ande
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \sigma_\text{def} = \textsc{Find}_\text{scope}(\ms, \sigma, i) $}
+    \Cond{$ \sigma_\text{def} = \Finds(\ms, \sigma, i) $}
     \Cond{$ b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL $}
-    \Cond{$ \textsc{Trav}(\mo, \omega, s) = (\omega', j) $}
+    \Cond{$ \Trav(\mo, \omega, s) = (\omega', j) $}
     \Cond{$ \Surr{e}_{\ms, \mo, \sigma, \tau} = v $}
     \Cond{$ \ms'= \ms \surr{ \omega' \mapsto \big(b_{\ms(\omega')}[ j \mapsto v ], p_{\ms(\omega')}\big) } $}
   \end{NSConditions}
@@ -206,7 +292,7 @@ Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van ande
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \textsc{Trav}(\mo, \tau, s) = (\omega, i) $}
+    \Cond{$ \Trav(\mo, \tau, s) = (\omega, i) $}
     \Cond{$ \Surr{e}_{\ms, \mo, \sigma, \tau} = v $}
     \Cond{$ \mo'= \mo \surr{ \omega \mapsto \big(b_{\mo(\omega)}[ i \mapsto v ], p_{\mo(\omega)}\big) } $}
   \end{NSConditions}
@@ -223,8 +309,8 @@ Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \textsc{Find}_\text{scope}(\ms, \sigma, i) = \sigma_\text{def} $}
-    \Cond{$ \omega = \textsc{Next}_\text{object}(\mo) $}
+    \Cond{$ \Finds(\ms, \sigma, i) = \sigma_\text{def} $}
+    \Cond{$ \omega = \Nexto(\mo) $}
     \Cond{$ \ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], p_{\ms(\sigma')}\big) } $}
     \Cond{$ \mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
   \end{NSConditions}
@@ -265,11 +351,11 @@ Het definiëren van een prototype gaat met het \CLONES-statement. Hiervoor zoeke
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \sigma_\text{def} = \textsc{Find}_\text{scope}(\ms, \sigma, i) $}
+    \Cond{$ \sigma_\text{def} = \Finds(\ms, \sigma, i) $}
     \Cond{$ b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL $}
-    \Cond{$ \textsc{Trav}(\mo, \omega, s) = (\omega', j) $}
+    \Cond{$ \Trav(\mo, \omega, s) = (\omega', j) $}
     \Cond{$ (S_{\!f}, I_{\!f}, i_{\!f}, \sigma_{\!f\text{def}}) = f = b_{\mo(\omega')}(j) $}
-    \Cond{$ \sigma_{\!f\text{new}} = \textsc{Next}_\text{scope}(\ms) $}
+    \Cond{$ \sigma_{\!f\text{new}} = \Nexts(\ms) $}
     \Cond{$ \ms' = \ms\surr{ \sigma_{\!f\text{new}} \mapsto \big(\Surr{e^*}^*_{\ms,\sigma,\tau}(I_{\!f}), \sigma_{\!f\text{def}}\big) } $}
   \end{NSConditions}
 \end{NSAxiom}
@@ -294,4 +380,4 @@ Het definiëren van een prototype gaat met het \CLONES-statement. Hiervoor zoeke
 %
 %Wanneer bij een dergelijke opsomming van voorwaarden een nieuwe variabele wordt geïntroduceerd zoals hierboven, met de volgende vorm: $\textbf{desda } \square = \theta \dots$; dan moet deze gelezen worden als: $\textbf{desda } \exists_\theta \surr{ \square = \theta \dots }$.
 
-% vim: syn=latex spell spl=nl cole=1 cocu=nv
+% vim: syn=latex spell spl=nl cole=1

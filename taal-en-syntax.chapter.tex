@@ -298,14 +298,14 @@ Een \emph{pad} is een opeenvolging van \Ids\ gescheiden door punten en wordt geb
 \emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, definiëren we als volgt:
 %
 \begin{align*}
-  \Expr \GrammarDef \Num \mid \Path \mid \Expr\; (+ \mid - \mid \times \mid /\,)\; \Expr \\
+  \Expr \GrammarDef \Num \mid \Expr\; (+ \mid - \mid \times \mid /\,)\; \Expr \mid \Path \\
   \GrammarOr \FUN\pmb{(}\,\MaybeIds\,\pmb{)}\; \GrammarOpt{\RETURNS \Id\;} \pmb{\{}\; \Stm\; \pmb{\}} \\
   \Exprs \GrammarDef \Expr \mid \Exprs, \Expr \\
   \MaybeExprs \GrammarDef \varepsilon \mid \Exprs \\
   \BExpr \GrammarDef \TRUE \mid \FALSE \\
   \GrammarOr \BExpr\; (\AND \mid \OR)\; \BExpr \\
   \GrammarOr \NOT\; \BExpr \\
-  \GrammarOr \Expr\; (=\: \mid\: <\: \mid\: \le\: \mid\: >\: \mid\: \ge)\; \Expr
+  \GrammarOr \Expr\; (=\: \mid\: \neq\: \mid\: <\: \mid\: \le\: \mid\: >\: \mid\: \ge)\; \Expr
 \end{align*}
 %
 De kern van de hele grammatica draait om de volgende productieregel voor \emph{statements}. Een statement is een programma van goede vorm. Het betekent niet noodzakelijk dat het programma \emph{valide} is, maar alle valide programma's zitten wel in $\Stm$. (Vanwege de focus van dit werkstuk definiëren we niet precies wanneer een programma valide is en wanneer niet.)

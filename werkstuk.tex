@@ -1,4 +1,3 @@
-
 \documentclass[11pt,oneside,parskip=half]{scrbook}
 \usepackage[a4paper]{geometry}
 
@@ -10,8 +9,8 @@
 \usepackage{amssymb}
 
 \usepackage{lmodern}
-\usepackage{millennial}
-\usepackage{tgadventor}
+%\usepackage{millennial}
+%\usepackage{tgadventor}
 
 \usepackage{tabularx}% tables: equal width columns
 \usepackage{multirow}% tables: rowspan
@@ -70,6 +69,49 @@
 \newcommand{\id}[1]
   {\text{\ttfamily\small\upshape #1}}
 
+\newcommand{\surrAngle}[1]
+  {\ensuremath{\big<\,#1\,\big>}}
+\newcommand{\SurrAngle}[1]
+  {\ensuremath{\big<\!\big<\,#1\,\big>\!\big>}}
+\newcommand{\surr}[1]
+  {\ensuremath{\big[\,#1\,\big]}}
+\newcommand{\Surr}[1]
+  {\ensuremath{\big[\!\big[\,#1\,\big]\!\big]}}
+
+% Expression: " T [[E]] \sigma, tau "
+\newcommand{\Express}[3][]
+  {\Surr{#2}^\text{#1}_{#3}}
+  
+% Configuration: " <<S>> m, \sigma, \tau "
+%\newcommand{\Config}[2]
+  %{\left<#1, #2\right>}%  -- <S,m,s,t>
+%\newcommand{\Config}[2]
+  %{\surr{#1}_{#2}}%       -- [S]m,s,t
+%\newcommand{\Config}[2]
+  %{\surrAngle{#1}_{#2}}%  -- <S>m,s,t
+\newcommand{\Config}[2]
+  {\SurrAngle{#1}_{#2}}%  -- <<S>>m,s,t
+
+% Functions:
+\newmathcommand{\Trav}
+  {\textsc{Trav}}
+\newmathcommand{\Finds}
+  {\textsc{Find}_\text{scope}}
+\newmathcommand{\Findo}
+  {\textsc{Find}_\text{object}}
+\newmathcommand{\Nexts}
+  {\textsc{Next}_\text{scope}}
+\newmathcommand{\Nexto}
+  {\textsc{Next}_\text{object}}
+
+\newcommand{\desda}
+  {\textbf{desda }}
+\newcommand{\anders}
+  {\textbf{anders }}
+\newcommand{\nil}
+  {\rotatebox{90}{$\Vdash$}}
+\let\BOT\nil
+
 \newcommand{\COMP}{;\;}
 \newkeyword{\LOCAL}{local\;}
 \newkeyword{\VAR}{\LOCAL}
@@ -94,9 +136,9 @@
 \newconstant{\THIS}{this}
 \newconstant{\PROTO}{proto}
 
-\newconstant{\AND}{and}
-\newconstant{\OR}{or}
-\newconstant{\NOT}{not}
+\newconstant{\AND}{\;and\;}
+\newconstant{\OR}{\;or\;}
+\newconstant{\NOT}{\;not\;}
 
 \newnonterminal{\Stm}{Statement}
 \newnonterminal{\Id}{Identifier}
@@ -217,21 +259,6 @@
 }
 
 \newcommand{\FiniteFunctions}[2]{\ensuremath{\text{``eindige''~}{#1}^{#2}}}
-
-\newcommand{\surrAngle}[1]{\ensuremath{\big<\,#1\,\big>}}
-\newcommand{\SurrAngle}[1]{\ensuremath{\big<\!\big<\,#1\,\big>\!\big>}}
-%\newcommand{\SurrAngle}[1]{\ensuremath{\big<\!\big|\,#1\,|\!\big>}}
-\newcommand{\surr}[1]{\ensuremath{\big[\,#1\,\big]}}
-\newcommand{\Surr}[1]{\ensuremath{\big[\!\big[\,#1\,\big]\!\big]}}
-
-% configuration: " <S, m, \sigma, \tau> "
-%\newcommand{\Config}[2]{\left<#1, #2\right>}%  -- normaal
-%\newcommand{\Config}[2]{\surr{#1}_{#2}}%       -- [ ]m,s,t
-%\newcommand{\Config}[2]{\surrAngle{#1}_{#2}}%  -- < >m,s,t
-\newcommand{\Config}[2]{\SurrAngle{#1}_{#2}}%  -- << >>m,s,t % T: als test... weet niet hoe het er met millenial uit ziet
-
-\def\BOT{\rotatebox{90}{$\Vdash$}}
-\let\nil\BOT
 
 \def\DEF{\buildrel{\text{def}}\over{=}}
 \def\Proto{\sqsubset^p}
