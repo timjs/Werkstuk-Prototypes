@@ -60,7 +60,7 @@ Een bereik $s$ is dus een element uit de verzameling
   \SS \DEF \BB \times (\LLs \cup \{\nil\}).
 \end{equation*}
 %
-Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van bereiken. Op het begrip ``locatie'' komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort ``ultiem'' omliggend bereik is. Het kan dus zijn dat een bereik geen parent heeft. Voor dat geval introduceren we het unieke element $\nil$. De beoogde interpretatie van een bereik van de vorm $(b, \nil)$ is dan dat het geen omliggend bereik heeft.
+Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van bereiken. Op het begrip “locatie” komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort “ultiem” omliggend bereik is. Het kan dus zijn dat een bereik geen parent heeft. Voor dat geval introduceren we het unieke element $\nil$. De beoogde interpretatie van een bereik van de vorm $(b, \nil)$ is dan dat het geen omliggend bereik heeft.
 
 \section{Objecten en prototype overerving}
 \label{sec:sem-objecten}
@@ -107,23 +107,23 @@ Een functie is daarom simpelweg een viertupel met bovenstaande informatie. De ve
 In voorgaande paragrafen spraken we over waarden $\VV$ en locaties $\LL$ ($\LLs$ voor bereiken, $\LLo$ voor objecten). We hebben de exacte definities hiervan in het midden gelaten. Wat wel duidelijk is dat een waarde $v \in \VV$ is iets wat we toekennen aan een \Id\ met behulp van een binding.
 
 In §\ref{subsec:taal-types} is uitgelegd hoe de taal met verschillende typen data omgaat. In onze taal komen namelijk drie typen \emph{data} voor: getallen, functies en objecten. Er is echter een verschil in de manier waarop wij ze behandelen in het semantisch model. Deze verschillende aanpak ik bekend aan iedereen die een keer object-geörienteerd geprogrammeerd heeft.
-Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil tussen twee soorten data: primitieve waarden en objecten. Primitieve waarden vatten we op als de ``atomen'' waaruit programma's en objecten worden opgebouwd. Denk aan natuurlijke getallen of woorden.
+Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil tussen twee soorten data: primitieve waarden en objecten. Primitieve waarden vatten we op als de “atomen” waaruit programma's en objecten worden opgebouwd. Denk aan natuurlijke getallen of woorden.
 
 \begin{NoBreak}
   \newCodeFragment[exa:prititive-values-numbers][Toekenning van primitieve waarden: Getallen]
   \codeFragmentCaption
   \codeLines{
     \codeLine{\VAR \id{x}}
-    \codeLine{\id{x} = 5}[de primitieve waarde ``5'' wordt aan variabele \id{x} toegekend]
+    \codeLine{\id{x} = 5}[de primitieve waarde “5” wordt aan variabele \id{x} toegekend]
     \codeLine{}
     \codeLine{\VAR \id{y}}
-    \codeLine{\id{y} = \id{x}}[nu bevat ook \id{y} de primitieve waarde ``5'']
+    \codeLine{\id{y} = \id{x}}[nu bevat ook \id{y} de primitieve waarde “5”]
     \codeLine{}
-    \codeLine{\id{x} = 6}[\id{x} bevat ``6'', maar \id{y} bevat nog steeds ``5'']
+    \codeLine{\id{x} = 6}[\id{x} bevat “6”, maar \id{y} bevat nog steeds “5”]
   }
 \end{NoBreak}
 
-In onze taal zijn ook functies primitieve waarden. Zoals in \ref{sec:sem-functies} wordt beschreven, beschouwen we een functie als een ``atomair'' element met de volgende informatie:
+In onze taal zijn ook functies primitieve waarden. Zoals in §\ref{sec:sem-functies} wordt beschreven, beschouwen we een functie als een “atomair” element met de volgende informatie:
 \begin{itemize}
   \item parameters
   \item mogelijkerwijs een return variabele
@@ -147,7 +147,7 @@ Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complex
   }
 \end{NoBreak}
 
-Objecten worden anders behandeld. Het idee van een object is dat dit een zekere ``entiteit'' voorstelt. Deze entiteit kan een nabootsing zijn van een objecten uit de reële wereld, maar kan ook iets abstracts zijn. Net als objecten uit de reële wereld, kan een object in een programma veranderen in de loop der tijd maar nog wel ``hetzelfde ding zijn als tevoren''. Het volgende code fragment illustreert dit idee:
+Objecten worden anders behandeld. Het idee van een object is dat dit een zekere “entiteit” voorstelt. Deze entiteit kan een nabootsing zijn van een objecten uit de reële wereld, maar kan ook iets abstracts zijn. Net als objecten uit de reële wereld, kan een object in een programma veranderen in de loop der tijd maar nog wel “hetzelfde ding zijn als tevoren”. Het volgende code fragment illustreert dit idee:
 
 \begin{NoBreak}
   \newCodeFragment[exa:prititive-values-functions][Toekenning van primitieve waarden: Functies]
@@ -158,19 +158,19 @@ Objecten worden anders behandeld. Het idee van een object is dat dit een zekere 
     \codeLine{\id{x}.\id{n} = 5}
     \codeLine{}
     \codeLine{\VAR \id{y}}
-    \codeLine{\id{y} = \id{x}}[\id{y} ``verwijst'' nu naar hetzelfde object als \id{x}]
+    \codeLine{\id{y} = \id{x}}[\id{y} “verwijst” nu naar hetzelfde object als \id{x}]
     \codeLine{}
     \codeLine{\id{x}.\id{n} = 6}[omdat \id{x} en \id{y} naar hetzelfde object verwijzen: $\id{y}.\id{n} = 6$]
   }
 \end{NoBreak}
 
-In zekere zin zijn \id{x} en \id{y} immaterieel, omdat ze op deze manier ``vervangbaar'' zijn. Dit in tegenstelling to \id{n}. Het zijn dan ook verschillende dingen: \id{x} en \id{y} zijn variabelen; \id{n} is een attribuut van een zeker object waar zowel \id{x} en \id{y} naar verwijzen.
+In zekere zin zijn \id{x} en \id{y} immaterieel, omdat ze op deze manier “vervangbaar” zijn. Dit in tegenstelling to \id{n}. Het zijn dan ook verschillende dingen: \id{x} en \id{y} zijn variabelen; \id{n} is een attribuut van een zeker object waar zowel \id{x} en \id{y} naar verwijzen.
 Het verwijzen van een variabele naar een object wordt in onze semantiek bewerkstelligd door het object ergens op te slaan, en de locatie ervan als waarde aan de variabele toe te kennen.
 
 Om samen te vatten:
 \begin{description}
   \item[Data] De wereld van data waar een programma mee om gaat bevat getallen, functies en objecten.
-  \item[Waarden] Een waarde is wat er in ons semantisch model aan een variabele wordt toegekend, dit met behulp van een binding. Primitieve waarden (getallen, functies) zijn zelf waarden. Om in een programma over objecten te spreken, wordt de locatie van een object ook als waarde beschouwd. Wanneer een variabele nog geen waarde toegekend heeft gekregen, bevat het ``nog geen waarde'': $\nil$.
+  \item[Waarden] Een waarde is wat er in ons semantisch model aan een variabele wordt toegekend, dit met behulp van een binding. Primitieve waarden (getallen, functies) zijn zelf waarden. Om in een programma over objecten te spreken, wordt de locatie van een object ook als waarde beschouwd. Wanneer een variabele nog geen waarde toegekend heeft gekregen, bevat het “nog geen waarde”: $\nil$.
 \end{description}
 
 De definitie van de verzameling van alle waarden (locaties van objecten, getallen en functies) is dus als volgt:
@@ -221,7 +221,7 @@ Voor het doorzoeken van de prototype hiërarchie naar een attribuut hebben we ee
   \end{cases}
 \end{equation*}
 %
-Er is ook een hulpfunctie nodig om een pad te doorlopen. De hulpfunctie $\textsc{Trav} : \MMo \times \LLo \times \Path \to \LLo \times \Id$ levert de locatie van het laatste object op en de laatste \Id\ van het pad (wat mogelijk naar niet noodzakelijk een attribuut is van dat laatste object), gegeven het objectgeheugen, een locatie voor het ``begin'' object, en een pad.
+Er is ook een hulpfunctie nodig om een pad te doorlopen. De hulpfunctie $\textsc{Trav} : \MMo \times \LLo \times \Path \to \LLo \times \Id$ levert de locatie van het laatste object op en de laatste \Id\ van het pad (wat mogelijk naar niet noodzakelijk een attribuut is van dat laatste object), gegeven het objectgeheugen, een locatie voor het “begin” object, en een pad.
 %
 \begin{equation*}
   \textsc{Trav}(\mo, \omega, p) = \begin{cases}

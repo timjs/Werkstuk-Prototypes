@@ -1,16 +1,28 @@
 \documentclass[11pt,oneside,parskip=half]{scrbook}
 \usepackage[a4paper]{geometry}
 
-\usepackage[dutch]{babel}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+%\setmainfont{Century Schoolbook L}
+\setmainfont[
+  SmallCapsFont={Linux Libertine O},
+  SmallCapsFeatures={Letters=SmallCaps},
+  Mapping=tex-text,
+  Ligatures={TeX, Common}
+]{Linux Libertine O}
+\setmonofont[Scale=0.85]{Bera Sans Mono}
+%\setmonofont{Consolas}
 
 \usepackage{amsmath}
-\usepackage{amssymb}
+\usepackage{unicode-math}
+\setmathfont{Asana Math}% de [] haakjes zijn wat groot, maar \mathbb{N} etc is mooier dan in XITS Math
+%\setmathfont{XITS Math}
 
-\usepackage{lmodern}
-\usepackage{millennial}
-\usepackage{tgadventor}
+\usepackage{xunicode}
+
+%\renewcommand{\textsc}[1]{\addfontfeature{Letters=SmallCaps} #1}
+
+\usepackage{polyglossia}
+\setdefaultlanguage{dutch}
 
 \usepackage{tabularx}% tables: equal width columns
 \usepackage{multirow}% tables: rowspan
@@ -23,9 +35,8 @@
 \usepackage{ifthen}
 \usepackage[font=small,it]{caption}
 \usepackage{environ}
-\usepackage{setspace}
 \usepackage{multicol}
-%\doublespacing
+\usepackage{setspace} \setstretch{1.1} %\doublespacing
 
 \usepackage{bussproofs}
 \def\extraVskip{4pt} % Iets meer verticale ruimte
@@ -62,8 +73,8 @@
 \newcommand{\renewset}[1]
   {\expandafter\renewcommand\expandafter{\csname #1#1\endcsname}
     {\ensuremath{\mathbb{#1}}}}
-\newcommand{\newbool}[1]
-  {\expandafter\newcommand\expandafter{\csname #1\endcsname}
+\newcommand{\newBool}[1]
+  {\expandafter\newcommand\expandafter{\csname b#1\endcsname}
     {\ensuremath{\mathbf{#1}}}}
 
 \newcommand{\id}[1]
@@ -160,8 +171,8 @@
 \newset{V}
 \newset{N}
 
-\newbool{T}
-\newbool{F}
+\newBool{T}
+\newBool{F}
 
 \newmathcommand{\LLs}
   {\LL_{\text{s}}}
@@ -258,7 +269,7 @@
   & #1 \\
 }
 
-\newcommand{\FiniteFunctions}[2]{\ensuremath{\text{``eindige''~}{#1}^{#2}}}
+\newcommand{\FiniteFunctions}[2]{\ensuremath{\text{“eindige”~}{#1}^{#2}}}
 
 \def\DEF{\buildrel{\text{def}}\over{=}}
 \def\Proto{\sqsubset^p}

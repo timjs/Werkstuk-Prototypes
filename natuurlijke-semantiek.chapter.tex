@@ -9,7 +9,7 @@
 \end{equation*}
 
 \begin{equation*}
-  \Express{n}{\ms,\mo,\sigma,\tau} = \Express[N]{n}{}
+  \Express{n}{\ms,\mo,\sigma,\tau} = \mathcal{N}\Express[N]{n}{}
 \end{equation*}
 
 \begin{align*}
@@ -59,15 +59,15 @@
 \subsection{Boolse}
 
 \begin{equation*}
-  \Express[B]{\;}{} \; \MMs \times \MMo \times \LLs \times \LLo \rightarrow {\T,\F}
+  \Express[B]{\;}{} \; \MMs \times \MMo \times \LLs \times \LLo \rightarrow {\bT,\bF}
 \end{equation*}
 
 \begin{equation*}
-  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} = \T
+  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} = \bT
 \end{equation*}
 
 \begin{equation*}
-  \Express[B]{\FALSE}{\ms,\mo,\sigma,\tau} = \F
+  \Express[B]{\FALSE}{\ms,\mo,\sigma,\tau} = \bF
 \end{equation*}
 
 \begin{equation*}
@@ -146,11 +146,11 @@ Voor het samenstellen van statements hebben we een regel nodig.
 In dit geval geven we aan dat, wanneer we een een compositie hebben van de statements $S_1$ en $S_2$, we eerst $S_1$ uitvoeren% T: Dit is niet het juiste woord, weten even geen betere...
 en daarna $S_2$. Tijdens dit proces ontstaan nieuwe toestanden, waar we natuurlijk rekening mee moeten houden. De geheugens worden dan ook netjes doorgesluisd.
 
-Voor de controlestructuur \IF\ hebben we twee regels nodig. De eerste is voor het geval dat de \BExpr\ evalueert in \T, dan moet namelijk het statement van het \THEN-deel worden uitgevoerd. Wanneer de \BExpr\ evalueert in \F\ moet het \ELSE-deel worden uitgevoerd.
+Voor de controlestructuur \IF\ hebben we twee regels nodig. De eerste is voor het geval dat de \BExpr\ evalueert in \bT, dan moet namelijk het statement van het \THEN-deel worden uitgevoerd. Wanneer de \BExpr\ evalueert in \bF\ moet het \ELSE-deel worden uitgevoerd.
 Er moet dus aan een extra voorwaarde worden voldaan om deze regels toe te mogen passen. Dit zal vaker voorkomen bij de komende deductieregels. We noteren deze extra voorwaarden onder de regel of het axioma.
 %Zoals vele axioma's en deductieregels heeft dit axioma een aantal voorwaarden waaraan voldaan moet worden. Deze staan eronder genoteerd, elk op een regel.  
 
-\begin{NSAxiom}{if$^\T$}
+\begin{NSAxiom}{if$^\bT$}
   \begin{prooftree}
     \AxiomC{$
       \Config{S_1}{\ms, \mo, \sigma, \tau}
@@ -164,13 +164,13 @@ Er moet dus aan een extra voorwaarde worden voldaan om deze regels toe te mogen 
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \T $}
+    \Cond{$ \Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \bT $}
   \end{NSConditions}
 \end{NSAxiom}
 
 en:
 
-\begin{NSAxiom}{if$^\F$}
+\begin{NSAxiom}{if$^\bF$}
   \begin{prooftree}
     \AxiomC{$
       \Config{S_2}{\ms, \mo, \sigma, \tau}
@@ -184,13 +184,13 @@ en:
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \F $}
+    \Cond{$ \Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \bF $}
   \end{NSConditions}
 \end{NSAxiom}
 
 Eenzelfde tactiek passen we toe bij een \WHILE-loop.
 
-\begin{NSAxiom}{while$^\T$}
+\begin{NSAxiom}{while$^\bT$}
   \begin{prooftree}
     \AxiomC{$
       \Config{S_1}{\ms, \mo, \sigma, \tau}
@@ -209,13 +209,13 @@ Eenzelfde tactiek passen we toe bij een \WHILE-loop.
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \T $}
+    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \bT $}
   \end{NSConditions}
 \end{NSAxiom}
 
 en:
 
-\begin{NSAxiom}{while$^\F$}
+\begin{NSAxiom}{while$^\bF$}
   \begin{prooftree}
     \AxiomC{$
       \Config{\WHILE b \DO S_1 }{\ms, \mo, \sigma, \tau}
@@ -224,7 +224,7 @@ en:
     $}
   \end{prooftree}
   \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{\ms,\mo,\sigma,\tau} = \F $}
+    \Cond{$ \Surr{b}^\text{B}_{\ms,\mo,\sigma,\tau} = \bF $}
   \end{NSConditions}
 \end{NSAxiom}
 
@@ -362,7 +362,7 @@ Het definiëren van een prototype gaat met het \CLONES-statement. Hiervoor zoeke
 
 %\section*{Extra}
 
-%Deze teksten zijn vooral bedoeld als ``tekstvlees'' (lorem ipsum's). We zullen axioma's en deductieregels introduceren waarmee we de relatie $(\longrightarrow)$ definiëren, die de volgende signatuur heeft:
+%Deze teksten zijn vooral bedoeld als “tekstvlees” (lorem ipsum's). We zullen axioma's en deductieregels introduceren waarmee we de relatie $(\longrightarrow)$ definiëren, die de volgende signatuur heeft:
 
 %$$ (\longrightarrow) \subseteq (\Stm \times \MM \times \LL \times \LL) \times \MM $$
 
@@ -374,9 +374,9 @@ Het definiëren van een prototype gaat met het \CLONES-statement. Hiervoor zoeke
 
 %$$ \big(\,(S,m,\sigma,\tau), m'\,\big) \in (\longrightarrow) $$
 
-%Deze uitspraak moet je lezen als: ``In de toestand met geheugen $m$, scope $\sigma$ en \emph{this} object $\tau$, termineert het statement $S$, waarbij het resultaat-geheugen $m'$ is.''
+%Deze uitspraak moet je lezen als: “In de toestand met geheugen $m$, scope $\sigma$ en \emph{this} object $\tau$, termineert het statement $S$, waarbij het resultaat-geheugen $m'$ is.”
 %
-%Een van deze axioma's [object], heeft betrekking tot de productieregel in de grammatica die de $\OBJECT$ ``literal'' introduceert.
+%Een van deze axioma's [object], heeft betrekking tot de productieregel in de grammatica die de $\OBJECT$ “literal” introduceert.
 %
 %Wanneer bij een dergelijke opsomming van voorwaarden een nieuwe variabele wordt geïntroduceerd zoals hierboven, met de volgende vorm: $\textbf{desda } \square = \theta \dots$; dan moet deze gelezen worden als: $\textbf{desda } \exists_\theta \surr{ \square = \theta \dots }$.
 

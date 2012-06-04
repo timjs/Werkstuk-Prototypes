@@ -4,12 +4,12 @@
 In dit hoofdstuk presenteren we de taal waarvoor we een natuurlijk semantiek construeren. De taal maakt gebruikt van prototype overerving en lexicaal bereik. Eerst beschouwen we een aantal voorbeeldprogramma's, om zo informeel de te formaliseren taal te karakteriseren. Daarna geven we een rigoureuze definitie met behulp van een \BNF\ grammatica.
 
 De structuur van de productieregels van deze grammatica worden in latere hoofdstukken gebruikt om axioma's en deductieregels op te stellen. Daarmee heeft de grammatica in zekere zin een dubbele functie.
-Het is belangrijk om te vermelden dat het er hierbij niet gaat om een taal te maken die er ``mooi'' uit ziet. De taal bevat enkel onderdelen die essentiëel zijn voor het modelleren en formaliseren van lexicaal bereik en prototype overerving. Om dezelfde reden moet de syntaxis van de taal worden beschouwd als een mogelijke representatie van een \emph{abstract syntax tree} van een ``echte'' programmeertaal. We zullen dan ook, waar mogelijk, puntkomma's en haakjes weglaten. Het gebruik van regeleindes en inspringen van blokken geeft, naar ons idee, binder belemmering bij het lezen van een programma.
+Het is belangrijk om te vermelden dat het er hierbij niet gaat om een taal te maken die er “mooi” uit ziet. De taal bevat enkel onderdelen die essentiëel zijn voor het modelleren en formaliseren van lexicaal bereik en prototype overerving. Om dezelfde reden moet de syntaxis van de taal worden beschouwd als een mogelijke representatie van een \emph{abstract syntax tree} van een “echte” programmeertaal. We zullen dan ook, waar mogelijk, puntkomma's en haakjes weglaten. Het gebruik van regeleindes en inspringen van blokken geeft, naar ons idee, binder belemmering bij het lezen van een programma.
 
 \section{Voorbeeldprogramma's}
 \label{sec:voorbeelden}
 
-Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
+Elk voorbeeldprogramma en zijn toelichtingen worden als volgt gepresenteerd:
 
 \begin{NoBreak}
 \newCodeFragment[exa:template][Het eerste voorbeeldprogramma]
@@ -25,7 +25,7 @@ Elk voorbeeldprogramma en zijn toelichtingen worden als volg gepresenteerd:
 \end{codelines}
 \end{NoBreak}
 
-De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben ``uitgevoerd''.
+De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aan proberen te geven hoe het programma zich gedraagt. Vaak zijn het uitspraken over de toestand waarin het programma zich bevindt, direct na de linker regel te hebben “uitgevoerd”.
 
 \subsection{Basis}
 
@@ -61,17 +61,17 @@ Een speciale waarde $\nil$ wordt gebruikt om aan te geven dat een variabele nog 
 \codeFragmentCaption
 \begin{codelines}
   \codeLine{\VAR \id{x}}[declaratie zonder type indicatie]
-  \codeLine{\id{x} = 5}[type ``natuurlijk getal'']
-  \codeLine{\id{x} = \FUN(\;)\{\dots\}}[type ``functie'']
-  \codeLine{\id{x} \OBJECT}[type ``object'', aan \id{x} kunnen nu attributen worden toegevoegd]
+  \codeLine{\id{x} = 5}[type “natuurlijk getal”]
+  \codeLine{\id{x} = \FUN(\;)\{\dots\}}[type “functie”]
+  \codeLine{\id{x} \OBJECT}[type “object”, aan \id{x} kunnen nu attributen worden toegevoegd]
 \end{codelines}
 \end{NoBreak}
 
 \subsection{Lexicaal bereik}
 
 Het \emph{bereik} (ook wel \emph{scope}) van een variabele, is dat deel van het programma waarin zij zichtbaar is. Er zijn verschillende manieren om dit bereik te definiëren. Een daarvan is \emph{lexicaal bereik} (ook wel \emph{lexical} of \emph{static scoping}) dat expliciet gebruikt wordt door JavaScript.
-%Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele naam tegenkom, over welke variabele heb ik het dan? Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. Met \emph{lexicaal bereik} wordt deze dus ruwweg in de ``lexicale omgeving'' van de referentie gezocht.% T: Dit was idd een beetje rommelig en heb ik herschreven.
-De vraag die we ons stellen is: ``Als ik de naam van een variabele tegen kom, over welke variabele heb ik het dan?'' Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. We zien dat het sleutelwoord \LOCAL\ hier een cruciale rol in speelt. De plaats waar een variabele gedeclareerd is, geeft zijn bereik aan. Wanneer een variabele niet in het lokale bereik is gedeclareerd, zoeken we die op in het \emph{omliggende bereik}: het bereik dat lexicaal gezien om het locale bereik heen ligt.
+%Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele naam tegenkom, over welke variabele heb ik het dan? Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. Met \emph{lexicaal bereik} wordt deze dus ruwweg in de “lexicale omgeving” van de referentie gezocht.% T: Dit was idd een beetje rommelig en heb ik herschreven.
+De vraag die we ons stellen is: “Als ik de naam van een variabele tegen kom, over welke variabele heb ik het dan?” Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. We zien dat het sleutelwoord \LOCAL\ hier een cruciale rol in speelt. De plaats waar een variabele gedeclareerd is, geeft zijn bereik aan. Wanneer een variabele niet in het lokale bereik is gedeclareerd, zoeken we die op in het \emph{omliggende bereik}: het bereik dat lexicaal gezien om het locale bereik heen ligt.
 Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van inspringing in onderstaande voorbeelden komt overeen met de boomstructuur van de bereiken.% T: ook dit kan mooier, maar de eerdere tekst is warrig en past niet in de stijl
 
 \begin{NoBreak}
@@ -102,16 +102,16 @@ Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van i
 \end{codelines}
 \end{NoBreak}
 
-%Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de scopes. Het moge duidelijk zijn dat als men ``naar buiten toe'' zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
+%Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de scopes. Het moge duidelijk zijn dat als men “naar buiten toe” zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
 
-Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er ``niks gebeurt'' als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer je een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuw bereik aangemaakt, met als omliggend bereik het bereik waarin de functie was gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment~\ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe bereiken worden aangemaakt bij de definitie van functies, zou de uitvoer van $\id{d}(\;)$ 8 zijn in plaats van 43.
+Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er “niks gebeurt” als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer je een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuw bereik aangemaakt, met als omliggend bereik het bereik waarin de functie was gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment~\ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe bereiken worden aangemaakt bij de definitie van functies, zou de uitvoer van $\id{d}(\;)$ 8 zijn in plaats van 43.
 
 \begin{NoBreak}
 \newCodeFragment[exa:counting][Het belang van creatie van bereiken bij functie applicatie]
 \codeFragmentCaption
 \begin{codelines}
   \codeLine{\VAR \id{f}}
-  \codeLine{\id{f} = \FUN(n) \RETURNS \id{g}}
+  \codeLine{\id{f} = \FUN(\id{n}) \RETURNS \id{g}}
   \codeLine{\IN \VAR \id{g}}
   \codeLine{\IN \id{g} = \FUN(\;) \RETURNS \id{n}}
   \codeLine{\IN \IN \id{n} = \id{n} + 1}
@@ -219,7 +219,7 @@ Maar er geld nog steeds:
   \codeLine{\id{GlazenDeur}.\id{doorzichtig}}[waarde $\to$ 1]
 \end{codelines}
 
-We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde ``blauwdrukken'' moeten voldoen. We creëren objecten ``on-the-fly'', alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self.
+We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde “blauwdrukken” moeten voldoen. We creëren objecten “on-the-fly”, alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self.
 
 Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn functie attributen gekoppeld aan een specifiek object. Stel dat we een \id{GeslotenDeur} graag open willen maken. We definiëren:
 
@@ -270,7 +270,7 @@ Nu volgt een formele definitie van de syntaxis van de taal, aan de hand van een 
   \Num \GrammarDef (0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9)^+
 \end{align*}
 %
-Eigenlijk gebruiken we geen strikte \BNF, in deze specifieke gevallen, maar een hele simpele variant, zoals \textsc{e-bnf}, die ook reguliere expressies toelaat. Bovenstaand voorbeeld maakt dit duidelijk. Voorbeelden van elementen uit $\Num$ zijn ``0'', ``1'', ``235783'' en ``0003''. Voorbeelden van elementen die niet in $\Num$ zitten zijn ``'', ``-6'', ``4.2''.
+Eigenlijk gebruiken we geen strikte \BNF, in deze specifieke gevallen, maar een hele simpele variant, zoals \textsc{e-bnf}, die ook reguliere expressies toelaat. Bovenstaand voorbeeld maakt dit duidelijk. Voorbeelden van elementen uit $\Num$ zijn “0”, “1”, “235783” en “0003”. Voorbeelden van elementen die niet in $\Num$ zitten zijn “”, “-6”, “4.2”.
 
 \emph{Identifiers}, die gebruikt worden als namen voor variabelen en attributen, zijn op eenzelfde manier als volgt gedefiniëerd:
 %
@@ -293,7 +293,7 @@ Een \emph{pad} is een opeenvolging van \Ids\ gescheiden door punten en wordt geb
   \Path \GrammarDef \Id \mid \Id . \Path
 \end{align*}
 %
-We introduceren geen speciale syntax om naar het \emph{this} object te refereren, maar zullen een pad dat begint met de identifier ``this'' beschouwen als een pad binnen het \emph{this} object. Merk op dat als een ``this'' op een andere plek in een pad wordt gebruikt, er wel gewoon gesproken wordt over zeker ``this'' attribuut van een zeker object: alleen vooraan een pad is deze speciale betekenis van toepassing.
+We introduceren geen speciale syntax om naar het \emph{this} object te refereren, maar zullen een pad dat begint met de identifier “this” beschouwen als een pad binnen het \emph{this} object. Merk op dat als een “this” op een andere plek in een pad wordt gebruikt, er wel gewoon gesproken wordt over zeker “this” attribuut van een zeker object: alleen vooraan een pad is deze speciale betekenis van toepassing.
 
 \emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, definiëren we als volgt:
 %
@@ -322,7 +322,7 @@ De kern van de hele grammatica draait om de volgende productieregel voor \emph{s
   \GrammarOr \GrammarOpt{\Path =} \Id\,\pmb{(}\,\MaybeExprs\,\pmb{)}
 \end{align*}
 %
-Merk op dat in delen van deze productieregel \Id's staan waar men misschien een \Path\ had verwacht. Zo zou het wenselijk lijken om bijvoorbeeld ``$\id{a}.\id{b} \CLONES \id{c}.\id{d}$'' als een programma van goede vorm te beschouwen. Er zijn twee redenen waarom we dit niet hebben gedaan. Allereerst worden de axioma's en deductieregels ingewikkelder en daarmee minder elegant, of er zijn er meer nodig. Maar belangrijker nog: het is niet essentieel voor de taal. Voor elk programma zoals ``$\id{a}.\id{b} \CLONES \id{c}.\id{d}$'', bestaat er een equivalent programma zónder zulke paden:
+Merk op dat in delen van deze productieregel \Id's staan waar men misschien een \Path\ had verwacht. Zo zou het wenselijk lijken om bijvoorbeeld “$\id{a}.\id{b} \CLONES \id{c}.\id{d}$” als een programma van goede vorm te beschouwen. Er zijn twee redenen waarom we dit niet hebben gedaan. Allereerst worden de axioma's en deductieregels ingewikkelder en daarmee minder elegant, of er zijn er meer nodig. Maar belangrijker nog: het is niet essentieel voor de taal. Voor elk programma zoals “$\id{a}.\id{b} \CLONES \id{c}.\id{d}$”, bestaat er een equivalent programma zónder zulke paden:
 
 \begin{htmlskip}
   \begin{minipage}[t]{.5\textwidth}
@@ -345,6 +345,6 @@ Merk op dat in delen van deze productieregel \Id's staan waar men misschien een 
   \end{minipage}
 \end{htmlskip}
 
-Hierin moeten $x$ en $y$ ``vers'' gekozen worden.
+Hierin moeten $x$ en $y$ “vers” gekozen worden.
 
 % vim: syn=latex spell spl=nl cole=1 cocu=nv
