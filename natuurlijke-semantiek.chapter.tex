@@ -95,7 +95,7 @@
 
 \subsection{Basis}
 
-Laten we beginnen met de simpelste constructie in onze taal, het lege statement \SKIP. Deze heeft de vorm van een axioma.
+Laten we beginnen met de simpelste constructie in onze taal, het lege statement $\SKIP$. Deze heeft de vorm van een axioma.
 
 \begin{NSAxiom}{skip}
   \begin{prooftree}
@@ -119,7 +119,7 @@ waarbij $\longrightarrow$ de volgende signatuur heeft
 \begin{equation*}
   (\longrightarrow) \subseteq (\Stm \times \MMs \times \MMo \times \LLs \times \LLo) \times (\MMs \times \MMo).
 \end{equation*}
-Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$ met als extra informatie de locatie van de huidige scope $\sigma\in\LLs$ en de locatie van het huidige \THIS-object $\tau\in\MMo$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MMs,\MMo)$. \SKIP\ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$.
+Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$ met als extra informatie de locatie van de huidige scope $\sigma\in\LLs$ en de locatie van het huidige \THIS-object $\tau\in\MMo$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MMs,\MMo)$. $\SKIP$ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$.
 
 Voor het samenstellen van statements hebben we een regel nodig.
 
@@ -146,7 +146,7 @@ Voor het samenstellen van statements hebben we een regel nodig.
 In dit geval geven we aan dat, wanneer we een een compositie hebben van de statements $S_1$ en $S_2$, we eerst $S_1$ uitvoeren% T: Dit is niet het juiste woord, weten even geen betere...
 en daarna $S_2$. Tijdens dit proces ontstaan nieuwe toestanden, waar we natuurlijk rekening mee moeten houden. De geheugens worden dan ook netjes doorgesluisd.
 
-Voor de controlestructuur \IF\ hebben we twee regels nodig. De eerste is voor het geval dat de \BExpr\ evalueert in \bT, dan moet namelijk het statement van het \THEN-deel worden uitgevoerd. Wanneer de \BExpr\ evalueert in \bF\ moet het \ELSE-deel worden uitgevoerd.
+Voor de controlestructuur $\IF$ hebben we twee regels nodig. De eerste is voor het geval dat de \BExpr\ evalueert in \bT, dan moet namelijk het statement van het $\THEN$-deel worden uitgevoerd. Wanneer de \BExpr\ evalueert in \bF\ moet het $\ELSE$-deel worden uitgevoerd.
 Er moet dus aan een extra voorwaarde worden voldaan om deze regels toe te mogen passen. Dit zal vaker voorkomen bij de komende deductieregels. We noteren deze extra voorwaarden onder de regel of het axioma.
 %Zoals vele axioma's en deductieregels heeft dit axioma een aantal voorwaarden waaraan voldaan moet worden. Deze staan eronder genoteerd, elk op een regel.  
 
@@ -188,7 +188,7 @@ en:
   \end{NSConditions}
 \end{NSAxiom}
 
-Eenzelfde tactiek passen we toe bij een \WHILE-loop.
+Eenzelfde tactiek passen we toe bij een $\WHILE$-loop.
 
 \begin{NSAxiom}{while$^\bT$}
   \begin{prooftree}
@@ -230,12 +230,12 @@ en:
 
 \subsection{Variabelen}
 
-We komen nu bij een interessanter deel van de taal, namelijk het \emph{declareren} van variabelen en het \emph{toekennen} van waarden. In deze sectie gaan we dus alleen de bereiken modificeren. Aan de basis hiervan ligt het declareren van een variabele met \LOCAL. We willen in het huidige bereik de eigen bindingen zó aanpassen, dat de \Id\ die we declareren gekoppeld wordt aan $\nil$ (de variabele bevat immers nog geen expliciete waarde). Voordat we dit kunnen doen, moeten we bereik $\sigma$ opzoeken in het geheugen voor bereiken $\ms$ met $\ms(\sigma)$. Vervolgens passen we de binding hiervan aan (zie notatie in §\ref{sec:bereiken} en §\ref{sec:uitbreiden}). Met de verwijzing naar het omliggend bereik $\pi$ doen we niks. Dit paar van uitgebreide bindingen en oud omliggend bereik zetten we terug in het geheugen $\ms$ op plek $\sigma$.
+We komen nu bij een interessanter deel van de taal, namelijk het \emph{declareren} van variabelen en het \emph{toekennen} van waarden. In deze sectie gaan we dus alleen de bereiken modificeren. Aan de basis hiervan ligt het declareren van een variabele met $\LOCAL$. We willen in het huidige bereik de eigen bindingen zó aanpassen, dat de \Id\ die we declareren gekoppeld wordt aan $\nil$ (de variabele bevat immers nog geen expliciete waarde). Voordat we dit kunnen doen, moeten we bereik $\sigma$ opzoeken in het geheugen voor bereiken $\ms$ met $\ms(\sigma)$. Vervolgens passen we de binding hiervan aan (zie notatie in §\ref{sec:bereiken} en §\ref{sec:uitbreiden}). Met de verwijzing naar het omliggend bereik $\pi$ doen we niks. Dit paar van uitgebreide bindingen en oud omliggend bereik zetten we terug in het geheugen $\ms$ op plek $\sigma$.
 
 \begin{NSAxiom}{declare}
   \begin{prooftree}
     \AxiomC{$
-      \Config{\VAR i}{\ms, \mo, \sigma, \tau}
+      \Config{\LOCAL i}{\ms, \mo, \sigma, \tau}
       \longrightarrow
       (\ms', \mo)
     $}
@@ -316,7 +316,7 @@ Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat
   \end{NSConditions}
 \end{NSAxiom}
 
-Het definiëren van een prototype gaat met het \CLONES-statement. Hiervoor zoeken we simpelweg de locaties $\omega_i$ en $\omega_j$ van de twee objecten op. Vervolgens zetten we in het geheugen dat het prototype van het object in $\omega_i$ de locatie $\omega_j$ is.
+Het definiëren van een prototype gaat met het $\CLONES$-statement. Hiervoor zoeken we simpelweg de locaties $\omega_i$ en $\omega_j$ van de twee objecten op. Vervolgens zetten we in het geheugen dat het prototype van het object in $\omega_i$ de locatie $\omega_j$ is.
 
 \begin{NSAxiom}{clones}
   \begin{prooftree}

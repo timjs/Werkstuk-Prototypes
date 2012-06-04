@@ -16,17 +16,17 @@ $\<\FUN counter(n) \RETURNS next \IS \FUN next() \RETURNS n \IS n = n + 1 \END \
 
 $\<counter := \mathtt{block}(n, \mathtt{block}(n = n + 1)), s\>$
 
-$\<\VAR x\COMP x=1\COMP
+$\<\LOCAL x\COMP x=1\COMP
    \FUN g() \IS (\PRINT x\COMP x=2)\COMP
-   \FUN f() \IS (\VAR x\COMP x=3\COMP g())\COMP
+   \FUN f() \IS (\LOCAL x\COMP x=3\COMP g())\COMP
    f()\COMP
    \PRINT x,
 s\> \to s'$
 
 
-$\<\VAR x\COMP x=1\COMP
+$\<\LOCAL x\COMP x=1\COMP
    \FUN g() \IS \PRINT x\COMP x=2 \END\COMP
-   \FUN f() \IS \VAR x\COMP x=3\COMP g() \END\COMP
+   \FUN f() \IS \LOCAL x\COMP x=3\COMP g() \END\COMP
    f()\COMP
    \PRINT x,
 s\> \to s'$

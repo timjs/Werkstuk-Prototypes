@@ -35,15 +35,15 @@ Vervolgens moet er gevalsonderscheiding worden gedaan voor de volgende situaties
 Hieruit blijkt dat we voor een willekeurig bereik niet alleen zijn eigen bindingen moeten bijhouden, maar ook een verwijzing naar zijn \emph{omliggend bereik}. Een bereik $s$ definiëren we daarom als een paar $(b, \pi)$, met $b$ de bindingen en $\pi$ een \emph{verwijzing} naar de omliggend bereik (ook wel \emph{parent}).
 % "outer bereik" ;)
 
-We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omliggend bereik. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. Het bereik $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een \LOCAL variabele. De omliggend bereik $\pi_f$ van functie $f$ verwijst naar bereik $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
+We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omliggend bereik. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. Het bereik $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een $\LOCAL$ variabele. De omliggend bereik $\pi_f$ van functie $f$ verwijst naar bereik $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
 
 \begin{NoBreak}
   \newCodeFragment[exa:lexical][Lexicaal bereik: opslaan en terugvinden van variabelen]
   \codeFragmentCaption
   \codeLines{
-    \codeLine{\VAR \id{x}}
+    \codeLine{\LOCAL \id{x}}
     \codeLine{\id{x} = 1}
-    \codeLine{\VAR \id{f}}
+    \codeLine{\LOCAL \id{f}}
     \codeLine[exa:lexical:def]{\id{f} = \FUN()}[Introductie nieuw bereik]
     \codeLine{\IN \id{x} = 2 \times \id{x}}
     \codeLine{}[Einde nieuw bereik]
@@ -113,10 +113,10 @@ Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil
   \newCodeFragment[exa:prititive-values-numbers][Toekenning van primitieve waarden: Getallen]
   \codeFragmentCaption
   \codeLines{
-    \codeLine{\VAR \id{x}}
+    \codeLine{\LOCAL \id{x}}
     \codeLine{\id{x} = 5}[de primitieve waarde “5” wordt aan variabele \id{x} toegekend]
     \codeLine{}
-    \codeLine{\VAR \id{y}}
+    \codeLine{\LOCAL \id{y}}
     \codeLine{\id{y} = \id{x}}[nu bevat ook \id{y} de primitieve waarde “5”]
     \codeLine{}
     \codeLine{\id{x} = 6}[\id{x} bevat “6”, maar \id{y} bevat nog steeds “5”]
@@ -136,14 +136,14 @@ Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complex
   \newCodeFragment[exa:prititive-values-functions][Toekenning van primitieve waarden: Functies]
   \codeFragmentCaption
   \codeLines{
-    \codeLine{\VAR \id{x}}
+    \codeLine{\LOCAL \id{x}}
     \codeLine{\id{x} = \FUN (\;) \{ \SKIP \}}
     \codeLine{}
-    \codeLine{\VAR \id{y}}
+    \codeLine{\LOCAL \id{y}}
     \codeLine{\id{y} = \id{x}}
     \codeLine{}
     \codeLine{\id{x} = \FUN(\id{z}) \{ \id{z} = 5 \}}[\id{x} bevat de nieuwe functie met één argument,]
-    \codeLine{}[maar \id{y} bevat nog steeds de oude \SKIP-functie]
+    \codeLine{}[maar \id{y} bevat nog steeds de oude $\SKIP$-functie]
   }
 \end{NoBreak}
 
@@ -153,11 +153,11 @@ Objecten worden anders behandeld. Het idee van een object is dat dit een zekere 
   \newCodeFragment[exa:prititive-values-functions][Toekenning van primitieve waarden: Functies]
   \codeFragmentCaption
   \codeLines{
-    \codeLine{\VAR \id{x}}
+    \codeLine{\LOCAL \id{x}}
     \codeLine{\id{x} \OBJECT}
     \codeLine{\id{x}.\id{n} = 5}
     \codeLine{}
-    \codeLine{\VAR \id{y}}
+    \codeLine{\LOCAL \id{y}}
     \codeLine{\id{y} = \id{x}}[\id{y} “verwijst” nu naar hetzelfde object als \id{x}]
     \codeLine{}
     \codeLine{\id{x}.\id{n} = 6}[omdat \id{x} en \id{y} naar hetzelfde object verwijzen: $\id{y}.\id{n} = 6$]

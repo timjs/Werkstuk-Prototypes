@@ -123,23 +123,28 @@
   {\rotatebox{90}{$\Vdash$}}
 \let\BOT\nil
 
+\newcommand{\defineNewKeyword}[2]{%
+  \DeclareMathOperator{#1}{\ensuremath{\text{\small\ttfamily\bfseries #2}}}
+}
+
 \newcommand{\COMP}{;\;}
-\newkeyword{\LOCAL}{local\;}
-\newkeyword{\VAR}{\LOCAL}
-\newkeyword{\OBJ}{obj\;}
-\newkeyword{\CLONES}{\;clones\;}
-\newkeyword{\OBJECT}{\;object}
-\newkeyword{\FUN}{function\;}
-\newkeyword{\RETURNS}{\;returns\;}
-\newkeyword{\IS}{\;is\;}
-\newkeyword{\PRINT}{print\;}
-\newkeyword{\SKIP}{skip}
-\newkeyword{\IF}{if\;}
-\newkeyword{\THEN}{\;then\;}
-\newkeyword{\ELSE}{\;else\;}
-\newkeyword{\WHILE}{while\;}
-\newkeyword{\DO}{\;do\;}
-\newkeyword{\END}{\;end}
+
+\defineNewKeyword{\LOCAL}{local}
+\defineNewKeyword{\CLONES}{clones}
+\defineNewKeyword{\OBJECT}{object}
+\defineNewKeyword{\FUN}{function}
+\defineNewKeyword{\RETURNS}{returns}
+\defineNewKeyword{\SKIP}{skip}
+\defineNewKeyword{\IF}{if}
+\defineNewKeyword{\THEN}{then}
+\defineNewKeyword{\ELSE}{else}
+\defineNewKeyword{\WHILE}{while}
+\defineNewKeyword{\DO}{do}
+\defineNewKeyword{\END}{end}
+
+\defineNewKeyword{\AND}{and}
+\defineNewKeyword{\OR}{or}
+\defineNewKeyword{\NOT}{not}
 
 \newconstant{\TRUE}{true}
 \newconstant{\FALSE}{false}
@@ -147,9 +152,9 @@
 \newconstant{\THIS}{this}
 \newconstant{\PROTO}{proto}
 
-\newconstant{\AND}{\;and\;}
-\newconstant{\OR}{\;or\;}
-\newconstant{\NOT}{\;not\;}
+%\newconstant{\AND}{\;and\;}
+%\newconstant{\OR}{\;or\;}
+%\newconstant{\NOT}{\;not\;}
 
 \newnonterminal{\Stm}{Statement}
 \newnonterminal{\Id}{Identifier}
@@ -289,13 +294,13 @@
 %   \newCodeFragment[fraglabel][caption]
 %   \codeFragmentCaption
 %   \codeLines{
-%     \codeLine           {\VAR f}
-%     \codeLine[linelabel]{\VAR f}
-%     \codeLine           {\VAR f}[comment]
-%     \codeLine[linelabel]{\VAR f}[comment]
+%     \codeLine           {\LOCAL f}
+%     \codeLine[linelabel]{\LOCAL f}
+%     \codeLine           {\LOCAL f}[comment]
+%     \codeLine[linelabel]{\LOCAL f}[comment]
 %   }
 %   \codeLines{
-%     \codeLine{\VAR f}
+%     \codeLine{\LOCAL f}
 %   }
 %   \ref{fraglabel} -- e.g. "3.1" for the first code fragment in chapter 3
 %   \ref{linelabel} -- e.g. "6" for the sixth line in the code fragment

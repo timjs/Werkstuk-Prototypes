@@ -15,12 +15,12 @@ Elk voorbeeldprogramma en zijn toelichtingen worden als volgt gepresenteerd:
 \newCodeFragment[exa:template][Het eerste voorbeeldprogramma]
 \codeFragmentCaption
 \begin{codelines}
-  \codeLine{\VAR \id{f}}[$\id{f}$ moet eerst worden gedefiniëerd]
+  \codeLine{\LOCAL \id{f}}[$\id{f}$ moet eerst worden gedefiniëerd]
   \codeLine{\id{f} = \FUN(\id{i}) \RETURNS \id{n}}
-  \codeLine{\IN \VAR \id{n}}
+  \codeLine{\IN \LOCAL \id{n}}
   \codeLine{\IN \id{n} = 2 \times (\id{i} + 5)}
   \codeLine{}[$\id{x}$ bestaat niet in deze scope]
-  \codeLine{\VAR \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
+  \codeLine{\LOCAL \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
   \codeLine{\id{x} = \id{f}(42)}[\id{x} heeft nu de waarde 94]
 \end{codelines}
 \end{NoBreak}
@@ -38,7 +38,7 @@ Een variabele moet altijd eerst worden gedeclareerd. Daarna kan er een waarde aa
 \codeFragmentCaption
 \begin{codelines}
   \codeLine{}[\id{x} bestaat (nog) niet]
-  \codeLine{\VAR \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
+  \codeLine{\LOCAL \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
   \codeLine{\id{x} = 5}[\id{x} bevat nu de waarde 5]
 \end{codelines}
 \end{NoBreak}
@@ -60,7 +60,7 @@ Een speciale waarde $\nil$ wordt gebruikt om aan te geven dat een variabele nog 
 \newCodeFragment[exa:types][Waarden van verschillende typen]
 \codeFragmentCaption
 \begin{codelines}
-  \codeLine{\VAR \id{x}}[declaratie zonder type indicatie]
+  \codeLine{\LOCAL \id{x}}[declaratie zonder type indicatie]
   \codeLine{\id{x} = 5}[type “natuurlijk getal”]
   \codeLine{\id{x} = \FUN(\;)\{\dots\}}[type “functie”]
   \codeLine{\id{x} \OBJECT}[type “object”, aan \id{x} kunnen nu attributen worden toegevoegd]
@@ -71,17 +71,17 @@ Een speciale waarde $\nil$ wordt gebruikt om aan te geven dat een variabele nog 
 
 Het \emph{bereik} (ook wel \emph{scope}) van een variabele, is dat deel van het programma waarin zij zichtbaar is. Er zijn verschillende manieren om dit bereik te definiëren. Een daarvan is \emph{lexicaal bereik} (ook wel \emph{lexical} of \emph{static scoping}) dat expliciet gebruikt wordt door JavaScript.
 %Gegeven een bepaalde definitie van dit bereik, is de vraag: Als ik een variabele naam tegenkom, over welke variabele heb ik het dan? Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. Met \emph{lexicaal bereik} wordt deze dus ruwweg in de “lexicale omgeving” van de referentie gezocht.% T: Dit was idd een beetje rommelig en heb ik herschreven.
-De vraag die we ons stellen is: “Als ik de naam van een variabele tegen kom, over welke variabele heb ik het dan?” Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. We zien dat het sleutelwoord \LOCAL\ hier een cruciale rol in speelt. De plaats waar een variabele gedeclareerd is, geeft zijn bereik aan. Wanneer een variabele niet in het lokale bereik is gedeclareerd, zoeken we die op in het \emph{omliggende bereik}: het bereik dat lexicaal gezien om het locale bereik heen ligt.
+De vraag die we ons stellen is: “Als ik de naam van een variabele tegen kom, over welke variabele heb ik het dan?” Code fragmenten \ref{exa:zoek} en \ref{exa:zoek2} illustreren deze vraag. We zien dat het sleutelwoord $\LOCAL$ hier een cruciale rol in speelt. De plaats waar een variabele gedeclareerd is, geeft zijn bereik aan. Wanneer een variabele niet in het lokale bereik is gedeclareerd, zoeken we die op in het \emph{omliggende bereik}: het bereik dat lexicaal gezien om het locale bereik heen ligt.
 Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van inspringing in onderstaande voorbeelden komt overeen met de boomstructuur van de bereiken.% T: ook dit kan mooier, maar de eerdere tekst is warrig en past niet in de stijl
 
 \begin{NoBreak}
 \newCodeFragment[exa:zoek][Zoek de definitie van variabele \id{x}]
 \codeFragmentCaption
 \begin{codelines}
-  \codeLine{\VAR \id{x}}[dit is de gezochte definitie van \id{x}]
+  \codeLine{\LOCAL \id{x}}[dit is de gezochte definitie van \id{x}]
   \codeLine{\id{x} = 42}
   \codeLine{}
-  \codeLine{\VAR \id{f}}
+  \codeLine{\LOCAL \id{f}}
   \codeLine{\id{f} = \FUN(\;)}
   \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
 \end{codelines}
@@ -91,12 +91,12 @@ Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van i
 \newCodeFragment[exa:zoek2][Zoek de definitie van variabele \id{x}]
 \codeFragmentCaption
 \begin{codelines}
-  \codeLine{\VAR \id{x}}
+  \codeLine{\LOCAL \id{x}}
   \codeLine{\id{x} = 42}
   \codeLine{}
-  \codeLine{\VAR \id{f}}
+  \codeLine{\LOCAL \id{f}}
   \codeLine{\id{f} = \FUN(\;)}
-  \codeLine{\IN \VAR \id{x}}[dit is de gezochte definitie van \id{x}]
+  \codeLine{\IN \LOCAL \id{x}}[dit is de gezochte definitie van \id{x}]
   \codeLine{\IN \id{x} = 43}
   \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
 \end{codelines}
@@ -110,13 +110,13 @@ Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie
 \newCodeFragment[exa:counting][Het belang van creatie van bereiken bij functie applicatie]
 \codeFragmentCaption
 \begin{codelines}
-  \codeLine{\VAR \id{f}}
+  \codeLine{\LOCAL \id{f}}
   \codeLine{\id{f} = \FUN(\id{n}) \RETURNS \id{g}}
-  \codeLine{\IN \VAR \id{g}}
+  \codeLine{\IN \LOCAL \id{g}}
   \codeLine{\IN \id{g} = \FUN(\;) \RETURNS \id{n}}
   \codeLine{\IN \IN \id{n} = \id{n} + 1}
   \codeLine{}
-  \codeLine{\VAR \id{c}}
+  \codeLine{\LOCAL \id{c}}
   \codeLine{\id{c} = \id{f}(5)}
   \codeLine{\id{c}()}[de eerste aanroep $\id{c}(\;)$ levert eerst 6 op\dots]
   \codeLine{\id{c}()}[de tweede aanroep $\id{c}(\;)$ levert daarna 7 op\dots]
@@ -148,7 +148,7 @@ Het grote verschil tussen object-gebaseerde talen en prototype-gebaseerde talen 
 \newCodeFragment
 
 \begin{codelines}
-  \codeLine{\VAR \id{Deur}}
+  \codeLine{\LOCAL \id{Deur}}
   \codeLine{\id{Deur} \OBJECT}
 \end{codelines}
 
@@ -161,7 +161,7 @@ We declareren eerst een locale variabele die we vervolgens initialiseren als een
 Een \id{Deur} is standaard open. We kunnen \id{Deur} ook als een prototype gebruiken. In prototype-gebaseerde talen heet dit \emph{klonen}:
 
 \begin{codelines}
-  \codeLine{\VAR \id{GeslotenDeur}}
+  \codeLine{\LOCAL \id{GeslotenDeur}}
   \codeLine{\id{GeslotenDeur} \OBJECT}
 	\codeLine{\id{GeslotenDeur} \CLONES \id{Deur}}
 \end{codelines}
@@ -189,7 +189,7 @@ Attributen worden dus per object bewaard. Door \id{open} op @0@ te zetten in \id
 We kunnen net zoveel klonen maken van een object als we willen en net zo diep klonen als we willen. Neem een \id{GlazenDeur}, dit is natuurlijk ook een \id{Deur}, maar wel doorzichtig:
 
 \begin{codelines}
-  \codeLine{\VAR \id{GlazenDeur}}
+  \codeLine{\LOCAL \id{GlazenDeur}}
   \codeLine{\id{GlazenDeur} \OBJECT}
   \codeLine{\id{GlazenDeur} \CLONES \id{Deur}}
   \codeLine{\id{GlazenDeur}.\id{doorzichtig} = 1}
@@ -242,7 +242,7 @@ Het attribuut \id{code} is immers niet gedefinieerd in \id{GeslotenDeur} noch in
 We kunnen natuurlijk een \id{code} toekennen aan \id{GeslotenDeur}, maar laten we een specifieke \id{GeslotenDeur} maken met een \id{code}:
 
 \begin{codelines}
-  \codeLine{\VAR \id{Kluis}}
+  \codeLine{\LOCAL \id{Kluis}}
   \codeLine{\id{Kluis} \OBJECT}
   \codeLine{\id{Kluis} \CLONES \id{GeslotenDeur}}
   \codeLine{\id{Kluis}.\id{code} = 4321}
@@ -334,10 +334,10 @@ Merk op dat in delen van deze productieregel \Id's staan waar men misschien een 
   \begin{minipage}[t]{.5\textwidth}
     \newCodeFragment
     \codeLines{
-      \codeLine{\VAR x}
+      \codeLine{\LOCAL x}
       \codeLine{x = \id{a}.\id{b}}
       \codeLine{}
-      \codeLine{\VAR y}
+      \codeLine{\LOCAL y}
       \codeLine{y = \id{c}.\id{d}}
       \codeLine{}
       \codeLine{x \CLONES y}
