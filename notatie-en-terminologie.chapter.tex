@@ -59,9 +59,9 @@ Meerdere uitbreidingen verkorten we op voor de hand liggende wijze:
 
 \section{Lijsten}
 
-We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige (partiële) functies $t : \NN \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
+We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige (partiële) functies $t : \NN \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $\II$ schrijven i.p.v.~$\NN$, om aan te geven dat het gaat om de indices van lijsten. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
 \begin{equation*}
-X_{\langle\rangle} \DEF \big\{\, t : \NN \to X \mid \exists_{N \in \NN} \surr{ \forall_{n < N}[t(n) \neq \bot] \land \forall_{n\ge N}[t(n) = \bot] } \,\big\}
+X_{\langle\rangle} \DEF \big\{\, t : \NN \to X \mid \exists_{N \in \NN} \surr{ \forall_{n < N}[t \downarrow n] \land \forall_{n\ge N}[t \uparrow n] } \,\big\}
 \end{equation*}
 We schrijven $\langle\rangle$, maar ook wel $\varnothing$ aangezien het gewoon een lege functie is zoals beschreven in het voorgaande, voor de lege lijst. Deze is natuurlijk altijd hetzelfde, ongeacht welke invulling wordt gekozen voor $X$.
 
