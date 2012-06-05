@@ -59,15 +59,17 @@ Meerdere uitbreidingen verkorten we op voor de hand liggende wijze:
 
 \section{Lijsten}
 
-We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige (partiële) functies $t : \NN \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $\II$ schrijven i.p.v.~$\NN$, om aan te geven dat het gaat om de indices van lijsten. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
+We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige partiële functies $t : \{(n, n) \in \NN^2\} \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $\II$ schrijven i.p.v.~$\{(n, n) \in \NN^2\}$, om aan te geven dat het gaat om de indices van lijsten. Als indices gebruiken we niet gewoon $\NN$, omdat we er later in het werkstuk vanuit willen gaan dat we elementen uit $\II$ kunnen onderscheiden van elementen uit $\ZZ$. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
 \begin{equation*}
-X_{\langle\rangle} \DEF \big\{\, t : \NN \to X \mid \exists_{N \in \NN} \surr{ \forall_{n < N}[t \downarrow n] \land \forall_{n\ge N}[t \uparrow n] } \,\big\}
+X_{\langle\rangle} \DEF \big\{\, t : \{(n, n) \in \NN^2\} \to X \mid \exists_{N \in \NN} \surr{ \forall_{n < N}[t \downarrow (n, n)] \land \forall_{n\ge N}[t \uparrow (n, n)] } \,\big\}
 \end{equation*}
 We schrijven $\langle\rangle$, maar ook wel $\varnothing$ aangezien het gewoon een lege functie is zoals beschreven in het voorgaande, voor de lege lijst. Deze is natuurlijk altijd hetzelfde, ongeacht welke invulling wordt gekozen voor $X$.
 
-Als $t$ een zekere lijst is, dan zeggen we dat hij van \emph{grootte} $N = \min\{n\in\NN \mid t(n) = \bot\}$ is.
-We schrijven $\langle x_0, x_1, \dots, x_{N-1}\rangle$ voor de lijst $t$ van grootte $N$ waarvoor geldt dat $\forall_{n < N}[t(n) = x_n]$.
-Als $t$ een lijst is uit $X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$, de toevoeging van $x$ aan de lijst $t$, voor de lijst $t' = t[N \mapsto x]$, waarbij $N$ de grootte van $t$ is.
+Een lijst $t$ heeft \emph{grootte} $|t| = N = \min\{n\in\NN \mid t \uparrow (n, n)\}$.
+
+We schrijven $\langle x_0, x_1, \dots, x_{N-1}\rangle$ voor de lijst $t$ van grootte $N$ met $\forall_{n < N}[t(n, n) = x_n]$.
+
+Als $t$ een lijst is uit $X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$, de toevoeging van $x$ aan de lijst $t$, voor de lijst $t' = t[(N, N) \mapsto x]$, waarbij $N = |t|$.
 
 \section{Notationele conventies}
 
