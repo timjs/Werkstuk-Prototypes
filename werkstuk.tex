@@ -1,32 +1,32 @@
-% K: [scrbook] zorgt voor de sans-serif headingss die breed zijn (vind ik prima hoor, zoek maar wat uit ;) T: Wat is je punt? Schreefloze koppen zijn over het algemeen beter dan met schreef.
-\usepackage[a4paper]{geometry}
+% (geen punt, ik was met \setsansfont te klooien, en die veranderde de titels steeds niet, toen kwam ik erachter waar ze eigenlijk vandaan kwamen -- beetje vergezocht i know..)
 \documentclass[11pt,a4paper,oneside,parskip=half]{scrbook}
+\usepackage[a4paper]{geometry}
 
-%\usepackage{fontspec}
+\usepackage{fontspec}
 %\setmainfont{Century Schoolbook L}
-%\setmainfont[
-  %SmallCapsFont={Linux Libertine O},
-  %SmallCapsFeatures={Letters=SmallCaps},
-  %Mapping=tex-text,
-  %Ligatures={TeX, Common}
-%]{Linux Libertine O}
-%\setmonofont[Scale=0.85]{Bera Sans Mono}
+\setmainfont[
+  SmallCapsFont={Linux Libertine O},
+  SmallCapsFeatures={Letters=SmallCaps},
+  Mapping=tex-text,
+  Ligatures={TeX, Common}
+]{Linux Libertine O}
+\setmonofont[Scale=0.85]{Bera Sans Mono}
 %\setmonofont{Consolas}
 
-%\usepackage{unicode-math}
-%\setmathfont{Asana Math}% de [] haakjes zijn wat groot, maar \mathbb{N} etc is mooier dan in XITS Math
+\usepackage{amsmath}
+\usepackage{unicode-math}
+\setmathfont{Asana Math}% de [] haakjes zijn wat groot, maar \mathbb{N} etc is mooier dan in XITS Math
 %\setmathfont{XITS Math}
 
-%\usepackage{xunicode}
+\usepackage{xunicode}
 
 %\renewcommand{\textsc}[1]{\addfontfeature{Letters=SmallCaps} #1}
 
 \usepackage{polyglossia}
 \setdefaultlanguage{dutch}
 
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{lmodern}
+%\usepackage{amssymb}
+%\usepackage{lmodern}
 
 \usepackage[numbers,sort&compress]{natbib}
 
