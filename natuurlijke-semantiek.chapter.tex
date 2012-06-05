@@ -6,7 +6,7 @@ Expressies zijn syntactische elementen die zonder de \emph{state} van het progra
 %
 \begin{gather*}
   \Express[B]{\;}{} : \BExpr \times \MMs \times \MMo \times \LLs \times \LLo \to \{ \bT, \bF \} \\
-  \Express[N]{\;}{} : \Num \to \NN \\
+  \Express[Z]{\;}{} : \Num \to \ZZ \\
   \Express{\;}{} : \Expr \times \MMs \times \MMo \times \LLs \times \LLo \to \VV \\
   \Express[\scalebox{1.3}{$+$}]{\;}{} : \MaybeExprs \times \MMs \times \MMo \times \LLs \times \LLo \to \VV_{\langle\rangle}
 \end{gather*}
@@ -35,8 +35,8 @@ Er vanuit gaande dat we gewone expressie evaluatie al hebben gedefiniëerd, is d
   \end{cases} \\
   \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau} &=
   n_1 \sim n_2 \\
-  & \textbf{waarbij } n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \NN \\
-  & \phantom{\textbf{waarbij }} n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \NN \\
+  & \textbf{waarbij } n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ \\
+  & \phantom{\textbf{waarbij }} n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ \\
   & \phantom{\textbf{waarbij }} (\sim) \textbf{ één van: } =, \neq, <, \le, >, \ge
 \end{align*}
 
@@ -45,16 +45,16 @@ Er vanuit gaande dat we gewone expressie evaluatie al hebben gedefiniëerd, is d
 Ook evaluatie van getallen is eenvoudig:
 %
 \begin{align*}
-  \Express[N]{0}{} &= 0 &
-  \Express[N]{n 0}{} &= 2 \cdot \Express[N]{n}{} \\
-  \Express[N]{1}{} &= 1 &
-  \Express[N]{n 1}{} &= 2 \cdot \Express[N]{n}{} + 1
+  \Express[Z]{0}{} &= 0 &
+  \Express[Z]{n 0}{} &= 2 \cdot \Express[N]{n}{} \\
+  \Express[Z]{1}{} &= 1 &
+  \Express[Z]{n 1}{} &= 2 \cdot \Express[N]{n}{} + 1
 \end{align*}
 
 \subsection{Gewone expressies}
 %
 \begin{align*}
-  \Express{n}{\ms,\mo,\sigma,\tau} &= \Express[N]{n}{} \\
+  \Express{n}{\ms,\mo,\sigma,\tau} &= \Express[Z]{n}{} \\
   \Express{\FUN (i^*) \{S\}}{\ms,\mo,\sigma,\tau} &= (S, \textsc{Ids}(i^*), \nil, \sigma) \\
   \Express{\FUN (i^*) \RETURNS j \{S\}}{\ms,\mo,\sigma,\tau} &= (S, \textsc{Ids}(i^*), j, \sigma) \\
   \Express{\THIS}{\ms,\mo,\sigma,\tau} &= \tau \\
@@ -69,9 +69,9 @@ Ook evaluatie van getallen is eenvoudig:
   & \phantom{\textbf{desda }} \Findp(\omega',j) = \omega'' \\
   & \phantom{\textbf{desda }} \mo(\omega'')(j) = v \\
   \Express{e_1 \circ e_2}{\ms,\mo,\sigma,\tau} = n_1 \circ n_2 \\
-  & \textbf{waarbij } n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \NN \\
-  & \phantom{\textbf{waarbij }} n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \NN \\
-  & \phantom{\textbf{waarbij }} (\circ) \textbf{ één van: } +, -, \times, /
+  & \textbf{waarbij } n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ \\
+  & \phantom{\textbf{waarbij }} n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ \\
+  & \phantom{\textbf{waarbij }} (\circ) \textbf{ één van: } +, -, \times
 \end{align*}
 
 \section{Statements}

@@ -6,7 +6,7 @@ Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding 
 \begin{equation*}
   \BB \DEF \FiniteFunctions{\VV}{\Id}
 \end{equation*}
-We komen later terug op wat de waarden $\VV$ precies zijn in §\ref{sec:waarden}. Voor nu is het voldoende om te weten dat in ieder geval de natuurlijke getallen $\NN$ deel uitmaken van $\VV$.
+We komen later terug op wat de waarden $\VV$ precies zijn in §\ref{sec:waarden}. Voor nu is het voldoende om te weten dat in ieder geval de gehele getallen $\ZZ$ deel uitmaken van $\VV$.
 
 Bindingen komen veelvuldig terug in ons model. In bereiken worden \emph{variabelen} gedeclareerd en aan waarden gekoppeld. Bij objecten zijn het de \emph{attributen} die waarden krijgen toegekend.
 
@@ -107,7 +107,7 @@ Een functie is daarom simpelweg een viertupel met bovenstaande informatie. De ve
 In voorgaande paragrafen spraken we over waarden $\VV$ en locaties $\LL$ ($\LLs$ voor bereiken, $\LLo$ voor objecten). We hebben de exacte definities hiervan in het midden gelaten. Wat wel duidelijk is dat een waarde $v \in \VV$ is iets wat we toekennen aan een \Id\ met behulp van een binding.
 
 In §\ref{subsec:taal-types} is uitgelegd hoe de taal met verschillende typen data omgaat. In onze taal komen namelijk drie typen \emph{data} voor: getallen, functies en objecten. Er is echter een verschil in de manier waarop wij ze behandelen in het semantisch model. Deze verschillende aanpak ik bekend aan iedereen die een keer object-geörienteerd geprogrammeerd heeft.
-Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil tussen twee soorten data: primitieve waarden en objecten. Primitieve waarden vatten we op als de “atomen” waaruit programma's en objecten worden opgebouwd. Denk aan natuurlijke getallen of woorden.
+Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil tussen twee soorten data: primitieve waarden en objecten. Primitieve waarden vatten we op als de “atomen” waaruit programma's en objecten worden opgebouwd. Denk aan getallen of woorden.
 
 \begin{NoBreak}
   \newCodeFragment[exa:prititive-values-numbers][Toekenning van primitieve waarden: Getallen]
@@ -169,7 +169,7 @@ Om samen te vatten:
 De definitie van de verzameling van alle waarden (locaties van objecten, getallen en functies) is dus als volgt:
 
 \begin{equation*}
-  \VV \DEF \LLo \cup \NN \cup \FF \cup \{\nil\}
+  \VV \DEF \LLo \cup \ZZ \cup \FF \cup \{\nil\}
 \end{equation*}
 
 \section{Locaties en geheugen}

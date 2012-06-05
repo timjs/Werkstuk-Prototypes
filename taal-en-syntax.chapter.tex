@@ -57,11 +57,11 @@ Variabelen kunnen na declaratie waarden aannemen. Onze taal zal sprkene over dri
 Een speciale waarde $\nil$ wordt gebruikt om aan te geven dat een variabele nog geen data toegekend heeft gekregen. Het onderscheid tussen deze typen wordt op \emph{dynamisch} niveau gemaakt in plaats van op syntactisch niveau. Dat houdt in dat een willekeurige variabele data van willekeurige typen kan aannemen. Ook kan het in zijn levensduur data van meerdere typen bevatten. Code fragment~\ref{exa:types} geeft dit weer.
 
 \begin{NoBreak}
-\newCodeFragment[exa:types][Waarden van verschillende typen]
+\newCodeFragment[exa:types][Data van verschillende typen]
 \codeFragmentCaption
 \begin{codelines}
   \codeLine{\LOCAL \id{x}}[declaratie zonder type indicatie]
-  \codeLine{\id{x} = 5}[type “natuurlijk getal”]
+  \codeLine{\id{x} = 5}[type “getal”]
   \codeLine{\id{x} = \FUN(\;)\{\dots\}}[type “functie”]
   \codeLine{\id{x} \OBJECT}[type “object”, aan \id{x} kunnen nu attributen worden toegevoegd]
 \end{codelines}
@@ -298,7 +298,7 @@ We introduceren geen speciale syntax om naar het \emph{this} object te refereren
 \emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, definiëren we als volgt:
 %
 \begin{align*}
-  \Expr \GrammarDef \Num \mid \Expr\; (+ \mid - \mid \times \mid /\,)\; \Expr \mid \Path \\
+  \Expr \GrammarDef \Num \mid \Expr\; (+ \mid - \mid \times \,)\; \Expr \mid \Path \\
   \GrammarOr \FUN\pmb{(}\,\MaybeIds\,\pmb{)}\; \GrammarOpt{\RETURNS \Id\;} \pmb{\{}\; \Stm\; \pmb{\}} \\
   \Exprs \GrammarDef \Expr \mid \Exprs, \Expr \\
   \MaybeExprs \GrammarDef \varepsilon \mid \Exprs \\
