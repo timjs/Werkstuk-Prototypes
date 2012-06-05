@@ -2,94 +2,77 @@
 
 \section{Expressies}
 
-\subsection{Gewoone}
+Expressies zijn syntactische elementen die zonder de \emph{state} van het programma te wijzigen \emph{geëvalueerd} kunnen worden tot een waarde $v \in \VV$. Voor boolse expressies geldt hetzelfde, maar deze evalueren tot de verzameling $\{\bT, \bF\}$. Specifiek getallen beschouwen we voor het gemak ook apart. Voor elk van deze drie soorten expressies definiëren we semantische functies die deze evaluatie formeel maken. Ook definiëren we een \emph{uitgebreide} semantische functie voor syntactische elementen uit $\MaybeExprs$. De signaturen van de vier functies zijn:
+%
+\begin{gather*}
+  \Express[B]{\;}{} : \BExpr \times \MMs \times \MMo \times \LLs \times \LLo \to \{ \bT, \bF \} \\
+  \Express[N]{\;}{} : \Num \to \NN \\
+  \Express{\;}{} : \Expr \times \MMs \times \MMo \times \LLs \times \LLo \to \VV \\
+  \Express[\scalebox{1.3}{$+$}]{\;}{} : \MaybeExprs \times \MMs \times \MMo \times \LLs \times \LLo \to \VV_{\langle\rangle}
+\end{gather*}
 
-\begin{equation*}
-  \Express{\;}{} \; \MMs \times \MMo \times \LLs \times \LLo \rightarrow \VV
-\end{equation*}
+\subsection{Boolse expressies}
 
-\begin{equation*}
-  \Express{n}{\ms,\mo,\sigma,\tau} = \mathcal{N}\Express[N]{n}{}
-\end{equation*}
-
+Er vanuit gaande dat we gewone expressie evaluatie al hebben gedefiniëerd, is de definitie van boolse expressie evaluatie heel simpel:
+%
 \begin{align*}
-  \Express{e_1 \circ e_2}{\ms,\mo,\sigma,\tau}
-  &= n_1 \circ n_2
-  \;\forall_{\circ\in\{+,-,\times,/\}}\\
-  &\desda \Express{e_i}{\ms,\mo,\sigma,\tau} = n_i \;\forall_{i\in\{1,2\}}
-\end{align*}
-
-\begin{equation*}
-  \Express{i}{\ms,\mo,\sigma,\tau} = \Finds(\ms,\sigma,i)
-\end{equation*}
-
-\begin{align*}
-  \Express{i.p}{\ms,\mo,\sigma,\tau} &= v \\
-                                     &\desda
-  \begin{aligned}
-    \Express{i}{\ms,\mo,\sigma,\tau} &= \omega \in \LLo \\
-                 \Trav(\mo,\omega,p) &= (\omega'\in\LLo,j) \\
-                   \Findo(\omega',j) &= \omega'' \\
-                    \mo(\omega'')(j) &= v
-  \end{aligned}
-\end{align*}
-
-\begin{equation*}
-  \Express{\THIS}{\ms,\mo,\sigma,\tau} = \tau
-\end{equation*}
-
-\begin{align*}
-  \Express{\THIS.p}{\ms,\mo,\sigma,\tau} &= v \\
-                                     &\desda
-  \begin{aligned}
-                 \Trav(\mo,\tau,p) &= (\omega\in\LLo,j) \\
-                   \Findo(\omega,j) &= \omega' \\
-                    \mo(\omega')(j) &= v
-  \end{aligned}
-\end{align*}
-
-\begin{equation*}
-  \Express{\FUN (i^+) \{S\}}{\ms,\mo,\sigma,\tau} = (\sigma, i^+, S, \nil)
-\end{equation*}
-
-\begin{equation*}
-  \Express{\FUN (i^+) \RETURNS j \{S\}}{\ms,\mo,\sigma,\tau} = (\sigma, i^+, S, j)
-\end{equation*}
-
-\subsection{Boolse}
-
-\begin{equation*}
-  \Express[B]{\;}{} \; \MMs \times \MMo \times \LLs \times \LLo \rightarrow {\bT,\bF}
-\end{equation*}
-
-\begin{equation*}
-  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} = \bT
-\end{equation*}
-
-\begin{equation*}
-  \Express[B]{\FALSE}{\ms,\mo,\sigma,\tau} = \bF
-\end{equation*}
-
-\begin{equation*}
+  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} &= \bT \\
+  \Express[B]{\FALSE}{\ms,\mo,\sigma,\tau} &= \bF \\
   \Express[B]{b_1 \AND b_2}{\ms,\mo,\sigma,\tau}
-  = \Express[B]{b_1}{\ms,\mo,\sigma,\tau} \land \Express[B]{b_2}{\ms,\mo,\sigma,\tau}
-\end{equation*}
-
-\begin{equation*}
+  &= \begin{cases}
+    \bT & \textbf{if } \Express[B]{b_1}{\ms,\mo,\sigma,\tau} = \Express[B]{b_2}{\ms,\mo,\sigma,\tau} = \bT \\
+    \bF & \textbf{anders}
+  \end{cases} \\
   \Express[B]{b_1 \OR b_2}{\ms,\mo,\sigma,\tau}
-  = \Express[B]{b_1}{\ms,\mo,\sigma,\tau} \lor \Express[B]{b_2}{\ms,\mo,\sigma,\tau}
-\end{equation*}
-
-\begin{equation*}
+  &= \begin{cases}
+    \bF & \textbf{if } \Express[B]{b_1}{\ms,\mo,\sigma,\tau} = \Express[B]{b_2}{\ms,\mo,\sigma,\tau} = \bF \\
+    \bT & \textbf{anders}
+  \end{cases} \\
   \Express[B]{\NOT b}{\ms,\mo,\sigma,\tau}
-  = \lnot \Express[B]{b}{\ms,\mo,\sigma,\tau}
-\end{equation*}
+  &= \begin{cases}
+    \bT & \textbf{if } \Express[B]{b}{\ms,\mo,\sigma,\tau} = \bF \\
+    \bF & \textbf{anders}
+  \end{cases} \\
+  \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau} &=
+  n_1 \sim n_2 \\
+  & \textbf{waarbij } n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \NN \\
+  & \phantom{\textbf{waarbij }} n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \NN \\
+  & \phantom{\textbf{waarbij }} (\sim) \textbf{ één van: } =, \neq, <, \le, >, \ge
+\end{align*}
 
-\begin{equation*}
-  \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau}
-  = \Express{e_1}{\ms,\mo,\sigma,\tau} \sim \Express{e_2}{\ms,\mo,\sigma,\tau}
-  \;\forall_{\sim\in\{=,\neq,<,\le,>,\ge\}}
-\end{equation*}
+\subsection{Getal expressies}
+
+Ook evaluatie van getallen is eenvoudig:
+%
+\begin{align*}
+  \Express[N]{0}{} &= 0 &
+  \Express[N]{n 0}{} &= 2 \cdot \Express[N]{n}{} \\
+  \Express[N]{1}{} &= 1 &
+  \Express[N]{n 1}{} &= 2 \cdot \Express[N]{n}{} + 1
+\end{align*}
+
+\subsection{Gewone expressies}
+%
+\begin{align*}
+  \Express{n}{\ms,\mo,\sigma,\tau} &= \Express[N]{n}{} \\
+  \Express{\FUN (i^*) \{S\}}{\ms,\mo,\sigma,\tau} &= (S, \textsc{Ids}(i^*), \nil, \sigma) \\
+  \Express{\FUN (i^*) \RETURNS j \{S\}}{\ms,\mo,\sigma,\tau} &= (S, \textsc{Ids}(i^*), j, \sigma) \\
+  \Express{\THIS}{\ms,\mo,\sigma,\tau} &= \tau \\
+  \Express{i}{\ms,\mo,\sigma,\tau} &= \big( \Finds(\ms, \sigma, i) \big)(i) \\
+  \Express{\THIS.p}{\ms,\mo,\sigma,\tau} &= v \\
+  & \textbf{desda } \Trav(\mo, \tau, p) = (\omega \in \LLo, j) \\
+  & \phantom{\textbf{desda }} \Findp(\omega,j) = \omega' \\
+  & \phantom{\textbf{desda }} \mo(\omega')(j) = v \\
+  \Express{i.p}{\ms,\mo,\sigma,\tau} &= v \\
+  & \textbf{desda } \Express{i}{\ms,\mo,\sigma,\tau} = \omega \in \LLo \\
+  & \phantom{\textbf{desda }} \Trav(\mo, \omega, p) = (\omega' \in \LLo, j) \\
+  & \phantom{\textbf{desda }} \Findp(\omega',j) = \omega'' \\
+  & \phantom{\textbf{desda }} \mo(\omega'')(j) = v \\
+  \Express{e_1 \circ e_2}{\ms,\mo,\sigma,\tau} = n_1 \circ n_2 \\
+  & \textbf{waarbij } n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \NN \\
+  & \phantom{\textbf{waarbij }} n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \NN \\
+  & \phantom{\textbf{waarbij }} (\circ) \textbf{ één van: } +, -, \times, /
+\end{align*}
 
 \section{Statements}
 

@@ -88,7 +88,7 @@ Van een functie moeten een aantal dingen bekend zijn:
     \textsc{Ids}(i) &= \{(0, i)\} \\
     \textsc{Ids}(i^+, i) &= \textsc{Ids}(i^+) : i
   \end{align*}
-  \dots waarbij we $i^+$ als meta-variabele gebruiken voor een element uit \Ids.
+  \dots waarbij we $i^+$ als meta-variabele gebruiken voor een element uit de syntactische verzameling \Ids.
   %
   \item[Return variabele] Mogelijk gebruikt de functie een return variabele, dit wordt gerepresenteerd door een element uit $(\Id \cup \{\nil\})$, waarbij $\nil$ de betekenis draagt dat er geen sprake is van een return variabele.
   %
@@ -123,14 +123,7 @@ Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil
   }
 \end{NoBreak}
 
-In onze taal zijn ook functies primitieve waarden. Zoals in §\ref{sec:sem-functies} wordt beschreven, beschouwen we een functie als een “atomair” element met de volgende informatie:
-\begin{itemize}
-  \item parameters
-  \item mogelijkerwijs een return variabele
-  \item code
-  \item bereik van definitie
-\end{itemize}
-Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complexe structuren. Het volgende voorbeeld illustreert deze gedachte:
+In onze taal zijn ook functies primitieve waarden. Zoals in §\ref{sec:sem-functies} wordt beschreven, beschouwen we een functie als een “atomair” element waarvan de parameters, mogelijkerwijs een return variabele, code en bereik van definitie bekend zijn. Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complexere structuren. Het volgende voorbeeld illustreert deze gedachte:
 
 \begin{NoBreak}
   \newCodeFragment[exa:prititive-values-functions][Toekenning van primitieve waarden: Functies]
@@ -182,51 +175,59 @@ De definitie van de verzameling van alle waarden (locaties van objecten, getalle
 \section{Locaties en geheugen}
 \label{sec:locaties}
 
-Uit de redenaties over referenties volgt dat we een plaats moeten hebben om alle objecten op te slaan. Dit noemen we het \emph{geheugen voor objecten} $m_o$. Voor een gegeven locatie $\omega\in\LLo$ kunnen we het bijbehorende object in een geheugen $m_o$ opzoeken:
+Uit de redenaties over referenties volgt dat we op een bepaalde manier objecten moeten kunnen opslaan aan de hand van deze referenties. Hiervoor gebruiken we een \emph{geheugen voor objecten} $\mo$, een functie met signatuur $\mo : \LLo \to \OO$. De verzameling van alle object geheugens definiëren we als
 %
 \begin{equation*}
-  m_o(\omega).
+  \MMo \DEF \OO^{\LLo}
 \end{equation*}
 %
-Een geheugen is dus een functie van locaties naar objecten. De verzameling van alle geheugens definiëren we als
+Locaties zijn de semantische tegenhander van referenties. Hun waarde is niet van belang, enkel hun uniciteit die ons in staat stelt objecten te onderscheiden en op te slaan. We nemen aan dat er een functie $\Nexto : \MMo \to \LLo$ bestaat, die aan de volgende eis voldoet:
 %
 \begin{equation*}
-  \MMo \DEF \FiniteFunctions{\OO}{\LLo}
+  \forall_{\mo \in \MMo} \left[ \mo \uparrow \Nexto(\mo) \right]
 \end{equation*}
-
-\section{Expressiesemantiek}
-
-[nog doen]
+%
+Ook van bereiken moet een geheugen $\ms : \LLs \to \SS$ worden bijgehouden, op eenzelfde wijze als voor objecten. De verzameling van deze bereik geheugens is op vrijwel identieke manier als volgt gedefiniëerd:
+%
+\begin{equation*}
+  \MMs \DEF \SS^{\LLs}
+\end{equation*}
+%
+Ook nemen we aan dat er een functie $\Nexts : \MMs \to \LLs$ bestaat, die aan de volgende eis voldoet:
+%
+\begin{equation*}
+  \forall_{\ms \in \MMs} \left[ \ms \uparrow \Nexts(\ms) \right]
+\end{equation*}
 
 \section{Hulpfuncties}
 
 We introduceren nu een aantal hulpfuncties om de logica van bepaalde delen van het semantische model te omvatten en te beschrijven.
-Zoals eerder beschreven, moet de definitie van een variabele eerst gezocht worden in het huidige bereik, en daarna in omliggende bereiken. Deze procedure manifesteert zich in de hulpfunctie $\textsc{Find}_\text{scope} : \MMs \times \LLs \times \Id \to \LLs$, die we als volgt definiëren:
+Zoals eerder beschreven, moet de definitie van een variabele eerst gezocht worden in het huidige bereik, en daarna in omliggende bereiken. Deze procedure manifesteert zich in de hulpfunctie $\Finds : \MMs \times \LLs \times \Id \to \LLs$, die we als volgt definiëren:
 %
 \begin{equation*}
-  \textsc{Find}_\text{scope}(\ms, \sigma, i) = \begin{cases}
+  \Finds(\ms, \sigma, i) = \begin{cases}
     \sigma & \textbf{als } b_{\ms(\sigma)}(i) \neq \bot \\
     \bot & \textbf{als } p_{\ms(\sigma)} = \nil \\
-    \textsc{Find}_\text{scope}(\ms, p_{\ms(\sigma)}, i) & \textbf{anders}
+    \Finds(\ms, p_{\ms(\sigma)}, i) & \textbf{anders}
   \end{cases}
 \end{equation*}
 %
-Voor het doorzoeken van de prototype hiërarchie naar een attribuut hebben we een hulpfunctie $\textsc{Find}_\text{proto} : \MMo \times \LLo \times \Id \to \LLo$, die identiek is aan $\textsc{Find}_\text{scope}$, behalve dat deze werkt met de relevante object-gerelateerde verzamelingen.
+Voor het doorzoeken van de prototype hiërarchie naar een attribuut hebben we een hulpfunctie $\Findp : \MMo \times \LLo \times \Id \to \LLo$, die identiek is aan $\Finds$, behalve dat deze werkt met de relevante object-gerelateerde verzamelingen.
 %
 \begin{equation*}
-  \textsc{Find}_\text{proto}(\mo, \omega, i) = \begin{cases}
+  \Findp(\mo, \omega, i) = \begin{cases}
     \omega & \textbf{als } b_{\mo(\omega)}(i) \neq \bot \\
     \bot & \textbf{als } p_{\mo(\omega)} = \nil \\
-    \textsc{Find}_\text{proto}(\mo, p_{\mo(\omega)}, i) & \textbf{anders}
+    \Findp(\mo, p_{\mo(\omega)}, i) & \textbf{anders}
   \end{cases}
 \end{equation*}
 %
-Er is ook een hulpfunctie nodig om een pad te doorlopen. De hulpfunctie $\textsc{Trav} : \MMo \times \LLo \times \Path \to \LLo \times \Id$ levert de locatie van het laatste object op en de laatste \Id\ van het pad (wat mogelijk naar niet noodzakelijk een attribuut is van dat laatste object), gegeven het objectgeheugen, een locatie voor het “begin” object, en een pad.
+Er is ook een hulpfunctie nodig om een pad te doorlopen. De hulpfunctie $\Trav : \MMo \times \LLo \times \Path \to \LLo \times \Id$ levert de locatie van het laatste object op en de laatste \Id\ van het pad (wat mogelijk naar niet noodzakelijk een attribuut is van dat laatste object), gegeven het objectgeheugen, een locatie voor het “begin” object, en een pad.
 %
 \begin{equation*}
-  \textsc{Trav}(\mo, \omega, p) = \begin{cases}
+  \Trav(\mo, \omega, p) = \begin{cases}
     (\omega, p) & \textbf{als } p \in \Id \\
-    \textsc{Trav}(\mo, \omega', p') & \textbf{als } p = i.p' \textbf{ en } \textsc{Find}_\text{proto}(\mo, \omega, i) = \omega' \in \LLo \\
+    \Trav(\mo, \omega', p') & \textbf{als } p = i.p' \textbf{ en } \Findp(\mo, \omega, i) = \omega' \in \LLo \\
     \bot & \textbf{anders}
   \end{cases}
 \end{equation*}
