@@ -259,23 +259,16 @@
   \end{minipage}%
 }
 
-\NewEnviron{NSAxiom}[1]{%
-  \renewcommand{\arraystretch}{1.2}%
-  \begin{minipage}{\textwidth}% prevent page break
-  \BODY%
-  \end{minipage}%
+\newcommandx{\Desda}[2][1=]{%
+  \phantom{#2} & \textbf{ #1 } & #2 \\
 }
-\NewEnviron{NSConditions}{%
-  \vspace*{-.5pc}%
-  \hspace*{.45\textwidth}% ideally: .5\textwidth - 1/2 "desda\quad"
-  \scalebox{.85}{%
-    \begin{tabular}{@{}r@{\quad}l@{}}%@
-      \textbf{desda} \BODY%
-    \end{tabular}%
-  }%
-}
-\newcommand{\Cond}[1]{%
-  & #1 \\
+\newcommand{\Desdas}[1]{%
+  \scalebox{.9}{$%
+    \renewcommand*{\arraystretch}{1.15}%
+    \begin{array}{r@{}r@{}l}%
+      #1%
+    \end{array}%
+  $}
 }
 
 \newcommand{\FiniteFunctions}[2]{\ensuremath{\text{eindige }{#1}^{#2}}}

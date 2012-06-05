@@ -15,23 +15,22 @@ Het doel van dit werkstuk is daarom een formele betekenis te geven aan deze conc
     \small
     \raggedcolumns
     \setlength{\columnseprule}{.5pt}
-    \scalebox{0.84}{\begin{minipage}{.25\textwidth}
-      \begin{NSAxiom}{object}
-        \begin{prooftree}
-          \AxiomC{$
-            \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
-            \longrightarrow
-            (\ms', \mo')
-          $}
-        \end{prooftree}
-        \begin{NSConditions}
-          \Cond{$ \textsc{Find}_\text{scope}(\ms, \sigma, i) = \sigma_\text{def} $}
-          \Cond{$ \omega = \textsc{Next}_\text{object}(\mo) $}
-          \Cond{$ \ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], p_{\ms(\sigma')}\big) } $}
-          \Cond{$ \mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
-        \end{NSConditions}
-      \end{NSAxiom}
-    \end{minipage}}
+    \begin{minipage}{.25\textwidth}\vspace*{-1.1pc}%
+\begin{gather*}
+  \AxiomC{$
+    \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms', \mo')
+  $}
+  {\DisplayProof} \\[5pt]
+  \begin{array}{r@{}l}
+    \textbf{desda } & \Finds(\ms, \sigma, i) = \sigma_\text{def} \\
+    & \omega = \Nexto(\mo) \\
+    & \ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], p_{\ms(\sigma')}\big) } \\
+    & \mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) }
+  \end{array}
+\end{gather*}%
+    \end{minipage}
     
     \columnbreak
     

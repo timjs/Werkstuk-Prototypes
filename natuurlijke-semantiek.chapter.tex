@@ -15,30 +15,53 @@ Expressies zijn syntactische elementen die zonder de \emph{state} van het progra
 
 Er vanuit gaande dat we gewone expressie evaluatie al hebben gedefiniëerd, is de definitie van boolse expressie evaluatie heel simpel:
 %
-\begin{align*}
-  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} &= \bT \\
-  \Express[B]{\FALSE}{\ms,\mo,\sigma,\tau} &= \bF \\
+\begin{equation}
+  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} = \bT
+  \tag*{[true]}
+\end{equation}
+%
+\begin{equation}
+  \Express[B]{\FALSE}{\ms,\mo,\sigma,\tau} = \bF
+  \tag*{[false]}
+\end{equation}
+%
+\begin{equation}
   \Express[B]{b_1 \AND b_2}{\ms,\mo,\sigma,\tau}
-  &= \begin{cases}
+  = \begin{cases}
     \bT & \textbf{if } \Express[B]{b_1}{\ms,\mo,\sigma,\tau} = \Express[B]{b_2}{\ms,\mo,\sigma,\tau} = \bT \\
     \bF & \textbf{anders}
-  \end{cases} \\
+  \end{cases}
+  \tag*{[and]}
+\end{equation}
+%
+\begin{equation}
   \Express[B]{b_1 \OR b_2}{\ms,\mo,\sigma,\tau}
-  &= \begin{cases}
+  = \begin{cases}
     \bF & \textbf{if } \Express[B]{b_1}{\ms,\mo,\sigma,\tau} = \Express[B]{b_2}{\ms,\mo,\sigma,\tau} = \bF \\
     \bT & \textbf{anders}
-  \end{cases} \\
+  \end{cases}
+  \tag*{[or]}
+\end{equation}
+%
+\begin{equation}
   \Express[B]{\NOT b}{\ms,\mo,\sigma,\tau}
-  &= \begin{cases}
+  = \begin{cases}
     \bT & \textbf{if } \Express[B]{b}{\ms,\mo,\sigma,\tau} = \bF \\
     \bF & \textbf{anders}
-  \end{cases} \\
-  \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau} &=
-  n_1 \sim n_2 \\
-  & \textbf{waarbij } n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ \\
-  & \phantom{\textbf{waarbij }} n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ \\
-  & \phantom{\textbf{waarbij }} (\sim) \textbf{ één van: } =, \neq, <, \le, >, \ge
-\end{align*}
+  \end{cases}
+  \tag*{[not]}
+\end{equation}
+%
+\begin{gather*}
+  \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau} =
+  n_1 \sim n_2
+  \tag*{[relation]} \\
+  \Desdas{
+    \Desda[waarbij]{n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ}
+    \Desda{n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ}
+    \Desda{(\sim) \textbf{ één van: } =, \neq, <, \le, >, \ge}
+  }
+\end{gather*}
 
 \subsection{Getal expressies}
 
@@ -53,295 +76,336 @@ Ook evaluatie van getallen is eenvoudig:
 
 \subsection{Gewone expressies}
 %
-\begin{align*}
-  \Express{n}{\ms,\mo,\sigma,\tau} &= \Express[Z]{n}{} \\
-  \Express{\FUN (i^*) \{S\}}{\ms,\mo,\sigma,\tau} &= (S, \textsc{Ids}(i^*), \nil, \sigma) \\
-  \Express{\FUN (i^*) \RETURNS j \{S\}}{\ms,\mo,\sigma,\tau} &= (S, \textsc{Ids}(i^*), j, \sigma) \\
-  \Express{\THIS}{\ms,\mo,\sigma,\tau} &= \tau \\
-  \Express{i}{\ms,\mo,\sigma,\tau} &= \big( \Finds(\ms, \sigma, i) \big)(i) \\
-  \Express{\THIS.p}{\ms,\mo,\sigma,\tau} &= v \\
-  & \textbf{desda } \Trav(\mo, \tau, p) = (\omega \in \LLo, j) \\
-  & \phantom{\textbf{desda }} \Findp(\omega,j) = \omega' \\
-  & \phantom{\textbf{desda }} \mo(\omega')(j) = v \\
-  \Express{i.p}{\ms,\mo,\sigma,\tau} &= v \\
-  & \textbf{desda } \Express{i}{\ms,\mo,\sigma,\tau} = \omega \in \LLo \\
-  & \phantom{\textbf{desda }} \Trav(\mo, \omega, p) = (\omega' \in \LLo, j) \\
-  & \phantom{\textbf{desda }} \Findp(\omega',j) = \omega'' \\
-  & \phantom{\textbf{desda }} \mo(\omega'')(j) = v \\
-  \Express{e_1 \circ e_2}{\ms,\mo,\sigma,\tau} = n_1 \circ n_2 \\
-  & \textbf{waarbij } n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ \\
-  & \phantom{\textbf{waarbij }} n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ \\
-  & \phantom{\textbf{waarbij }} (\circ) \textbf{ één van: } +, -, \times
-\end{align*}
+\begin{equation}
+  \Express{n}{\ms,\mo,\sigma,\tau} = \Express[Z]{n}{}
+  \tag*{[num]}
+\end{equation}
+%
+\begin{equation}
+  \Express{\FUN (i^*) \{S\}}{\ms,\mo,\sigma,\tau} = (S, \textsc{Ids}(i^*), \nil, \sigma)
+  \tag*{[function]}
+\end{equation}
+%
+\begin{equation}
+  \Express{\FUN (i^*) \RETURNS j \{S\}}{\ms,\mo,\sigma,\tau} = (S, \textsc{Ids}(i^*), j, \sigma)
+  \tag*{[function w/ return]}
+\end{equation}
+%
+\begin{equation}
+  \Express{\THIS}{\ms,\mo,\sigma,\tau} = \tau
+  \tag*{[this]}
+\end{equation}
+%
+\begin{equation}
+  \Express{i}{\ms,\mo,\sigma,\tau} = \big( \Finds(\ms, \sigma, i) \big)(i)
+  \tag*{[identifier]}
+\end{equation}
+%
+\begin{gather*}
+  \Express{\THIS.p}{\ms,\mo,\sigma,\tau} = v
+  \tag*{[this.path]} \\
+  \Desdas{
+    \Desda[desda]{\Trav(\mo, \tau, p) = (\omega \in \LLo, j)}
+    \Desda{\Findp(\omega,j) = \omega'}
+    \Desda{\mo(\omega')(j) = v}
+  }
+\end{gather*}
+%
+\begin{gather*}
+  \Express{i.p}{\ms,\mo,\sigma,\tau} = v
+  \tag*{[path]} \\
+  \Desdas{
+    \Desda[desda]{\Express{i}{\ms,\mo,\sigma,\tau} = \omega \in \LLo}
+    \Desda{\Trav(\mo, \omega, p) = (\omega' \in \LLo, j)}
+    \Desda{\Findp(\omega',j) = \omega''}
+    \Desda{\mo(\omega'')(j) = v}
+  }
+\end{gather*}
+%
+\begin{gather*}
+  \Express{e_1 \circ e_2}{\ms,\mo,\sigma,\tau} = n_1 \circ n_2
+  \tag*{[op]} \\
+  \Desdas{
+    \Desda[desda]{n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ}
+    \Desda{n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ}
+    \Desda{(\circ) \textbf{ één van: } +, -, \times}
+  }
+\end{gather*}
 
 \section{Statements}
 
 \subsection{Basis}
 
 Laten we beginnen met de simpelste constructie in onze taal, het lege statement $\SKIP$. Deze heeft de vorm van een axioma.
-
-\begin{NSAxiom}{skip}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{\SKIP}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms, \mo)
-    $}
-  \end{prooftree}
-\end{NSAxiom}
-
+%
+\begin{equation*}
+  \AxiomC{$
+    \Config{\SKIP}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms, \mo)
+  $}
+  {\DisplayProof}
+  \tag*{[skip]}
+\end{equation*}
+%
 Zoals we kunnen zien zijn onze uitspraken van de vorm
+%
 \begin{equation*}
   \Config{S}{\ms,\mo,\sigma,\tau} \longrightarrow (\ms',\mo').
 \end{equation*}
+%
 Hiermee bedoelen we dat
+%
 \begin{equation*}
-\big(\,(S,\ms,\mo,\sigma,\tau), (\ms',\mo')\,\big) \in (\longrightarrow),
+  \big(\,(S,\ms,\mo,\sigma,\tau), (\ms',\mo')\,\big) \in (\longrightarrow),
 \end{equation*}
+%
 waarbij $\longrightarrow$ de volgende signatuur heeft 
+%
 \begin{equation*}
   (\longrightarrow) \subseteq (\Stm \times \MMs \times \MMo \times \LLs \times \LLo) \times (\MMs \times \MMo).
 \end{equation*}
+%
 Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$ met als extra informatie de locatie van de huidige scope $\sigma\in\LLs$ en de locatie van het huidige \THIS-object $\tau\in\MMo$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MMs,\MMo)$. $\SKIP$ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$.
 
 Voor het samenstellen van statements hebben we een regel nodig.
-
-\begin{NSAxiom}{comp}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{S_1}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms', \mo')
-    $}
-    \AxiomC{$
-      \Config{S_2}{\ms', \mo', \sigma, \tau}
-      \longrightarrow
-      (\ms'', \mo'')
-    $}
-    \BinaryInfC{$
-      \Config{S_1; S_2}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms'', \mo'')
-    $}
-  \end{prooftree}
-\end{NSAxiom}
-
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{S_1}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms', \mo')
+  $}
+  \AxiomC{$
+    \Config{S_2}{\ms', \mo', \sigma, \tau}
+    \longrightarrow
+    (\ms'', \mo'')
+  $}
+  \BinaryInfC{$
+    \Config{S_1; S_2}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms'', \mo'')
+  $}
+  {\DisplayProof}
+  \tag*{[comp]}
+\end{gather*}
+%
 In dit geval geven we aan dat, wanneer we een een compositie hebben van de statements $S_1$ en $S_2$, we eerst $S_1$ uitvoeren% T: Dit is niet het juiste woord, weten even geen betere...
 en daarna $S_2$. Tijdens dit proces ontstaan nieuwe toestanden, waar we natuurlijk rekening mee moeten houden. De geheugens worden dan ook netjes doorgesluisd.
 
 Voor de controlestructuur $\IF$ hebben we twee regels nodig. De eerste is voor het geval dat de \BExpr\ evalueert in \bT, dan moet namelijk het statement van het $\THEN$-deel worden uitgevoerd. Wanneer de \BExpr\ evalueert in \bF\ moet het $\ELSE$-deel worden uitgevoerd.
 Er moet dus aan een extra voorwaarde worden voldaan om deze regels toe te mogen passen. Dit zal vaker voorkomen bij de komende deductieregels. We noteren deze extra voorwaarden onder de regel of het axioma.
 %Zoals vele axioma's en deductieregels heeft dit axioma een aantal voorwaarden waaraan voldaan moet worden. Deze staan eronder genoteerd, elk op een regel.  
-
-\begin{NSAxiom}{if$^\bT$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{S_1}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms', \mo')
-    $}
-    \UnaryInfC{$
-      \Config{\IF b \THEN  S_1 \ELSE S_2 }{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms', \mo')
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \bT $}
-  \end{NSConditions}
-\end{NSAxiom}
-
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{S_1}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms', \mo')
+  $}
+  \UnaryInfC{$
+    \Config{\IF b \THEN  S_1 \ELSE S_2 }{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms', \mo')
+  $}
+  {\DisplayProof}
+  \tag*{[if true]} \\
+  \Desdas{
+    \Desda[desda]{\Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \bT}
+  }
+\end{gather*}
+%
 en:
-
-\begin{NSAxiom}{if$^\bF$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{S_2}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms', \mo')
-    $}
-    \UnaryInfC{$
-      \Config{\IF b \THEN S_1 \ELSE S_2 }{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms', \mo')
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \bF $}
-  \end{NSConditions}
-\end{NSAxiom}
-
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{S_2}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms', \mo')
+  $}
+  \UnaryInfC{$
+    \Config{\IF b \THEN S_1 \ELSE S_2 }{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms', \mo')
+  $}
+  {\DisplayProof}
+  \tag*{[if false]} \\
+  \Desdas{
+    \Desda{\Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \bF}
+  }
+\end{gather*}
+%
 Eenzelfde tactiek passen we toe bij een $\WHILE$-loop.
-
-\begin{NSAxiom}{while$^\bT$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{S_1}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms',\mo')
-    $}
-    \AxiomC{$
-      \Config{\WHILE b \DO S_1 }{\ms', \mo', \sigma, \tau}
-      \longrightarrow
-      (\ms'',\mo'')
-    $}
-    \BinaryInfC{$
-      \Config{\WHILE b \DO S_1 }{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms'',\mo'')
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{m,\sigma,\tau} = \bT $}
-  \end{NSConditions}
-\end{NSAxiom}
-
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{S_1}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms',\mo')
+  $}
+  \AxiomC{$
+    \Config{\WHILE b \DO S_1 }{\ms', \mo', \sigma, \tau}
+    \longrightarrow
+    (\ms'',\mo'')
+  $}
+  \BinaryInfC{$
+    \Config{\WHILE b \DO S_1 }{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms'',\mo'')
+  $}
+  {\DisplayProof}
+  \tag*{[while true]} \\
+  \Desdas{
+    \Desda{\Surr{b}^\text{B}_{m,\sigma,\tau} = \bT}
+  }
+\end{gather*}
+%
 en:
-
-\begin{NSAxiom}{while$^\bF$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{\WHILE b \DO S_1 }{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms, \mo)
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Surr{b}^\text{B}_{\ms,\mo,\sigma,\tau} = \bF $}
-  \end{NSConditions}
-\end{NSAxiom}
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{\WHILE b \DO S_1 }{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms, \mo)
+  $}
+  {\DisplayProof}
+  \tag*{[while false]} \\
+  \Desdas{
+    \Desda{\Surr{b}^\text{B}_{\ms,\mo,\sigma,\tau} = \bF}
+  }
+\end{gather*}
 
 \subsection{Variabelen}
 
 We komen nu bij een interessanter deel van de taal, namelijk het \emph{declareren} van variabelen en het \emph{toekennen} van waarden. In deze sectie gaan we dus alleen de bereiken modificeren. Aan de basis hiervan ligt het declareren van een variabele met $\LOCAL$. We willen in het huidige bereik de eigen bindingen zó aanpassen, dat de \Id\ die we declareren gekoppeld wordt aan $\nil$ (de variabele bevat immers nog geen expliciete waarde). Voordat we dit kunnen doen, moeten we bereik $\sigma$ opzoeken in het geheugen voor bereiken $\ms$ met $\ms(\sigma)$. Vervolgens passen we de binding hiervan aan (zie notatie in §\ref{sec:bereiken} en §\ref{sec:uitbreiden}). Met de verwijzing naar het omliggend bereik $\pi$ doen we niks. Dit paar van uitgebreide bindingen en oud omliggend bereik zetten we terug in het geheugen $\ms$ op plek $\sigma$.
-
-\begin{NSAxiom}{declare}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{\LOCAL i}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms', \mo)
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \ms' = \ms \surr{ \sigma \mapsto \big(b_{\ms(\sigma)}[i \mapsto \BOT], p_{\ms(\sigma)}\big) } $}
-  \end{NSConditions}
-\end{NSAxiom}
-
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{\LOCAL i}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms', \mo)
+  $}
+  {\DisplayProof}
+  \tag*{[local]} \\
+  \Desdas{
+    \Desda{\ms' = \ms \surr{ \sigma \mapsto \big(b_{\ms(\sigma)}[i \mapsto \BOT], p_{\ms(\sigma)}\big) }}
+  }
+\end{gather*}
+%
 Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we dit met dezelfde aanpassingstechniek als hierboven. Er is echter één groot verschil. Voordat we een waarde aan een variabele kunnen koppelen, moeten we eerst het bereik vinden waarin deze gedeclareerd is. Dit hoeft niet het huidige bereik te zijn en dus zoeken we deze op met de hulpfunctie $\Finds$. Daarnaast moeten we natuurlijk de expressie aan de rechter kant van het is-teken evalueren.
-
-\begin{NSAxiom}{assign$^\text{i}$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{i = e}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms', \mo)
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \sigma_\text{def} = \Finds(\ms, \sigma, i) $}
-    \Cond{$ \Surr{e}_{\ms, \mo, \sigma, \tau} = v $}
-    \Cond{$ \ms'= \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma_\text{def})}[ i \mapsto v ], p_{\ms(\sigma_\text{def})}\big) } $}
-  \end{NSConditions}
-\end{NSAxiom}
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{i = e}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms', \mo)
+  $}
+  {\DisplayProof}
+  \tag*{[assign identifier]} \\
+  \Desdas{
+    \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
+    \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
+    \Desda{\ms'= \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma_\text{def})}[ i \mapsto v ], p_{\ms(\sigma_\text{def})}\big) }}
+  }
+\end{gather*}
 
 \subsection{Objecten}
 
 Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van andere functies en we moeten rekening houden met het doorlopen van een pad. Daarnaast is er nog het speciale geval dat het eerste deel van het pad \THIS\ is. Natuurlijk gebeuren al deze aanpassingen in het geheugen voor objecten $\mo$ en gebruiken we locaties van objecten $\omega\in\LLo$ in plaats van locaties van bereiken.
-
-\begin{NSAxiom}{assign$^\text{slot}$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{i.s = e}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms', \mo)
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \sigma_\text{def} = \Finds(\ms, \sigma, i) $}
-    \Cond{$ b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL $}
-    \Cond{$ \Trav(\mo, \omega, s) = (\omega', j) $}
-    \Cond{$ \Surr{e}_{\ms, \mo, \sigma, \tau} = v $}
-    \Cond{$ \ms'= \ms \surr{ \omega' \mapsto \big(b_{\ms(\omega')}[ j \mapsto v ], p_{\ms(\omega')}\big) } $}
-  \end{NSConditions}
-\end{NSAxiom}
-
-\begin{NSAxiom}{assign$^\text{this}$}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{\THIS.s = e}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms, \mo')
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Trav(\mo, \tau, s) = (\omega, i) $}
-    \Cond{$ \Surr{e}_{\ms, \mo, \sigma, \tau} = v $}
-    \Cond{$ \mo'= \mo \surr{ \omega \mapsto \big(b_{\mo(\omega)}[ i \mapsto v ], p_{\mo(\omega)}\big) } $}
-  \end{NSConditions}
-\end{NSAxiom}
-
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{\THIS.s = e}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms, \mo')
+  $}
+  {\DisplayProof}
+  \tag*{[assign this.path]} \\
+  \Desdas{
+    \Desda{\Trav(\mo, \tau, s) = (\omega, i)}
+    \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
+    \Desda{\mo'= \mo \surr{ \omega \mapsto \big(b_{\mo(\omega)}[ i \mapsto v ], p_{\mo(\omega)}\big) }}
+  }
+\end{gather*}
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{i.s = e}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms', \mo)
+  $}
+  {\DisplayProof}
+  \tag*{[assign path]} \\
+  \Desdas{
+    \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
+    \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL}
+    \Desda{\Trav(\mo, \omega, s) = (\omega', j)}
+    \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
+    \Desda{\ms'= \ms \surr{ \omega' \mapsto \big(b_{\ms(\omega')}[ j \mapsto v ], p_{\ms(\omega')}\big) }}
+  }
+\end{gather*}
+%
 Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat. In §\ref{sec:waarden} is uitgebreid besproken dat er een significant verschil is tussen primitieve waarden en objecten. Toch gaat dit op bijna dezelfde manier als het toekennen van een primitieve waarde. De locatie $\omega$ van een object $o$ kan immers wel op dezelfde manier worden behandeld. Wat wel moet gebeuren is het aanmaken van een nieuw, leeg object in het geheugen voor objecten. Zo een leeg object heeft de vorm $(\varnothing, \nil)$. De bindingen zijn immers leeg en er is nog geen prototype gedefinieerd.
-
-\begin{NSAxiom}{object}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms', \mo')
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Finds(\ms, \sigma, i) = \sigma_\text{def} $}
-    \Cond{$ \omega = \Nexto(\mo) $}
-    \Cond{$ \ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], p_{\ms(\sigma')}\big) } $}
-    \Cond{$ \mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) } $}
-  \end{NSConditions}
-\end{NSAxiom}
-
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms', \mo')
+  $}
+  {\DisplayProof}
+  \tag*{[object]} \\
+  \Desdas{
+    \Desda{\Finds(\ms, \sigma, i) = \sigma_\text{def}}
+    \Desda{\omega = \Nexto(\mo)}
+    \Desda{\ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], p_{\ms(\sigma')}\big) }}
+    \Desda{\mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) }}
+  }
+\end{gather*}
+%
 Het definiëren van een prototype gaat met het $\CLONES$-statement. Hiervoor zoeken we simpelweg de locaties $\omega_i$ en $\omega_j$ van de twee objecten op. Vervolgens zetten we in het geheugen dat het prototype van het object in $\omega_i$ de locatie $\omega_j$ is.
-
-\begin{NSAxiom}{clones}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{i \CLONES j}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms, \mo')
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \Surr{i}_{\ms,\mo,\sigma,\tau} = \omega_i \in \LL $}
-    \Cond{$ \Surr{j}_{\ms,\mo,\sigma,\tau} = \omega_j \in \LL $}
-    \Cond{$ \mo' = \mo \surr{ \omega_i \mapsto \big(b_{\mo(\omega_i)}, \omega_j\big) } $}
-  \end{NSConditions}
-\end{NSAxiom}
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{i \CLONES j}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms, \mo')
+  $}
+  {\DisplayProof}
+  \tag*{[clones]} \\
+  \Desdas{
+    \Desda{\Surr{i}_{\ms,\mo,\sigma,\tau} = \omega_i \in \LL}
+    \Desda{\Surr{j}_{\ms,\mo,\sigma,\tau} = \omega_j \in \LL}
+    \Desda{\mo' = \mo \surr{ \omega_i \mapsto \big(b_{\mo(\omega_i)}, \omega_j\big) }}
+  }
+\end{gather*}
 
 \subsection{Functies}
-
+%
 \dots Komt nog \dots
-
-\begin{NSAxiom}{call}
-  \begin{prooftree}
-    \AxiomC{$
-      \Config{S_{\!f}}{\ms', \mo, \sigma_{\!f\text{new}}, \omega'}
-      \longrightarrow
-      (\ms'', \mo'')
-    $}
-    \UnaryInfC{$
-      \Config{i.s(e^*)}{\ms, \mo, \sigma, \tau}
-      \longrightarrow
-      (\ms'', \mo'')
-    $}
-  \end{prooftree}
-  \begin{NSConditions}
-    \Cond{$ \sigma_\text{def} = \Finds(\ms, \sigma, i) $}
-    \Cond{$ b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL $}
-    \Cond{$ \Trav(\mo, \omega, s) = (\omega', j) $}
-    \Cond{$ (S_{\!f}, I_{\!f}, i_{\!f}, \sigma_{\!f\text{def}}) = f = b_{\mo(\omega')}(j) $}
-    \Cond{$ \sigma_{\!f\text{new}} = \Nexts(\ms) $}
-    \Cond{$ \ms' = \ms\surr{ \sigma_{\!f\text{new}} \mapsto \big(\Surr{e^*}^*_{\ms,\sigma,\tau}(I_{\!f}), \sigma_{\!f\text{def}}\big) } $}
-  \end{NSConditions}
-\end{NSAxiom}
+%
+\begin{gather*}
+  \AxiomC{$
+    \Config{S_{\!f}}{\ms', \mo, \sigma_{\!f\text{new}}, \omega'}
+    \longrightarrow
+    (\ms'', \mo'')
+  $}
+  \UnaryInfC{$
+    \Config{i.s(e^*)}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms'', \mo'')
+  $}
+  {\DisplayProof}
+  \tag*{[call]} \\
+  \Desdas{
+    \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
+    \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL}
+    \Desda{\Trav(\mo, \omega, s) = (\omega', j)}
+    \Desda{(S_{\!f}, I_{\!f}, i_{\!f}, \sigma_{\!f\text{def}}) = f = b_{\mo(\omega')}(j)}
+    \Desda{\sigma_{\!f\text{new}} = \Nexts(\ms)}
+    \Desda{\ms' = \ms\surr{ \sigma_{\!f\text{new}} \mapsto \big(\Surr{e^*}^*_{\ms,\sigma,\tau}(I_{\!f}), \sigma_{\!f\text{def}}\big) }}
+  }
+\end{gather*}
 
 %\section*{Extra}
 
