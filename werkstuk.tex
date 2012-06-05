@@ -1,4 +1,5 @@
-\documentclass[11pt,oneside,parskip=half]{scrbook}
+\documentclass[11pt,oneside,parskip=half]{book}
+% Tim: [scrbook] zorgt voor de sans-serif headingss die breed zijn (vind ik prima hoor, zoek maar wat uit ;)
 \usepackage[a4paper]{geometry}
 
 \usepackage{fontspec}
@@ -312,13 +313,14 @@
   \renewcommand{\theCodeFragmentCaption}{#2}%
 }
 \newcommand{\codeFragmentCaption}{%
+  \vspace{1pc}%
   ~\centerline{\small%
     \textit{Code fragment \thencode}%
     \ifthenelse{\equal{\theCodeFragmentCaption}{}}%
     {}%
     {. \theCodeFragmentCaption}%
   }~%
-  \\[-1.6pc]%
+  \vspace{.1pc}%
 }
 \NewEnviron{codelines}{%
   \par
