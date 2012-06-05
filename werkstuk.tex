@@ -1,29 +1,34 @@
-\documentclass[11pt,oneside,parskip=half]{book}
-% Tim: [scrbook] zorgt voor de sans-serif headingss die breed zijn (vind ik prima hoor, zoek maar wat uit ;)
+% K: [scrbook] zorgt voor de sans-serif headingss die breed zijn (vind ik prima hoor, zoek maar wat uit ;) T: Wat is je punt? Schreefloze koppen zijn over het algemeen beter dan met schreef.
 \usepackage[a4paper]{geometry}
+\documentclass[11pt,a4paper,oneside,parskip=half]{scrbook}
 
-\usepackage{fontspec}
+%\usepackage{fontspec}
 %\setmainfont{Century Schoolbook L}
-\setmainfont[
-  SmallCapsFont={Linux Libertine O},
-  SmallCapsFeatures={Letters=SmallCaps},
-  Mapping=tex-text,
-  Ligatures={TeX, Common}
-]{Linux Libertine O}
-\setmonofont[Scale=0.85]{Bera Sans Mono}
+%\setmainfont[
+  %SmallCapsFont={Linux Libertine O},
+  %SmallCapsFeatures={Letters=SmallCaps},
+  %Mapping=tex-text,
+  %Ligatures={TeX, Common}
+%]{Linux Libertine O}
+%\setmonofont[Scale=0.85]{Bera Sans Mono}
 %\setmonofont{Consolas}
 
-\usepackage{amsmath}
-\usepackage{unicode-math}
-\setmathfont{Asana Math}% de [] haakjes zijn wat groot, maar \mathbb{N} etc is mooier dan in XITS Math
+%\usepackage{unicode-math}
+%\setmathfont{Asana Math}% de [] haakjes zijn wat groot, maar \mathbb{N} etc is mooier dan in XITS Math
 %\setmathfont{XITS Math}
 
-\usepackage{xunicode}
+%\usepackage{xunicode}
 
 %\renewcommand{\textsc}[1]{\addfontfeature{Letters=SmallCaps} #1}
 
 \usepackage{polyglossia}
 \setdefaultlanguage{dutch}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{lmodern}
+
+\usepackage[numbers,sort&compress]{natbib}
 
 \usepackage{tabularx}% tables: equal width columns
 \usepackage{multirow}% tables: rowspan
@@ -59,8 +64,10 @@
   {\newcommand{#1}
     {\ensuremath{#2}}}
 \newcommand{\newkeyword}[2]
-  {\newcommand{#1}
-    {\text{\small\ttfamily\bfseries #2}}}
+  %{\newcommand{#1}
+    %{\text{\small\ttfamily\bfseries #2}}}
+  {\DeclareMathOperator{#1}
+    {\ensuremath{\text{\small\ttfamily\bfseries #2}}}}
 \newcommand{\newconstant}[2]
   {\newkeyword{#1}{#2}}
   %{\newcommand{#1}
@@ -126,28 +133,24 @@
   {\rotatebox{90}{$\Vdash$}}
 \let\BOT\nil
 
-\newcommand{\defineNewKeyword}[2]{%
-  \DeclareMathOperator{#1}{\ensuremath{\text{\small\ttfamily\bfseries #2}}}
-}
-
 \newcommand{\COMP}{;\;}
 
-\defineNewKeyword{\LOCAL}{local}
-\defineNewKeyword{\CLONES}{clones}
-\defineNewKeyword{\OBJECT}{object}
-\defineNewKeyword{\FUN}{function}
-\defineNewKeyword{\RETURNS}{returns}
-\defineNewKeyword{\SKIP}{skip}
-\defineNewKeyword{\IF}{if}
-\defineNewKeyword{\THEN}{then}
-\defineNewKeyword{\ELSE}{else}
-\defineNewKeyword{\WHILE}{while}
-\defineNewKeyword{\DO}{do}
-\defineNewKeyword{\END}{end}
+\newkeyword{\LOCAL}{local}
+\newkeyword{\CLONES}{clones}
+\newkeyword{\OBJECT}{object}
+\newkeyword{\FUN}{function}
+\newkeyword{\RETURNS}{returns}
+\newkeyword{\SKIP}{skip}
+\newkeyword{\IF}{if}
+\newkeyword{\THEN}{then}
+\newkeyword{\ELSE}{else}
+\newkeyword{\WHILE}{while}
+\newkeyword{\DO}{do}
+\newkeyword{\END}{end}
 
-\defineNewKeyword{\AND}{and}
-\defineNewKeyword{\OR}{or}
-\defineNewKeyword{\NOT}{not}
+\newkeyword{\AND}{and}
+\newkeyword{\OR}{or}
+\newkeyword{\NOT}{not}
 
 \newconstant{\TRUE}{true}
 \newconstant{\FALSE}{false}
@@ -385,6 +388,9 @@
 %\input case-study.chapter
 
 \backmatter
+
+\bibliographystyle{plainnat}
+\bibliography{bronnen}
 
 \end{document}
 
