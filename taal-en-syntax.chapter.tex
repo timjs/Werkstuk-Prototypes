@@ -166,25 +166,15 @@ Een \id{Deur} is standaard open. We kunnen \id{Deur} ook als een prototype gebru
 	\codeLine{\id{GeslotenDeur} \CLONES \id{Deur}}
 \end{codelines}
 
-\id{GeslotenDeur} heeft dan alle attributen van \id{Deur}:
-
-\begin{codelines}
-  \codeLine{\id{GeslotenDeur}.\id{open}}[waarde $\to$ 1]
-\end{codelines}
-
-Maar een \id{GeslotenDeur} moet natuurlijk gesloten zijn. We zetten zijn attribuut \id{open} op @0@:
+\id{GeslotenDeur} heeft dan alle attributen van \id{Deur}. Zo heeft $\id{GeslotenDeur}.\id{open}$ netjes waarde $1$.
+Maar een \id{GeslotenDeur} moet natuurlijk gesloten zijn. We zetten zijn attribuut \id{open} op $0$:
 
 \begin{codelines}
 	\codeLine{\id{GeslotenDeur}.\id{open} = 0}
 \end{codelines}
 
-Een gewone \id{Deur} is nog steeds open:
-
-\begin{codelines}
-  \codeLine{\id{Deur}.\id{open}}[waarde $\to$ 1]
-\end{codelines}
-
-Attributen worden dus per object bewaard. Door \id{open} op @0@ te zetten in \id{GeslotenDeur} verandert er niks in \id{Deur}.
+Een gewone \id{Deur} is nog steeds open. Met andere woorden $\id{Deur}.\id{open}$ heeft nog steeds waarde $1$.
+Attributen worden dus per object bewaard. Door \id{open} op $0$ te zetten in \id{GeslotenDeur} verandert er niks in \id{Deur}.
 
 We kunnen net zoveel klonen maken van een object als we willen en net zo diep klonen als we willen. Neem een \id{GlazenDeur}, dit is natuurlijk ook een \id{Deur}, maar wel doorzichtig:
 
@@ -195,29 +185,14 @@ We kunnen net zoveel klonen maken van een object als we willen en net zo diep kl
   \codeLine{\id{GlazenDeur}.\id{doorzichtig} = 1}
 \end{codelines}
 
-Een gewone \id{Deur} heeft het attribuut \id{doorzichtig} niet, en dus een \id{GeslotenDeur} ook niet:
-
-\begin{codelines}
-  \codeLine{\id{GeslotenDeur}.\id{doorzichtig}}[fout!]
-\end{codelines}
-
+Een gewone \id{Deur} heeft het attribuut \id{doorzichtig} niet, en dus een \id{GeslotenDeur} ook niet. Wanneer we bijvoorbeeld \id{GeslotenDeur}.\id{doorzichtig} levert dit geen waarde op, dit is niet gedefinieerd.
 Maar we kunnen besluiten dat deuren standaard niet doorzichtig zijn:
 
 \begin{codelines}
   \codeLine{\id{Deur}.\id{doorzichtig} = 0}
 \end{codelines}
 
-Zodat ook onze \id{GeslotenDeur} niet doorzichtig is:
-
-\begin{codelines}
-  \codeLine{\id{GeslotenDeur}.\id{doorzichtig}}[waarde $\to$ 0]
-\end{codelines}
-
-Maar er geld nog steeds:
-
-\begin{codelines}
-  \codeLine{\id{GlazenDeur}.\id{doorzichtig}}[waarde $\to$ 1]
-\end{codelines}
+\id{GeslotenDeur}en zijn nu ook niet doorzichtig. $\id{GeslotenDeur}.\id{doorzichtig}$ \emph{erft} de eigenschap van \id{Deur} en heeft dus waarde $0$. Maar er geldt nog steeds dat $\id{GlazenDeur}.\id{doorzichtig}$ waarde $1$ heeft.
 
 We zien dat we met prototypes een zeer flexibele methode hebben om object-geörienteerd te programmeren. Het is niet nodig om de compiler of parser van te voren uit te leggen dat objecten aan bepaalde “blauwdrukken” moeten voldoen. We creëren objecten “on-the-fly”, alsmede hun attributen en relaties. Deze methode komt terug in talen als JavaScript, IO en Self \citep{javascript,io,self}.
 
@@ -231,12 +206,7 @@ Natuurlijk is het ook mogelijk om \emph{methoden} te definiëren. Dit zijn funct
   \codeLine{\IN \IN \THIS.\id{open} = 0}
 \end{codelines}
 
-\id{this} is hier een expliciete verwijzing naar het huidige object. Op dit moment kunnen we \id{ontsluit} nog niet aanroepen op \id{GeslotenDeur}:
-
-\begin{codelines}
-  \codeLine{\id{GeslotenDeur}.\id{ontsluit}(1234)}[fout!]
-\end{codelines}
-
+\id{this} is hier een expliciete verwijzing naar het huidige object. Op dit moment kunnen we \id{ontsluit} nog niet aanroepen op \id{GeslotenDeur}.
 Het attribuut \id{code} is immers niet gedefinieerd in \id{GeslotenDeur} noch in zijn prototype \id{Deur}.
 
 We kunnen natuurlijk een \id{code} toekennen aan \id{GeslotenDeur}, maar laten we een specifieke \id{GeslotenDeur} maken met een \id{code}:
@@ -252,15 +222,15 @@ Wanneer we de methode \id{ontsluit} aanroepen is deze niet gedefinieerd in \id{K
 
 \begin{codelines}
   \codeLine{\id{Kluis}.\id{ontsluit}(1234)}
-  \codeLine{\id{Kluis}.\id{open}}[waarde $\to$ 0]
 \end{codelines}
 
-Helaas was dat de verkeerde code, we proberen het nog een keer:
+Wanneer we nu $\id{Kluis}.\id{open}$ evalueren komt hier $0$ uit, we hebben de verkeerde code ingevoerd! We proberen het nog een keer:
 
 \begin{codelines}
-  \codeLine{\id{Kluis}.\id{ontsluit}(1234)}
-  \codeLine{\id{Kluis}.\id{open}}[waarde $\to$ 1]
+  \codeLine{\id{Kluis}.\id{ontsluit}(4321)}
 \end{codelines}
+
+Deze code is wel correct en $\id{Kluis}.\id{open}$ heeft nu waarde $1$.
 
 \section{Formele definitie}
 
