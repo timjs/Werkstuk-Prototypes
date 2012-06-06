@@ -288,7 +288,7 @@ We komen nu bij een interessanter deel van de taal, namelijk het \emph{declarere
   {\DisplayProof}
   \tag*{[local]} \\
   \Desdas{
-    \Desda{\ms' = \ms \surr{ \sigma \mapsto \big(b_{\ms(\sigma)}[i \mapsto \BOT], p_{\ms(\sigma)}\big) }}
+    \Desda{\ms' = \ms \surr{ \sigma \mapsto \big(b_{\ms(\sigma)}[i \mapsto \BOT], \pi_{\ms(\sigma)}\big) }}
   }
 \end{gather*}
 %
@@ -305,7 +305,7 @@ Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we 
   \Desdas{
     \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
     \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
-    \Desda{\ms'= \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma_\text{def})}[ i \mapsto v ], p_{\ms(\sigma_\text{def})}\big) }}
+    \Desda{\ms'= \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma_\text{def})}[ i \mapsto v ], \pi_{\ms(\sigma_\text{def})}\big) }}
   }
 \end{gather*}
 
@@ -324,7 +324,7 @@ Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van ande
   \Desdas{
     \Desda{\Trav(\mo, \tau, s) = (\omega, i)}
     \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
-    \Desda{\mo'= \mo \surr{ \omega \mapsto \big(b_{\mo(\omega)}[ i \mapsto v ], p_{\mo(\omega)}\big) }}
+    \Desda{\mo'= \mo \surr{ \omega \mapsto \big(b_{\mo(\omega)}[ i \mapsto v ], \pi_{\mo(\omega)}\big) }}
   }
 \end{gather*}
 %
@@ -341,7 +341,7 @@ Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van ande
     \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL}
     \Desda{\Trav(\mo, \omega, s) = (\omega', j)}
     \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
-    \Desda{\ms'= \ms \surr{ \omega' \mapsto \big(b_{\ms(\omega')}[ j \mapsto v ], p_{\ms(\omega')}\big) }}
+    \Desda{\ms'= \ms \surr{ \omega' \mapsto \big(b_{\ms(\omega')}[ j \mapsto v ], \pi_{\ms(\omega')}\big) }}
   }
 \end{gather*}
 %
@@ -358,7 +358,7 @@ Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van ande
   \Desdas{
     \Desda{\Trav(\mo, \tau, s) = (\omega, i)}
     \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
-    \Desda{\mo'= \mo \surr{ \omega \mapsto \big(b_{\mo(\omega)}[ i \mapsto v ], p_{\mo(\omega)}\big) }}
+    \Desda{\mo'= \mo \surr{ \omega \mapsto \big(b_{\mo(\omega)}[ i \mapsto v ], \pi_{\mo(\omega)}\big) }}
   }
 \end{gather*}
 %
@@ -375,7 +375,7 @@ Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van ande
     \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL}
     \Desda{\Trav(\mo, \omega, s) = (\omega', j)}
     \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
-    \Desda{\ms'= \ms \surr{ \omega' \mapsto \big(b_{\ms(\omega')}[ j \mapsto v ], p_{\ms(\omega')}\big) }}
+    \Desda{\ms'= \ms \surr{ \omega' \mapsto \big(b_{\ms(\omega')}[ j \mapsto v ], \pi_{\ms(\omega')}\big) }}
   }
 \end{gather*}
 %
@@ -392,7 +392,7 @@ Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat
   \Desdas{
     \Desda{\Finds(\ms, \sigma, i) = \sigma_\text{def}}
     \Desda{\omega = \Nexto(\mo)}
-    \Desda{\ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], p_{\ms(\sigma')}\big) }}
+    \Desda{\ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], \pi_{\ms(\sigma')}\big) }}
     \Desda{\mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) }}
   }
 \end{gather*}
