@@ -1,32 +1,25 @@
 % (geen punt, ik was met \setsansfont te klooien, en die veranderde de titels steeds niet, toen kwam ik erachter waar ze eigenlijk vandaan kwamen -- beetje vergezocht i know..)
 \documentclass[11pt,a4paper,oneside,parskip=half]{scrbook}
-\usepackage[a4paper]{geometry}
 
 \usepackage{fontspec}
-%\setmainfont{Century Schoolbook L}
-\setmainfont[
-  SmallCapsFont={Linux Libertine O},
-  SmallCapsFeatures={Letters=SmallCaps},
-  Mapping=tex-text,
-  Ligatures={TeX, Common}
-]{Linux Libertine O}
-\setmonofont[Scale=0.85]{Bera Sans Mono}
-%\setmonofont{Consolas}
+\defaultfontfeatures{Ligatures={TeX,Common},Numbers=OldStyle,Scale=MatchLowercase}
+
+\setmainfont[SmallCapsFont={Linux Libertine Capitals O}]{Linux Libertine O}
+\setsansfont[SmallCapsFont={Linux Biolinum Capitals O}]{Linux Biolinum O}
+\setmonofont{DejaVu Sans Mono}
 
 \usepackage{amsmath}
-\usepackage{unicode-math}
-\setmathfont{Asana Math}% de [] haakjes zijn wat groot, maar \mathbb{N} etc is mooier dan in XITS Math
+\usepackage{amssymb}
+%\usepackage{xunicode}
+%\usepackage{unicode-math}
+%\setmathfont{Asana Math}% de [] haakjes zijn wat groot, maar \mathbb{N} etc is mooier dan in XITS Math
 %\setmathfont{XITS Math}
 
-\usepackage{xunicode}
-
-%\renewcommand{\textsc}[1]{\addfontfeature{Letters=SmallCaps} #1}
+%\usepackage{lmodern}
 
 \usepackage{polyglossia}
 \setdefaultlanguage{dutch}
-
-%\usepackage{amssymb}
-%\usepackage{lmodern}
+%\usepackage[dutch]{babel}
 
 \usepackage[numbers,sort&compress]{natbib}
 
