@@ -68,7 +68,7 @@ In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overer
 Hierbij is $\BB$ weer de verzamelingen bindinggroepen uit §\ref{sec:bindingen} en $\LLo$ zijn ditmaal locaties van objecten.
 
 \section{Functies}
-\label{sec:sem-functies}
+\label{sec:functies}
 
 Van een functie moeten een aantal dingen bekend zijn:
 \begin{description}
@@ -115,7 +115,7 @@ Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil
   }
 \end{NoBreak}
 
-In onze taal zijn ook functies primitieve waarden. Zoals in §\ref{sec:sem-functies} wordt beschreven, beschouwen we een functie als een “atomair” element waarvan de parameters, mogelijkerwijs een return variabele, code en bereik van definitie bekend zijn. Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complexere structuren. Het volgende voorbeeld illustreert deze gedachte:
+In onze taal zijn ook functies primitieve waarden. Zoals in §\ref{sec:functies} wordt beschreven, beschouwen we een functie als een “atomair” element waarvan de parameters, mogelijkerwijs een return variabele, code en bereik van definitie bekend zijn. Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complexere structuren. Het volgende voorbeeld illustreert deze gedachte:
 
 \begin{NoBreak}
   \newCodeFragment[exa:prititive-values-functions][Toekenning van primitieve waarden: Functies]
@@ -175,6 +175,7 @@ Uit de redenaties over referenties volgt dat we op een bepaalde manier objecten 
 \end{align*}
 
 \section{Hulpfuncties}
+\label{sec:hulpfuncties}
 
 We introduceren nu een aantal hulpfuncties om de logica van bepaalde delen van het semantische model te omvatten en te beschrijven.
 Zoals eerder beschreven, moet de definitie van een variabele eerst gezocht worden in het huidige bereik, en daarna in omliggende bereiken. Deze procedure manifesteert zich in de hulpfunctie $\Finds : \MMs \times \II \times \Id \to \II$, die we als volgt definiëren:

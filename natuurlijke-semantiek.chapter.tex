@@ -2,18 +2,138 @@
 
 \section{Expressies}
 
-Expressies zijn syntactische elementen die zonder de \emph{state} van het programma te wijzigen \emph{geëvalueerd} kunnen worden tot een waarde $v \in \VV$. Voor boolse expressies geldt hetzelfde, maar deze evalueren tot de verzameling $\{\bT, \bF\}$. Specifiek getallen beschouwen we voor het gemak ook apart. Voor elk van deze drie soorten expressies definiëren we semantische functies die deze evaluatie formeel maken. Ook definiëren we een \emph{uitgebreide} semantische functie voor syntactische elementen uit $\MaybeExprs$. De signaturen van de vier functies zijn:
+Expressies zijn syntactische elementen die zonder de \emph{toestand} van het programma te wijzigen \emph{geëvalueerd} kunnen worden tot een waarde $v \in \VV$. 
+Bij het evalueren van expressies maken wij gebruik van een notatie met dubbele rechte haken. Hiermee geven we aan dat alles tussen deze dubbele haken \emph{syntaxis} is. Zo scheiden we we onze taal van de wiskunde. Bij het evalueren hebben we wel meer informatie nodig dan alleen de expressie zelf. De geheugens $\ms$ en $\mo$ voor bereiken en objecten worden gebruikt om de \emph{toestand} van het programma mee te geven. Daarnaast leggen het huidige bereik $\sigma$ en het huidige object $\tau$ vast in welke \emph{omgeving} de evaluatie plaats vindt. Deze extra informatie noteren we als subscript bij de haken. Evaluaties zijn dus van de vorm
+%
+\begin{equation*}
+  \Express{E}{\ms,\mo,\sigma,\tau} = v.
+\end{equation*}
+%
+De signatuur van de functie $\Express{\;}{}$ is dan
+\begin{equation*}
+  \Express{\;}{} : \Expr \times \MMs \times \MMo \times \LLs \times \LLo \to \VV \\
+\end{equation*}
+
+Ook definiëren we een \emph{uitgebreide} semantische functie voor syntactische elementen uit \MaybeExprs. Deze zijn te onderscheiden van de \emph{gewone} expressies door de superscript $+$ naast de haken. Merk op dat in dit geval het resultaat niet een enkele waarde is, maar een lijst van waardes.
+\begin{equation*}
+  \Express[\scalebox{1.3}{$+$}]{\;}{} : \MaybeExprs \times \MMs \times \MMo \times \LLs \times \LLo \to \VV_{\langle\rangle}
+\end{equation*}
+
+Voor Boolse expressies geldt hetzelfde, maar deze evalueren tot de verzameling $\{\bT, \bF\}$.
+Hierbij gebruiken wij het symbool $\bT$ voor \emph{waar} en $\bF$ voor \emph{onwaar}.
+Om aan te geven dat we te maken hebben met de evaluatie van Boolse expressies noteren we een superscript $\text{B}$ bij de haken.
+%
+\begin{equation*}
+  \Express[B]{\;}{} : \BExpr \times \MMs \times \MMo \times \LLs \times \LLo \to \{ \bT, \bF \} \\
+\end{equation*}
+
+Het evalueren van getallen beschouwen we voor het gemak apart. Dit is simpelweg een functie van de syntactische verzameling \Num\ naar $\ZZ$.
+%
+\begin{equation*}
+  \Express[Z]{\;}{} : \Num \to \ZZ \\
+\end{equation*}
+
+%Voor elk van deze drie soorten expressies definiëren we semantische functies die deze evaluatie formeel maken. De signaturen van de vier functies zijn:
+
+\subsection{Getal expressies}
+
+Laten we beginnen met het evalueren van gehele getallen zoals gedefinieerd in §\ref{sec:formeletaal}.
+%TODO: Gaan wij nou getallen net zo definieeren als Nielsen & Nielsen?
+%
+\begin{align*}
+  \Express[Z]{0}{} &= 0 &
+  \Express[Z]{n 0}{} &= 2 \cdot \Express[Z]{n}{} \\
+  \Express[Z]{1}{} &= 1 &
+  \Express[Z]{n 1}{} &= 2 \cdot \Express[Z]{n}{} + 1
+\end{align*}
+
+\subsection{Gewone expressies}
+
+De eerste type expressie die we tegenkomen in de definitie van §\ref{sec:formeletaal} zijn de getallen. Deze hebben we hierboven al gedefinieerd met de gespecialiseerde functie $\Express[Z]{\;}{}$. Hier kunnen we nu mooi gebruik van maken.
+%
+\begin{equation*}
+  \Express{n}{\ms,\mo,\sigma,\tau} = \Express[Z]{n}{}
+  \tag*{[num]}
+\end{equation*}
+%
+Daarnaast hebben we natuurlijk de aritmetische expressies van de form $e_1 \circ e_2$. Hierbij is $\circ$ een van de operatoren $+$, $-$ of $\times$. Aritmetische expressies worden geëvalueerd door eerst beide deelexpressies te evalueren tot getallen en hier vervolgens de betreffende operator op lost te laten.
 %
 \begin{gather*}
-  \Express[B]{\;}{} : \BExpr \times \MMs \times \MMo \times \LLs \times \LLo \to \{ \bT, \bF \} \\
-  \Express[Z]{\;}{} : \Num \to \ZZ \\
-  \Express{\;}{} : \Expr \times \MMs \times \MMo \times \LLs \times \LLo \to \VV \\
-  \Express[\scalebox{1.3}{$+$}]{\;}{} : \MaybeExprs \times \MMs \times \MMo \times \LLs \times \LLo \to \VV_{\langle\rangle}
+  \Express{e_1 \circ e_2}{\ms,\mo,\sigma,\tau} = n_1 \circ n_2
+  \tag*{[op]} \\
+  \Desdas{
+    \Desda[desda]{n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ}
+    \Desda{n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ}
+    \Desda{(\circ) \textbf{ één van: } +, -, \times}
+  }
 \end{gather*}
+
+Bij de evaluatie van een \Path\-expressie moeten we rekening houden met twee dingen. Ten eerste is een pad gedefinieerd als een losse \Id\ of een aaneenschakeling van de vorm $\Id.\Path$. Ten tweede kan de eerste \Id\ die we tegenkomen een verwijzing zijn naar het huidige object: $\THIS$. Het combineren van deze twee aandachtspunten levert ons vier verschillende gevallen op die we onderscheiden met \emph{pattern matching}.
+
+Het eenvoudigste geval is wanneer we te maken hebben met één \Id\ die gelijk is aan $\THIS$. We retourneren simpelweg de locatie van het huidige object $\tau$.
+%
+\begin{equation*}
+  \Express{\THIS}{\ms,\mo,\sigma,\tau} = \tau
+  \tag*{[this]}
+\end{equation*}
+%
+Wanneer we te maken hebben met een willekeurige andere \Id\ $i$, schakelen we de hulp in van de functie $\Finds$. Zoals beschreven in §\ref{sec:hulpfuncties} zoekt deze het bereik $\sigma'$ op waarin $i$ gedefinieerd is (mogelijk gelijk aan $\sigma$ zelf). Vervolgens zoeken we de waarde van $i$ op in de bindingen van dit bereik.
+%
+\begin{gather*}
+  %\Express{i}{\ms,\mo,\sigma,\tau} = \big( \Finds(\ms, \sigma, i) \big)(i)
+  % T: Volgens mij moet deze zo:
+  \Express{i}{\ms,\mo,\sigma,\tau} = v \\
+  \Desdas{
+    \Desda[desda]{\Finds(\ms, \sigma, i) = \sigma'}
+    \Desda{b_{\ms{\sigma'}}(i) = v}
+  }
+  \tag*{[identifier]}\label{rul:identifier}
+\end{gather*}
+
+De volgende stap is het geval waarin we te maken hebben met een \Path\ $p$ in plaats van een losse \Id. Hier schakelen we als eerste $\Trav$ in, die het pad doorloopt en ons het laatst ontdekte object $\omega'$ en de laatste \Id\ $j$ teruggeeft. Hierna kunnen we op zoek naar het prototype $\omega''$ waarin $j$ is gedefinieerd. Tot slot zoeken we de waarde van $j$ op in de bindingen van dit prototype. Wanneer het eerste onderdeel van het \Path\ begint met $\THIS$ doorlopen we het pad beginnende bij het huidige object $\tau$.
+%
+\begin{gather*}
+  \Express{\THIS.p}{\ms,\mo,\sigma,\tau} = v
+  \tag*{[this.path]} \\
+  \Desdas{
+    \Desda[desda]{\Trav(\mo, \tau, p) = (\omega' \in \LLo, j)}
+    \Desda{\Findp(\omega',j) = \omega''}
+    \Desda{b_{\mo(\omega'')}(j) = v}
+  }
+\end{gather*}
+%
+Als dit niet het geval is, moeten we eerst op zoek naar het object in $i$. Hier kunnen we handig gebruik maken van de regel~\ref{rul:identifier} hierboven.
+%
+\begin{gather*}
+  \Express{i.p}{\ms,\mo,\sigma,\tau} = v
+  \tag*{[path]} \\
+  \Desdas{
+    \Desda[desda]{\Express{i}{\ms,\mo,\sigma,\tau} = \omega \in \LLo}
+    \Desda{\Trav(\mo, \omega, p) = (\omega' \in \LLo, j)}
+    \Desda{\Findp(\omega',j) = \omega''}
+    \Desda{b_{\mo(\omega'')}(j) = v}
+  }
+\end{gather*}
+%
+Merk op dat wanneer $\Express{i}{\ms,\mo,\sigma,\tau}$ geen $\omega\in\LLo$ oplevert bovenstaande niet gedefinieerd is en $\Express{i.p}{}$ dus niet geëvalueerd kan worden.
+
+De laatste familie van expressies zijn de functies. Hier maken we onderscheid tussen functies \emph{met} teruggeefwaarde en \emph{zonder} teruggeefwaarde. In §\ref{sec:functies} is besproken hoe wij functies opbouwen in ons model. Onderstaande expressies creëren zo'n functie.
+%
+\begin{equation}
+  \Express{\FUN (i^*) \: \{S\}}{\ms,\mo,\sigma,\tau} = (S, \textsc{Ids}(i^*), \nil, \sigma)
+  \tag*{[function]}\label{rul:function}
+\end{equation}
+%
+\begin{equation}
+  \Express{\FUN (i^*) \RETURNS j \: \{S\}}{\ms,\mo,\sigma,\tau} = (S, \textsc{Ids}(i^*), j, \sigma)
+  \tag*{[function w/ return]}\label{rul:returnfunction}
+\end{equation}
+%
+We zien dat we alle benodigde gegevens uit de expressie overnemen en opslaan in een $f\in\FF$. Het enige verschil tussen de regels~\ref{rul:function} en \ref{rul:returnfunction} is het overnemen van de teruggeef-\Id\ $j$ in de quadrupel.
 
 \subsection{Boolse expressies}
 
-Er vanuit gaande dat we gewone expressie evaluatie al hebben gedefiniëerd, is de definitie van boolse expressie evaluatie heel simpel:
+Het evalueren van boolse expressies is, in vergelijking met de gewone expressies hierboven, redelijk eenvoudig. Allereerst evalueren de sleuterwoorden $\TRUE$ en $\FALSE$ simpelweg naar $\bT$ en $\bF$:
 %
 \begin{equation}
   \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} = \bT
@@ -24,6 +144,19 @@ Er vanuit gaande dat we gewone expressie evaluatie al hebben gedefiniëerd, is d
   \Express[B]{\FALSE}{\ms,\mo,\sigma,\tau} = \bF
   \tag*{[false]}
 \end{equation}
+
+Een negatie is natuurlijk eenvoudig te definiëren in termen van bovenstaande.
+%
+\begin{equation}
+  \Express[B]{\NOT b}{\ms,\mo,\sigma,\tau}
+  = \begin{cases}
+    \bT & \textbf{if } \Express[B]{b}{\ms,\mo,\sigma,\tau} = \bF \\
+    \bF & \textbf{anders}
+  \end{cases}
+  \tag*{[not]}
+\end{equation}
+
+Daarnaast kunnen we boolse expressies combineren met een conjunctie en een disjunctie. Hier zien we dat we de parameters van $\Express[B]{\;}{}$ doorgeven bij het evalueren van de deelexpressies $b_1$ en $b_2$.
 %
 \begin{equation}
   \Express[B]{b_1 \AND b_2}{\ms,\mo,\sigma,\tau}
@@ -42,15 +175,9 @@ Er vanuit gaande dat we gewone expressie evaluatie al hebben gedefiniëerd, is d
   \end{cases}
   \tag*{[or]}
 \end{equation}
-%
-\begin{equation}
-  \Express[B]{\NOT b}{\ms,\mo,\sigma,\tau}
-  = \begin{cases}
-    \bT & \textbf{if } \Express[B]{b}{\ms,\mo,\sigma,\tau} = \bF \\
-    \bF & \textbf{anders}
-  \end{cases}
-  \tag*{[not]}
-\end{equation}
+
+%TODO: Hier maken we ook geen onderscheid tussen taal en wiskunde!
+Tot slot bevat onze taal een methode om tests uit te voeren op getallen. Hier nemen we de relaties over uit de taal en plaatsen ze in de wiskundige context.
 %
 \begin{gather*}
   \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau} =
@@ -60,75 +187,6 @@ Er vanuit gaande dat we gewone expressie evaluatie al hebben gedefiniëerd, is d
     \Desda[waarbij]{n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ}
     \Desda{n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ}
     \Desda{(\sim) \textbf{ één van: } =, \neq, <, \le, >, \ge}
-  }
-\end{gather*}
-
-\subsection{Getal expressies}
-
-Ook evaluatie van getallen is eenvoudig:
-%
-\begin{align*}
-  \Express[Z]{0}{} &= 0 &
-  \Express[Z]{n 0}{} &= 2 \cdot \Express[N]{n}{} \\
-  \Express[Z]{1}{} &= 1 &
-  \Express[Z]{n 1}{} &= 2 \cdot \Express[N]{n}{} + 1
-\end{align*}
-
-\subsection{Gewone expressies}
-%
-\begin{equation}
-  \Express{n}{\ms,\mo,\sigma,\tau} = \Express[Z]{n}{}
-  \tag*{[num]}
-\end{equation}
-%
-\begin{equation}
-  \Express{\FUN (i^*) \{S\}}{\ms,\mo,\sigma,\tau} = (S, \textsc{Ids}(i^*), \nil, \sigma)
-  \tag*{[function]}
-\end{equation}
-%
-\begin{equation}
-  \Express{\FUN (i^*) \RETURNS j \{S\}}{\ms,\mo,\sigma,\tau} = (S, \textsc{Ids}(i^*), j, \sigma)
-  \tag*{[function w/ return]}
-\end{equation}
-%
-\begin{equation}
-  \Express{\THIS}{\ms,\mo,\sigma,\tau} = \tau
-  \tag*{[this]}
-\end{equation}
-%
-\begin{equation}
-  \Express{i}{\ms,\mo,\sigma,\tau} = \big( \Finds(\ms, \sigma, i) \big)(i)
-  \tag*{[identifier]}
-\end{equation}
-%
-\begin{gather*}
-  \Express{\THIS.p}{\ms,\mo,\sigma,\tau} = v
-  \tag*{[this.path]} \\
-  \Desdas{
-    \Desda[desda]{\Trav(\mo, \tau, p) = (\omega \in \LLo, j)}
-    \Desda{\Findp(\omega,j) = \omega'}
-    \Desda{\mo(\omega')(j) = v}
-  }
-\end{gather*}
-%
-\begin{gather*}
-  \Express{i.p}{\ms,\mo,\sigma,\tau} = v
-  \tag*{[path]} \\
-  \Desdas{
-    \Desda[desda]{\Express{i}{\ms,\mo,\sigma,\tau} = \omega \in \LLo}
-    \Desda{\Trav(\mo, \omega, p) = (\omega' \in \LLo, j)}
-    \Desda{\Findp(\omega',j) = \omega''}
-    \Desda{\mo(\omega'')(j) = v}
-  }
-\end{gather*}
-%
-\begin{gather*}
-  \Express{e_1 \circ e_2}{\ms,\mo,\sigma,\tau} = n_1 \circ n_2
-  \tag*{[op]} \\
-  \Desdas{
-    \Desda[desda]{n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ}
-    \Desda{n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ}
-    \Desda{(\circ) \textbf{ één van: } +, -, \times}
   }
 \end{gather*}
 
