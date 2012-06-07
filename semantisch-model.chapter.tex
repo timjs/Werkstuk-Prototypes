@@ -46,7 +46,7 @@ We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopi
   }
 \end{NoBreak}
 
-Stel nu dat we geen verwijzing in het bereik opslaan, maar een kopie van de omliggende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is bereik $s_f$ een paar $(b_f, p_f)$ met $b_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omliggend bereik $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
+Stel nu dat we geen verwijzing in het bereik opslaan, maar een kopie van de omliggende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is bereik $s_f$ een paar $(b_f, \pi_f)$ met $b_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $\pi_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $\pi_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omliggend bereik $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
 
 Een bereik $s$ is dus een element uit de verzameling
 %
@@ -183,8 +183,8 @@ Zoals eerder beschreven, moet de definitie van een variabele eerst gezocht worde
 \begin{equation*}
   \Finds(\ms, \sigma, i) = \begin{cases}
     \sigma & \textbf{als } b_{\ms(\sigma)} \downarrow i \\
-    \bot & \textbf{als } p_{\ms(\sigma)} = \nil \\
-    \Finds(\ms, p_{\ms(\sigma)}, i) & \textbf{anders}
+    \bot & \textbf{als } \pi_{\ms(\sigma)} = \nil \\
+    \Finds(\ms, \pi_{\ms(\sigma)}, i) & \textbf{anders}
   \end{cases}
 \end{equation*}
 %
@@ -193,8 +193,8 @@ Voor het doorzoeken van de prototype hiërarchie naar een attribuut hebben we ee
 \begin{equation*}
   \Findp(\mo, \omega, i) = \begin{cases}
     \omega & \textbf{als } b_{\mo(\omega)} \downarrow i \\
-    \bot & \textbf{als } p_{\mo(\omega)} = \nil \\
-    \Findp(\mo, p_{\mo(\omega)}, i) & \textbf{anders}
+    \bot & \textbf{als } \pi_{\mo(\omega)} = \nil \\
+    \Findp(\mo, \pi_{\mo(\omega)}, i) & \textbf{anders}
   \end{cases}
 \end{equation*}
 %
