@@ -2,10 +2,10 @@
 \chapter{Inleiding}
 
 % Wat
-In dit werkstuk presenteren we een natuurlijke semantiek die wij ontworpen hebben om de concepten \emph{lexicaal bereik} en \emph{prototype overerving} in object-geörienteerde talen te karakteriseren. Daartoe hebben we een minimale taal ontworpen die geïnspireerd is door de bestaande programmeertalen JavaScript en IO. JavaScript is een dynamische, prototype-gebaseerde taal die veelvuldig wordt gebruikt bij het ontwikkelen van internettoepassingen \citep{javascript}. Een opvallende functie van JavaScript is het gebruik van lexicaal bereik. IO is een onderzoekstaal door Steve Dekorte \citep{io}. Het belangrijkste kenmerk van deze taal is het prototype-gebaseerde object model.
+In dit werkstuk presenteren we een natuurlijke semantiek die wij ontworpen hebben om de concepten \emph{lexicaal bereik} en \emph{prototype overerving} in object-geörienteerde talen te karakteriseren. Daartoe hebben we een minimale taal ontworpen die geïnspireerd is op de bestaande programmeertalen JavaScript en IO. JavaScript\footnote{Ook wel bekend als \emph{ECMAScript}, de naam van de standaard.} is een dynamische, prototype-gebaseerde taal die veelvuldig wordt gebruikt bij het ontwikkelen van internettoepassingen \citep{javascript}. Een opvallende functie van JavaScript is het gebruik van lexicaal bereik. IO is een onderzoekstaal door Steve Dekorte \citep{io}. Het belangrijkste kenmerk van deze taal is het prototype-gebaseerde object model.
 
 % Waarom
-Lexicaal bereik (ook wel \emph{static scoping} genaamd) en prototype overerving zijn mooie fenomenen. Ze zijn ook de fundamenten van “The World's Most Misunderstood Programming Language”: JavaScript. Maar lexicaal bereik ligt men eigenlijk heel natuurlijk: zo redeneren wiskundigen al meer dan honderd jaar met formules waarin variabelen lexicaal bereik hebben. En prototype overerving is slechts een elegant en simpel alternatief op klassieke overerving, wanneer het gaat om object-geörienteerd programmeren.
+Lexicaal bereik (ook wel \emph{static scoping} genaamd) en prototype overerving zijn mooie fenomenen. Ze zijn ook de fundamenten van “The World's Most Misunderstood Programming Language”: JavaScript. Maar lexicaal bereik ligt mensen eigenlijk heel natuurlijk: zo redeneren wiskundigen al meer dan honderd jaar met formules waarin variabelen lexicaal bereik hebben. En prototype overerving is slechts een elegant en simpel alternatief op klassieke overerving, wanneer het gaat om object-geörienteerd programmeren.
 
 % Doel
 Het doel van dit werkstuk is daarom een formele betekenis te geven aan deze concepten, maar dan wel zó dat de interpretatie van de formele uitspraken zo natuurlijk mogelijk en conceptueel verantwoord is. De bedoeling is dat men de gewoon Nederlandse interpretatie van een willekeurig axioma of deductieregel tegen zou kunnen komen in een college programmeren:
@@ -23,11 +23,11 @@ Het doel van dit werkstuk is daarom een formele betekenis te geven aan deze conc
     (\ms', \mo')
   $}
   {\DisplayProof} \\[5pt]
-  \begin{array}{r@{}l}
+  \begin{array}{r@{}l}%@
     \textbf{desda } & \Finds(\ms, \sigma, i) = \sigma_\text{def} \\
     & \omega = \Nexto(\mo) \\
     & \ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], p_{\ms(\sigma')}\big) } \\
-    & \mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) }
+    & \mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \nil\big) }
   \end{array}
 \end{gather*}%
     \end{minipage}
@@ -40,6 +40,8 @@ Het doel van dit werkstuk is daarom een formele betekenis te geven aan deze conc
 \htmlinsert{somehtmlreplacement.html}
 
 % Opzet
-Na het bespreken van een aantal notationele keuzes en terminologie, presenteren we eerst de minimale taal, vervolgens het semantische model en tenslotte de natuurlijke semantiek die de twee voorgaande aan elkaar koppelt. In de case study die erop volgt proberen we een andere wiskundige aanpak te belichten om de semantiek te beschrijven.
+Na het bespreken van een aantal notationele keuzes en terminologie, presenteren we eerst de minimale taal, vervolgens het semantische model en tenslotte de natuurlijke semantiek die de twee voorgaande aan elkaar koppelt.
+%In de case study die erop volgt proberen we een andere wiskundige aanpak te belichten om de semantiek te beschrijven.
+We sluiten af met de bewijsboom van een kort programma om het gebruik van de ontwikkelde regels en axioma's te demonstreren.
 
 % vim: syn=latex spell spl=nl cole=1 cocu=nv
