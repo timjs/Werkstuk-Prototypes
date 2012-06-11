@@ -2,7 +2,7 @@
 
 \section{Expressies}
 
-Expressies zijn syntactische elementen die zonder de \emph{toestand} van het programma te wijzigen \emph{geëvalueerd} kunnen worden tot een waarde $v \in \VV$. 
+Expressies zijn syntactische elementen die zonder de \emph{toestand} van het programma te wijzigen \emph{geëvalueerd} worden tot een waarde $v \in \VV$. 
 Bij het evalueren van expressies maken wij gebruik van een notatie met dubbele rechte haken. Hiermee geven we aan dat alles tussen deze dubbele haken \emph{syntaxis} is. Zo scheiden we we onze taal van de wiskunde. Bij het evalueren hebben we wel meer informatie nodig dan alleen de expressie zelf. De geheugens $\ms$ en $\mo$ voor bereiken en objecten worden gebruikt om de \emph{toestand} van het programma mee te geven. Daarnaast leggen het huidige bereik $\sigma$ en het huidige object $\tau$ vast in welke \emph{omgeving} de evaluatie plaats vindt. Deze extra informatie noteren we als subscript bij de haken. Evaluaties zijn dus van de vorm
 %
 \begin{equation*}
@@ -14,9 +14,9 @@ De signatuur van de functie $\Express{\;}{}$ is dan
   \Express{\;}{} : \Expr \times \MMs \times \MMo \times \LLs \times \LLo \to \VV \\
 \end{equation*}
 
-Ook definiëren we een \emph{uitgebreide} semantische functie voor syntactische elementen uit \MaybeExprs. Deze zijn te onderscheiden van de \emph{gewone} expressies door de superscript $+$ naast de haken. Merk op dat in dit geval het resultaat niet een enkele waarde is, maar een lijst van waardes.
+Ook definiëren we een \emph{uitgebreide} semantische functie voor syntactische elementen uit \MaybeExprs. Deze zijn te onderscheiden van de \emph{gewone} expressies door de superscript $\text{M}$ naast de haken. Merk op dat in dit geval het resultaat niet een enkele waarde is, maar een lijst van waardes.
 \begin{equation*}
-  \Express[\scalebox{1.3}{$+$}]{\;}{} : \MaybeExprs \times \MMs \times \MMo \times \LLs \times \LLo \to \VV_{\langle\rangle}
+  \Express[M]{\;}{} : \MaybeExprs \times \MMs \times \MMo \times \LLs \times \LLo \to \VV_{\langle\rangle}
 \end{equation*}
 
 Voor Boolse expressies geldt hetzelfde, maar deze evalueren tot de verzameling $\{\bT, \bF\}$.
@@ -37,8 +37,8 @@ Het evalueren van getallen beschouwen we voor het gemak apart. Dit is simpelweg 
 
 \subsection{Getal expressies}
 
-Laten we beginnen met het evalueren van gehele getallen zoals gedefinieerd in §\ref{sec:formeletaal}.
 %TODO: Gaan wij nou getallen net zo definieeren als Nielsen & Nielsen?
+Laten we beginnen met het evalueren van gehele getallen zoals gedefinieerd in §\ref{sec:formeletaal}.
 %
 \begin{align*}
   \Express[Z]{0}{} &= 0 &
@@ -68,7 +68,7 @@ Daarnaast hebben we natuurlijk de aritmetische expressies van de form $e_1 \circ
   }
 \end{gather*}
 
-Bij de evaluatie van een \Path\-expressie moeten we rekening houden met twee dingen. Ten eerste is een pad gedefinieerd als een losse \Id\ of een aaneenschakeling van de vorm $\Id.\Path$. Ten tweede kan de eerste \Id\ die we tegenkomen een verwijzing zijn naar het huidige object: $\THIS$. Het combineren van deze twee aandachtspunten levert ons vier verschillende gevallen op die we onderscheiden met \emph{pattern matching}.
+Bij de evaluatie van een \Path-expressie moeten we rekening houden met twee dingen. Ten eerste is een pad gedefinieerd als een losse \Id\ of een aaneenschakeling van de vorm $\Id.\Path$. Ten tweede kan de eerste \Id\ die we tegenkomen een verwijzing zijn naar het huidige object: $\THIS$. Het combineren van deze twee aandachtspunten levert ons vier verschillende gevallen op die we onderscheiden met \emph{pattern matching}.
 
 Het eenvoudigste geval is wanneer we te maken hebben met één \Id\ die gelijk is aan $\THIS$. We retourneren simpelweg de locatie van het huidige object $\tau$.
 %
@@ -82,15 +82,15 @@ Wanneer we te maken hebben met een willekeurige andere \Id\ $i$, schakelen we de
 \begin{gather*}
   %\Express{i}{\ms,\mo,\sigma,\tau} = \big( \Finds(\ms, \sigma, i) \big)(i)
   % T: Volgens mij moet deze zo:
-  \Express{i}{\ms,\mo,\sigma,\tau} = v \\
+  \Express{i}{\ms,\mo,\sigma,\tau} = v
+  \tag*{[identifier]}\label{rul:identifier} \\
   \Desdas{
     \Desda[desda]{\Finds(\ms, \sigma, i) = \sigma'}
-    \Desda{b_{\ms{\sigma'}}(i) = v}
+    \Desda{b_{\ms(\sigma')}(i) = v}
   }
-  \tag*{[identifier]}\label{rul:identifier}
 \end{gather*}
 
-De volgende stap is het geval waarin we te maken hebben met een \Path\ $p$ in plaats van een losse \Id. Hier schakelen we als eerste $\Trav$ in, die het pad doorloopt en ons het laatst ontdekte object $\omega'$ en de laatste \Id\ $j$ teruggeeft. Hierna kunnen we op zoek naar het prototype $\omega''$ waarin $j$ is gedefinieerd. Tot slot zoeken we de waarde van $j$ op in de bindingen van dit prototype. Wanneer het eerste onderdeel van het \Path\ begint met $\THIS$ doorlopen we het pad beginnende bij het huidige object $\tau$.
+De volgende stap is het geval waarin we te maken hebben met een \Path\ $p$ in plaats van een losse \Id. Hier schakelen we als eerste $\Trav$ in, die het pad doorloopt en ons het laatst ontdekte object $\omega'$ en de laatste \Id\ $j$ teruggeeft. Hierna kunnen we op zoek naar het prototype $\omega''$ waarin $j$ is gedefinieerd met hulp van $\Findp$. Tot slot zoeken we de waarde van $j$ op in de bindingen van dit prototype. Wanneer het eerste onderdeel van het \Path\ begint met $\THIS$ doorlopen we het pad beginnende bij het huidige object $\tau$.
 %
 \begin{gather*}
   \Express{\THIS.p}{\ms,\mo,\sigma,\tau} = v
@@ -156,7 +156,7 @@ Een negatie is natuurlijk eenvoudig te definiëren in termen van bovenstaande.
   \tag*{[not]}
 \end{equation}
 
-Daarnaast kunnen we boolse expressies combineren met een conjunctie en een disjunctie. Hier zien we dat we de parameters van $\Express[B]{\;}{}$ doorgeven bij het evalueren van de deelexpressies $b_1$ en $b_2$.
+Daarnaast kunnen we Boolse expressies combineren met een conjunctie of disjunctie. We gebruiken dezelfde truc als hierboven en evalueren $b_1$ en $b_2$ eerst los.
 %
 \begin{equation}
   \Express[B]{b_1 \AND b_2}{\ms,\mo,\sigma,\tau}
@@ -190,23 +190,13 @@ Tot slot bevat onze taal een methode om tests uit te voeren op getallen. Hier ne
   }
 \end{gather*}
 
+%TODO: We doen niets meer met MaybeExpressions, die moet hier nog...
+
 \section{Statements}
 
 \subsection{Basis}
 
-Laten we beginnen met de simpelste constructie in onze taal, het lege statement $\SKIP$. Deze heeft de vorm van een axioma.
-%
-\begin{equation*}
-  \AxiomC{$
-    \Config{\SKIP}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms, \mo)
-  $}
-  {\DisplayProof}
-  \tag*{[skip]}
-\end{equation*}
-%
-Zoals we kunnen zien zijn onze uitspraken van de vorm
+Het evalueren van een statement noteren we met dubbele vishaken. Net als bij expressies hebben we ook hier extra informatie nodig in de vorm van $\ms$, $\mo$, $\sigma$ en $\tau$. Ook hier noteren we deze als subscript bij de haken. Onze uitspraken zijn dan van de vorm:
 %
 \begin{equation*}
   \Config{S}{\ms,\mo,\sigma,\tau} \longrightarrow (\ms',\mo').
@@ -224,9 +214,21 @@ waarbij $\longrightarrow$ de volgende signatuur heeft
   (\longrightarrow) \subseteq (\Stm \times \MMs \times \MMo \times \LLs \times \LLo) \times (\MMs \times \MMo).
 \end{equation*}
 %
-Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$ met als extra informatie de locatie van het huidig bereik $\sigma\in\LLs$ en de locatie van het huidige $\THIS$-object $\tau\in\MMo$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MMs,\MMo)$. $\SKIP$ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$.
+Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MMs,\MMo)$.
 
-Voor het samenstellen van statements hebben we een regel nodig.
+Laten we beginnen met de simpelste constructie in onze taal, het lege statement $\SKIP$. Deze heeft de vorm van een axioma.
+%
+\begin{equation*}
+  \AxiomC{$
+    \Config{\SKIP}{\ms, \mo, \sigma, \tau}
+    \longrightarrow
+    (\ms, \mo)
+  $}
+  {\DisplayProof}
+  \tag*{[skip]}
+\end{equation*}
+%
+$\SKIP$ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$. Voor het samenstellen van statements hebben we een regel nodig.
 %
 \begin{gather*}
   \AxiomC{$
@@ -269,7 +271,7 @@ Er moet dus aan een extra voorwaarde worden voldaan om deze regels toe te mogen 
   {\DisplayProof}
   \tag*{[if true]} \\
   \Desdas{
-    \Desda[desda]{\Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \bT}
+    \Desda[desda]{\Express[B]{b}{\ms, \mo,\sigma,\tau} = \bT}
   }
 \end{gather*}
 %
@@ -289,7 +291,7 @@ en:
   {\DisplayProof}
   \tag*{[if false]} \\
   \Desdas{
-    \Desda{\Surr{b}^\text{B}_{\ms, \mo,\sigma,\tau} = \bF}
+    \Desda[desda]{\Express[B]{b}{\ms, \mo,\sigma,\tau} = \bF}
   }
 \end{gather*}
 %
@@ -314,7 +316,7 @@ Eenzelfde tactiek passen we toe bij een $\WHILE$-loop.
   {\DisplayProof}
   \tag*{[while true]} \\
   \Desdas{
-    \Desda{\Surr{b}^\text{B}_{m,\sigma,\tau} = \bT}
+    \Desda[desda]{\Express[B]{b}{m,\sigma,\tau} = \bT}
   }
 \end{gather*}
 %
@@ -329,7 +331,7 @@ en:
   {\DisplayProof}
   \tag*{[while false]} \\
   \Desdas{
-    \Desda{\Surr{b}^\text{B}_{\ms,\mo,\sigma,\tau} = \bF}
+    \Desda[desda]{\Express[B]{b}{\ms,\mo,\sigma,\tau} = \bF}
   }
 \end{gather*}
 
@@ -361,83 +363,50 @@ Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we 
   {\DisplayProof}
   \tag*{[assign identifier]} \\
   \Desdas{
-    \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
-    \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
-    \Desda{\ms'= \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma_\text{def})}[ i \mapsto v ], \pi_{\ms(\sigma_\text{def})}\big) }}
+    \Desda[desda]{\Express{e}{\ms, \mo, \sigma, \tau} = v}
+    \Desda{\sigma' = \Finds(\ms, \sigma, i)}
+    \Desda{\ms'= \ms \surr{ \sigma' \mapsto \big(b_{\ms(\sigma')}[ i \mapsto v ], \pi_{\ms(\sigma')}\big) }}
   }
 \end{gather*}
 
 \subsection{Objecten}
 
-Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van andere functies en we moeten rekening houden met het doorlopen van een pad. Daarnaast is er nog het speciale geval dat het eerste deel van het pad $\THIS$ is. Natuurlijk gebeuren al deze aanpassingen in het geheugen voor objecten $\mo$ en gebruiken we locaties van objecten $\omega\in\LLo$ in plaats van locaties van bereiken.
+Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van andere functies en we moeten rekening houden met het doorlopen van een pad. Daarnaast is er nog het speciale geval dat het eerste deel van het pad $\THIS$ is. Natuurlijk gebeuren al deze aanpassingen in het geheugen voor objecten $\mo$ in plaats van het geheugen voor bereiken $\ms$.
 %
 \begin{gather*}
   \AxiomC{$
-    \Config{\THIS.s = e}{\ms, \mo, \sigma, \tau}
+    \Config{\THIS.p = e}{\ms, \mo, \sigma, \tau}
     \longrightarrow
     (\ms, \mo')
   $}
   {\DisplayProof}
   \tag*{[assign this.path]} \\
   \Desdas{
-    \Desda{\Trav(\mo, \tau, s) = (\omega, i)}
-    \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
+    \Desda[desda]{\Express{e}{\ms, \mo, \sigma, \tau} = v}
+    \Desda{\Trav(\mo, \tau, p) = (\omega, i)}
     \Desda{\mo'= \mo \surr{ \omega \mapsto \big(b_{\mo(\omega)}[ i \mapsto v ], \pi_{\mo(\omega)}\big) }}
   }
 \end{gather*}
 %
 \begin{gather*}
   \AxiomC{$
-    \Config{i.s = e}{\ms, \mo, \sigma, \tau}
+    \Config{i.p = e}{\ms, \mo, \sigma, \tau}
     \longrightarrow
     (\ms', \mo)
   $}
   {\DisplayProof}
   \tag*{[assign path]} \\
   \Desdas{
-    \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
-    \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL}
-    \Desda{\Trav(\mo, \omega, s) = (\omega', j)}
-    \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
-    \Desda{\ms'= \ms \surr{ \omega' \mapsto \big(b_{\ms(\omega')}[ j \mapsto v ], \pi_{\ms(\omega')}\big) }}
+    \Desda[desda]{\Express{e}{\ms, \mo, \sigma, \tau} = v}
+    \Desda{\Express{i}{\ms,\sigma,\tau} = \omega}
+    %\Desda{\sigma' = \Finds(\ms, \sigma, i)}
+    %\Desda{b_{\ms(\sigma')}(i) = \omega \in \LL}
+    \Desda{\Trav(\mo, \omega, p) = (\omega', j)}
+    \Desda{\mo'= \mo \surr{ \omega' \mapsto \big(b_{\ms(\omega')}[ j \mapsto v ], \pi_{\ms(\omega')}\big) }}
   }
 \end{gather*}
-%
-Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van andere functies en we moeten rekening houden met het doorlopen van een pad. Daarnaast is er nog het speciale geval dat het eerste deel van het pad $\THIS$ is. Natuurlijk gebeuren al deze aanpassingen in het geheugen voor objecten $\mo$ en gebruiken we locaties van objecten $\omega\in\LLo$ in plaats van locaties van bereiken.
-%
-\begin{gather*}
-  \AxiomC{$
-    \Config{\THIS.s = e}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms, \mo')
-  $}
-  {\DisplayProof}
-  \tag*{[assign this.path]} \\
-  \Desdas{
-    \Desda{\Trav(\mo, \tau, s) = (\omega, i)}
-    \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
-    \Desda{\mo'= \mo \surr{ \omega \mapsto \big(b_{\mo(\omega)}[ i \mapsto v ], \pi_{\mo(\omega)}\big) }}
-  }
-\end{gather*}
-%
-\begin{gather*}
-  \AxiomC{$
-    \Config{i.s = e}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms', \mo)
-  $}
-  {\DisplayProof}
-  \tag*{[assign path]} \\
-  \Desdas{
-    \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
-    \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL}
-    \Desda{\Trav(\mo, \omega, s) = (\omega', j)}
-    \Desda{\Surr{e}_{\ms, \mo, \sigma, \tau} = v}
-    \Desda{\ms'= \ms \surr{ \omega' \mapsto \big(b_{\ms(\omega')}[ j \mapsto v ], \pi_{\ms(\omega')}\big) }}
-  }
-\end{gather*}
-%
-Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat. In §\ref{sec:waarden} is uitgebreid besproken dat er een significant verschil is tussen primitieve waarden en objecten. Toch gaat dit op bijna dezelfde manier als het toekennen van een primitieve waarde. De locatie $\omega$ van een object $o$ kan immers wel op dezelfde manier worden behandeld. Wat wel moet gebeuren is het aanmaken van een nieuw, leeg object in het geheugen voor objecten. Zo een leeg object heeft de vorm $(\varnothing, \nil)$. De bindingen zijn immers leeg en er is nog geen prototype gedefinieerd.
+
+Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat data. In §\ref{sec:waarden} is uitgebreid besproken dat er een significant verschil is tussen primitieve waarden en data. Toch gaat dit op bijna dezelfde manier als het toekennen van een primitieve waarde. De locatie $\omega$ van een object $o$ kan immers wel op dezelfde manier worden behandeld. Wat moet gebeuren is het aanmaken van een nieuw, leeg object in het geheugen voor objecten. Zo een leeg object heeft de vorm $(\varnothing, \nil)$. De bindingen zijn immers leeg en er is nog geen prototype gedefinieerd. Om een nieuwe plek in het geheugen te vinden, kijken we naar de lengte van het huidge geheugen. Tot slot voegen we het legen object achteraan het geheugen toe.
 %
 \begin{gather*}
   \AxiomC{$
@@ -448,10 +417,10 @@ Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat
   {\DisplayProof}
   \tag*{[object]} \\
   \Desdas{
-    \Desda{\Finds(\ms, \sigma, i) = \sigma_\text{def}}
-    \Desda{\omega = \Nexto(\mo)}
-    \Desda{\ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], \pi_{\ms(\sigma')}\big) }}
-    \Desda{\mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \BOT\big) }}
+    \Desda[desda]{\Finds(\ms, \sigma, i) = \sigma'}
+    \Desda{\omega = |\mo|}
+    \Desda{\ms' = \ms \surr{ \sigma' \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], \pi_{\ms(\sigma')}\big) }}
+    \Desda{\mo' = \mo : (\varnothing,\nil)}
   }
 \end{gather*}
 %
@@ -466,13 +435,13 @@ Het definiëren van een prototype gaat met het $\CLONES$-statement. Hiervoor zoe
   {\DisplayProof}
   \tag*{[clones]} \\
   \Desdas{
-    \Desda{\Surr{i}_{\ms,\mo,\sigma,\tau} = \omega_i \in \LL}
-    \Desda{\Surr{j}_{\ms,\mo,\sigma,\tau} = \omega_j \in \LL}
+    \Desda[desda]{\Express{i}{\ms,\mo,\sigma,\tau} = \omega_i \in \LL}
+    \Desda{\Express{j}{\ms,\mo,\sigma,\tau} = \omega_j \in \LL}
     \Desda{\mo' = \mo \surr{ \omega_i \mapsto \big(b_{\mo(\omega_i)}, \omega_j\big) }}
   }
 \end{gather*}
 
-\subsection{Functies}
+\subsection{Functies}%TODO
 %
 \dots Komt nog \dots
 %
