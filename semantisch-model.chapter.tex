@@ -1,44 +1,42 @@
 \chapter{Semantisch model}
+%TODO: \II doorvoeren als locatie
 
 \section{Bindingen}\label{sec:bindingen}
 
-Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id). Bindingen zijn bijvoorbeeld van belang om de gedefinieerd variabelen binnen een bereik vast te leggen, of de attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to (\VV \cup \{\nil\})$. We gebruiken de ``speciale waarde'' $\nil$ om aan te geven dat een variabele wél gedefinieerd is, maar nog geen échte waarde toegekend heeft gekregen. De verzameling van alle groepen van bindingen definiëren we als
+Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id). Bindingen zijn bijvoorbeeld van belang om gedefinieerde variabelen binnen een bereik vast te leggen of attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to (\VV \cup \{\nil\})$. We gebruiken de ``speciale waarde'' $\nil$ om aan te geven dat een variabele wel gedefinieerd is, maar nog geen concrete waarde toegekend heeft gekregen. De verzameling van alle groepen van bindingen definiëren we als
 \begin{equation*}
-  \BB \DEF (\VV \cup \{\nil\})^\Id
+  \BB \DEF (\VV \cup \{\nil\})^\Id%TODO: of \nil hier of bij waarden
 \end{equation*}
 We komen in §\ref{sec:waarden} terug op wat de waarden $\VV$ precies zijn. Voor nu is het voldoende om te weten dat in ieder geval de gehele getallen $\ZZ$ deel uitmaken van $\VV$.
 
-Bindingen komen veelvuldig terug in ons model. In bereiken worden \emph{variabelen} gedeclareerd en aan waarden gekoppeld. Bij objecten zijn het de \emph{attributen} die waarden krijgen toegekend.
+Bindingen komen veelvuldig terug in ons model. In bereiken worden \emph{variabelen} gedeclareerd en aan waarden gekoppeld. Bij objecten zijn het de \emph{attributen} die waarden krijgen toegekend. Bij het uitbreiden van bindinggroepen gebruiken we de notatie zoals gedefinieerd in §\ref{sec:uitbreiden}.
+
+%TODO: Misschien "Waardes en data" naar voren halen? Eventueel functies en/of geheugen ook...
 
 \section{Bereik en omliggend bereiken}
 \label{sec:bereiken}
 
-In sectie \ref{sec:voorbeelden} is informeel gebleken dat bereiken conceptueel goed te zien zijn als een boomstructuur. Stel dat we een variabele \id{x} in een zeker bereik $s$ willen evalueren tot een waarde. Dan zoeken we \id{x} eerst op in de bindingen groep $b_s$, behorende bij bereik $s$:
-%
-\begin{equation*}
-  b_s(x).
-\end{equation*}
-%
+In sectie \ref{sec:voorbeelden} is informeel gebleken dat bereiken conceptueel goed te zien zijn als een boomstructuur. Stel dat we een variabele \id{x} in een zeker bereik $s$ willen evalueren tot een waarde. Dan zoeken we \id{x} eerst op in de bindingen groep $b_s$, behorende bij bereik $s$ met $b_s(x)$.
 Vervolgens moet er gevalsonderscheiding worden gedaan voor de volgende situaties:
 
 \begin{enumerate}
   \item \id{x} is gedefinieerd in $b_s$, dus gebruiken we de gevonden waarde.
-  \item \id{x} is niet gedefinieerd in $b_s$, dus moeten we \id{x} opzoeken in de omliggend bereik.
+  \item \id{x} is niet gedefinieerd in $b_s$, dus moeten we \id{x} opzoeken in het omliggend bereik.
 \end{enumerate}
 
-Hieruit blijkt dat we voor een willekeurig bereik niet alleen zijn eigen bindingen moeten bijhouden, maar ook een verwijzing naar zijn \emph{omliggend bereik}. Een bereik $s$ definiëren we daarom als een paar $(b, \pi)$, met $b$ de bindingen en $\pi$ een \emph{verwijzing} naar de omliggend bereik (ook wel \emph{parent}).
+Hieruit blijkt dat we voor een willekeurig bereik niet alleen zijn eigen bindingen moeten bijhouden, maar ook een verwijzing naar zijn \emph{omliggende bereik}. Een bereik $s$ definiëren we daarom als een paar $(b, \pi)$, met $b$ de bindingen en $\pi$ een \emph{verwijzing} naar het omliggend bereik (ook wel \emph{parent}).
 % "outer bereik" ;)
 
-We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omliggend bereik. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. Het bereik $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een $\LOCAL$ variabele. De omliggend bereik $\pi_f$ van functie $f$ verwijst naar bereik $s$, zodat de variabele $x$ uiteindelijk wel gevonden wordt.
+We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omliggend bereik. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. Het bereik $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een $\LOCAL$ variabele. Het omliggend bereik $\pi_f$ van functie $f$ verwijst naar bereik $s$. Hierin is $x$ wel $\LOCAL$ gedefinieerd, zodat de variabele uiteindelijk gevonden wordt.
 
 \begin{NoBreak}
   \newCodeFragment[exa:lexical][Lexicaal bereik: opslaan en terugvinden van variabelen]
   \codeFragmentCaption
   \codeLines{
-    \codeLine{\LOCAL \id{x}}
+    \codeLine{\LOCAL \id{x}}[Omliggend bereik $s=(b_s,\pi_s)$.]
     \codeLine{\id{x} = 1}
     \codeLine{\LOCAL \id{f}}
-    \codeLine[exa:lexical:def]{\id{f} = \FUN()}[Introductie nieuw bereik]
+    \codeLine[exa:lexical:def]{\id{f} = \FUN()}[Introductie nieuw bereik $s_f=(b_f,\pi_f)$]
     \codeLine{\IN \id{x} = 2 \times \id{x}}
     \codeLine{}[Einde nieuw bereik]
     \codeLine[exa:lexical:eerste]{\id{f}()}[$\id{x} = 2$]
@@ -46,7 +44,7 @@ We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopi
   }
 \end{NoBreak}
 
-Stel nu dat we geen verwijzing in het bereik opslaan, maar een kopie van de omliggende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is bereik $s_f$ een paar $(b_f, \pi_f)$ met $b_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $\pi_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $\pi_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omliggend bereik $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
+Stel nu dat we geen verwijzing in het bereik opslaan, maar een kopie van de omliggende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is bereik $s_f$ een paar $(b_f, p_f)$ met $b_f,p_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omliggend bereik $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
 
 Een bereik $s$ is dus een element uit de verzameling
 %
@@ -54,7 +52,7 @@ Een bereik $s$ is dus een element uit de verzameling
   \SS \DEF \BB \times (\II \cup \{\nil\}).
 \end{equation*}
 %
-Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van bereiken. Op het begrip “locatie” komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort “ultiem” omliggend bereik is. Het kan dus zijn dat een bereik geen parent heeft. Voor dat geval introduceren we het unieke element $\nil$. De beoogde interpretatie van een bereik van de vorm $(b, \nil)$ is dan dat het geen omliggend bereik heeft.
+Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van bereiken. Op het begrip “locatie” komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort “ultiem” omliggend bereik is. Het kan dus zijn dat een bereik geen parent heeft. Voor dat geval gebruiken we het unieke element $\nil$. De beoogde interpretatie van een bereik van de vorm $(b, \nil)$ is dan dat het geen omliggend bereik heeft.
 
 \section{Objecten en prototype overerving}
 \label{sec:sem-objecten}
@@ -76,11 +74,11 @@ Van een functie moeten een aantal dingen bekend zijn:
   %
   \item[Argumenten] Deze worden gerepresenteerd door een lijst van elementen uit \Id. In het programma zelf is deze lijst een \MaybeIds. We definiëren daarom de triviale functie $\textsc{Ids} : \MaybeIds \to \Id_{\langle\rangle}$ op de volgende manier:
   \begin{align*}
-    \textsc{Ids}(\varepsilon) &= \langle\rangle \\
-    \textsc{Ids}(i) &= \{(0, i)\} \\
+    \textsc{Ids}(\varepsilon) &= \<\> \\
+    \textsc{Ids}(i) &= \< i \> \\
     \textsc{Ids}(i^+, i) &= \textsc{Ids}(i^+) : i
   \end{align*}
-  \dots waarbij we $i^+$ als meta-variabele gebruiken voor een element uit de syntactische verzameling \Ids.
+  Waarbij we $i^+$ als meta-variabele gebruiken voor een element uit de syntactische verzameling \Ids.
   %
   \item[Return variabele] Mogelijk gebruikt de functie een teruggeef variabele, dit wordt gerepresenteerd door een element uit $(\Id \cup \{\nil\})$, waarbij $\nil$ de betekenis draagt dat er geen sprake is van een teruggeef variabele.
   %
@@ -95,11 +93,12 @@ Een functie is daarom simpelweg een viertupel met bovenstaande informatie. De ve
 \section{Waarden en data}
 \label{sec:waarden}
 % K: Ik vond de vertelvorm waarin jij uitlegde wat waarden en locaties en primitieve waarden etc zijn toch enigszins "kinderachtig". Ik geloof dat een intuitieve terminologie [ik ben nu gesettled voor <data> en <waarden>, maar dat kunnen we veranderen..] en een wat meer "beschouwende" (i.p.v. uitleggende) tekst stukken beter werkt. Ik heb daarom deze sectie vrijwel helemaal herschreven, ik hoop dat je dat niet erg vindt! En overigens moet jij natuurlijk deze tekst weer ff onder handen nemen, want ik ben er zeker niet al te zeker over ;) Zo heb ik het over dat een programma "spreekt" over data: ??
+% T: aangepast
 
-In voorgaande paragrafen spraken we over waarden $\VV$ en locaties. We hebben de exacte definities hiervan in het midden gelaten. Wat wel duidelijk is dat een waarde $v \in \VV$ is iets wat we toekennen aan een \Id\ met behulp van een binding.
+In voorgaande paragrafen spraken we over waarden $\VV$ en locaties. We hebben de exacte definities hiervan in het midden gelaten. Wat wel duidelijk is, is dat een waarde $v \in \VV$ iets is wat we toekennen aan een \Id\ met behulp van een binding.
 
-In §\ref{subsec:taal-types} is uitgelegd hoe de taal met verschillende typen data omgaat. In onze taal komen namelijk drie typen \emph{data} voor: getallen, functies en objecten. Er is echter een verschil in de manier waarop wij ze behandelen in het semantisch model. Deze verschillende aanpak ik bekend aan iedereen die een keer object-geörienteerd geprogrammeerd heeft.
-Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil tussen twee soorten data: primitieve waarden en objecten. Primitieve waarden vatten we op als de “atomen” waaruit programma's en objecten worden opgebouwd. Denk aan getallen of woorden.
+In §\ref{subsec:taal-types} is uitgelegd hoe de taal met verschillende typen data omgaat. In onze taal komen namelijk drie typen \emph{data} voor: getallen, functies en objecten. Er is echter een verschil in de manier waarop wij ze behandelen in het semantisch model. Dit verschil in aanpak komt terug in de meeste object-geörienteerde talen \citep{java,cshapr}.
+Zo maken wij ook onderscheid tussen twee soorten data: primitieve waarden en objecten. Primitieve waarden vatten we op als de “atomen” waaruit programma's en objecten worden opgebouwd. Denk aan getallen of woorden.
 
 \begin{NoBreak}
   \newCodeFragment[exa:prititive-values-numbers][Toekenning van primitieve waarden: Getallen]
@@ -155,13 +154,13 @@ Het verwijzen van een variabele naar een object wordt in onze semantiek bewerkst
 Om samen te vatten:
 \begin{description}
   \item[Data] De wereld van data waar een programma mee om gaat bevat getallen, functies en objecten.
-  \item[Waarden] Een waarde is wat er in ons semantisch model aan een variabele wordt toegekend, dit met behulp van een binding. Primitieve waarden (getallen, functies) zijn zelf waarden. Om in een programma over objecten te spreken, wordt de locatie van een object ook als waarde beschouwd. Wanneer een variabele nog geen waarde toegekend heeft gekregen, bevat het “nog geen waarde”: $\nil$.
+  \item[Waarden] Een waarde is wat er in ons semantisch model aan een variabele wordt toegekend, dit met behulp van een binding. Primitieve waarden (getallen, functies) zijn zelf waarden. Om in een programma over objecten te spreken, wordt de locatie van een object ook als waarde beschouwd. Wanneer een variabele nog geen waarde toegekend heeft gekregen, bevat het nog geen waarde: $\nil$.
 \end{description}
 
 De definitie van de verzameling van alle waarden (locaties van objecten, getallen en functies) is dus als volgt:
 
 \begin{equation*}
-  \VV \DEF \II \cup \ZZ \cup \FF \cup \{\nil\}
+  \VV \DEF \II \cup \ZZ \cup \FF \cup \{\nil\}%TODO: of \nil hier of bij bindingen
 \end{equation*}
 
 \section{Geheugen}
@@ -203,7 +202,7 @@ Er is ook een hulpfunctie nodig om een pad te doorlopen. De hulpfunctie $\Trav :
 \begin{equation*}
   \Trav(\mo, \omega, p) = \begin{cases}
     (\omega, p) & \textbf{als } p \in \Id \\
-    \Trav(\mo, \omega', p') & \textbf{als } p = i.p' \textbf{ en } \Findp(\mo, \omega, i) = \omega' \in \II \\
+    \Trav(\mo, \omega', p') & \textbf{als } p = i.p' \textbf{ en } \Findp(\mo, \omega, i) = \omega' \in \II \\%TODO: We maken geen onderscheid meer tussen indices voor objecten en indices voor bereiken, denk dat deze \in\II weg kan.
     \bot & \textbf{anders}
   \end{cases}
 \end{equation*}
