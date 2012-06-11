@@ -132,8 +132,71 @@ Prototype overerving is een variant van object-geörienteerd programmeren. De ke
 
 Veel objecten zullen natuurlijk gelijke eigenschappen vertonen, of dezelfde structuur hebben. Verder wil men concepten als specificering en generalisering toepassen op objecten. Deze problemen kunnen op meerdere manieren worden aangepakt. De bekendste variant is \emph{klasse gebaseerde} object-oriëntatie (ook wel \emph{klassieke object-oriëntatie}) en richt zich op het concept van een \emph{klasse}. Objecten van een bepaalde klasse vertonen de structuur en gedrag van die klasse en heten \emph{instanties}. Van specificering is sprake als een klasse eigenschappen van een andere klasse \emph{overerft}. Klassieke object-oriëntatie vind men in talen als Java en C\# \citep{java,csharp}.
 
-Een andere aanpak met hetzelfde doel is \emph{prototype gebaseerde} object-oriëntatie. Daarbij wordt geen scheiding gemaakt tussen het concept \emph{klasse}, die structuur en gedrag specificeert, en het concept \emph{instantie}, die enkel deze eigenschappen vertoont. In plaats daarvan wordt gewerkt met een prototype structuur, waarbij elk object naar een bepaald \emph{prototype}-object refereert. Nu zijn objecten zelf de dragers van structuur en gedrag.
+Een andere aanpak met hetzelfde doel is \emph{prototype gebaseerde} object-oriëntatie. Daarbij wordt geen scheiding gemaakt tussen het concept \emph{klasse}, die vorm en gedrag specificeert, en het concept \emph{instantie}, die enkel deze eigenschappen vertoont. In plaats daarvan wordt gewerkt met een prototype structuur, waarbij elk object naar een bepaald \emph{prototype}-object refereert. Nu zijn objecten zelf de dragers van vorm en gedrag.
 %Deze methode kan als flexibeler worden gezien, maar ook als een wat minder reëel beeld van de werkelijkheid worden opgevat.
+
+We kunnen dit principe het beste illustreren met onderstaande figuren. In figuur~\ref{fig:klasseovererving} zijn objecten $A$, $B$, $C$ en $D$ \emph{klassen} die attributen van elkaar erven door middel van \emph{extensie} (aangegeven met een dubbele pijl). We zeggen dat $A$ een \emph{superklasse} is van $C$ en van $D$. Wanneer een object geen superklasse heeft, zoals $A$ en $B$, geven we dit aan met het symbool $\nil$. De overige objecten zijn concrete instanties van een bepaalde klasse en hebben de eigenschappen die zijn vastgelegd in die klasse. Alleen deze objecten zijn tijdens de uitvoering van het programma te manipuleren.
+
+In figuur~\ref{fig:prototypeovererving} zijn alle objecten instanties en dus direct te manipuleren. Daarbij erft elk object de attributen van zijn \emph{prototype} door middel van \emph{klonen}. In dit geval is $A$ het prototype van $C$ en ook van $D$. $C$ is op zijn beurt weer het prototype van $E$.
+
+\tikzset
+  {every picture/.style={thick,>=stealth},
+   level 1/.style      ={sibling distance=4cm},
+   level 2/.style      ={sibling distance=1.5cm},
+   level 3/.style      ={sibling distance=1cm},
+   class/.style        ={draw,double,circle},
+   object/.style       ={draw,circle},
+   extends/.style      ={<<-},
+   instantiates/.style ={<-},
+   clones/.style       ={<<-}}
+
+\begin{figure}
+  \begin{subfigure}{0.45\textwidth}
+    \begin{tikzpicture}
+      \node {$\nil$}
+        child {node[class] {$A$} edge from parent[extends]
+          child {node[class] {$C$} edge from parent[extends]
+            child {node[object] {$E$} edge from parent[instantiates]}
+          }
+          child {node[class] {$D$} edge from parent[extends]
+            child {node[object] {$F$} edge from parent[instantiates]}
+            child {node[object] {$G$} edge from parent[instantiates]}
+          }
+        }
+        child {node[class] {$B$} edge from parent[extends]
+          child {node[object] {$H$} edge from parent[instantiates]}
+          child {node[object] {$I$} edge from parent[instantiates]}
+          child {node[object] {$J$} edge from parent[instantiates]}
+        };
+    \end{tikzpicture}
+    \caption{Klassieke, klasse-gebaseerde structuur van objecten.}\label{fig:klasseovererving}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \begin{tikzpicture}
+      \node {$\nil$}
+        child {node[object] {$A$} edge from parent[clones]
+          child {node[object] {$C$} edge from parent[clones]
+            child {node[object] {$E$} edge from parent[clones]}
+          }
+          child {node[object] {$D$} edge from parent[clones]
+            child {node[object] {$F$} edge from parent[clones]}
+            child {node[object] {$G$} edge from parent[clones]}
+          }
+        }
+        child {node[object] {$B$} edge from parent[clones]
+          child {node[object] {$H$} edge from parent[clones]}
+          child {node[object] {$I$} edge from parent[clones]}
+          child {node[object] {$J$} edge from parent[clones]}
+        };
+    \end{tikzpicture}
+    \caption{Prototype-gebaseerde structuur van objecten.}\label{fig:prototypeovererving}
+  \end{subfigure}
+  \caption{Twee methoden van object-geörienteerd programmeren.}\label{fig:objectstructuren}
+\end{figure}
+
+\begin{figure}
+\end{figure}
 
 Technisch gezien werkt prototype overerving als volgt. Van elk object is een prototype bekend, of het heeft geen prototype. Wanneer men een attribuut opvraagt van een zeker object, kan de op te leveren waarde procedureel als volgt worden opgevat:
 
@@ -283,7 +346,7 @@ We introduceren geen speciale syntaxis om naar het $\THIS$ object te refereren, 
               \GAlt \NOT\; \BExpr
               \GAlt \Expr\; (=\: \mid\: \neq\: \mid\: <\: \mid\: \le\: \mid\: >\: \mid\: \ge)\; \Expr
 \end{align*}
-%
+
 Ook hier is het handig om twee toevoegingen te maken op \Expr:
 %
 \begin{align*}
@@ -304,7 +367,7 @@ De productieregel voor \emph{statements} is de kern van de grammatica. Een state
        \GAlt \Path = \Expr
        \GAlt (\Path =)^?\; \Id\,\pmb(\,\MaybeExprs\,\pmb)
 \end{align*}
-%
+
 Merk op dat in delen van deze productieregel soms een \Id\ staa  waar men misschien een \Path\ had verwacht. Zo zou het wenselijk lijken om bijvoorbeeld “$\id{a}.\id{b} \CLONES \id{c}.\id{d}$” als een programma van goede vorm te beschouwen. Er zijn twee redenen om dit niet te doen. Allereerst worden de axioma's en deductieregels ingewikkelder en daarmee minder elegant en er zijn er meer nodig. Maar belangrijker nog: het is niet essentieel voor de taal. Voor elk programma zoals “$\id{a}.\id{b} \CLONES \id{c}.\id{d}$”, bestaat er een equivalent programma zónder zulke paden.
 
 \begin{htmlskip}

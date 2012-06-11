@@ -31,6 +31,8 @@
 \usepackage{polyglossia}
 \setdefaultlanguage{dutch}
 
+\usepackage{tikz}
+
 \usepackage[numbers]{natbib}
 \bibliographystyle{plainnat}
 
@@ -50,6 +52,7 @@
 \usepackage[font=small,it]{caption}
 \usepackage{environ}
 \usepackage{multicol}
+\usepackage{subcaption}
 \usepackage{setspace} \setstretch{1.1} %\doublespacing
 
 \newcommand{\newmathcommand}[2]
@@ -91,7 +94,7 @@
 
 % Expression: " T [[E]] \sigma, tau "
 \newcommand{\Express}[3][]
-  {\Surr{#2}^\text{#1}_{#3}}
+  {\ensuremath{\Surr{#2}^\text{#1}_{#3}}}
 
 % Configuration: " <<S>> m, \sigma, \tau "
 %\newcommand{\Config}[2]
@@ -101,7 +104,7 @@
 %\newcommand{\Config}[2]
   %{\surrAngle{#1}_{#2}}%  -- <S>m,s,t
 \newcommand{\Config}[2]
-  {\SurrAngle{#1}_{#2}}%  -- <<S>>m,s,t
+  {\ensuremath{\SurrAngle{#1}_{#2}}}%  -- <<S>>m,s,t
 
 % Functions:
 \newmathcommand{\Trav}
@@ -200,9 +203,6 @@
   {::=&\;}
 \newcommand{\GAlt}
   {\\\mid&\;}
-
-\frenchspacing% Cruciaal!
-\raggedbottom% Handig
 
 \newcommand{\IN}
   {\quad}
@@ -375,6 +375,9 @@
 
 
 \begin{document}
+
+\frenchspacing% Cruciaal!
+\raggedbottom% Handig
 
 \title{Een natuurlijke semantiek voor prototype overerving en lexicaal bereik}
 \author{Kelley van Evert \& Tim Steenvoorden}
