@@ -82,12 +82,12 @@ Van een functie moeten een aantal dingen bekend zijn:
   \end{align*}
   \dots waarbij we $i^+$ als meta-variabele gebruiken voor een element uit de syntactische verzameling \Ids.
   %
-  \item[Return variabele] Mogelijk gebruikt de functie een return variabele, dit wordt gerepresenteerd door een element uit $(\Id \cup \{\nil\})$, waarbij $\nil$ de betekenis draagt dat er geen sprake is van een return variabele.
+  \item[Return variabele] Mogelijk gebruikt de functie een teruggeef variabele, dit wordt gerepresenteerd door een element uit $(\Id \cup \{\nil\})$, waarbij $\nil$ de betekenis draagt dat er geen sprake is van een teruggeef variabele.
   %
   \item[Bereik van definitie] Het is belangrijk om van een functie zijn bereik van originele definitie te weten. Dit is het kern-idee van lexicaal bereik. Het kan best zo zijn dat een zekere functie $f$ op een zekere lexicale plek in het programma is gedefiniëerd, en vervolgens door toedoen van het programma in een andere context wordt uitgevoerd. Maar het is belangrijk dat het lexicale bereik van de originele definitie nog bekend is, om vrije variabelen in de code van de functie op te kunnen zoeken in omliggende bereiken. Dit bereik wordt gerepresenteerd door de locatie van het bereik, een element uit \II.
 \end{description}
 
-Een functie is daarom simpelweg een viertupel met bovenstaande informatie. De verzameling functies is gedefiniëerd als:
+Een functie is daarom simpelweg een viertupel met bovenstaande informatie. De verzameling functies is gedefinieerd als:
 \begin{equation*}
   \FF \DEF \Stm \times \Id_{\langle\rangle} \times (\Id \cup \{\nil\}) \times \II
 \end{equation*}
@@ -115,7 +115,7 @@ Zoals meeste object-geörienteerde programmeertalen maakt ook onze taal verschil
   }
 \end{NoBreak}
 
-In onze taal zijn ook functies primitieve waarden. Zoals in §\ref{sec:functies} wordt beschreven, beschouwen we een functie als een “atomair” element waarvan de parameters, mogelijkerwijs een return variabele, code en bereik van definitie bekend zijn. Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complexere structuren. Het volgende voorbeeld illustreert deze gedachte:
+In onze taal zijn ook functies primitieve waarden. Zoals in §\ref{sec:functies} wordt beschreven, beschouwen we een functie als een “atomair” element waarvan de parameters, mogelijkerwijs een teruggeef variabele, code en bereik van definitie bekend zijn. Ondanks dat dit een hoop informatie is, is het slechts een bouwsteen van complexere structuren. Het volgende voorbeeld illustreert deze gedachte:
 
 \begin{NoBreak}
   \newCodeFragment[exa:prititive-values-functions][Toekenning van primitieve waarden: Functies]

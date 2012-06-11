@@ -4,7 +4,7 @@ In dit hoofdstuk behandelen we zowel een aantal gebruikelijke wiskundige concept
 
 \section{Functies}
 
-In dit werkstuk identificeren we een functie met zijn grafiek, dit wil zeggen dat een functie $f : X \to Y$ wordt gedefiniëerd door de verzameling paren $(x, y) \in X \times Y$ waarvoor we beweren dat $f(x) = y$. Daarmee is een functie $f : X \to Y$ een speciaal geval van een relatie $f \subseteq X \times Y$, waarbij aan de \emph{functionele} voorwaarde wordt voldaan dat:
+In dit werkstuk identificeren we een functie met zijn grafiek, dit wil zeggen dat een functie $f : X \to Y$ wordt gedefinieerd door de verzameling paren $(x, y) \in X \times Y$ waarvoor we beweren dat $f(x) = y$. Daarmee is een functie $f : X \to Y$ een speciaal geval van een relatie $f \subseteq X \times Y$, waarbij aan de \emph{functionele} voorwaarde wordt voldaan dat:
 %
 \begin{equation*}
   \neg \exists_{x \in X,\; y_1 \in Y,\; y_2 \in Y} \left[ (x, y_1) \in f \land (x, y_2) \in f \land y_1 \neq y_2 \right]
@@ -12,9 +12,9 @@ In dit werkstuk identificeren we een functie met zijn grafiek, dit wil zeggen da
 
 \section{Partiële functies}
 
-Vrijwel alle functies die we in dit werkstuk behandelen zijn partiële functies. Wanneer een partiële functie $f : X \to Y$ niet gedefiniëerd is op een zeker punt $x$, dus $\neg \exists_{y \in Y} [ (x, y) \in f ]$, schrijven we $f(x) = \bot$ of soms ook $f \uparrow x$. Wanneer het omgekeerde het geval is, schrijven we $f(x) \neq \bot$, of soms $f \downarrow x$, of kortweg $f(x) = y$ voor de gecombineerde uitspraak dat $f$ wél gedefiniëerd is op $x$ én dat $(x, y) \in f$.
+Vrijwel alle functies die we in dit werkstuk behandelen zijn partiële functies. Wanneer een partiële functie $f : X \to Y$ niet gedefinieerd is op een zeker punt $x$, dus $\neg \exists_{y \in Y} [ (x, y) \in f ]$, schrijven we $f(x) = \bot$ of soms ook $f \uparrow x$. Wanneer het omgekeerde het geval is, schrijven we $f(x) \neq \bot$, of soms $f \downarrow x$, of kortweg $f(x) = y$ voor de gecombineerde uitspraak dat $f$ wél gedefinieerd is op $x$ én dat $(x, y) \in f$.
 
-Voor een willekeurige term $\phi = \dots f(x)\dots$, waarbij $f$ een partiële functie is die niet gedefiniëerd is op punt $x$, geldt ook dat $\phi = \bot$. Op deze manier is het niet nodig om te schrijven: “als $f(x) = \bot$, dan $z = \bot$; anders als $f(x) \neq \bot$, dan $z = \phi$”. Deze “verkorte schrijfwijze” stelt ons in staat om op een elegante manier functies te definiëren. Een voorbeeld:
+Voor een willekeurige term $\phi = \dots f(x)\dots$, waarbij $f$ een partiële functie is die niet gedefinieerd is op punt $x$, geldt ook dat $\phi = \bot$. Op deze manier is het niet nodig om te schrijven: “als $f(x) = \bot$, dan $z = \bot$; anders als $f(x) \neq \bot$, dan $z = \phi$”. Deze “verkorte schrijfwijze” stelt ons in staat om op een elegante manier functies te definiëren. Een voorbeeld:
 \begin{align*}
   f : \NN \times \NN &\to \NN \\
   f(0, 0) &= 1 \\
@@ -24,7 +24,7 @@ In dit voorbeeld geldt voor alle $m \in \NN$ dat $f(0, m) = 1$, en voor alle $n 
 
 \section{Eindige verzamelingen, eindige functies}
 
-De reden dat de meeste behandelde functies partiëel zijn is omdat meeste onderdelen van ons semantisch model eindig van karakter zijn. Functies worden vaak gebruikt om “een verzameling variabelen die een bepaalde waarde bevatten” te representeren, bijvoorbeeld de gedefiniëerde variabelen in een zekere scope. Het zou ongewoon zijn om in een programmeertaal gebruik te maken van scopes waarin oneindig veel variabelen kunnen bestaan.
+De reden dat de meeste behandelde functies partieel zijn is omdat meeste onderdelen van ons semantisch model eindig van karakter zijn. Functies worden vaak gebruikt om “een verzameling variabelen die een bepaalde waarde bevatten” te representeren, bijvoorbeeld de gedefiniëerde variabelen in een zekere scope. Het zou ongewoon zijn om in een programmeertaal gebruik te maken van scopes waarin oneindig veel variabelen kunnen bestaan.
 
 Een verzameling heet \emph{eindig} als het zekere $n \in \NN$ gelijkmachtig is aan $\{n \in \NN \mid n < N\}$.
 

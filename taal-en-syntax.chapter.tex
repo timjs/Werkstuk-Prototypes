@@ -31,7 +31,7 @@ De toelichtingen moeten als informeel commentaar worden beschouwd, waarmee we aa
 
 \subsubsection{Declaratie van variabelen}
 
-Een variabele moet altijd eerst worden gedeclareerd. Daarna kan er een waarde aan worden toegekend of kan het op andere manieren worden gebruikt. Een programma waarin variabelen worden gebruikt die nooit zijn gedefiniëerd is niet valide. In code fragment~\ref{exa:declaration} staat een voorbeeld van declaratie.
+Een variabele moet altijd eerst worden gedeclareerd. Daarna kan er een waarde aan worden toegekend of kan het op andere manieren worden gebruikt. Een programma waarin variabelen worden gebruikt die nooit zijn gedefinieerd is niet valide. In code fragment~\ref{exa:declaration} staat een voorbeeld van declaratie.
 
 \begin{NoBreak}
 \newCodeFragment[exa:declaration][Declaratie van variabelen]
@@ -138,7 +138,7 @@ Een andere aanpak met hetzelfde doel is \emph{prototype gebaseerde} object-orië
 Technisch gezien werkt prototype overerving als volgt. Van elk object is een prototype bekend, of het heeft geen prototype. Wanneer men een attribuut opvraagt van een zeker object, kan de op te leveren waarde procedureel als volgt worden opgevat:
 
 \begin{enumerate}
-  \item Bekijk of het attribuut gedefiniëerd is in het object zelf. In dat geval weten we de waarde en leveren deze op.
+  \item Bekijk of het attribuut gedefinieerd is in het object zelf. In dat geval weten we de waarde en leveren deze op.
   \item Anders zoeken we het attribuut op in het prototype van het object. Ook dan weten we de waarde en leveren deze op.
   \item Wanneer ook het prototype het attribuut niet bevat, herhalen we de zoektocht voor alle volgende prototypen totdat we het attribuut hebben gevonden.
 \end{enumerate}
@@ -265,7 +265,7 @@ Een \emph{pad} is een opeenvolging van \Ids\ gescheiden door punten en wordt geb
   \Path \GrammarDef \Id \mid \Id . \Path
 \end{align*}
 %
-We introduceren geen speciale syntax om naar het \emph{this} object te refereren, maar zullen een pad dat begint met de identifier “this” beschouwen als een pad binnen het \emph{this} object. Merk op dat als een “this” op een andere plek in een pad wordt gebruikt, er wel gewoon gesproken wordt over zeker “this” attribuut van een zeker object: alleen vooraan een pad is deze speciale betekenis van toepassing.
+We introduceren geen speciale syntaxis om naar het \emph{this} object te refereren, maar zullen een pad dat begint met de identifier “this” beschouwen als een pad binnen het \emph{this} object. Merk op dat als een “this” op een andere plek in een pad wordt gebruikt, er wel gewoon gesproken wordt over zeker “this” attribuut van een zeker object: alleen vooraan een pad is deze speciale betekenis van toepassing.
 
 \emph{Expressies}, die ofwel primitieve waarden (getallen en functies), ofwel objecten kunnen weergeven, en \emph{boolse expressies}, die gebruikt worden voor loops en conditionele executie, definiëren we als volgt:
 %
