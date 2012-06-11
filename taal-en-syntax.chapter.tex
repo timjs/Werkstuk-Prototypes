@@ -19,7 +19,7 @@ Elk voorbeeldprogramma en zijn toelichtingen worden als volgt gepresenteerd:
   \codeLine{\id{f} = \FUN(\id{i}) \RETURNS \id{n}}
   \codeLine{\IN \LOCAL \id{n}}
   \codeLine{\IN \id{n} = 2 \times (\id{i} + 5)}
-  \codeLine{}[$\id{x}$ bestaat niet in deze scope]
+  \codeLine{}[$\id{x}$ bestaat niet in dit bereik]
   \codeLine{\LOCAL \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
   \codeLine{\id{x} = \id{f}(42)}[\id{x} heeft nu de waarde 94]
 \end{codelines}
@@ -102,7 +102,7 @@ Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van i
 \end{codelines}
 \end{NoBreak}
 
-%Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de scopes. Het moge duidelijk zijn dat als men “naar buiten toe” zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
+%Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de bereiken. Het moge duidelijk zijn dat als men “naar buiten toe” zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
 
 Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er “niks gebeurt” als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer je een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuw bereik aangemaakt, met als omliggend bereik het bereik waarin de functie was gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment~\ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe bereiken worden aangemaakt bij de definitie van functies, zou de uitvoer van $\id{d}(\;)$ 8 zijn in plaats van 43.
 

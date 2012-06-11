@@ -224,7 +224,7 @@ waarbij $\longrightarrow$ de volgende signatuur heeft
   (\longrightarrow) \subseteq (\Stm \times \MMs \times \MMo \times \LLs \times \LLo) \times (\MMs \times \MMo).
 \end{equation*}
 %
-Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$ met als extra informatie de locatie van de huidige scope $\sigma\in\LLs$ en de locatie van het huidige $\THIS$-object $\tau\in\MMo$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MMs,\MMo)$. $\SKIP$ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$.
+Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$ met als extra informatie de locatie van het huidig bereik $\sigma\in\LLs$ en de locatie van het huidige $\THIS$-object $\tau\in\MMo$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MMs,\MMo)$. $\SKIP$ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$.
 
 Voor het samenstellen van statements hebben we een regel nodig.
 %
@@ -513,7 +513,7 @@ Het definiëren van een prototype gaat met het $\CLONES$-statement. Hiervoor zoe
 
 %$$ \big(\,(S,m,\sigma,\tau), m'\,\big) \in (\longrightarrow) $$
 
-%Deze uitspraak moet je lezen als: “In de toestand met geheugen $m$, scope $\sigma$ en \emph{this} object $\tau$, termineert het statement $S$, waarbij het resultaat-geheugen $m'$ is.”
+%Deze uitspraak moet je lezen als: “In de toestand met geheugen $m$, bereik $\sigma$ en \emph{this} object $\tau$, termineert het statement $S$, waarbij het resultaat-geheugen $m'$ is.”
 %
 %Een van deze axioma's [object], heeft betrekking tot de productieregel in de grammatica die de $\OBJECT$ “literal” introduceert.
 %
