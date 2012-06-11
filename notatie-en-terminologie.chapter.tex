@@ -1,8 +1,10 @@
 \chapter{Notatie en terminologie}
+\label{chap:notatie}
 
 In dit hoofdstuk behandelen we zowel een aantal gebruikelijke wiskundige concepten, als een aantal specifieke notaties en begrippen die in dit werkstuk vaak zullen terugkeren. Gezien de aard van het onderwerp zullen we bijvoorbeeld vaak over \emph{eindige}, \emph{discrete} functies en verzamelingen spreken.
 
 \section{Functies}
+\label{sec:functies}
 
 We identificeren een functie met zijn grafiek, dit wil zeggen dat een functie $f : X \to Y$ wordt gedefinieerd door de verzameling paren $(x, y) \in X \times Y$ waarvoor we beweren dat $f(x) = y$. Daarmee is een functie $f : X \to Y$ een speciaal geval van een relatie $f \subseteq X \times Y$, waarbij aan de \emph{functionele} voorwaarde wordt voldaan dat:
 %
@@ -11,6 +13,7 @@ We identificeren een functie met zijn grafiek, dit wil zeggen dat een functie $f
 \end{equation*}
 
 \section{Partiële functies}
+\label{sec:partielefuncties}
 
 Vrijwel alle functies die we in dit werkstuk behandelen zijn partiële functies. Wanneer een partiële functie $f : X \to Y$ niet gedefinieerd is op een zeker punt $x$, dus $\neg \exists_{y \in Y} [ (x, y) \in f ]$, schrijven we $f(x) = \bot$ of soms ook $f \uparrow x$. Wanneer het omgekeerde het geval is, schrijven we $f(x) \neq \bot$, of soms $f \downarrow x$, of kortweg $f(x) = y$ voor de gecombineerde uitspraak dat $f$ wél gedefinieerd is op $x$ én dat $(x, y) \in f$.
 
@@ -23,13 +26,12 @@ Voor een willekeurige term $\phi = \dots f(x)\dots$, waarbij $f$ een partiële f
 In dit voorbeeld geldt voor alle $m \in \NN$ dat $f(0, m) = 1$, en voor alle $n \in \NN \setminus \{0\}$ is $f(n, m)$ niet gedefiniëerd.
 
 \section{Eindige verzamelingen, eindige functies}
+\lable{sec:eindigefuncties}
 
-De reden dat de meeste behandelde functies partieel zijn is omdat meeste onderdelen van ons semantisch model eindig van karakter zijn. Functies worden vaak gebruikt om “een verzameling variabelen die een bepaalde waarde bevatten” te representeren, bijvoorbeeld de gedefiniëerde variabelen in een zeker bereik. Het zou ongewoon zijn om in een programmeertaal gebruik te maken van bereiken waarin oneindig veel variabelen kunnen bestaan.
+De reden dat de meeste behandelde functies partieel zijn, is omdat meeste onderdelen van ons semantisch model eindig van karakter zijn. Functies worden vaak gebruikt om “een verzameling variabelen die een bepaalde waarde bevatten” te representeren, bijvoorbeeld de gedefiniëerde variabelen in een zeker bereik. Het zou ongewoon zijn om in een programmeertaal gebruik te maken van bereiken waarin oneindig veel variabelen kunnen bestaan.
 
-Een verzameling heet \emph{eindig} als het zekere $n \in \NN$ gelijkmachtig is aan $\{n \in \NN \mid n < N\}$.
-
+Een verzameling heet \emph{eindig} als deze voor zekere $n \in \NN$ gelijkmachtig is aan $\{n \in \NN \mid n < N\}$.
 Een functie $f: X \to Y$ heet \emph{eindig} wanneer de verzameling $\{x \in X \mid f \downarrow x\}$ eindig is.
-
 We schrijven in dit werkstuk $Y^X$ voor de verzameling functies $\{f : X \to Y \mid f \text{ eindig} \}$, dit in tegenstelling tot de gebruikelijke definitie waarin $Y^X$ alle functies $f : X \to Y$ bevat.
 
 \section{Functie uitbreidingen}
@@ -58,20 +60,25 @@ Meerdere uitbreidingen verkorten we op voor de hand liggende wijze:
 \end{equation*}
 
 \section{Lijsten}
+\label{sec:lijsten}
 
-We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige partiële functies $t : \{(n, n) \in \NN^2\} \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $\II$ schrijven i.p.v.~$\{(n, n) \in \NN^2\}$, om aan te geven dat het gaat om de indices van lijsten. Als indices gebruiken we niet gewoon $\NN$, omdat we er later in het werkstuk vanuit willen gaan dat we elementen uit $\II$ kunnen onderscheiden van elementen uit $\ZZ$. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
+We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige partiële functies $t : \{(n, n) \in \NN^2\} \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $\II$ schrijven i.p.v.~$\{(n, n) \in \NN^2\}$, om aan te geven dat het gaat om de indices van lijsten. Merk op dat we als indices geen gebruik maken van $\NN$. Later in het werkstuk gaan we er vanuit dat we elementen uit $\II$ kunnen onderscheiden van elementen uit $\ZZ$. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
 \begin{equation*}
-X_{\langle\rangle} \DEF \big\{\, t : \{(n, n) \in \NN^2\} \to X \mid \exists_{N \in \NN} \surr{ \forall_{n < N}[t \downarrow (n, n)] \land \forall_{n\ge N}[t \uparrow (n, n)] } \,\big\}
+X_{\langle\rangle} \DEF \big\{\, t : \II \to X \big\vert \exists_{N \in \NN} \surr{ \forall_{n < N}[t \downarrow (n, n)] \land \forall_{n\ge N}[t \uparrow (n, n)] } \,\big\}
 \end{equation*}
 We schrijven $\langle\rangle$, maar ook wel $\varnothing$ aangezien het gewoon een lege functie is zoals beschreven in het voorgaande, voor de lege lijst. Deze is natuurlijk altijd hetzelfde, ongeacht welke invulling wordt gekozen voor $X$.
 
-Een lijst $t$ heeft \emph{grootte} $|t| = N = \min\{n\in\NN \mid t \uparrow (n, n)\}$.
-
+Een lijst $t$ heeft \emph{grootte}
+%
+\begin{equation*}
+  |t| = N = \min\{n\in\NN \mid t \uparrow (n, n)\}.
+\end{equation*}
+%
 We schrijven $\langle x_0, x_1, \dots, x_{N-1}\rangle$ voor de lijst $t$ van grootte $N$ met $\forall_{n < N}[t(n, n) = x_n]$.
-
-Als $t$ een lijst is uit $X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$, de toevoeging van $x$ aan de lijst $t$, voor de lijst $t' = t[(N, N) \mapsto x]$, waarbij $N = |t|$.
+Als $t$ een lijst is uit $X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$, de toevoeging van $x$ achteraan de lijst $t$, voor de lijst $t' = t[(N, N) \mapsto x]$, waarbij $N = |t|$.
 
 \section{Notationele conventies}
+\label{sec:conventies}
 
 Terwille van leesbaarheid en elegantie houden we een aantal gebruikelijke notationele conventies aan.
 
