@@ -24,19 +24,19 @@
 \setmonofont{DejaVu Sans Mono}
 
 \usepackage{amsmath}
-\usepackage{amssymb}
 %\usepackage{xunicode}
 \usepackage{unicode-math}
-\setmathfont{Asana Math}% de [] haakjes zijn wat groot, maar \mathbb{N} etc is mooier dan in XITS Math
-%\setmathfont{XITS Math}
-
-%\usepackage{lmodern}
+\setmathfont{Asana Math}
 
 \usepackage{polyglossia}
 \setdefaultlanguage{dutch}
-%\usepackage[dutch]{babel}
 
 \usepackage[numbers]{natbib}
+\bibliographystyle{plainnat}
+
+\usepackage{bussproofs}
+\renewcommand{\extraVskip}
+  {4pt} % Iets meer verticale ruimte
 
 \usepackage{tabularx}% tables: equal width columns
 \usepackage{multirow}% tables: rowspan
@@ -51,22 +51,6 @@
 \usepackage{environ}
 \usepackage{multicol}
 \usepackage{setspace} \setstretch{1.1} %\doublespacing
-
-\usepackage{bussproofs}
-\def\extraVskip{4pt} % Iets meer verticale ruimte
-% De volgende commands gebruik ik om op een simpele manier (1) de toegepaste regel aan de rechterkant van de deductieregel te laten zien, en (2) een automatische nummering aan de linkerkant te laten zien.
-% Normaal gesproken gebruik je \RightLabel en \LeftLabel, maar nu gebruik ik dus: \Label (enkel een label) en \CountedLabel (label en automatische nummering)
-% Terugzetten op 1 kan met "\setcounter{theLabel}{1}", bijvoorbeeld bij een nieuwe boom
-\newcounter{theLabel}
-\setcounter{theLabel}{1}
-\newcommand{\Label}[1]{
-  \RightLabel{\small #1}
-}
-\newcommand{\CountedLabel}[1]{
-  \RightLabel{\small #1}
-  \LeftLabel{\scriptsize \arabic{theLabel}}
-  \addtocounter{theLabel}{1}
-}
 
 \newcommand{\newmathcommand}[2]
   {\newcommand{#1}
@@ -89,7 +73,7 @@
 \newcommand{\renewset}[1]
   {\expandafter\renewcommand\expandafter{\csname #1#1\endcsname}
     {\ensuremath{\mathbb{#1}}}}
-\newcommand{\newBool}[1]
+\newcommand{\newboolvalue}[1]
   {\expandafter\newcommand\expandafter{\csname b#1\endcsname}
     {\ensuremath{\mathbf{#1}}}}
 
@@ -124,8 +108,6 @@
   {\textsc{Trav}}
 \newmathcommand{\Finds}
   {\textsc{Find}_\text{scope}}
-\newmathcommand{\Findo}
-  {\textsc{Find}_\text{proto}}
 \newmathcommand{\Findp}
   {\textsc{Find}_\text{proto}}
 \newmathcommand{\Nexts}
@@ -192,8 +174,8 @@
 \newset{Z}
 \newset{I}
 
-\newBool{T}
-\newBool{F}
+\newboolvalue{T}
+\newboolvalue{F}
 
 \newmathcommand{\LLs}
   {\LL_{\text{s}}}
@@ -211,20 +193,19 @@
 
 \newcommand{\BNF}
   {\textsc{bnf}}
+\newcommand{\EBNF}
+  {\textsc{e-bnf}}
 
-\def\GrammarDef{::=\;&}
-\def\GrammarOr{\mid\;&}
-\newcommand{\GrammarOpt}[1]{[#1]\;}
-
-\def\IN{\quad}
-
-\newcommand{\<}
-  {\ensuremath{\langle}}
-\renewcommand{\>}
-  {\ensuremath{\rangle}}
+\newcommand{\GDef}
+  {::=&\;}
+\newcommand{\GAlt}
+  {\\\mid&\;}
 
 \frenchspacing% Cruciaal!
 \raggedbottom% Handig
+
+\newcommand{\IN}
+  {\quad}
 
 \floatstyle{plain}
 \newfloat{code}{H}{code.list.aux}[chapter]
@@ -257,6 +238,21 @@
   \ifthenelse{\equal{#2}{}}{}{\textit{\small- #2}}%
   \\
 }
+
+%TODO: Gebruiken we dit bij Bussproof?
+% De volgende commands gebruik ik om op een simpele manier (1) de toegepaste regel aan de rechterkant van de deductieregel te laten zien, en (2) een automatische nummering aan de linkerkant te laten zien.
+% Normaal gesproken gebruik je \RightLabel en \LeftLabel, maar nu gebruik ik dus: \Label (enkel een label) en \CountedLabel (label en automatische nummering)
+% Terugzetten op 1 kan met "\setcounter{theLabel}{1}", bijvoorbeeld bij een nieuwe boom
+%\newcounter{theLabel}
+%\setcounter{theLabel}{1}
+%\newcommand{\Label}[1]{
+  %\RightLabel{\small #1}
+%}
+%\newcommand{\CountedLabel}[1]{
+  %\RightLabel{\small #1}
+  %\LeftLabel{\scriptsize \arabic{theLabel}}
+  %\addtocounter{theLabel}{1}
+%}
 
 % todo if second param empty? then don't display scalebox etc..
 \newcommand{\AxiomOrInference}[2]{%
@@ -294,9 +290,6 @@
 \def\SDef{\textit{def}}
 \newcommand{\ScopeID}[1]{\ensuremath{(1, #1)}}
 \newcommand{\ObjectID}[1]{\ensuremath{(2, #1)}}
-
-\title{Een natuurlijke semantiek voor prototype oververing en lexicaal bereik}
-\author{Kelley van Evert \& Tim Steenvoorden}
 
 % Code fragments
 % Usage:
@@ -377,14 +370,19 @@
 \NewEnviron{htmlskip}{\BODY}
 \newcommand{\htmlinsert}[1]{}
 
+
+
+
+
 \begin{document}
 
+\title{Een natuurlijke semantiek voor prototype overerving en lexicaal bereik}
+\author{Kelley van Evert \& Tim Steenvoorden}
 \maketitle
 
 \frontmatter
 
 \tableofcontents
-
 \input inleiding.chapter
 
 \mainmatter
@@ -397,9 +395,8 @@
 
 \backmatter
 
+\raggedright
 \nocite{nielsennielsen}
-
-\bibliographystyle{plainnat}
 \bibliography{bronnen}
 
 \end{document}
