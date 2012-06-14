@@ -15,12 +15,12 @@ Elk voorbeeldprogramma en zijn toelichtingen worden als volgt gepresenteerd:
 \newCodeFragment[exa:template][Het eerste voorbeeldprogramma]
 \codeFragmentCaption
 \begin{codelines}
-  \codeLine{\LOCAL \id{f}}[$\id{f}$ moet eerst worden gedefiniëerd]
+  \codeLine{\LOCAL \id{f}}[$\id{f}$ moet eerst worden gedefinieerd]
   \codeLine{\id{f} = \FUN(\id{i}) \RETURNS \id{n}}
   \codeLine{\IN \LOCAL \id{n}}
   \codeLine{\IN \id{n} = 2 \times (\id{i} + 5)}
   \codeLine{}[$\id{x}$ bestaat niet in dit bereik]
-  \codeLine{\LOCAL \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
+  \codeLine{\LOCAL \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefinieerd]
   \codeLine{\id{x} = \id{f}(42)}[\id{x} heeft nu de waarde 94]
 \end{codelines}
 \end{NoBreak}
@@ -38,7 +38,7 @@ Een variabele moet altijd eerst worden gedeclareerd. Daarna kan er een waarde aa
 \codeFragmentCaption
 \begin{codelines}
   \codeLine{}[\id{x} bestaat (nog) niet]
-  \codeLine{\LOCAL \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefiniëerd]
+  \codeLine{\LOCAL \id{x}}[\id{x} heeft nog geen waarde, maar is wel gedefinieerd]
   \codeLine{\id{x} = 5}[\id{x} bevat nu de waarde 5]
 \end{codelines}
 \end{NoBreak}
@@ -83,7 +83,7 @@ Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van i
   \codeLine{}
   \codeLine{\LOCAL \id{f}}
   \codeLine{\id{f} = \FUN(\;)}
-  \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
+  \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefinieerd?]
 \end{codelines}
 \end{NoBreak}
 
@@ -98,13 +98,13 @@ Door het nesten van bereiken ontstaat een \emph{boomstructuur}. De niveaus van i
   \codeLine{\id{f} = \FUN(\;)}
   \codeLine{\IN \LOCAL \id{x}}[dit is de gezochte definitie van \id{x}]
   \codeLine{\IN \id{x} = 43}
-  \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefiniëerd?]
+  \codeLine{\IN \dots \id{x} \dots}[waar is deze \id{x} gedefinieerd?]
 \end{codelines}
 \end{NoBreak}
 
 %Als je de code zó indenteert zoals in bovenstaande twee code fragmenten (\ref{exa:zoek} en \ref{exa:zoek2}): bij elke functie definitie wordt een regel geïndenteerd, dan komt de indentatie ongeveer overeen met de boomstructuur van de bereiken. Het moge duidelijk zijn dat als men “naar buiten toe” zoekt naar de definities van variabelen, een zekere boomstructuur van toepassing is.
 
-Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er “niks gebeurt” als een functie wordt gedefiniëerd, net als er niks gebeurt wanneer men een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuw bereik aangemaakt, met als omliggend bereik, het bereik waarin de functie was gedefiniëerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment~\ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe bereiken worden aangemaakt bij de definitie van functies, zou de uitvoer van $\id{d}(\;)$ 8 zijn in plaats van 43.
+Een nieuw bereik ontstaat in onze taal enkel bij functie applicatie. Een functie op zich is een \emph{primitieve waarde}, wat betekent dat er “niks gebeurt” als een functie wordt gedefinieerd, net als er niks gebeurt wanneer men een getal aan een variabele toekent. Bij functie applicatie, echter, wordt een nieuw bereik aangemaakt, met als omliggend bereik, het bereik waarin de functie was gedefinieerd. Daarin wordt vervolgens de \emph{body} van de functie uitgevoerd. In code fragment~\ref{exa:counting} wordt het belang van dit proces weergegeven: als nieuwe bereiken worden aangemaakt bij de definitie van functies, zou de uitvoer van $\id{d}(\;)$ 8 zijn in plaats van 43.
 
 \begin{NoBreak}
 \newCodeFragment[exa:counting][Het belang van creatie van bereiken bij functie applicatie]
@@ -303,15 +303,15 @@ Deze code is wel correct en $\id{Kluis}.\id{open}$ heeft nu waarde $1$.
 \label{sec:formeletaal}
 
 %TODO: N of Z? Wel of geen min? We kunnen nu nog geen negatieve getalle noteren! ==> Of we gebruiken \NN of hieronder moet een min bij.
-Nu volgt een formele definitie van de syntaxis van de taal, aan de hand van een \BNF\ grammatica. Getallen zijn als volgt gedefiniëerd:
+Nu volgt een formele definitie van de syntaxis van de taal, aan de hand van een \BNF\ grammatica. Getallen zijn als volgt gedefinieerd:
 %
 \begin{align*}
-  \Num \GDef (0 \mid 1 \mid 2 \mid 3 \mid 4 \mid 5 \mid 6 \mid 7 \mid 8 \mid 9)^+
+  \Num \GDef (-)^?\; (0 \mid 1)^+
 \end{align*}
 %
-Eigenlijk gebruiken we geen strikte \BNF, in deze specifieke gevallen, maar een hele simpele variant, zoals \EBNF\ \citep{ebnf}, die ook reguliere expressies toelaat. Bovenstaand voorbeeld maakt dit duidelijk. Voorbeelden van elementen uit $\Num$ zijn “0”, “1”, “235783” en “0003”. Voorbeelden van elementen die niet in $\Num$ zitten zijn “”, “-6”, “4.2”.
+Eigenlijk gebruiken we geen strikte \BNF, in deze specifieke gevallen, maar een hele simpele variant, zoals \EBNF\ \citep{ebnf}, die ook reguliere expressies toelaat. Bovenstaand voorbeeld maakt dit duidelijk. Voorbeelden van elementen uit $\Num$ zijn “0”, “1”, “0111001” en “0001”. Voorbeelden van elementen die niet in $\Num$ zitten zijn “”, “-6”, “4.2”. Hoewel we formeel in het binaire stelsel werken, zullen we in voorbeeldprogramma's wel gebruiken maken van het decimale stelsel.
 
-\emph{Identifiers}, die gebruikt worden als namen voor variabelen en attributen, zijn op eenzelfde manier als volgt gedefiniëerd:
+\emph{Identifiers}, die gebruikt worden als namen voor variabelen en attributen, zijn op eenzelfde manier als volgt gedefinieerd:
 %
 \begin{align*}
   \Id \GDef (a \mid b \mid c \mid \dots \mid A \mid B \mid C \mid \dots)^+

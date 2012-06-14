@@ -1,11 +1,10 @@
 \chapter{Semantisch model}
-%TODO: \II doorvoeren als locatie
 
 \section{Bindingen}\label{sec:bindingen}
 
 Aan de basis van ons model ligt het concept van een \emph{binding}. Een binding is een toekenning van een \emph{waarde} aan een variabele (een element uit de syntactische verzameling \Id). Bindingen zijn bijvoorbeeld van belang om gedefinieerde variabelen binnen een bereik vast te leggen of attributen van een bepaald object. Een \emph{groep bindingen} is een eindige functie $b : \Id \to (\VV \cup \{\nil\})$. We gebruiken de ``speciale waarde'' $\nil$ om aan te geven dat een variabele wel gedefinieerd is, maar nog geen concrete waarde toegekend heeft gekregen. De verzameling van alle groepen van bindingen definiëren we als
 \begin{equation*}
-  \BB \DEF (\VV \cup \{\nil\})^\Id%TODO: of \nil hier of bij waarden
+  \BB \DEF (\VV \cup \{\nil\})^\Id
 \end{equation*}
 We komen in §\ref{sec:waarden} terug op wat de waarden $\VV$ precies zijn. Voor nu is het voldoende om te weten dat in ieder geval de gehele getallen $\ZZ$ deel uitmaken van $\VV$.
 
@@ -24,8 +23,7 @@ Vervolgens moet er gevalsonderscheiding worden gedaan voor de volgende situaties
   \item \id{x} is niet gedefinieerd in $b_s$, dus moeten we \id{x} opzoeken in het omliggend bereik.
 \end{enumerate}
 
-Hieruit blijkt dat we voor een willekeurig bereik niet alleen zijn eigen bindingen moeten bijhouden, maar ook een verwijzing naar zijn \emph{omliggende bereik}. Een bereik $s$ definiëren we daarom als een paar $(b, \pi)$, met $b$ de bindingen en $\pi$ een \emph{verwijzing} naar het omliggend bereik (ook wel \emph{parent}).
-% "outer bereik" ;)
+Hieruit blijkt dat we voor een willekeurig bereik niet alleen zijn eigen bindingen moeten bijhouden, maar ook een verwijzing naar zijn \emph{omliggend bereik}. Een bereik $s$ definiëren we daarom als een paar $(b, \pi)$, met $b$ de bindingen groep en $\pi$ een \emph{verwijzing} naar het omliggend bereik (ook wel \emph{parent}).
 
 We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopie} van de bindingen groep van de omliggend bereik. Stel dat we het programma in code fragment~\ref{exa:lexical} uitvoeren. Op het moment dat we $f()$ aanroepen in regel~\ref{exa:lexical:eerste} willen we dat $x$ daarna evalueert naar de waarde $2$. Evenzo moet $x$ na regel~\ref{exa:lexical:tweede} evalueren naar de waarde $4$. Het bereik $s_f$ van functie $f$ heeft een eigen binding $b_f$ die gedurende de executie van het programma leeg is, $x$ is namelijk niet gedeclareerd als een $\LOCAL$ variabele. Het omliggend bereik $\pi_f$ van functie $f$ verwijst naar bereik $s$. Hierin is $x$ wel $\LOCAL$ gedefinieerd, zodat de variabele uiteindelijk gevonden wordt.
 
@@ -44,7 +42,7 @@ We moeten benadrukken dat $\pi$ een \emph{verwijzing} is, en niet een \emph{kopi
   }
 \end{NoBreak}
 
-Stel nu dat we geen verwijzing in het bereik opslaan, maar een kopie van de omliggende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is bereik $s_f$ een paar $(b_f, p_f)$ met $b_f,p_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $p_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omliggend bereik $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
+Stel nu dat we geen verwijzing in het bereik opslaan, maar een kopie van de omliggende bindingen. Op het moment dat we $f$ definiëren in regel~\ref{exa:lexical:def} is bereik $s_f$ een paar $(b_f, \pi_f)$ met $b_f, \pi_f \in \BB$. Net als hierboven zijn de eigen bindingen $b_f$ leeg. De binding $\pi_f$ bevat een functie onder naam \id{f} en de waarde $1$ onder naam \id{x}. Wanneer we \id{x} aanpassen door de aanroep in regel~\ref{exa:lexical:eerste} wordt dit doorgevoerd in de binding $p_f$ maar, omdat dit een kopie is, niet in de binding $b_s$ van de omliggend bereik $s$. We moeten dus wel een verwijzing opslaan willen we het gevraagde gedrag krijgen. Daarnaast wordt het met kopieën erg lastig om een boomstructuur te creëren zodat we een variabele nog hogerop kunnen opzoeken.
 
 Een bereik $s$ is dus een element uit de verzameling
 %
@@ -52,18 +50,18 @@ Een bereik $s$ is dus een element uit de verzameling
   \SS \DEF \BB \times (\II \cup \{\nil\}).
 \end{equation*}
 %
-Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\LLs$ zijn locaties van bereiken. Op het begrip “locatie” komen wij nog terug in §\ref{sec:locaties}. We moeten er wel rekening mee houden dat er een soort “ultiem” omliggend bereik is. Het kan dus zijn dat een bereik geen parent heeft. Voor dat geval gebruiken we het unieke element $\nil$. De beoogde interpretatie van een bereik van de vorm $(b, \nil)$ is dan dat het geen omliggend bereik heeft.
+Hierbij zijn $\BB$ de bindinggroepen zoals besproken in §\ref{sec:bindingen}. $\II$ is de verzameling lijst-indices, zie §\ref{sec:lijsten}. Zo'n index is de wiskundige verwezenlijking van een \emph{referentie}, waarvan het gebruik zoals eerder beschreven essentiëel is. In §\ref{sec:locaties} wordt behandeld hoe bereiken en objecten met behulp van lijsten het geheugen vormen.
+
+We moeten er rekening mee houden dat er een soort “ultiem” omliggend bereik is. Een stuk code is namelijk eindig, en wanneer het uitgevoerd wordt is er sprake van een buitenste bereik. Het kan dus zijn dat een bereik geen parent heeft. Voor dat geval gebruiken we het unieke element $\nil$. De beoogde interpretatie van een bereik van de vorm $(b, \nil)$ is dan dat het geen omliggend bereik heeft, en dus het buitenste bereik van de code in executie.
 
 \section{Objecten en prototype overerving}
 \label{sec:sem-objecten}
 
-In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overerving. Net als bereik en omliggend bereik, worden objecten en hun prototypen het best gemodelleerd met een boomstructuur. Geheel in lijn met bereiken is een object een paar met daarin zijn eigen bindingen $b$ en een verwijzing naar zijn prototype $\pi$. Natuurlijk kan een object ook geen prototype hebben. Dit geven we weer aan met $\nil$. Een object $o$ is dus een element uit
+In §\ref{sec:taal-prototypen} hebben we een beeld gekregen van prototype overerving. Net als bereik en omliggend bereik, worden objecten en hun prototypen het best gemodelleerd met een boomstructuur. Geheel in lijn met bereiken is een object een paar met daarin zijn eigen bindingen $b$ en een verwijzing naar zijn prototype $\pi$. Natuurlijk kan een object ook géén prototype hebben. Dit geven we weer aan met $\nil$. Een object $o$ is dus een element uit
 %
 \begin{equation*}
   \OO \DEF \BB \times (\II \cup \{\nil\}).
 \end{equation*}
-%
-Hierbij is $\BB$ weer de verzamelingen bindinggroepen uit §\ref{sec:bindingen} en $\LLo$ zijn ditmaal locaties van objecten.
 
 \section{Functies}
 \label{sec:functies}
@@ -72,17 +70,17 @@ Van een functie moeten een aantal dingen bekend zijn:
 \begin{description}
   \item[Code] De code (ook wel \emph{body}) van de functie is natuurlijk simpelweg een \Stm.
   %
-  \item[Argumenten] Deze worden gerepresenteerd door een lijst van elementen uit \Id. In het programma zelf is deze lijst een \MaybeIds. We definiëren daarom de triviale functie $\textsc{Ids} : \MaybeIds \to \Id_{\langle\rangle}$ op de volgende manier:
+  \item[Argumenten] De argumenten van een functie worden gerepresenteerd door een lijst elementen uit \Id. In het programma zelf worden de argumenten nog gerepresenteerd door een element uit \MaybeIds. We definiëren daarom de triviale functie $\textsc{Ids} : \MaybeIds \to \Id_{\langle\rangle}$ op de volgende manier:
   \begin{align*}
     \textsc{Ids}(\varepsilon) &= \<\> \\
     \textsc{Ids}(i) &= \< i \> \\
     \textsc{Ids}(i^+, i) &= \textsc{Ids}(i^+) : i
   \end{align*}
-  Waarbij we $i^+$ als meta-variabele gebruiken voor een element uit de syntactische verzameling \Ids.
+  Hierbij is $i^+$ een meta-variabele voor een element uit de syntactische verzameling \Ids.
   %
-  \item[Return variabele] Mogelijk gebruikt de functie een teruggeef variabele, dit wordt gerepresenteerd door een element uit $(\Id \cup \{\nil\})$, waarbij $\nil$ de betekenis draagt dat er geen sprake is van een teruggeef variabele.
+  \item[Return variabele] Mogelijkerwijs geeft de functie ook een resultaat terug. In onze taal gebeurt dit door bij definitie van de functie aan te geven van welke variabele, die gevonden moet kunnen worden in het gemaakt bereik, de waarde terug gegeven moet worden. Dit wordt gerepresenteerd door een element uit $(\Id \cup \{\nil\})$, waarbij $\nil$ de betekenis draagt dat er geen sprake is van een resultaat. De functie heeft dan nog wel betekenis, omdat het zij-effecten kan voortbrengen.
   %
-  \item[Bereik van definitie] Het is belangrijk om van een functie zijn bereik van originele definitie te weten. Dit is het kern-idee van lexicaal bereik. Het kan best zo zijn dat een zekere functie $f$ op een zekere lexicale plek in het programma is gedefiniëerd, en vervolgens door toedoen van het programma in een andere context wordt uitgevoerd. Maar het is belangrijk dat het lexicale bereik van de originele definitie nog bekend is, om vrije variabelen in de code van de functie op te kunnen zoeken in omliggende bereiken. Dit bereik wordt gerepresenteerd door de locatie van het bereik, een element uit \II.
+  \item[Bereik van definitie] Het is belangrijk om van een functie zijn bereik van definitie te weten. Dit is het kern-idee van lexicaal bereik. Het kan zijn dat een zekere functie $f$ op een zekere lexicale plek in het programma is gedefinieerd, en vervolgens door toedoen van het programma in een andere context wordt uitgevoerd. Belangrijk is dat het lexicale bereik van de originele definitie nog bekend is, om vrije variabelen in de code van de functie op te kunnen zoeken in juiste omliggende bereiken. Dit bereik wordt gerepresenteerd door de locatie van het bereik, een element uit \II.
 \end{description}
 
 Een functie is daarom simpelweg een viertupel met bovenstaande informatie. De verzameling functies is gedefinieerd als:
@@ -92,8 +90,6 @@ Een functie is daarom simpelweg een viertupel met bovenstaande informatie. De ve
 
 \section{Waarden en data}
 \label{sec:waarden}
-% K: Ik vond de vertelvorm waarin jij uitlegde wat waarden en locaties en primitieve waarden etc zijn toch enigszins "kinderachtig". Ik geloof dat een intuitieve terminologie [ik ben nu gesettled voor <data> en <waarden>, maar dat kunnen we veranderen..] en een wat meer "beschouwende" (i.p.v. uitleggende) tekst stukken beter werkt. Ik heb daarom deze sectie vrijwel helemaal herschreven, ik hoop dat je dat niet erg vindt! En overigens moet jij natuurlijk deze tekst weer ff onder handen nemen, want ik ben er zeker niet al te zeker over ;) Zo heb ik het over dat een programma "spreekt" over data: ??
-% T: aangepast
 
 In voorgaande paragrafen spraken we over waarden $\VV$ en locaties. We hebben de exacte definities hiervan in het midden gelaten. Wat wel duidelijk is, is dat een waarde $v \in \VV$ iets is wat we toekennen aan een \Id\ met behulp van een binding.
 
@@ -160,7 +156,7 @@ Om samen te vatten:
 De definitie van de verzameling van alle waarden (locaties van objecten, getallen en functies) is dus als volgt:
 
 \begin{equation*}
-  \VV \DEF \II \cup \ZZ \cup \FF \cup \{\nil\}%TODO: of \nil hier of bij bindingen
+  \VV \DEF \II \cup \ZZ \cup \FF
 \end{equation*}
 
 \section{Geheugen}

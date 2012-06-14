@@ -23,12 +23,12 @@ Voor een willekeurige term $\phi = \dots f(x)\dots$, waarbij $f$ een partiële f
   f(0, 0) &= 1 \\
   f(n, m + 1) &= f(n, m)
 \end{align*}
-In dit voorbeeld geldt voor alle $m \in \NN$ dat $f(0, m) = 1$, en voor alle $n \in \NN \setminus \{0\}$ is $f(n, m)$ niet gedefiniëerd.
+In dit voorbeeld geldt voor alle $m \in \NN$ dat $f(0, m) = 1$, en voor alle $n \in \NN \setminus \{0\}$ is $f(n, m)$ niet gedefinieerd.
 
 \section{Eindige verzamelingen, eindige functies}
 \label{sec:eindigefuncties}
 
-De reden dat de meeste behandelde functies partieel zijn, is omdat meeste onderdelen van ons semantisch model eindig van karakter zijn. Functies worden vaak gebruikt om “een verzameling variabelen die een bepaalde waarde bevatten” te representeren, bijvoorbeeld de gedefiniëerde variabelen in een zeker bereik. Het zou ongewoon zijn om in een programmeertaal gebruik te maken van bereiken waarin oneindig veel variabelen kunnen bestaan.
+De reden dat de meeste behandelde functies partieel zijn, is omdat meeste onderdelen van ons semantisch model eindig van karakter zijn. Functies worden vaak gebruikt om “een verzameling variabelen die een bepaalde waarde bevatten” te representeren, bijvoorbeeld de gedefinieerde variabelen in een zeker bereik. Het zou ongewoon zijn om in een programmeertaal gebruik te maken van bereiken waarin oneindig veel variabelen kunnen bestaan.
 
 Een verzameling heet \emph{eindig} als deze voor zekere $n \in \NN$ gelijkmachtig is aan $\{n \in \NN \mid n < N\}$.
 Een functie $f: X \to Y$ heet \emph{eindig} wanneer de verzameling $\{x \in X \mid f \downarrow x\}$ eindig is.
@@ -62,7 +62,7 @@ Meerdere uitbreidingen verkorten we op voor de hand liggende wijze:
 \section{Lijsten}
 \label{sec:lijsten}
 
-We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige partiële functies $t : \{(n, n) \in \NN^2\} \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $\II$ schrijven i.p.v.~$\{(n, n) \in \NN^2\}$, om aan te geven dat het gaat om de indices van lijsten. Merk op dat we als indices geen gebruik maken van $\NN$. Later in het werkstuk gaan we er vanuit dat we elementen uit $\II$ kunnen onderscheiden van elementen uit $\ZZ$. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefiniëerd:
+We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige partiële functies $t : \{(n, n) \in \NN^2\} \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $\II$ schrijven i.p.v.~$\{(n, n) \in \NN^2\}$, om aan te geven dat het gaat om de indices van lijsten. Merk op dat we als indices geen gebruik maken van $\NN$. Later in het werkstuk gaan we er vanuit dat we elementen uit $\II$ kunnen onderscheiden van elementen uit $\ZZ$. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefinieerd:
 \begin{equation*}
 X_{\langle\rangle} \DEF \big\{\, t : \II \to X \big\vert \exists_{N \in \NN} \surr{ \forall_{n < N}[t \downarrow (n, n)] \land \forall_{n\ge N}[t \uparrow (n, n)] } \,\big\}
 \end{equation*}

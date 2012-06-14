@@ -1,5 +1,3 @@
-% (geen punt, ik was met \setsansfont te klooien, en die veranderde de titels steeds niet, toen kwam ik erachter waar ze eigenlijk vandaan kwamen -- beetje vergezocht i know..)
-% T: Ik heb nu netjes de koppen in Biolinum gezet, het schreefloze broertje van Libertine.
 \documentclass
   [11pt,a4paper,
    twoside=true,
@@ -12,16 +10,20 @@
   {Scale=MatchLowercase}
 
 \setmainfont
-  [Ligatures={TeX,Common},
-   Numbers=OldStyle,
-   SmallCapsFont={Linux Libertine Capitals O}]
+  [%
+   Ligatures={TeX,Common}
+   ,Numbers=OldStyle
+   %,SmallCapsFont={Linux Libertine Capitals O}
+  ]
   {Linux Libertine O}
 \setsansfont
-  [Ligatures={TeX,Common},
-   Numbers=OldStyle,
-   SmallCapsFont={Linux Biolinum Capitals O}]
+  [%
+   Ligatures={TeX,Common}
+   %,Numbers=OldStyle
+   %,SmallCapsFont={Linux Biolinum Capitals O}
+  ]
   {Linux Biolinum O}
-\setmonofont{DejaVu Sans Mono}
+\setmonofont{Consolas}
 
 \usepackage{amsmath}
 %\usepackage{xunicode}
@@ -384,9 +386,13 @@
 \frenchspacing% Cruciaal!
 \raggedbottom% Handig
 
-\title{Een natuurlijke semantiek voor prototype overerving en lexicaal bereik}
-\author{Kelley van Evert \& Tim Steenvoorden}
-\maketitle
+\KOMAoptions{twoside = false}
+\begin{titlepage}
+  \title{Een natuurlijke semantiek voor prototype overerving en lexicaal bereik}
+  \author{Kelley van Evert \& Tim Steenvoorden}
+  \maketitle
+\end{titlepage}
+\KOMAoptions{twoside}
 
 \frontmatter
 

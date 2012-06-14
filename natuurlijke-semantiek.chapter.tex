@@ -3,7 +3,7 @@
 \section{Expressies}
 
 Expressies zijn syntactische elementen die zonder de \emph{toestand} van het programma te wijzigen \emph{geëvalueerd} worden tot een waarde $v \in \VV$. 
-Bij het evalueren van expressies maken wij gebruik van een notatie met dubbele rechte haken. Hiermee geven we aan dat alles tussen deze dubbele haken \emph{syntaxis} is. Zo scheiden we we onze taal van de wiskunde. Bij het evalueren hebben we wel meer informatie nodig dan alleen de expressie zelf. De geheugens $\ms$ en $\mo$ voor bereiken en objecten worden gebruikt om de \emph{toestand} van het programma mee te geven. Daarnaast leggen het huidige bereik $\sigma$ en het huidige object $\tau$ vast in welke \emph{omgeving} de evaluatie plaats vindt. Deze extra informatie noteren we als subscript bij de haken. Evaluaties zijn dus van de vorm
+Bij het evalueren van expressies maken wij gebruik van een notatie met dubbele rechte haken. Hiermee geven we aan dat alles tussen deze dubbele haken \emph{syntaxis} is. Zo scheiden we de syntax van onze taal van het semantische model. Bij het evalueren hebben we wel meer informatie nodig dan alleen de expressie zelf. De geheugens $\ms$ en $\mo$ voor bereiken en objecten worden gebruikt om de \emph{toestand} van het programma mee te geven. Daarnaast leggen het huidige bereik $\sigma$ en het huidige object $\tau$ vast in welke \emph{omgeving} de evaluatie plaats vindt. Deze extra informatie noteren we als subscript bij de haken. Evaluaties zijn dus van de vorm
 %
 \begin{equation*}
   \Express{E}{\ms,\mo,\sigma,\tau} = v.
@@ -33,23 +33,21 @@ Het evalueren van getallen beschouwen we voor het gemak apart. Dit is simpelweg 
   \Express[Z]{\;}{} : \Num \to \ZZ \\
 \end{equation*}
 
-%Voor elk van deze drie soorten expressies definiëren we semantische functies die deze evaluatie formeel maken. De signaturen van de vier functies zijn:
-
 \subsection{Getal expressies}
 
-%TODO: Gaan wij nou getallen net zo definieeren als Nielsen & Nielsen?
 Laten we beginnen met het evalueren van gehele getallen zoals gedefinieerd in §\ref{sec:formeletaal}.
 %
 \begin{align*}
   \Express[Z]{0}{} &= 0 &
   \Express[Z]{n 0}{} &= 2 \cdot \Express[Z]{n}{} \\
   \Express[Z]{1}{} &= 1 &
-  \Express[Z]{n 1}{} &= 2 \cdot \Express[Z]{n}{} + 1
+  \Express[Z]{n 1}{} &= 2 \cdot \Express[Z]{n}{} + 1 \\
+  \Express[Z]{-n}{} &= -1 \cdot \Express[Z]{n}{}
 \end{align*}
 
 \subsection{Gewone expressies}
 
-De eerste type expressie die we tegenkomen in de definitie van §\ref{sec:formeletaal} zijn de getallen. Deze hebben we hierboven al gedefinieerd met de gespecialiseerde functie $\Express[Z]{\;}{}$. Hier kunnen we nu mooi gebruik van maken.
+De eerste type expressie dat we tegenkomen in de definitie van §\ref{sec:formeletaal} zijn de getallen. Deze hebben we hierboven al gedefinieerd met de gespecialiseerde functie $\Express[Z]{\;}{}$. Hier kunnen we nu mooi gebruik van maken.
 %
 \begin{equation*}
   \Express{n}{\ms,\mo,\sigma,\tau} = \Express[Z]{n}{}
@@ -96,7 +94,7 @@ De volgende stap is het geval waarin we te maken hebben met een \Path\ $p$ in pl
   \Express{\THIS.p}{\ms,\mo,\sigma,\tau} = v
   \tag*{[this.path]} \\
   \Desdas{
-    \Desda[desda]{\Trav(\mo, \tau, p) = (\omega' \in \LLo, j)}
+    \Desda[desda]{\Trav(\mo, \tau, p) = (\omega' \in \II, j)}
     \Desda{\Findp(\omega',j) = \omega''}
     \Desda{b_{\mo(\omega'')}(j) = v}
   }
@@ -108,14 +106,14 @@ Als dit niet het geval is, moeten we eerst op zoek naar het object in $i$. Hier 
   \Express{i.p}{\ms,\mo,\sigma,\tau} = v
   \tag*{[path]} \\
   \Desdas{
-    \Desda[desda]{\Express{i}{\ms,\mo,\sigma,\tau} = \omega \in \LLo}
-    \Desda{\Trav(\mo, \omega, p) = (\omega' \in \LLo, j)}
+    \Desda[desda]{\Express{i}{\ms,\mo,\sigma,\tau} = \omega \in \II}
+    \Desda{\Trav(\mo, \omega, p) = (\omega' \in \II, j)}
     \Desda{\Findp(\omega',j) = \omega''}
     \Desda{b_{\mo(\omega'')}(j) = v}
   }
 \end{gather*}
 %
-Merk op dat wanneer $\Express{i}{\ms,\mo,\sigma,\tau}$ geen $\omega\in\LLo$ oplevert bovenstaande niet gedefinieerd is en $\Express{i.p}{}$ dus niet geëvalueerd kan worden.
+Merk op dat wanneer $\Express{i}{\ms,\mo,\sigma,\tau}$ geen $\omega \in \II$ oplevert bovenstaande niet gedefinieerd is en $\Express{i.p}{}$ dus niet geëvalueerd kan worden.
 
 De laatste familie van expressies zijn de functies. Hier maken we onderscheid tussen functies \emph{met} teruggeefwaarde en \emph{zonder} teruggeefwaarde. In §\ref{sec:functies} is besproken hoe wij functies opbouwen in ons model. Onderstaande expressies creëren zo'n functie.
 %
@@ -129,7 +127,7 @@ De laatste familie van expressies zijn de functies. Hier maken we onderscheid tu
   \tag*{[function returns]}\label{rul:functionreturns}
 \end{equation}
 %
-We zien dat we alle benodigde gegevens uit de expressie overnemen en opslaan in een $f\in\FF$. Het enige verschil tussen de regels~\ref{rul:function} en \ref{rul:functionreturns} is het overnemen van de teruggeef-\Id\ $j$ in de quadrupel.
+We zien dat we alle benodigde gegevens uit de expressie overnemen en opslaan in een $f\in\FF$. Het enige verschil tussen de regels~\ref{rul:function} en \ref{rul:functionreturns} is het overnemen van de teruggeef-\Id\ $j$ in het viertupel.
 
 \subsection{Boolse expressies}
 
@@ -177,6 +175,7 @@ Daarnaast kunnen we Boolse expressies combineren met een conjunctie of disjuncti
 \end{equation}
 
 %TODO: Hier maken we ook geen onderscheid tussen taal en wiskunde!
+% K: (?)
 Tot slot bevat onze taal een methode om tests uit te voeren op getallen. Hier nemen we de relaties over uit de taal en plaatsen ze in de wiskundige context.
 %
 \begin{gather*}
@@ -190,7 +189,17 @@ Tot slot bevat onze taal een methode om tests uit te voeren op getallen. Hier ne
   }
 \end{gather*}
 
-%TODO: We doen niets meer met MaybeExpressions, die moet hier nog...
+\subsection{Meerdere expressies}
+
+De volgende voor de hand liggende definitie evalueert een element uit de syntactische verzameling $\MaybeExprs$ to een lijst van waarden.
+%
+\begin{align*}
+  \Express[M]{\varepsilon}{\ms,\mo,\sigma,\tau} &= \langle\rangle \\
+  \Express[M]{E}{\ms,\mo,\sigma,\tau} &= \langle \Express{E}{\ms,\mo,\sigma,\tau} \rangle \\
+  \Express[M]{E^+, E}{\ms,\mo,\sigma,\tau} &= \Express[M]{E^+}{\ms,\mo,\sigma,\tau} : \Express{E}{\ms,\mo,\sigma,\tau}
+\end{align*}
+%
+Hier is $E^+$ een meta-variabele voor elementen uit $\Exprs$.
 
 \section{Statements}
 
@@ -211,7 +220,7 @@ Hiermee bedoelen we dat
 waarbij $\longrightarrow$ de volgende signatuur heeft 
 %
 \begin{equation*}
-  (\longrightarrow) \subseteq (\Stm \times \MMs \times \MMo \times \LLs \times \LLo) \times (\MMs \times \MMo).
+  (\longrightarrow) \subseteq (\Stm \times \MMs \times \MMo \times \II \times \II) \times (\MMs \times \MMo).
 \end{equation*}
 %
 Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MMs,\MMo)$.
@@ -435,8 +444,8 @@ Het definiëren van een prototype gaat met het $\CLONES$-statement. Hiervoor zoe
   {\DisplayProof}
   \tag*{[clones]} \\
   \Desdas{
-    \Desda[desda]{\Express{i}{\ms,\mo,\sigma,\tau} = \omega_i \in \LL}
-    \Desda{\Express{j}{\ms,\mo,\sigma,\tau} = \omega_j \in \LL}
+    \Desda[desda]{\Express{i}{\ms,\mo,\sigma,\tau} = \omega_i \in \II}
+    \Desda{\Express{j}{\ms,\mo,\sigma,\tau} = \omega_j \in \II}
     \Desda{\mo' = \mo \surr{ \omega_i \mapsto \big(b_{\mo(\omega_i)}, \omega_j\big) }}
   }
 \end{gather*}
@@ -460,7 +469,7 @@ Het definiëren van een prototype gaat met het $\CLONES$-statement. Hiervoor zoe
   \tag*{[call]} \\
   \Desdas{
     \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
-    \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \LL}
+    \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \II}
     \Desda{\Trav(\mo, \omega, s) = (\omega', j)}
     \Desda{(S_{\!f}, I_{\!f}, i_{\!f}, \sigma_{\!f\text{def}}) = f = b_{\mo(\omega')}(j)}
     \Desda{\sigma_{\!f\text{new}} = \Nexts(\ms)}
