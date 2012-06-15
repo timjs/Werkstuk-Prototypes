@@ -19,14 +19,14 @@
 \setsansfont
   [%
    Ligatures={TeX,Common}
-   %,Numbers=OldStyle
+   ,Numbers=OldStyle
    %,SmallCapsFont={Linux Biolinum Capitals O}
   ]
   {Linux Biolinum O}
 \setmonofont{Consolas}
 
 \usepackage{amsmath}
-%\usepackage{xunicode}
+\usepackage{xunicode}
 \usepackage{unicode-math}
 \setmathfont{Asana Math}
 
@@ -37,10 +37,6 @@
 
 \usepackage[numbers]{natbib}
 \bibliographystyle{plainnat}
-
-\usepackage{bussproofs}
-\renewcommand{\extraVskip}
-  {4pt} % Iets meer verticale ruimte
 
 \usepackage{tabularx}% tables: equal width columns
 \usepackage{multirow}% tables: rowspan
@@ -246,36 +242,11 @@
   \\
 }
 
-%TODO: Gebruiken we dit bij Bussproof?
-% De volgende commands gebruik ik om op een simpele manier (1) de toegepaste regel aan de rechterkant van de deductieregel te laten zien, en (2) een automatische nummering aan de linkerkant te laten zien.
-% Normaal gesproken gebruik je \RightLabel en \LeftLabel, maar nu gebruik ik dus: \Label (enkel een label) en \CountedLabel (label en automatische nummering)
-% Terugzetten op 1 kan met "\setcounter{theLabel}{1}", bijvoorbeeld bij een nieuwe boom
-%\newcounter{theLabel}
-%\setcounter{theLabel}{1}
-%\newcommand{\Label}[1]{
-  %\RightLabel{\small #1}
-%}
-%\newcommand{\CountedLabel}[1]{
-  %\RightLabel{\small #1}
-  %\LeftLabel{\scriptsize \arabic{theLabel}}
-  %\addtocounter{theLabel}{1}
-%}
-
-% todo if second param empty? then don't display scalebox etc..
-\newcommand{\AxiomOrInference}[2]{%
-  \renewcommand{\arraystretch}{1.2}%
-  \begin{minipage}{\textwidth}% prevent page break
-    #1% = \begin{prooftree} ... \end{prooftree}
-    \vspace*{-.5pc}%
-    \hspace*{.45\textwidth}% ideally: .5\textwidth - 1/2 "desda\quad"
-    \scalebox{.85}{%
-      #2%
-    }%
-  \end{minipage}%
-}
-
 \newcommandx{\Desda}[2][1=]{%
   \phantom{#2} & \textbf{ #1 } & #2 \\
+}
+\newcommandx{\DesdaWo}[2][1=]{%
+  & \textbf{ #1 } & #2 \\
 }
 \newcommand{\Desdas}[1]{%
   \scalebox{.9}{$%

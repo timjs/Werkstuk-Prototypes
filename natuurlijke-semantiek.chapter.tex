@@ -88,7 +88,7 @@ Daarnaast hebben we natuurlijk de aritmetische expressies van de form $e_1 \circ
   \Express{e_1 \circ e_2}{\ms,\mo,\sigma,\tau} = n_1 \circ n_2
   \tag*{[op]} \\
   \Desdas{
-    \Desda[desda]{n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ}
+    \Desda[waarbij]{n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ}
     \Desda{n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ}
     \Desda{(\circ) \textbf{ één van: } +, -, \times}
   }
@@ -302,7 +302,7 @@ We komen nu bij een interessanter deel van de taal, namelijk het \emph{declarere
   (\ms', \mo)
   \tag*{[local]} \\
   \Desdas{
-    \Desda{\ms' = \ms \surr{ \sigma \mapsto \big(b_{\ms(\sigma)}[i \mapsto \BOT], \pi_{\ms(\sigma)}\big) }}
+    \Desda[desda]{\ms' = \ms \surr{ \sigma \mapsto \big(b_{\ms(\sigma)}[i \mapsto \BOT], \pi_{\ms(\sigma)}\big) }}
   }
 \end{gather*}
 %
@@ -354,12 +354,9 @@ Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van ande
 Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat data. In §\ref{sec:waarden} is uitgebreid besproken dat er een significant verschil is tussen primitieve waarden en data. Toch gaat dit op bijna dezelfde manier als het toekennen van een primitieve waarde. De locatie $\omega$ van een object $o$ kan immers wel op dezelfde manier worden behandeld. Wat moet gebeuren is het aanmaken van een nieuw, leeg object in het geheugen voor objecten. Zo een leeg object heeft de vorm $(\varnothing, \nil)$. De bindingen zijn immers leeg en er is nog geen prototype gedefinieerd. Om een nieuwe plek in het geheugen te vinden, kijken we naar de lengte van het huidge geheugen. Tot slot voegen we het legen object achteraan het geheugen toe.
 %
 \begin{gather*}
-  \AxiomC{$
-    \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms', \mo')
-  $}
-  {\DisplayProof}
+  \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
+  \longrightarrow
+  (\ms', \mo')
   \tag*{[object]} \\
   \Desdas{
     \Desda[desda]{\Finds(\ms, \sigma, i) = \sigma'}
@@ -372,12 +369,9 @@ Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat
 Het definiëren van een prototype gaat met het $\CLONES$-statement. Hiervoor zoeken we simpelweg de locaties $\omega_i$ en $\omega_j$ van de twee objecten op. Vervolgens zetten we in het geheugen dat het prototype van het object in $\omega_i$ de locatie $\omega_j$ is.
 %
 \begin{gather*}
-  \AxiomC{$
-    \Config{i \CLONES j}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms, \mo')
-  $}
-  {\DisplayProof}
+  \Config{i \CLONES j}{\ms, \mo, \sigma, \tau}
+  \longrightarrow
+  (\ms, \mo')
   \tag*{[clones]} \\
   \Desdas{
     \Desda[desda]{\Express{i}{\ms,\mo,\sigma,\tau} = \omega_i \in \II}
@@ -386,51 +380,61 @@ Het definiëren van een prototype gaat met het $\CLONES$-statement. Hiervoor zoe
   }
 \end{gather*}
 
-\subsection{Functies}%TODO
-%
-\dots Komt nog \dots
-%
+\subsection{Functie applicatie}
+
+Functie applicatie is de meest interessante deductieregel, en de kern van de semantiek als het om lexicaal bereik gaat. Een viertal varianten kunnen van toepassing zijn, om de volgende twee redenen:
+\begin{itemize}
+  \item Naar de functie die aangeroepen wordt kan worden verwezen met een variabele of een attribuut. Als het eerste het geval is, dan wordt de body van de functie uitgevoerd zonder huidig object. Als het tweede het geval is, wordt het huidig object gekozen als het object waarvan de attribuut is. Deze ogenschijnlijk onnodig gecompliceerde werking is geïnspireerd door JavaScript, en biedt eigenlijk grote flexibiliteit.
+  \item Het kan zijn dat de functie een waarde oplevert, maar dit hoeft niet het geval te zijn.
+\end{itemize}
+
 \begin{gather*}
-  \AxiomC{$
-    \Config{S_{\!f}}{\ms', \mo, \sigma_{\!f\text{new}}, \omega'}
+  \frac{
+    \Config{S_\text{body}}{\ms', \mo, \sigma_\text{exec}, \tau_\text{exec}}
     \longrightarrow
-    (\ms'', \mo'')
-  $}
-  \UnaryInfC{$
-    \Config{i.s(e^*)}{\ms, \mo, \sigma, \tau}
+    (\ms'', \mo')
+  }{
+    \Config{(i_\text{receive} =)^?\; s_\text{refer}(e^*)}{\ms, \mo, \sigma, \tau}
     \longrightarrow
-    (\ms'', \mo'')
-  $}
-  {\DisplayProof}
-  \tag*{[call]} \\
-  \Desdas{
-    \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
-    \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \II}
-    \Desda{\Trav(\mo, \omega, s) = (\omega', j)}
-    \Desda{(S_{\!f}, I_{\!f}, i_{\!f}, \sigma_{\!f\text{def}}) = f = b_{\mo(\omega')}(j)}
-    \Desda{\sigma_{\!f\text{new}} = \Nexts(\ms)}
-    \Desda{\ms' = \ms\surr{ \sigma_{\!f\text{new}} \mapsto \big(\Surr{e^*}^*_{\ms,\sigma,\tau}(I_{\!f}), \sigma_{\!f\text{def}}\big) }}
+    (\ms''', \mo')
   }
+  \tag*{[apply]} \\
+  \hspace*{5pc}\Desdas{
+    \DesdaWo[desda]{\Express{s}{\ms, \mo, \sigma, \tau} = f = \langle S_\text{body}, I_\text{params}, r, \sigma_\text{def} \rangle \in \FF}
+    \DesdaWo{\tau_\text{exec} = \begin{cases}
+      \omega' \textbf{ als} \left[ \begin{array}{l}
+        s_\text{refer} = i.s \\
+        \sigma_\text{def} = \Finds(\ms, \sigma, i) \\
+        b_{\ms(\sigma_\text{def})}(i) = \omega \in \II \\
+        \Trav(\mo, \omega, s) = (\omega', j)
+      \end{array} \right. \\
+      \nil \textbf{ als } s_\text{refer} = i
+    \end{cases}}
+    \DesdaWo{\sigma_\text{exec} = | \ms |}
+    \DesdaWo{\ms' = \ms : \langle \varnothing\big[\textsc{Ids}(I_\text{params}) \mapsto \Express[M]{e^*}{\ms, \mo, \sigma, \tau}\big], \sigma_\text{def} \rangle}
+    \DesdaWo{\ms''' = \begin{cases}
+      \ms'''' \textbf{ als } \left[ \begin{array}{l}
+        i_\text{receive} \text{ in de syntax staat} \\
+        r = i_\text{return} \in \Id \\
+        \sigma_\text{rd} = \Finds(\ms'', \sigma, i_\text{receive}) \\
+        v = \Express{i_\text{return}}{\ms'', \mo', \sigma_\text{exec}, \tau_\text{exec}} \\
+        \ms'''' = \ms''\surr{ \sigma_\text{rd} \mapsto \left(
+          b_{\ms''(\sigma_\text{rd})}[i_\text{receive} \mapsto v],
+          \pi_{\ms''(\sigma_\text{rd})}
+        \right) }
+      \end{array} \right. \\
+      \ms'' \textbf{ als } r = \nil
+    \end{cases}}
+  }
+%   \\
+%  \Desdas{
+%    \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
+%    \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \II}
+%    \Desda{\Trav(\mo, \omega, s) = (\omega', j)}
+%    \Desda{(S_{\!f}, I_{\!f}, i_{\!f}, \sigma_{\!f\text{def}}) = f = b_{\mo(\omega')}(j)}
+%    \Desda{\sigma_{\!f\text{new}} = \Nexts(\ms)}
+%    \Desda{\ms' = \ms\surr{ \sigma_{\!f\text{new}} \mapsto \big(\Surr{e^*}^*_{\ms,\sigma,\tau}(I_{\!f}), \sigma_{\!f\text{def}}\big) }}
+%  }
 \end{gather*}
-
-%\section*{Extra}
-
-%Deze teksten zijn vooral bedoeld als “tekstvlees” (lorem ipsum's). We zullen axioma's en deductieregels introduceren waarmee we de relatie $(\longrightarrow)$ definiëren, die de volgende signatuur heeft:
-
-%$$ (\longrightarrow) \subseteq (\Stm \times \MM \times \LL \times \LL) \times \MM $$
-
-%Wanneer we een uitspraak doen van de vorm:
-
-%$$ \Config{S}{m,\sigma,\tau} \longrightarrow m' $$
-
-%..dan bedoelen we daarmee dat:
-
-%$$ \big(\,(S,m,\sigma,\tau), m'\,\big) \in (\longrightarrow) $$
-
-%Deze uitspraak moet je lezen als: “In de toestand met geheugen $m$, bereik $\sigma$ en \emph{this} object $\tau$, termineert het statement $S$, waarbij het resultaat-geheugen $m'$ is.”
-%
-%Een van deze axioma's [object], heeft betrekking tot de productieregel in de grammatica die de $\OBJECT$ “literal” introduceert.
-%
-%Wanneer bij een dergelijke opsomming van voorwaarden een nieuwe variabele wordt geïntroduceerd zoals hierboven, met de volgende vorm: $\textbf{desda } \square = \theta \dots$; dan moet deze gelezen worden als: $\textbf{desda } \exists_\theta \surr{ \square = \theta \dots }$.
 
 % vim: syn=latex spell spl=nl cole=1

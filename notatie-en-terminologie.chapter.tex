@@ -34,6 +34,24 @@ Een verzameling heet \emph{eindig} als deze voor zekere $n \in \NN$ gelijkmachti
 Een functie $f: X \to Y$ heet \emph{eindig} wanneer de verzameling $\{x \in X \mid f \downarrow x\}$ eindig is.
 We schrijven in dit werkstuk $Y^X$ voor de verzameling functies $\{f : X \to Y \mid f \text{ eindig} \}$, dit in tegenstelling tot de gebruikelijke definitie waarin $Y^X$ alle functies $f : X \to Y$ bevat.
 
+\section{Lijsten}
+\label{sec:lijsten}
+
+We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige partiële functies $t : \{(n, n) \in \NN^2\} \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $\II$ schrijven i.p.v.~$\{(n, n) \in \NN^2\}$, om aan te geven dat het gaat om de indices van lijsten. Merk op dat we als indices geen gebruik maken van $\NN$. Later in het werkstuk gaan we er vanuit dat we elementen uit $\II$ kunnen onderscheiden van elementen uit $\ZZ$. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefinieerd:
+\begin{equation*}
+X_{\langle\rangle} \DEF \big\{\, t : \II \to X \big\vert \exists_{N \in \NN} \surr{ \forall_{n < N}[t \downarrow (n, n)] \land \forall_{n\ge N}[t \uparrow (n, n)] } \,\big\}
+\end{equation*}
+We schrijven $\langle\rangle$, maar ook wel $\varnothing$ aangezien het gewoon een lege functie is zoals beschreven in het voorgaande, voor de lege lijst. Deze is natuurlijk altijd hetzelfde, ongeacht welke invulling wordt gekozen voor $X$.
+
+Een lijst $t$ heeft \emph{grootte}
+%
+\begin{equation*}
+  |t| = N = \min\{n\in\NN \mid t \uparrow (n, n)\}.
+\end{equation*}
+%
+We schrijven $\langle x_0, x_1, \dots, x_{N-1}\rangle$ voor de lijst $t$ van grootte $N$ met $\forall_{n < N}[t(n, n) = x_n]$.
+Als $t$ een lijst is uit $X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$, de toevoeging van $x$ achteraan de lijst $t$, voor de lijst $t' = t[(N, N) \mapsto x]$, waarbij $N = |t|$.
+
 \section{Functie uitbreidingen}
 \label{sec:uitbreiden}
 
@@ -58,24 +76,15 @@ Meerdere uitbreidingen verkorten we op voor de hand liggende wijze:
     \left[ x_2 \mapsto y_2 \right]\dots
     \left[ x_n \mapsto y_n \right]
 \end{equation*}
-
-\section{Lijsten}
-\label{sec:lijsten}
-
-We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige partiële functies $t : \{(n, n) \in \NN^2\} \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $\II$ schrijven i.p.v.~$\{(n, n) \in \NN^2\}$, om aan te geven dat het gaat om de indices van lijsten. Merk op dat we als indices geen gebruik maken van $\NN$. Later in het werkstuk gaan we er vanuit dat we elementen uit $\II$ kunnen onderscheiden van elementen uit $\ZZ$. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefinieerd:
-\begin{equation*}
-X_{\langle\rangle} \DEF \big\{\, t : \II \to X \big\vert \exists_{N \in \NN} \surr{ \forall_{n < N}[t \downarrow (n, n)] \land \forall_{n\ge N}[t \uparrow (n, n)] } \,\big\}
-\end{equation*}
-We schrijven $\langle\rangle$, maar ook wel $\varnothing$ aangezien het gewoon een lege functie is zoals beschreven in het voorgaande, voor de lege lijst. Deze is natuurlijk altijd hetzelfde, ongeacht welke invulling wordt gekozen voor $X$.
-
-Een lijst $t$ heeft \emph{grootte}
+%
+Als $\overline{x} = \langle x_1, x_2, \dots, x_N\rangle \in X_{\langle\rangle}$, $\overline{y} = \langle y_1, y_2, \dots, y_N\rangle \in Y_{\langle\rangle}$, dan is bovendien
 %
 \begin{equation*}
-  |t| = N = \min\{n\in\NN \mid t \uparrow (n, n)\}.
+  f \left[ \overline{x} \mapsto \overline{y} \right] \DEF
+  f \left[ x_1 \mapsto y_1 \right]
+    \left[ x_2 \mapsto y_2 \right]\dots
+    \left[ x_N \mapsto y_N \right].
 \end{equation*}
-%
-We schrijven $\langle x_0, x_1, \dots, x_{N-1}\rangle$ voor de lijst $t$ van grootte $N$ met $\forall_{n < N}[t(n, n) = x_n]$.
-Als $t$ een lijst is uit $X_{\langle\rangle}$, en $x$ een element van $X$, dan schrijven we $t:x$, de toevoeging van $x$ achteraan de lijst $t$, voor de lijst $t' = t[(N, N) \mapsto x]$, waarbij $N = |t|$.
 
 \section{Notationele conventies}
 \label{sec:conventies}
