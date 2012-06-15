@@ -2,40 +2,68 @@
 
 \section{Expressies}
 
-Expressies zijn syntactische elementen die zonder de \emph{toestand} van het programma te wijzigen \emph{geëvalueerd} worden tot een waarde $v \in \VV$. 
-Bij het evalueren van expressies maken wij gebruik van een notatie met dubbele rechte haken. Hiermee geven we aan dat alles tussen deze dubbele haken \emph{syntaxis} is. Zo scheiden we de syntax van onze taal van het semantische model. Bij het evalueren hebben we wel meer informatie nodig dan alleen de expressie zelf. De geheugens $\ms$ en $\mo$ voor bereiken en objecten worden gebruikt om de \emph{toestand} van het programma mee te geven. Daarnaast leggen het huidige bereik $\sigma$ en het huidige object $\tau$ vast in welke \emph{omgeving} de evaluatie plaats vindt. Deze extra informatie noteren we als subscript bij de haken. Evaluaties zijn dus van de vorm
+Expressies zijn syntactische elementen die zonder de \emph{toestand} van het programma te wijzigen \emph{geëvalueerd} kunnen worden tot een waarde $v \in \VV$. 
+Voor het evalueren definiëren we een aantal semantische functies, en één semantisch predikaat. Met een notatie die gebruik maakt van dubbele rechte haken geven we aan dat hier de stap wordt gemaakt van de \emph{syntaxis} van de taal naar het semantische model. Deze semantische functies (predikaat) nemen als input, naast de expressie die geëvalueerd dient te worden, ook de toestand van het programma: de geheugens $\ms$ en $\mo$ voor bereiken en objecten. Daarnaast leggen het huidige bereik $\sigma$ en het huidige object $\tau$ vast in welke \emph{omgeving} de evaluatie plaats vindt. Deze extra informatie noteren we als subscript bij de haken. Zo zijn evaluaties van ``gewone'' expressies ($\Expr$) zijn van de vorm
 %
 \begin{equation*}
-  \Express{E}{\ms,\mo,\sigma,\tau} = v.
+  \Express{E}{\ms,\mo,\sigma,\tau} = v \in \VV.
 \end{equation*}
 %
-De signatuur van de functie $\Express{\;}{}$ is dan
+De signatuur van deze functie $\Express{\;}{}$ is dan
+%
 \begin{equation*}
   \Express{\;}{} : \Expr \times \MMs \times \MMo \times \LLs \times \LLo \to \VV \\
 \end{equation*}
 
-Ook definiëren we een \emph{uitgebreide} semantische functie voor syntactische elementen uit \MaybeExprs. Deze zijn te onderscheiden van de \emph{gewone} expressies door de superscript $\text{M}$ naast de haken. Merk op dat in dit geval het resultaat niet een enkele waarde is, maar een lijst van waardes.
+Ook definiëren we een \emph{uitgebreide} semantische functie voor syntactische elementen uit \MaybeExprs. Deze functie is nodig wanneer een functie wordt aangeroepen met een willekeurig aantal argumenten. Merk op dat in dit geval het resultaat niet een enkele waarde is, maar een lijst van waarden.
+%
 \begin{equation*}
   \Express[M]{\;}{} : \MaybeExprs \times \MMs \times \MMo \times \LLs \times \LLo \to \VV_{\langle\rangle}
 \end{equation*}
 
-Voor Boolse expressies geldt hetzelfde, maar deze evalueren tot de verzameling $\{\bT, \bF\}$.
-Hierbij gebruiken wij het symbool $\bT$ voor \emph{waar} en $\bF$ voor \emph{onwaar}.
-Om aan te geven dat we te maken hebben met de evaluatie van Boolse expressies noteren we een superscript $\text{B}$ bij de haken.
+\subsection{Een predikaat voor boolse expressies}
+
+Boolse expressies, die gebruikt worden in de verscheidene loops van de taal, evalueren we niet tot een zekere verzameling. In tegenstelling tot gewone expressies, definiëren we voor boolse expressies een predikaat $\Express[B]{\;}{}$.
 %
 \begin{equation*}
-  \Express[B]{\;}{} : \BExpr \times \MMs \times \MMo \times \LLs \times \LLo \to \{ \bT, \bF \} \\
+  \Express[B]{\;}{} \subseteq \BExpr \times \MMs \times \MMo \times \LLs \times \LLo
 \end{equation*}
+%
+De reden voor deze andere aanpak is dat de definitie dan makkelijker leest. We definiëren dat $\Express[B]{b}{\ms,\mo,\sigma,\tau}$, dan en slechts dan als het met de volgende axioma's en deductieregels bewezen kan worden:
+%
+\begin{align*}
+  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} & & &
+  \frac
+    {\neg \Express[B]{b}{\ms,\mo,\sigma,\tau}}
+    {\Express[B]{\NOT b}{\ms,\mo,\sigma,\tau}} \\
+  \frac
+    {\Express[B]{b}{\ms,\mo,\sigma,\tau} \quad \Express[B]{c}{\ms,\mo,\sigma,\tau}}
+    {\Express[B]{b \AND c}{\ms,\mo,\sigma,\tau}} & & &
+  \frac
+    {\Express[B]{b}{\ms,\mo,\sigma,\tau}}
+    {\Express[B]{b \OR c}{\ms,\mo,\sigma,\tau}} & & &
+  \frac
+    {\Express[B]{c}{\ms,\mo,\sigma,\tau}}
+    {\Express[B]{b \OR c}{\ms,\mo,\sigma,\tau}}
+\end{align*}
+\begin{gather*}
+  \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau} \textbf{ desda } n_1 \sim n_2 \\
+  \Desdas{
+    \Desda[waarbij]{n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ}
+    \Desda{n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ}
+    \Desda{(\sim) \textbf{ één van: } =, \neq, <, \le, >, \ge}
+  }
+\end{gather*}
 
-Het evalueren van getallen beschouwen we voor het gemak apart. Dit is simpelweg een functie van de syntactische verzameling \Num\ naar $\ZZ$.
+\subsection{Evaluatie van gehele getallen}
+
+Het evalueren van getallen ($\Num$) beschouwen we voor het gemak apart, en nemen we later op in de volledige semantische functie voor expressies ($\Expr$).
 %
 \begin{equation*}
   \Express[Z]{\;}{} : \Num \to \ZZ \\
 \end{equation*}
-
-\subsection{Getal expressies}
-
-Laten we beginnen met het evalueren van gehele getallen zoals gedefinieerd in §\ref{sec:formeletaal}.
+%
+Deze functie is als volgt op voor de hand liggend manier gedefinieerd:
 %
 \begin{align*}
   \Express[Z]{0}{} &= 0 &
@@ -45,7 +73,7 @@ Laten we beginnen met het evalueren van gehele getallen zoals gedefinieerd in §
   \Express[Z]{-n}{} &= -1 \cdot \Express[Z]{n}{}
 \end{align*}
 
-\subsection{Gewone expressies}
+\subsection{Evaluatie van expressies}
 
 De eerste type expressie dat we tegenkomen in de definitie van §\ref{sec:formeletaal} zijn de getallen. Deze hebben we hierboven al gedefinieerd met de gespecialiseerde functie $\Express[Z]{\;}{}$. Hier kunnen we nu mooi gebruik van maken.
 %
@@ -129,68 +157,6 @@ De laatste familie van expressies zijn de functies. Hier maken we onderscheid tu
 %
 We zien dat we alle benodigde gegevens uit de expressie overnemen en opslaan in een $f\in\FF$. Het enige verschil tussen de regels~\ref{rul:function} en \ref{rul:functionreturns} is het overnemen van de teruggeef-\Id\ $j$ in het viertupel.
 
-\subsection{Boolse expressies}
-
-Het evalueren van boolse expressies is, in vergelijking met de gewone expressies hierboven, redelijk eenvoudig. Allereerst evalueren de sleuterwoorden $\TRUE$ en $\FALSE$ simpelweg naar $\bT$ en $\bF$:
-%
-\begin{equation}
-  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} = \bT
-  \tag*{[true]}
-\end{equation}
-%
-\begin{equation}
-  \Express[B]{\FALSE}{\ms,\mo,\sigma,\tau} = \bF
-  \tag*{[false]}
-\end{equation}
-
-Een negatie is natuurlijk eenvoudig te definiëren in termen van bovenstaande.
-%
-\begin{equation}
-  \Express[B]{\NOT b}{\ms,\mo,\sigma,\tau}
-  = \begin{cases}
-    \bT & \textbf{if } \Express[B]{b}{\ms,\mo,\sigma,\tau} = \bF \\
-    \bF & \textbf{anders}
-  \end{cases}
-  \tag*{[not]}
-\end{equation}
-
-Daarnaast kunnen we Boolse expressies combineren met een conjunctie of disjunctie. We gebruiken dezelfde truc als hierboven en evalueren $b_1$ en $b_2$ eerst los.
-%
-\begin{equation}
-  \Express[B]{b_1 \AND b_2}{\ms,\mo,\sigma,\tau}
-  = \begin{cases}
-    \bT & \textbf{if } \Express[B]{b_1}{\ms,\mo,\sigma,\tau} = \Express[B]{b_2}{\ms,\mo,\sigma,\tau} = \bT \\
-    \bF & \textbf{anders}
-  \end{cases}
-  \tag*{[and]}
-\end{equation}
-%
-\begin{equation}
-  \Express[B]{b_1 \OR b_2}{\ms,\mo,\sigma,\tau}
-  = \begin{cases}
-    \bF & \textbf{if } \Express[B]{b_1}{\ms,\mo,\sigma,\tau} = \Express[B]{b_2}{\ms,\mo,\sigma,\tau} = \bF \\
-    \bT & \textbf{anders}
-  \end{cases}
-  \tag*{[or]}
-\end{equation}
-
-%TODO: Hier maken we ook geen onderscheid tussen taal en wiskunde!
-% K: (?)
-Tot slot bevat onze taal een methode om tests uit te voeren op getallen. Hier nemen we de relaties over uit de taal en plaatsen ze in de wiskundige context.
-%
-\begin{gather*}
-  \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau} =
-  n_1 \sim n_2
-  \tag*{[relation]} \\
-  \Desdas{
-    \Desda[waarbij]{n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ}
-    \Desda{n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ}
-    \Desda{(\sim) \textbf{ één van: } =, \neq, <, \le, >, \ge}
-  }
-\end{gather*}
-
-\subsection{Meerdere expressies}
-
 De volgende voor de hand liggende definitie evalueert een element uit de syntactische verzameling $\MaybeExprs$ to een lijst van waarden.
 %
 \begin{align*}
@@ -223,124 +189,106 @@ waarbij $\longrightarrow$ de volgende signatuur heeft
   (\longrightarrow) \subseteq (\Stm \times \MMs \times \MMo \times \II \times \II) \times (\MMs \times \MMo).
 \end{equation*}
 %
-Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo')\in(\MMs,\MMo)$.
+Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$, waarbij ook bekend is wat het huidige bereik $\sigma \in \II$, en het huidige object $\tau \in (\II \cup \{\nil\})$ is. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo') \in (\MMs,\MMo)$.
+
+Het huidige bereik verandert niet na executie van een programma, omdat bereik te maken heeft met de ordening van de code van het programma, welke niet verandert tijdens executie. Ook het huidige object verandert niet na executie, omdat de executie van een programma binnen een bepaald object uitvoering van een methode binnen dit object representeert. Het huidige bereik en huidig object geven dus de context van executie weer, maar niet de toestand van een programma.
+
+Het kan zijn dat er geen huidig object is, dan is $\tau = \nil$. Dit is bijvoorbeeld van toepassing op de executie van de eerste regel van een programma, dat niet deel is van een andere programma (bijvoorbeeld de body van een functie).
 
 Laten we beginnen met de simpelste constructie in onze taal, het lege statement $\SKIP$. Deze heeft de vorm van een axioma.
 %
 \begin{equation*}
-  \AxiomC{$
-    \Config{\SKIP}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms, \mo)
-  $}
-  {\DisplayProof}
+  \Config{\SKIP}{\ms, \mo, \sigma, \tau}
+  \longrightarrow
+  (\ms, \mo)
   \tag*{[skip]}
 \end{equation*}
 %
-$\SKIP$ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$. Voor het samenstellen van statements hebben we een regel nodig.
+$\SKIP$ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$. Voor het samenstellen van statements hebben we de volgende regel nodig.
 %
 \begin{gather*}
-  \AxiomC{$
+  \frac{
     \Config{S_1}{\ms, \mo, \sigma, \tau}
     \longrightarrow
     (\ms', \mo')
-  $}
-  \AxiomC{$
+  \quad
     \Config{S_2}{\ms', \mo', \sigma, \tau}
     \longrightarrow
     (\ms'', \mo'')
-  $}
-  \BinaryInfC{$
+  }
+  {
     \Config{S_1; S_2}{\ms, \mo, \sigma, \tau}
     \longrightarrow
     (\ms'', \mo'')
-  $}
-  {\DisplayProof}
+  }
   \tag*{[comp]}
 \end{gather*}
 %
-In dit geval geven we aan dat, wanneer we een een compositie hebben van de statements $S_1$ en $S_2$, we eerst $S_1$ uitvoeren% T: Dit is niet het juiste woord, weten even geen betere...
-en daarna $S_2$. Tijdens dit proces ontstaan nieuwe toestanden, waar we natuurlijk rekening mee moeten houden. De geheugens worden dan ook netjes doorgesluisd.
+Deze regel geeft aan dat het effect van twee sequentiele statements het gecombineerde effect is van de afzonderlijke, sequentiele, executie van beide statements.
 
-Voor de controlestructuur $\IF$ hebben we twee regels nodig. De eerste is voor het geval dat de \BExpr\ evalueert in \bT, dan moet namelijk het statement van het $\THEN$-deel worden uitgevoerd. Wanneer de \BExpr\ evalueert in \bF\ moet het $\ELSE$-deel worden uitgevoerd.
-Er moet dus aan een extra voorwaarde worden voldaan om deze regels toe te mogen passen. Dit zal vaker voorkomen bij de komende deductieregels. We noteren deze extra voorwaarden onder de regel of het axioma.
-%Zoals vele axioma's en deductieregels heeft dit axioma een aantal voorwaarden waaraan voldaan moet worden. Deze staan eronder genoteerd, elk op een regel.  
+Voor de controlestructuur $\IF$ hebben we twee regels nodig. De eerste is van toepassing als de boolse expressie en ware uitspraak over de huidige toestand van het programma representeerd, waarna het $\THEN$-deel moet worden uitgevoerd. De tweede als dit niet het geval is, waarna het $\ELSE$-deel moet worden uitgevoerd. Er moet dus aan een extra voorwaarde worden voldaan om deze regels toe te mogen passen. Dit zal vaker voorkomen bij de komende deductieregels. We noteren deze extra voorwaarden onder de regel of het axioma.
 %
 \begin{gather*}
-  \AxiomC{$
-    \Config{S_1}{\ms, \mo, \sigma, \tau}
+  \frac{
+    \Config{S_\text{then}}{\ms, \mo, \sigma, \tau}
     \longrightarrow
     (\ms', \mo')
-  $}
-  \UnaryInfC{$
-    \Config{\IF b \THEN  S_1 \ELSE S_2 }{\ms, \mo, \sigma, \tau}
+  }{
+    \Config{\IF b \THEN  S_\text{then} \ELSE S_\text{else} }{\ms, \mo, \sigma, \tau}
     \longrightarrow
     (\ms', \mo')
-  $}
-  {\DisplayProof}
-  \tag*{[if true]} \\
+  }
+  \tag*{[if \#1]} \\
   \Desdas{
-    \Desda[desda]{\Express[B]{b}{\ms, \mo,\sigma,\tau} = \bT}
+    \Desda[desda]{\Express[B]{b}{\ms, \mo,\sigma,\tau}}
   }
 \end{gather*}
 %
-en:
-%
 \begin{gather*}
-  \AxiomC{$
-    \Config{S_2}{\ms, \mo, \sigma, \tau}
+  \frac{
+    \Config{S_\text{else}}{\ms, \mo, \sigma, \tau}
     \longrightarrow
     (\ms', \mo')
-  $}
-  \UnaryInfC{$
-    \Config{\IF b \THEN S_1 \ELSE S_2 }{\ms, \mo, \sigma, \tau}
+  }{
+    \Config{\IF b \THEN  S_\text{then} \ELSE S_\text{else} }{\ms, \mo, \sigma, \tau}
     \longrightarrow
     (\ms', \mo')
-  $}
-  {\DisplayProof}
-  \tag*{[if false]} \\
+  }
+  \tag*{[if \#2]} \\
   \Desdas{
-    \Desda[desda]{\Express[B]{b}{\ms, \mo,\sigma,\tau} = \bF}
+    \Desda[desda]{\neg \Express[B]{b}{\ms, \mo,\sigma,\tau}}
   }
 \end{gather*}
 %
 Eenzelfde tactiek passen we toe bij een $\WHILE$-loop.
 %
 \begin{gather*}
-  \AxiomC{$
-    \Config{S_1}{\ms, \mo, \sigma, \tau}
+  \frac{
+    \Config{S_\text{while}}{\ms, \mo, \sigma, \tau}
     \longrightarrow
     (\ms',\mo')
-  $}
-  \AxiomC{$
-    \Config{\WHILE b \DO S_1 }{\ms', \mo', \sigma, \tau}
+  \quad
+    \Config{\WHILE b \DO S_\text{while} }{\ms', \mo', \sigma, \tau}
     \longrightarrow
     (\ms'',\mo'')
-  $}
-  \BinaryInfC{$
-    \Config{\WHILE b \DO S_1 }{\ms, \mo, \sigma, \tau}
+  }{
+    \Config{\WHILE b \DO S_\text{while} }{\ms, \mo, \sigma, \tau}
     \longrightarrow
     (\ms'',\mo'')
-  $}
-  {\DisplayProof}
-  \tag*{[while true]} \\
+  }
+  \tag*{[while \#1]} \\
   \Desdas{
-    \Desda[desda]{\Express[B]{b}{m,\sigma,\tau} = \bT}
+    \Desda[desda]{\Express[B]{b}{m,\sigma,\tau}}
   }
 \end{gather*}
 %
-en:
-%
 \begin{gather*}
-  \AxiomC{$
-    \Config{\WHILE b \DO S_1 }{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms, \mo)
-  $}
-  {\DisplayProof}
-  \tag*{[while false]} \\
+  \Config{\WHILE b \DO S }{\ms, \mo, \sigma, \tau}
+  \longrightarrow
+  (\ms, \mo)
+  \tag*{[while \#2]} \\
   \Desdas{
-    \Desda[desda]{\Express[B]{b}{\ms,\mo,\sigma,\tau} = \bF}
+    \Desda[desda]{\neg \Express[B]{b}{\ms,\mo,\sigma,\tau}}
   }
 \end{gather*}
 
@@ -349,12 +297,9 @@ en:
 We komen nu bij een interessanter deel van de taal, namelijk het \emph{declareren} van variabelen en het \emph{toekennen} van waarden. In deze sectie gaan we dus alleen de bereiken modificeren. Aan de basis hiervan ligt het declareren van een variabele met $\LOCAL$. We willen in het huidige bereik de eigen bindingen zó aanpassen, dat de \Id\ die we declareren gekoppeld wordt aan $\nil$ (de variabele bevat immers nog geen expliciete waarde). Voordat we dit kunnen doen, moeten we bereik $\sigma$ opzoeken in het geheugen voor bereiken $\ms$ met $\ms(\sigma)$. Vervolgens passen we de binding hiervan aan (zie notatie in §\ref{sec:bereiken} en §\ref{sec:uitbreiden}). Met de verwijzing naar het omliggend bereik $\pi$ doen we niks. Dit paar van uitgebreide bindingen en oud omliggend bereik zetten we terug in het geheugen $\ms$ op plek $\sigma$.
 %
 \begin{gather*}
-  \AxiomC{$
-    \Config{\LOCAL i}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms', \mo)
-  $}
-  {\DisplayProof}
+  \Config{\LOCAL i}{\ms, \mo, \sigma, \tau}
+  \longrightarrow
+  (\ms', \mo)
   \tag*{[local]} \\
   \Desdas{
     \Desda{\ms' = \ms \surr{ \sigma \mapsto \big(b_{\ms(\sigma)}[i \mapsto \BOT], \pi_{\ms(\sigma)}\big) }}
@@ -364,13 +309,10 @@ We komen nu bij een interessanter deel van de taal, namelijk het \emph{declarere
 Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we dit met dezelfde aanpassingstechniek als hierboven. Er is echter één groot verschil. Voordat we een waarde aan een variabele kunnen koppelen, moeten we eerst het bereik vinden waarin deze gedeclareerd is. Dit hoeft niet het huidige bereik te zijn en dus zoeken we deze op met de hulpfunctie $\Finds$. Daarnaast moeten we natuurlijk de expressie aan de rechter kant van het is-teken evalueren.
 %
 \begin{gather*}
-  \AxiomC{$
-    \Config{i = e}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms', \mo)
-  $}
-  {\DisplayProof}
-  \tag*{[assign identifier]} \\
+  \Config{i = e}{\ms, \mo, \sigma, \tau}
+  \longrightarrow
+  (\ms', \mo)
+  \tag*{[assign var]} \\
   \Desdas{
     \Desda[desda]{\Express{e}{\ms, \mo, \sigma, \tau} = v}
     \Desda{\sigma' = \Finds(\ms, \sigma, i)}
@@ -383,13 +325,10 @@ Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we 
 Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van andere functies en we moeten rekening houden met het doorlopen van een pad. Daarnaast is er nog het speciale geval dat het eerste deel van het pad $\THIS$ is. Natuurlijk gebeuren al deze aanpassingen in het geheugen voor objecten $\mo$ in plaats van het geheugen voor bereiken $\ms$.
 %
 \begin{gather*}
-  \AxiomC{$
-    \Config{\THIS.p = e}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms, \mo')
-  $}
-  {\DisplayProof}
-  \tag*{[assign this.path]} \\
+  \Config{\THIS.p = e}{\ms, \mo, \sigma, \tau}
+  \longrightarrow
+  (\ms, \mo')
+  \tag*{[assign this attr]} \\
   \Desdas{
     \Desda[desda]{\Express{e}{\ms, \mo, \sigma, \tau} = v}
     \Desda{\Trav(\mo, \tau, p) = (\omega, i)}
@@ -398,13 +337,10 @@ Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van ande
 \end{gather*}
 %
 \begin{gather*}
-  \AxiomC{$
-    \Config{i.p = e}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms', \mo)
-  $}
-  {\DisplayProof}
-  \tag*{[assign path]} \\
+  \Config{i.p = e}{\ms, \mo, \sigma, \tau}
+  \longrightarrow
+  (\ms', \mo)
+  \tag*{[assign attr]} \\
   \Desdas{
     \Desda[desda]{\Express{e}{\ms, \mo, \sigma, \tau} = v}
     \Desda{\Express{i}{\ms,\sigma,\tau} = \omega}
