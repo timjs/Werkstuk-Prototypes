@@ -17,9 +17,10 @@ Het doel van dit werkstuk is daarom een formele betekenis te geven aan deze conc
     \setlength{\columnseprule}{.5pt}
     \begin{minipage}{.25\textwidth}\vspace*{-1.1pc}%
 \begin{gather*}
-  \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
-  \longrightarrow
-  (\ms', \mo') \\
+  \Terminates{i \OBJECT}
+    {\ms, \mo}
+    {\sigma, \tau}
+    {\ms', \mo'} \\
   \begin{array}{r@{}l}%@
     \textbf{desda } & \Finds(\ms, \sigma, i) = \sigma_\text{def} \\
     & \omega = \Nexto(\mo) \\
@@ -34,7 +35,31 @@ Het doel van dit werkstuk is daarom een formele betekenis te geven aan deze conc
     \textit{“Zoals jullie weten, moeten we bij statische bereiken eerst de definitie van de variabele zoeken in de huidige en daarna omliggende bereiken. Daarna maken we ruimte vrij in het geheugen en kan een nieuw object worden gemaakt. Een verwijzing naar dit object wordt vervolgens in de variabele gestopt\dots”}
   \end{multicols}
 \end{htmlskip}
-\htmlinsert{somehtmlreplacement.html}
+\begin{htmlonly}
+  <div class="cols cols-2">
+    <div class="col" style="width:63%">
+      \begin{gather*}
+        \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
+        \longrightarrow
+        \ms', \mo' \\
+        \begin{array}{r@{}l}%@
+          \textbf{desda } & \Finds(\ms, \sigma, i) = \sigma_\text{def} \\
+          & \omega = \Nexto(\mo) \\
+          & \ms' = \ms \surr{ \sigma_\text{def} \mapsto \big(b_{\ms(\sigma')}[i\mapsto \omega], p_{\ms(\sigma')}\big) } \\
+          & \mo' = \mo \surr{ \omega \mapsto \big(\varnothing, \nil\big) }
+        \end{array}
+      \end{gather*}
+    </div>
+    <div class="col" style="width:37%">
+      <blockquote>
+        “Zoals jullie weten, moeten we bij statische scope eerst de definitie van de variabele zoeken in de huidige
+        en daarna omliggende bereiken. Daarna maken we ruimte vrij in het geheugen en kan een nieuw object worden gemaakt.
+        Een verwijzing naar dit object wordt vervolgens in de variabele gestopt…”
+      </blockquote>
+    </div>
+    <div style="clear:both;"></div>
+  </div>
+\end{htmlonly}
 
 % Opzet
 Na het bespreken van een aantal notationele keuzes en terminologie, presenteren we eerst de minimale taal, vervolgens het semantische model en tenslotte de natuurlijke semantiek die de twee voorgaande aan elkaar koppelt. We sluiten af met een afleiding voor een kort programma om het gebruik van de ontwikkelde regels en axioma's te demonstreren.

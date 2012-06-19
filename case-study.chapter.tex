@@ -1,33 +1,469 @@
+% !TeX root = werkstuk.tex
+% !TeX program = xelatex
 
-\chapter{Case study: Wiskundige formulering}
+\chapter{Case study}
 
-De vorm van bovenstaand semantisch model geeft een conceptueel sterk beeld van hoe de taal waarschijnlijk geimplementeerd zou worden in een compiler (modulo technische details, etc\dots). Het is ook vrijwel volgens bovenstaande semantiek dat aan informatica studenten object geörienteerde talen worden uitgelegd (referenties, primitieve waarden, \dots). Je kunt echter ook semantisch model maken wat “wiskundiger van aard” is. Daar zal dit hoofdstuk over gaan.
+In de case study maken we aannemelijk dat de natuurlijke semantiek daadwerkelijk de werking beschrijft die wij voor ogen hebben. Dit doen we door een volledige afleidingsboom te geven voor het volgende exemplarische programma:
 
-Belangrijke informatie, zoals welk object van welk ander object een prototype is en hoe de scopes elkaar bevatten, maar ook welke informatie binnen een object zit opgeslagen en welke variabelen in een scope zijn gedefinieerd, worden ditmaal door relaties bevat.
+\newCodeFragment
+\begin{minipage}{.5\textwidth}
+\codeLines{
+  \codeLine{\LOCAL \id{f}}
+  \codeLine{\id{f} = \FUN(\id{n}) \RETURNS \id{g}}
+  \codeLine{\IN \LOCAL \id{g}}
+  \codeLine{\IN \id{g} = \FUN(\;) \RETURNS \id{n}}
+  \codeLine{\IN \IN \id{n} = \id{n} + 1}
+}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+\codeLines{
+  \codeLine{\LOCAL \id{c}}
+  \codeLine{\id{c} = \id{f}(5)}
+  \codeLine{\id{c}(\;)}
+  \codeLine{\LOCAL \id{i}}
+  \codeLine{\id{i} = \id{c}(\;)}
+}
+\end{minipage}
 
-Rest nog identificatie van objecten en scopes, deze zal op eenzelfde manier worden behandeld als eerder de “locaties” binnen het geheugen: ze moeten identiek zijn, maar verder is het van geen belang hoe ze worden gerepresenteerd. We zullen daarom aannemen dat er twee verzamelingen identifiers zijn, $\mathbb{S}$ en $\mathbb{O}$, waarbij bovendien:
+Laat hierbij een speciale \emph{start}-toestand $\State{\phantom{A}}$ als volgt gedefinieerd zijn:
+%
+\begin{equation*}
+  \State{\phantom{A}} \DEF \langle(\varnothing, \nil)\rangle, \langle\rangle
+\end{equation*}
+%
+%\begin{gather}
+%  b_{\ms(@0)}(i) = 7
+%  \textbf{~~waarbij~~}
+%  \vTerminates{
+%    \LOCAL \id{f} \\
+%    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+%    \IN \LOCAL \id{g} \\
+%    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+%    \IN \IN \id{n} = \id{n} + 1 \\
+%    \LOCAL \id{c} \\
+%    \id{c} = \id{f}(5) \\
+%    \id{c}(\;) \\
+%    \LOCAL \id{i} \\
+%    \id{i} = \id{c}(\;)
+%  }
+%    {\State{\phantom{A}}}
+%    {@0, \nil}
+%    {\ms, \mo}
+%  \label{cA} \\
+%  \Express{\id{y}.\id{a}}{\ms, \mo, @0, \nil} = 42
+%  \textbf{~~waarbij~~}
+%  \vTerminates{
+%    \LOCAL \id{x} \\
+%    \id{x} \OBJECT \\
+%    \id{x}.\id{a} = 42 \\
+%    \LOCAL \id{y} \\
+%    \id{y} \OBJECT \\
+%    \id{y} \CLONES \id{x}
+%  }
+%    {\State{\phantom{A}}}
+%    {@0, \nil}
+%    {\ms, \mo}
+%  \label{cB}
+%\end{gather}
+%
+%Dit soort bewijzen gaan niet al te makkelijk met een natuurlijke semantiek, maar het is buiten de focus van dit werkstuk om een bijpassend axiomatische semantiek te ontwikkelen.
+%
+%We zullen daarom een groot deel van het bewijs dat redelijk simpel van karakter is (herhaaldelijk [comp], [local] etc) weglaten, en vooral de essentiële stappen bewijzen.
+%
+%Het volgende voorbeeld geeft weer hoe men bij simpele afleidingen met [comp], [local] en [assign var] te werk gaat. Laat $\State{A}$ en $\State{B}$ als volgt gedefinieerd zijn:
+%%
+%\begin{align*}
+%f &\DEF \big<\left[\SmallProgram{
+%        \LOCAL \id{g} \\
+%        \id{g} = \FUN(\;) \RETURNS \id{n} \\
+%        \IN \id{n} = \id{n} + 1
+%      }\right], \langle\id{n}\rangle, \id{g}, @0\big> \\
+%\State{A} &\DEF \langle([\id{f} \mapsto \nil], \nil)\rangle, \langle\rangle \\
+%\State{B} &\DEF \langle([\id{f} \mapsto f], \nil)\rangle, \langle\rangle
+%\end{align*}
+%%
+%Het eerste fragment voor het bewijs voor (\ref{cA}) gaat dan als volgt:
+%%
+%\begin{equation*}
+%\AxiomC{}
+%\LeftLabel{[local]}
+%\UnaryInfC{$
+%  \Terminates{\LOCAL \id{f}}
+%    {\State{\phantom{A}}}
+%    {@0, \nil}
+%    {\State{A}}
+%$}
+%\AxiomC{}
+%\LeftLabel{[assign var]}
+%\UnaryInfC{$
+%  \vTerminates{
+%    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+%    \IN \LOCAL \id{g} \\
+%    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+%    \IN \IN \id{n} = \id{n} + 1
+%  }
+%    {\State{A}}
+%    {@0, \nil}
+%    {\State{B}}
+%$}
+%\LeftLabel{[comp]}
+%\BinaryInfC{$
+%  \vTerminates{
+%    \LOCAL \id{f} \\
+%    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+%    \IN \LOCAL \id{g} \\
+%    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+%    \IN \IN \id{n} = \id{n} + 1
+%  }
+%    {\State{\phantom{A}}}
+%    {@0, \nil}
+%    {\State{B}}
+%$}
+%\DisplayProof{}
+%\end{equation*}
+%%
+%Nu nemen we aan dat bewezen is dat:
+%%
+%\begin{equation*}
+%  \vTerminates{
+%    \LOCAL \id{f} \\
+%    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+%    \IN \LOCAL \id{g} \\
+%    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+%    \IN \IN \id{n} = \id{n} + 1 \\
+%    \LOCAL \id{c}
+%  }
+%    {\State{\phantom{A}}}
+%    {@0, \nil}
+%    {\State{C}}
+%  \textbf{~~waarbij~~}
+%  \State{C} \DEF \langle(\left[\Bindings{
+%    \id{f} & f \\
+%    \id{c} & \nil
+%  }\right], \nil)\rangle, \langle\rangle
+%\end{equation*}
+%%
+%De volgende 
 
-\begin{enumerate}
-	\item Voor beide verzamelingen $X \in \{\mathbb{S}, \mathbb{O}\}$, bestaat er een functie $\textsc{Next}:\mathcal{P}(X) \to X$, zdd $\textsc{Next}(Y) \notin Y$ voor alle $Y \subseteq X$.
-	\item $\mathbb{S} \cap \mathbb{O} = \varnothing$ (Deze eis is niet een technische benodigdheid, maar geeft wel aan dat de semantiek van deze twee soorten identifiers nu eenmaal anders is.)
-\end{enumerate}
+\renewcommand{\SmallProgramSize}{.75}
 
-De prototype hiërarchie, eveneens de scope hiërarchie, worden natuurlijk heel goed weergegeven door partiële ordeningen. Deze twee relaties zullen zullen we als $\Proto$ en $\Outer$, respectievelijk, noteren, en aannemen:
 
-\begin{enumerate}
-	\item $\Proto$ is een (tweestemmige) partiële ordening op $\mathbb{O}$
-	\item $\Outer$ is een (tweestemmige) partiële ordening op $\mathbb{S}$
-\end{enumerate}
+\def\fgABCDetc{\begin{align*}
+f &\DEF \big<\left[\SmallProgram{
+    \LOCAL \id{g} \\
+    \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \id{n} = \id{n} + 1
+  }\right], \langle\id{n}\rangle, \id{g}, @0\big> &
+\State{D} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & \nil
+  }\right], \nil), ([\id{n} \mapsto 5], @0)\rangle, \langle\rangle &
+\State{I} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & g
+  }\right], \nil), (\left[\Bindings{
+    \id{n} & 6 \\
+    \id{g} & g
+  }\right], @0), (\varnothing, @1)\rangle, \langle\rangle \\
+g &\DEF \big<[\id{n} = \id{n} + 1], \langle\rangle, \id{n}, @1\big> &
+\State{E} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & \nil
+  }\right], \nil), (\left[\Bindings{
+    \id{n} & 5 \\
+    \id{g} & \nil
+  }\right], @0)\rangle, \langle\rangle &
+\State{J} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & g \\
+    \id{i} & \nil
+  }\right], \nil), (\left[\Bindings{
+    \id{n} & 6 \\
+    \id{g} & g
+  }\right], @0), (\varnothing, @1)\rangle, \langle\rangle \\
+\State{A} &\DEF \langle([\id{f} \mapsto \nil], \nil)\rangle, \langle\rangle &
+\State{F} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & \nil
+  }\right], \nil), (\left[\Bindings{
+    \id{n} & 5 \\
+    \id{g} & g
+  }\right], @0)\rangle, \langle\rangle &
+\State{K} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & g \\
+    \id{i} & \nil
+  }\right], \nil), (\left[\Bindings{
+    \id{n} & 6 \\
+    \id{g} & g
+  }\right], @0), (\varnothing, @1), (\varnothing, @1)\rangle, \langle\rangle \\
+\State{B} &\DEF \langle([\id{f} \mapsto f], \nil)\rangle, \langle\rangle &
+\State{G} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & g
+  }\right], \nil), (\left[\Bindings{
+    \id{n} & 5 \\
+    \id{g} & g
+  }\right], @0)\rangle, \langle\rangle &
+\State{L} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & g \\
+    \id{i} & \nil
+  }\right], \nil), (\left[\Bindings{
+    \id{n} & 7 \\
+    \id{g} & g
+  }\right], @0), (\varnothing, @1), (\varnothing, @1)\rangle, \langle\rangle \\
+\State{C} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & \nil
+  }\right], \nil)\rangle, \langle\rangle &
+\State{H} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & g
+  }\right], \nil), (\left[\Bindings{
+    \id{n} & 5 \\
+    \id{g} & g
+  }\right], @0), (\varnothing, @1)\rangle, \langle\rangle &
+\State{M} &\DEF \langle(\left[\Bindings{
+    \id{f} & f \\
+    \id{c} & g \\
+    \id{i} & 7
+  }\right], \nil), (\left[\Bindings{
+    \id{n} & 7 \\
+    \id{g} & g
+  }\right], @0), (\varnothing, @1), (\varnothing, @1)\rangle, \langle\rangle
+\end{align*}}
 
-Vervolgens introduceren we de relatie $\Attr \subseteq \mathbb{O} \times \mathit{Id} \times (\mathbb{O} \cup \mathbb{P})$. De uitspraak “$p[i] = v$” moet worden gelezen als: $(p, i, v) \in \Attr$. Deze relatie wordt eveneens gebruikt om de “inhoud” van objecten weer te geven, als de graafstructuur tussen objecten. Soortgelijk definiëren we de relatie $\SDef \subseteq \mathbb{S} \times \mathit{Id} \times (\mathbb{O} \cup \mathbb{P})$, waarbij de uitspraak “$\sigma[i] = v$” moet worden gelezen als: $(\sigma, i, v) \in \SDef$.
+\begin{Landscape}
+\begin{prooftree}
 
-Ten alle tijde moeten de prototype en scope hiërarchieën, de inhoud van objecten en scopes, en de laatste indentificaties van objecten en scopes worden bijgehouden, en dit vormt dan het “geheugen”, of de “toestand”: $s = (\Attr, \SDef, \Proto, \Outer, p_\mathit{next}, \sigma_\mathit{next})$.
-
-\begin{align*}
-	\left<\SKIP, s, \tau, \sigma\right> &\longrightarrow s \\
-	\left<x = e, s, \tau, \sigma\right> &\longrightarrow s[\; \sigma_d[x] = e \;] \\
-	& \textbf{desda}\; \sigma_d = \max \{\, \sigma' \in \mathbb{S} \mid \sigma'[x] \land \sigma \OuterEq \sigma' \,\} \\
-	\left<x \OBJECT, \tau, \sigma\right> &\longrightarrow s[\; \sigma_d[x] = p \;][\; p_\mathit{next} \mapsto p + 1 \;] \\
-	& \textbf{desda}\; \sigma_d = \max \{\, \sigma' \in \mathbb{S} \mid \sigma'[x] \land \sigma \OuterEq \sigma' \,\} \\
-	& \textbf{en}\; p = {p_\mathit{next}}_s
-\end{align*}
+\AxiomC{}
+\RuleLabel{[local]}
+\UnaryInfC{$
+  \Terminates{\LOCAL \id{f}}
+    {\State{\phantom{A}}}
+    {@0, \nil}
+    {\State{A}}
+$}
+\AxiomC{}
+\RuleLabel{[assign]}
+\UnaryInfC{$
+  \vTerminates{
+    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+    \IN \LOCAL \id{g} \\
+    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \IN \id{n} = \id{n} + 1
+  }
+    {\State{A}}
+    {@0, \nil}
+    {\State{B}}
+$}
+\RuleLabel{[comp]}
+\BinaryInfC{$
+  \vTerminates{
+    \LOCAL \id{f} \\
+    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+    \IN \LOCAL \id{g} \\
+    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \IN \id{n} = \id{n} + 1
+  }
+    {\State{\phantom{A}}}
+    {@0, \nil}
+    {\State{B}}
+$}
+\AxiomC{}
+\RuleLabel{[local]}
+\UnaryInfC{$
+  \Terminates{\LOCAL \id{c}}
+    {\State{\phantom{B}}}
+    {@0, \nil}
+    {\State{C}}
+$}
+\RuleLabel{[comp]}
+\BinaryInfC{$
+  \vTerminates{
+    \LOCAL \id{f} \\
+    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+    \IN \LOCAL \id{g} \\
+    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \IN \id{n} = \id{n} + 1 \\
+    \LOCAL \id{c}
+  }
+    {\State{\phantom{A}}}
+    {@0, \nil}
+    {\State{C}}
+$}
+\AxiomC{}
+\RuleLabel{[local]}
+\UnaryInfC{$
+  \Terminates{\LOCAL \id{g}}
+    {\State{D}}
+    {@1, \nil}
+    {\State{E}}
+$}
+\AxiomC{}
+\RuleLabel{[assign]}
+\UnaryInfC{$
+  \vTerminates{
+    \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \id{n} = \id{n} + 1
+  }
+    {\State{E}}
+    {@1, \nil}
+    {\State{F}}
+$}
+\RuleLabel{[comp]}
+\BinaryInfC{$
+  \vTerminates{
+    \LOCAL \id{g} \\
+    \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \id{n} = \id{n} + 1
+  }
+    {\State{D}}
+    {@1, \nil}
+    {\State{F}}
+$}
+\RuleLabel{[call]}
+\UnaryInfC{$
+  \Terminates{\id{c} = \id{f}(5)}
+    {\State{C}}
+    {@0, \nil}
+    {\State{G}}
+$}
+\RuleLabel{[comp]}
+\BinaryInfC{$
+  \vTerminates{
+    \LOCAL \id{f} \\
+    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+    \IN \LOCAL \id{g} \\
+    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \IN \id{n} = \id{n} + 1 \\
+    \LOCAL \id{c} \\
+    \id{c} = \id{f}(5)
+  }
+    {\State{\phantom{A}}}
+    {@0, \nil}
+    {\State{G}}
+$}
+\dottedLine
+\UnaryInfC{\hspace*{.8\textwidth}}
+\noLine
+\UnaryInfC{(afgekapt, zie volgend blad)}
+\end{prooftree}
+\null
+\vfill
+\hrule
+\fgABCDetc
+\clearpage
+\begin{prooftree}
+\AxiomC{(vervolg afleiding, zie vorig blad)}
+\dottedLine
+\UnaryInfC{$
+  \vTerminates{
+    \LOCAL \id{f} \\
+    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+    \IN \LOCAL \id{g} \\
+    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \IN \id{n} = \id{n} + 1 \\
+    \LOCAL \id{c} \\
+    \id{c} = \id{f}(5)
+  }
+    {\State{\phantom{A}}}
+    {@0, \nil}
+    {\State{G}}
+$}
+\AxiomC{}
+\RuleLabel{[assign]}
+\UnaryInfC{$
+  \Terminates{\id{n} = \id{n} + 1}
+    {\State{H}}
+    {@2, \nil}
+    {\State{I}}
+$}
+\RuleLabel{[call]}
+\UnaryInfC{$
+  \Terminates{\id{c}()}
+    {\State{G}}
+    {@0, \nil}
+    {\State{I}}
+$}
+\RuleLabel{[comp]}
+\BinaryInfC{$
+  \vTerminates{
+    \LOCAL \id{f} \\
+    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+    \IN \LOCAL \id{g} \\
+    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \IN \id{n} = \id{n} + 1 \\
+    \LOCAL \id{c} \\
+    \id{c} = \id{f}(5) \\
+    \id{c}()
+  }
+    {\State{\phantom{A}}}
+    {@0, \nil}
+    {\State{I}}
+$}
+\AxiomC{}
+\RuleLabel{[local]}
+\UnaryInfC{$
+  \Terminates{\LOCAL \id{i}}
+    {\State{I}}
+    {@0, \nil}
+    {\State{J}}
+$}
+\RuleLabel{[comp]}
+\BinaryInfC{$
+  \vTerminates{
+    \LOCAL \id{f} \\
+    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+    \IN \LOCAL \id{g} \\
+    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \IN \id{n} = \id{n} + 1 \\
+    \LOCAL \id{c} \\
+    \id{c} = \id{f}(5) \\
+    \id{c}() \\
+    \LOCAL \id{i}
+  }
+    {\State{\phantom{A}}}
+    {@0, \nil}
+    {\State{J}}
+$}
+\AxiomC{}
+\RuleLabel{[assign]}
+\UnaryInfC{$
+  \Terminates{\id{n} = \id{n} + 1}
+    {\State{K}}
+    {@2, \nil}
+    {\State{L}}
+$}
+\RuleLabel{[call]}
+\UnaryInfC{$
+  \Terminates{\id{i} = \id{c}()}
+    {\State{J}}
+    {@0, \nil}
+    {\State{M}}
+$}
+\RuleLabel{[comp]}
+\BinaryInfC{$
+  \vTerminates{
+    \LOCAL \id{f} \\
+    \id{f} = \FUN(\id{n}) \RETURNS \id{g} \\
+    \IN \LOCAL \id{g} \\
+    \IN \id{g} = \FUN(\;) \RETURNS \id{n} \\
+    \IN \IN \id{n} = \id{n} + 1 \\
+    \LOCAL \id{c} \\
+    \id{c} = \id{f}(5) \\
+    \id{c}() \\
+    \LOCAL \id{i} \\
+    \id{i} = \id{c}()
+  }
+    {\State{\phantom{A}}}
+    {@0, \nil}
+    {\State{M}}
+$}
+\end{prooftree}
+\null
+\vfill
+\hrule
+\fgABCDetc
+\end{Landscape}

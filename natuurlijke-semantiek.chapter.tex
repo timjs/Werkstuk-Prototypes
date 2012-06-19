@@ -1,6 +1,8 @@
+% !TeX root = werkstuk.tex
+
 \chapter{Natuurlijke Semantiek}
 
-\section{Expressies}
+\section{Expressie evaluatie}
 
 Expressies zijn syntactische elementen die zonder de \emph{toestand} van het programma te wijzigen \emph{geëvalueerd} kunnen worden tot een waarde $v \in \VV$. 
 Voor het evalueren definiëren we een aantal semantische functies, en één semantisch predikaat. Met een notatie die gebruik maakt van dubbele rechte haken geven we aan dat hier de stap wordt gemaakt van de \emph{syntaxis} van de taal naar het semantische model. Deze semantische functies (predikaat) nemen als input, naast de expressie die geëvalueerd dient te worden, ook de toestand van het programma: de geheugens $\ms$ en $\mo$ voor bereiken en objecten. Daarnaast leggen het huidige bereik $\sigma$ en het huidige object $\tau$ vast in welke \emph{omgeving} de evaluatie plaats vindt. Deze extra informatie noteren we als subscript bij de haken. Zo zijn evaluaties van ``gewone'' expressies ($\Expr$) zijn van de vorm
@@ -14,7 +16,7 @@ De signatuur van deze functie $\Express{\;}{}$ is dan
 \begin{equation*}
   \Express{\;}{} : \Expr \times \MMs \times \MMo \times \LLs \times \LLo \to \VV \\
 \end{equation*}
-
+%
 Ook definiëren we een \emph{uitgebreide} semantische functie voor syntactische elementen uit \MaybeExprs. Deze functie is nodig wanneer een functie wordt aangeroepen met een willekeurig aantal argumenten. Merk op dat in dit geval het resultaat niet een enkele waarde is, maar een lijst van waarden.
 %
 \begin{equation*}
@@ -167,40 +169,47 @@ De volgende voor de hand liggende definitie evalueert een element uit de syntact
 %
 Hier is $E^+$ een meta-variabele voor elementen uit $\Exprs$.
 
-\section{Statements}
+\section{Executie}
 
-\subsection{Basis}
-
-Het evalueren van een statement noteren we met dubbele vishaken. Net als bij expressies hebben we ook hier extra informatie nodig in de vorm van $\ms$, $\mo$, $\sigma$ en $\tau$. Ook hier noteren we deze als subscript bij de haken. Onze uitspraken zijn dan van de vorm:
+De kern van de natuurlijke semantiek is een relatie $(\longrightarrow)$, die de eindtoestand na \emph{executie} van een bepaald programma, gegeven een begintoestand en context, bepaalt. De signatuur van deze relatie geeft dit weer:
 %
 \begin{equation*}
-  \Config{S}{\ms,\mo,\sigma,\tau} \longrightarrow (\ms',\mo').
+  (\longrightarrow)
+  \subseteq
+  \underbrace{\Stm}_\text{programma} \times
+  \underbrace{(\MMs \times \MMo)}_\text{begintoestand} \times
+  \underbrace{(\II \times (\II \cup \{\nil\}))}_\text{context} \times
+  \underbrace{(\MMs \times \MMo)}_\text{eindtoestand}
+  .
 \end{equation*}
 %
-Hiermee bedoelen we dat
+Een uitspraak
 %
 \begin{equation*}
-  \big(\,(S,\ms,\mo,\sigma,\tau), (\ms',\mo')\,\big) \in (\longrightarrow),
+  (S,\ms,\mo,\sigma,\tau, \ms',\mo') \in (\longrightarrow)
 \end{equation*}
 %
-waarbij $\longrightarrow$ de volgende signatuur heeft 
+zullen we echter ``elegant'' als volgt weergeven, waardoor het intuïtieve concept van executie duidelijk wordt:
 %
 \begin{equation*}
-  (\longrightarrow) \subseteq (\Stm \times \MMs \times \MMo \times \II \times \II) \times (\MMs \times \MMo).
+  \Terminates{S}{\ms,\mo}{\sigma,\tau}{\ms',\mo'}.
 \end{equation*}
 %
-Deze transitie werkt op een statement $S\in\Stm$ in een toestand $(\ms,\mo)\in(\MMs,\MMo)$, waarbij ook bekend is wat het huidige bereik $\sigma \in \II$, en het huidige object $\tau \in (\II \cup \{\nil\})$ is. Het resultaat is een nieuwe toestand in de vorm van de twee geheugens $(\ms',\mo') \in (\MMs,\MMo)$.
+Deze uitspraak moet worden gelezen als: ``Executie van programma $S$, in begintoestand $\ms, \mo$ en met als context het bereik $\sigma$ en huidig object $\tau$, resulteert in eindtoestand $\ms', \mo'$''.
 
-Het huidige bereik verandert niet na executie van een programma, omdat bereik te maken heeft met de ordening van de code van het programma, welke niet verandert tijdens executie. Ook het huidige object verandert niet na executie, omdat de executie van een programma binnen een bepaald object uitvoering van een methode binnen dit object representeert. Het huidige bereik en huidig object geven dus de context van executie weer, maar niet de toestand van een programma.
+De \emph{context} waarin een programma kan worden geëxecuteerd, definiëren we als het bereik en huidige object. Het huidige bereik verandert niet na executie van een programma, omdat bereik te maken heeft met de ordening van de code van het programma, welke niet verandert tijdens executie. Ook het huidige object verandert niet na executie, omdat de executie van een programma binnen een bepaald object uitvoering van een methode binnen dit object representeert. Daarmee hebben we vastgesteld dat het bereik en huidige object enkel de executie beïnvloedt, dit is de reden dat we deze informatie de \emph{context} van een programma-executie noemen, en boven de pijl in een executie-uitspraak noteren.
 
 Het kan zijn dat er geen huidig object is, dan is $\tau = \nil$. Dit is bijvoorbeeld van toepassing op de executie van de eerste regel van een programma, dat niet deel is van een andere programma (bijvoorbeeld de body van een functie).
+
+\subsection{Basis: $\SKIP$, controlestructuren en compositie}
 
 Laten we beginnen met de simpelste constructie in onze taal, het lege statement $\SKIP$. Deze heeft de vorm van een axioma.
 %
 \begin{equation*}
-  \Config{\SKIP}{\ms, \mo, \sigma, \tau}
-  \longrightarrow
-  (\ms, \mo)
+  \Terminates{\SKIP}
+    {\ms, \mo}
+    {\sigma, \tau}
+    {\ms, \mo}
   \tag*{[skip]}
 \end{equation*}
 %
@@ -208,18 +217,21 @@ $\SKIP$ verandert niets aan de toestand zodat $(\ms',\mo')=(\ms,\mo)$. Voor het 
 %
 \begin{gather*}
   \frac{
-    \Config{S_1}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms', \mo')
+    \Terminates{S_1}
+      {\ms, \mo}
+      {\sigma, \tau}
+      {\ms', \mo'}
   \quad
-    \Config{S_2}{\ms', \mo', \sigma, \tau}
-    \longrightarrow
-    (\ms'', \mo'')
+    \Terminates{S_2}
+      {\ms', \mo'}
+      {\sigma, \tau}
+      {\ms'', \mo''}
   }
   {
-    \Config{S_1; S_2}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms'', \mo'')
+    \Terminates{S_1; S_2}
+      {\ms, \mo}
+      {\sigma, \tau}
+      {\ms'', \mo''}
   }
   \tag*{[comp]}
 \end{gather*}
@@ -230,13 +242,15 @@ Voor de controlestructuur $\IF$ hebben we twee regels nodig. De eerste is van to
 %
 \begin{gather*}
   \frac{
-    \Config{S_\text{then}}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms', \mo')
+    \Terminates{S_\text{then}}
+      {\ms, \mo}
+      {\sigma, \tau}
+      {\ms', \mo'}
   }{
-    \Config{\IF b \THEN  S_\text{then} \ELSE S_\text{else} }{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms', \mo')
+    \Terminates{\IF b \THEN  S_\text{then} \ELSE S_\text{else} }
+      {\ms, \mo}
+      {\sigma, \tau}
+      {\ms', \mo'}
   }
   \tag*{[if \#1]} \\
   \Desdas{
@@ -246,13 +260,15 @@ Voor de controlestructuur $\IF$ hebben we twee regels nodig. De eerste is van to
 %
 \begin{gather*}
   \frac{
-    \Config{S_\text{else}}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms', \mo')
+    \Terminates{S_\text{else}}
+      {\ms, \mo}
+      {\sigma, \tau}
+      {\ms', \mo'}
   }{
-    \Config{\IF b \THEN  S_\text{then} \ELSE S_\text{else} }{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms', \mo')
+    \Terminates{\IF b \THEN  S_\text{then} \ELSE S_\text{else} }
+      {\ms, \mo}
+      {\sigma, \tau}
+      {\ms', \mo'}
   }
   \tag*{[if \#2]} \\
   \Desdas{
@@ -264,17 +280,20 @@ Eenzelfde tactiek passen we toe bij een $\WHILE$-loop.
 %
 \begin{gather*}
   \frac{
-    \Config{S_\text{while}}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms',\mo')
+    \Terminates{S_\text{while}}
+      {\ms, \mo}
+      {\sigma, \tau}
+      {\ms',\mo'}
   \quad
-    \Config{\WHILE b \DO S_\text{while} }{\ms', \mo', \sigma, \tau}
-    \longrightarrow
-    (\ms'',\mo'')
+    \Terminates{\WHILE b \DO S_\text{while} }
+      {\ms', \mo'}
+      {\sigma, \tau}
+      {\ms'',\mo''}
   }{
-    \Config{\WHILE b \DO S_\text{while} }{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms'',\mo'')
+    \Terminates{\WHILE b \DO S_\text{while} }
+      {\ms, \mo}
+      {\sigma, \tau}
+      {\ms'',\mo''}
   }
   \tag*{[while \#1]} \\
   \Desdas{
@@ -283,9 +302,10 @@ Eenzelfde tactiek passen we toe bij een $\WHILE$-loop.
 \end{gather*}
 %
 \begin{gather*}
-  \Config{\WHILE b \DO S }{\ms, \mo, \sigma, \tau}
-  \longrightarrow
-  (\ms, \mo)
+  \Terminates{\WHILE b \DO S }
+    {\ms, \mo}
+    {\sigma, \tau}
+    {\ms, \mo}
   \tag*{[while \#2]} \\
   \Desdas{
     \Desda[desda]{\neg \Express[B]{b}{\ms,\mo,\sigma,\tau}}
@@ -297,9 +317,10 @@ Eenzelfde tactiek passen we toe bij een $\WHILE$-loop.
 We komen nu bij een interessanter deel van de taal, namelijk het \emph{declareren} van variabelen en het \emph{toekennen} van waarden. In deze sectie gaan we dus alleen de bereiken modificeren. Aan de basis hiervan ligt het declareren van een variabele met $\LOCAL$. We willen in het huidige bereik de eigen bindingen zó aanpassen, dat de \Id\ die we declareren gekoppeld wordt aan $\nil$ (de variabele bevat immers nog geen expliciete waarde). Voordat we dit kunnen doen, moeten we bereik $\sigma$ opzoeken in het geheugen voor bereiken $\ms$ met $\ms(\sigma)$. Vervolgens passen we de binding hiervan aan (zie notatie in §\ref{sec:bereiken} en §\ref{sec:uitbreiden}). Met de verwijzing naar het omliggend bereik $\pi$ doen we niks. Dit paar van uitgebreide bindingen en oud omliggend bereik zetten we terug in het geheugen $\ms$ op plek $\sigma$.
 %
 \begin{gather*}
-  \Config{\LOCAL i}{\ms, \mo, \sigma, \tau}
-  \longrightarrow
-  (\ms', \mo)
+  \Terminates{\LOCAL i}
+    {\ms, \mo}
+    {\sigma, \tau}
+    {\ms', \mo}
   \tag*{[local]} \\
   \Desdas{
     \Desda[desda]{\ms' = \ms \surr{ \sigma \mapsto \big(b_{\ms(\sigma)}[i \mapsto \BOT], \pi_{\ms(\sigma)}\big) }}
@@ -309,9 +330,10 @@ We komen nu bij een interessanter deel van de taal, namelijk het \emph{declarere
 Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we dit met dezelfde aanpassingstechniek als hierboven. Er is echter één groot verschil. Voordat we een waarde aan een variabele kunnen koppelen, moeten we eerst het bereik vinden waarin deze gedeclareerd is. Dit hoeft niet het huidige bereik te zijn en dus zoeken we deze op met de hulpfunctie $\Finds$. Daarnaast moeten we natuurlijk de expressie aan de rechter kant van het is-teken evalueren.
 %
 \begin{gather*}
-  \Config{i = e}{\ms, \mo, \sigma, \tau}
-  \longrightarrow
-  (\ms', \mo)
+  \Terminates{i = e}
+    {\ms, \mo}
+    {\sigma, \tau}
+    {\ms', \mo}
   \tag*{[assign var]} \\
   \Desdas{
     \Desda[desda]{\Express{e}{\ms, \mo, \sigma, \tau} = v}
@@ -325,9 +347,10 @@ Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we 
 Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van andere functies en we moeten rekening houden met het doorlopen van een pad. Daarnaast is er nog het speciale geval dat het eerste deel van het pad $\THIS$ is. Natuurlijk gebeuren al deze aanpassingen in het geheugen voor objecten $\mo$ in plaats van het geheugen voor bereiken $\ms$.
 %
 \begin{gather*}
-  \Config{\THIS.p = e}{\ms, \mo, \sigma, \tau}
-  \longrightarrow
-  (\ms, \mo')
+  \Terminates{\THIS.p = e}
+    {\ms, \mo}
+    {\sigma, \tau}
+    {\ms, \mo'}
   \tag*{[assign this attr]} \\
   \Desdas{
     \Desda[desda]{\Express{e}{\ms, \mo, \sigma, \tau} = v}
@@ -337,9 +360,10 @@ Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van ande
 \end{gather*}
 %
 \begin{gather*}
-  \Config{i.p = e}{\ms, \mo, \sigma, \tau}
-  \longrightarrow
-  (\ms', \mo)
+  \Terminates{i.p = e}
+    {\ms, \mo}
+    {\sigma, \tau}
+    {\ms', \mo}
   \tag*{[assign attr]} \\
   \Desdas{
     \Desda[desda]{\Express{e}{\ms, \mo, \sigma, \tau} = v}
@@ -354,9 +378,10 @@ Bij attributen gaat toekenning net iets anders. We hebben de hulp nodig van ande
 Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat data. In §\ref{sec:waarden} is uitgebreid besproken dat er een significant verschil is tussen primitieve waarden en data. Toch gaat dit op bijna dezelfde manier als het toekennen van een primitieve waarde. De locatie $\omega$ van een object $o$ kan immers wel op dezelfde manier worden behandeld. Wat moet gebeuren is het aanmaken van een nieuw, leeg object in het geheugen voor objecten. Zo een leeg object heeft de vorm $(\varnothing, \nil)$. De bindingen zijn immers leeg en er is nog geen prototype gedefinieerd. Om een nieuwe plek in het geheugen te vinden, kijken we naar de lengte van het huidge geheugen. Tot slot voegen we het legen object achteraan het geheugen toe.
 %
 \begin{gather*}
-  \Config{i \OBJECT}{\ms, \mo, \sigma, \tau}
-  \longrightarrow
-  (\ms', \mo')
+  \Terminates{i \OBJECT}
+    {\ms, \mo}
+    {\sigma, \tau}
+    {\ms', \mo'}
   \tag*{[object]} \\
   \Desdas{
     \Desda[desda]{\Finds(\ms, \sigma, i) = \sigma'}
@@ -369,9 +394,10 @@ Nu hebben we nog niet bekeken hoe we aangeven dat een variabele een object bevat
 Het definiëren van een prototype gaat met het $\CLONES$-statement. Hiervoor zoeken we simpelweg de locaties $\omega_i$ en $\omega_j$ van de twee objecten op. Vervolgens zetten we in het geheugen dat het prototype van het object in $\omega_i$ de locatie $\omega_j$ is.
 %
 \begin{gather*}
-  \Config{i \CLONES j}{\ms, \mo, \sigma, \tau}
-  \longrightarrow
-  (\ms, \mo')
+  \Terminates{i \CLONES j}
+    {\ms, \mo}
+    {\sigma, \tau}
+    {\ms, \mo'}
   \tag*{[clones]} \\
   \Desdas{
     \Desda[desda]{\Express{i}{\ms,\mo,\sigma,\tau} = \omega_i \in \II}
@@ -390,13 +416,15 @@ Functie applicatie is de meest interessante deductieregel, en de kern van de sem
 
 \begin{gather*}
   \frac{
-    \Config{S_\text{body}}{\ms', \mo, \sigma_\text{exec}, \tau_\text{exec}}
-    \longrightarrow
-    (\ms'', \mo')
+    \Terminates{S_\text{body}}
+      {\ms', \mo}
+      {\sigma_\text{exec}, \tau_\text{exec}}
+      {\ms'', \mo'}
   }{
-    \Config{(i_\text{receive} =)^?\; s_\text{refer}(e^*)}{\ms, \mo, \sigma, \tau}
-    \longrightarrow
-    (\ms''', \mo')
+    \Terminates{(i_\text{receive} =)^?\; s_\text{refer}(e^*)}
+      {\ms, \mo}
+      {\sigma, \tau}
+      {\ms''', \mo'}
   }
   \tag*{[apply]} \\
   \hspace*{5pc}\Desdas{
@@ -426,15 +454,6 @@ Functie applicatie is de meest interessante deductieregel, en de kern van de sem
       \ms'' \textbf{ als } r = \nil
     \end{cases}}
   }
-%   \\
-%  \Desdas{
-%    \Desda{\sigma_\text{def} = \Finds(\ms, \sigma, i)}
-%    \Desda{b_{\ms(\sigma_\text{def})}(i) = \omega \in \II}
-%    \Desda{\Trav(\mo, \omega, s) = (\omega', j)}
-%    \Desda{(S_{\!f}, I_{\!f}, i_{\!f}, \sigma_{\!f\text{def}}) = f = b_{\mo(\omega')}(j)}
-%    \Desda{\sigma_{\!f\text{new}} = \Nexts(\ms)}
-%    \Desda{\ms' = \ms\surr{ \sigma_{\!f\text{new}} \mapsto \big(\Surr{e^*}^*_{\ms,\sigma,\tau}(I_{\!f}), \sigma_{\!f\text{def}}\big) }}
-%  }
 \end{gather*}
 
 % vim: syn=latex spell spl=nl cole=1

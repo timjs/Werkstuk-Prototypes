@@ -1,3 +1,6 @@
+% !TeX root = werkstuk.tex
+% !TeX program = xelatex
+
 \chapter{Notatie en terminologie}
 \label{chp:notatie}
 
@@ -11,6 +14,12 @@ We identificeren een functie met zijn grafiek, dit wil zeggen dat een functie $f
 \begin{equation*}
   \neg \exists_{x \in X,\; y_1,y_2 \in Y} \left[ (x, y_1) \in f \land (x, y_2) \in f \land y_1 \neq y_2 \right]
 \end{equation*}
+%
+We schrijven functies soms ook in een soort tabelvorm op: $\left[\Bindings{
+  a & b \\
+  c & d \\
+  e & f
+}\right] = \{(a, b), (c, d), (e, f)\}$.
 
 \section{Partiële functies}
 \label{sec:partielefuncties}
@@ -37,7 +46,7 @@ We schrijven in dit werkstuk $Y^X$ voor de verzameling functies $\{f : X \to Y \
 \section{Lijsten}
 \label{sec:lijsten}
 
-We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige partiële functies $t : \{(n, n) \in \NN^2\} \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $\II$ schrijven i.p.v.~$\{(n, n) \in \NN^2\}$, om aan te geven dat het gaat om de indices van lijsten. Merk op dat we als indices geen gebruik maken van $\NN$. Later in het werkstuk gaan we er vanuit dat we elementen uit $\II$ kunnen onderscheiden van elementen uit $\ZZ$. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefinieerd:
+We zullen meermaals in ons werkstuk gebruik maken van willekeurig grote, maar altijd eindige, \emph{lijsten} van elementen uit een zekere verzameling. Deze lijsten worden gerepresenteerd door eindige partiële functies $t : \{(n, n) \in \NN^2\} \to X$ (met $X$ de verzameling waaruit we de elementen van de lijst nemen), waaraan nog een paar extra voorwaarden worden gesteld. We zullen ook wel $@n \in \II$ schrijven i.p.v.~$\{(n, n) \in \NN^2\}$, om aan te geven dat het gaat om de indices van lijsten. Merk op dat we als indices geen gebruik maken van $\NN$. Later in het werkstuk gaan we er vanuit dat we elementen uit $\II$ kunnen onderscheiden van elementen uit $\ZZ$. De verzameling van alle lijsten op een zekere verzameling $X$, genoteerd $X_{\langle\rangle}$, is als volgt gedefinieerd:
 \begin{equation*}
 X_{\langle\rangle} \DEF \big\{\, t : \II \to X \big\vert \exists_{N \in \NN} \surr{ \forall_{n < N}[t \downarrow (n, n)] \land \forall_{n\ge N}[t \uparrow (n, n)] } \,\big\}
 \end{equation*}

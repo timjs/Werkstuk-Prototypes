@@ -5,6 +5,9 @@
    bibliography=totoc]
   {scrbook}
 
+\usepackage{pdflscape}
+\usepackage{geometry}
+
 \usepackage{fontspec}
 \defaultfontfeatures
   {Scale=MatchLowercase}
@@ -26,6 +29,7 @@
 \setmonofont{Consolas}
 
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{xunicode}
 \usepackage{unicode-math}
 \setmathfont{Asana Math}
@@ -53,6 +57,25 @@
 \usepackage{subcaption}
 \usepackage{setspace} \setstretch{1.1} %\doublespacing
 
+\geometry{margin=.5cm,landscape,a4paper}
+\savegeometry{landscapegeometry}
+\geometry{portrait}
+\savegeometry{normalgeometry}
+
+\NewEnviron{Landscape}{%
+\begin{landscape}
+	\loadgeometry{landscapegeometry}
+	\thispagestyle{empty}
+	\BODY
+	\restoregeometry
+\end{landscape}%
+}
+
+
+\usepackage{bussproofs}
+\renewcommand{\extraVskip}{4pt} % Iets meer verticale ruimte
+
+
 \newcommand{\newmathcommand}[2]
   {\newcommand{#1}
     {\ensuremath{#2}}}
@@ -79,14 +102,16 @@
     {\ensuremath{\mathbf{#1}}}}
 
 \newcommand{\id}[1]
-  {\text{\ttfamily\small\upshape #1}}
+  {\text{\ttfamily\upshape #1}}
 
 \newcommand{\surrAngle}[1]
   {\ensuremath{\big<\,#1\,\big>}}
 \newcommand{\SurrAngle}[1]
-  {\ensuremath{\big<\!\big<\,#1\,\big>\!\big>}}
+  {\ensuremath{\big<\,#1\,\big>}}
 \newcommand{\surr}[1]
   {\ensuremath{\big[\,#1\,\big]}}
+\newcommand{\vsurr}[1]
+  {\ensuremath{\left[\,#1\,\right]}}
 \newcommand{\Surr}[1]
   {\ensuremath{\big[\!\big[\,#1\,\big]\!\big]}}
 
@@ -102,7 +127,29 @@
 %\newcommand{\Config}[2]
   %{\surrAngle{#1}_{#2}}%  -- <S>m,s,t
 \newcommand{\Config}[2]
-  {\ensuremath{\SurrAngle{#1}_{#2}}}%  -- <<S>>m,s,t
+  {\ensuremath{\SurrAngle{#1}\;{#2}}}%  -- <<S>>m,s,t
+
+\newcommand{\SmallProgramSize}{.8}
+\newcommand{\SmallProgram}[1]{\scalebox{\SmallProgramSize}{\renewcommand{\arraystretch}{\SmallProgramSize}$\begin{array}{@{}l@{}}#1\end{array}$}}
+\newcommand{\Terminates}[4]
+  {\surr{#1}\;#2 \xrightarrow{\text{$#3$}} #4}
+\newcommand{\vTerminates}[4]
+  {\vsurr{\SmallProgram{#1}}\;%
+  #2 \xrightarrow{\text{$#3$}} #4}
+
+\newcommand*\State[1]{\scalebox{.7}{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}}
+
+\newcommand{\RuleLabel}[1]{\LeftLabel{\scriptsize #1}}
+
+\newcommand{\Bindings}[1]{%
+  \scalebox{.75}{$%
+    \renewcommand{\arraystretch}{0.75}%
+    \begin{array}{@{\,}r@{\,\mapsto\,}l@{\,}}%
+      #1
+    \end{array}%
+  $}%
+}
 
 % Functions:
 \newmathcommand{\Trav}
@@ -346,6 +393,7 @@
 }
 
 \NewEnviron{htmlskip}{\BODY}
+\NewEnviron{htmlonly}{}
 \newcommand{\htmlinsert}[1]{}
 
 
@@ -376,7 +424,7 @@
 \input taal-en-syntax.chapter
 \input semantisch-model.chapter
 \input natuurlijke-semantiek.chapter
-%\input case-study.chapter
+\input case-study.chapter
 
 \backmatter
 
