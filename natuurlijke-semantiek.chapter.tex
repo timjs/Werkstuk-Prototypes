@@ -1,4 +1,5 @@
 % !TeX root = werkstuk.tex
+% !TeX program = xelatex
 
 \chapter{Natuurlijke Semantiek}
 
@@ -31,22 +32,18 @@ Boolse expressies, die gebruikt worden in de verscheidene loops van de taal, eva
   \Express[B]{\;}{} \subseteq \BExpr \times \MMs \times \MMo \times \LLs \times \LLo
 \end{equation*}
 %
-De reden voor deze andere aanpak is dat de definitie dan makkelijker leest. We definiëren dat $\Express[B]{b}{\ms,\mo,\sigma,\tau}$, dan en slechts dan als het met de volgende axioma's en deductieregels bewezen kan worden:
+De reden voor deze andere aanpak is dat de definitie dan makkelijker leest. We definiëren dat $\Express[B]{b}{\ms,\mo,\sigma,\tau}$ de kleinste subset is van hierboven genoemde verzameling, die aan onderstaande eisen voldoet:
 %
 \begin{align*}
-  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} & & &
-  \frac
-    {\neg \Express[B]{b}{\ms,\mo,\sigma,\tau}}
-    {\Express[B]{\NOT b}{\ms,\mo,\sigma,\tau}} \\
-  \frac
-    {\Express[B]{b}{\ms,\mo,\sigma,\tau} \quad \Express[B]{c}{\ms,\mo,\sigma,\tau}}
-    {\Express[B]{b \AND c}{\ms,\mo,\sigma,\tau}} & & &
-  \frac
-    {\Express[B]{b}{\ms,\mo,\sigma,\tau}}
-    {\Express[B]{b \OR c}{\ms,\mo,\sigma,\tau}} & & &
-  \frac
-    {\Express[B]{c}{\ms,\mo,\sigma,\tau}}
-    {\Express[B]{b \OR c}{\ms,\mo,\sigma,\tau}}
+  &\; \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} \\
+  \neg \Express[B]{b}{\ms,\mo,\sigma,\tau}
+  \Rightarrow&\; \Express[B]{\NOT b}{\ms,\mo,\sigma,\tau} \\
+  \Express[B]{b}{\ms,\mo,\sigma,\tau} \land \Express[B]{c}{\ms,\mo,\sigma,\tau}
+  \Rightarrow&\; \Express[B]{b \AND c}{\ms,\mo,\sigma,\tau} \\
+  \Express[B]{b}{\ms,\mo,\sigma,\tau}
+  \Rightarrow&\; \Express[B]{b \OR c}{\ms,\mo,\sigma,\tau} \\
+  \Express[B]{c}{\ms,\mo,\sigma,\tau}
+  \Rightarrow&\; \Express[B]{b \OR c}{\ms,\mo,\sigma,\tau}
 \end{align*}
 \begin{gather*}
   \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau} \textbf{ desda } n_1 \sim n_2 \\
@@ -334,7 +331,7 @@ Wanneer we daadwerkelijk een waarde aan een variabele willen toekennen, doen we 
     {\ms, \mo}
     {\sigma, \tau}
     {\ms', \mo}
-  \tag*{[assign var]} \\
+  \tag*{[assign]} \\
   \Desdas{
     \Desda[desda]{\Express{e}{\ms, \mo, \sigma, \tau} = v}
     \Desda{\sigma' = \Finds(\ms, \sigma, i)}

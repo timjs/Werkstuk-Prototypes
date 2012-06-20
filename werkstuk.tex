@@ -1,3 +1,5 @@
+% !TeX program = xelatex
+
 \documentclass
   [11pt,a4paper,
    twoside=true,
@@ -407,8 +409,10 @@
 
 \KOMAoptions{twoside = false}
 \begin{titlepage}
+  \newlength{\sidlength}
+  \settowidth{\sidlength}{4046854}
   \title{Een natuurlijke semantiek voor prototype overerving en lexicaal bereik}
-  \author{Kelley van Evert \& Tim Steenvoorden}
+  \author{$\underbrace{\text{Kelley van Evert}}_\textit{s4046854}$ \& $\underbrace{\text{Tim\phantom{y}Steenvoorden}}_\textit{s\parbox{\sidlength}{\dotfill}}$}
   \maketitle
 \end{titlepage}
 \KOMAoptions{twoside}

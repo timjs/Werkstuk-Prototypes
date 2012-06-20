@@ -14,12 +14,6 @@ We identificeren een functie met zijn grafiek, dit wil zeggen dat een functie $f
 \begin{equation*}
   \neg \exists_{x \in X,\; y_1,y_2 \in Y} \left[ (x, y_1) \in f \land (x, y_2) \in f \land y_1 \neq y_2 \right]
 \end{equation*}
-%
-We schrijven functies soms ook in een soort tabelvorm op: $\left[\Bindings{
-  a & b \\
-  c & d \\
-  e & f
-}\right] = \{(a, b), (c, d), (e, f)\}$.
 
 \section{Partiële functies}
 \label{sec:partielefuncties}
@@ -94,6 +88,12 @@ Als $\overline{x} = \langle x_1, x_2, \dots, x_N\rangle \in X_{\langle\rangle}$,
     \left[ x_2 \mapsto y_2 \right]\dots
     \left[ x_N \mapsto y_N \right].
 \end{equation*}
+%
+Soms specificeren we een functie als uitbreiding op de lege functie $\varnothing$, we schrijven dan bijvoorbeeld $[a \mapsto b]$ voor de functie $\varnothing[a \mapsto b] = \{(a, b)\}$. In het verlengde van deze notatie noteren we functies soms ook in een soort tabelvorm op: $\left[\Bindings{
+  a & b \\
+  c & d \\
+  e & f
+}\right] = [a \mapsto b][c \mapsto d][e \mapsto f] = \varnothing[a \mapsto b][c \mapsto d][e \mapsto f] = \{(a, b), (c, d), (e, f)\}$.
 
 \section{Notationele conventies}
 \label{sec:conventies}
