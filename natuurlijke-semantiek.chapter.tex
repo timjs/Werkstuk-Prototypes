@@ -5,7 +5,7 @@
 
 Dit hoofdstuk is opgesplitst in twee delen. Het eerste deel zal zich bezig houden met het \emph{evalueren} van verscheidene soorten expressies, syntactische elementen uit $\Expr$, $\BExpr$ en $\MaybeExprs$, die zich in de taal voordoen. Typisch is de toestand en context van een programma nodig voor het evalueren van een expressie, maar wijzigt deze niet. In het tweede deel presenteren we de \emph{natuurlijke semantiek} die wij voor de taal hebben ontwikkeld.
 
-\section{Evaluatie (van expressies)}
+\section{Evaluatie van expressies}
 
 Expressies zijn syntactische elementen die zonder de \emph{toestand} van het programma te wijzigen \emph{geëvalueerd} kunnen worden tot een waarde $v \in \VV$. 
 Voor het evalueren definiëren we een aantal semantische functies en één semantisch predikaat. Met een notatie die gebruik maakt van dubbele rechte haken geven we aan dat hier de stap wordt gemaakt van de \emph{syntaxis} van de taal naar het semantische model. Deze semantische functies (predikaat) nemen als input, naast de expressie die geëvalueerd dient te worden, ook de toestand van het programma: de geheugens $\ms$ en $\mo$ voor bereiken en objecten. Daarnaast leggen het huidige bereik $\sigma$ en het huidige object $\tau$ vast in welke \emph{omgeving} de evaluatie plaats vindt. Deze extra informatie noteren we als subscript bij de haken. Zo zijn evaluaties van ``gewone'' expressies ($\Expr$) zijn van de vorm
@@ -26,7 +26,7 @@ Ook definiëren we een \emph{uitgebreide} semantische functie voor syntactische 
   \Express[M]{\;}{} : \MaybeExprs \times \MMs \times \MMo \times \LLs \times \LLo \to \VV_{\langle\rangle}
 \end{equation*}
 
-\subsection{Een predikaat voor boolse expressies}
+\subsection{Booleans}
 
 Boolse expressies, die gebruikt worden in de verscheidene loops van de taal, evalueren we niet tot een zekere verzameling. In tegenstelling tot gewone expressies, definiëren we voor boolse expressies een predikaat $\Express[B]{\;}{}$.
 %
@@ -70,7 +70,7 @@ De reden voor deze andere aanpak is dat de definitie dan makkelijker leest. We d
   }
 \end{gather*}
 
-\subsection{Evaluatie van gehele getallen}
+\subsection{Gehele getallen}
 
 Het evalueren van getallen ($\Num$) beschouwen we voor het gemak apart, en nemen we later op in de volledige semantische functie voor expressies ($\Expr$).
 %
@@ -88,7 +88,7 @@ Deze functie is als volgt op voor de hand liggend manier gedefinieerd:
   \Express[Z]{-n}{} &= -1 \cdot \Express[Z]{n}{}
 \end{align*}
 
-\subsection{Evaluatie van expressies}
+\subsection{Expressies}
 
 De eerste type expressie dat we tegenkomen in de definitie van §\ref{sec:formeletaal} zijn de getallen. Deze hebben we hierboven al gedefinieerd met de gespecialiseerde functie $\Express[Z]{\;}{}$. Hier kunnen we nu mooi gebruik van maken.
 %
@@ -172,7 +172,7 @@ De laatste familie van expressies zijn de functies. Hier maken we onderscheid tu
 %
 We zien dat we alle benodigde gegevens uit de expressie overnemen en opslaan in een $f\in\FF$. Het enige verschil tussen de regels~\ref{rul:function} en \ref{rul:functionreturns} is het overnemen van de teruggeef-\Id\ $j$ in het viertupel.
 
-De volgende voor de hand liggende definitie evalueert een element uit de syntactische verzameling $\MaybeExprs$ to een lijst van waarden.
+De volgende voor de hand liggende definitie evalueert een element uit de syntactische verzameling $\MaybeExprs$ tot een lijst van waarden.
 %
 \begin{align*}
   \Express[M]{\varepsilon}{\ms,\mo,\sigma,\tau} &= \langle\rangle \\
@@ -182,9 +182,9 @@ De volgende voor de hand liggende definitie evalueert een element uit de syntact
 %
 Hier is $E^+$ een meta-variabele voor elementen uit $\Exprs$.
 
-\section{Executie (Natuurlijke Semantiek)}
+\section{Executie van statements}
 
-Nu zullen we een formele definitie geven van een \emph{natuurlijke semantiek}, ook wel \emph{big-step operational semantics}, voor de taal. Een natuurlijke semantiek doet uitspraken over de executie van een programma in zijn geheel. Deze abstracte kijk op de executie van een programma kenmerkt het concept van natuurlijke semantiek, welke de benaming ``natuurlijk'' heeft gekregen omdat het, net als \emph{natuurlijke deductie} voor de logica, in zekere zin de ''natuurlijk'' vorm van redeneren volgt.
+Nu zullen we een formele definitie geven van een \emph{natuurlijke semantiek}, ook wel \emph{big-step operational semantics}, voor de taal. Een natuurlijke semantiek doet uitspraken over de executie van een programma in zijn geheel. Deze abstracte kijk op de executie van een programma kenmerkt het concept van natuurlijke semantiek. De benaming \emph{natuurlijk} volgt uit de ``natuurlijke'' vorm van redenatie waar het zich op baseert, vergelijk dit bijvoorbeeld met \emph{natuurlijke deductie} voor de logica.
 
 Uitspraken over de terminatie van een bepaald programma worden weergegeven door een relatie $(\longrightarrow)$, die de eindtoestand na \emph{executie} van een bepaald programma, gegeven een begintoestand en context, bepaalt. De signatuur van de relatie geeft dit weer:
 %
@@ -198,7 +198,7 @@ Uitspraken over de terminatie van een bepaald programma worden weergegeven door 
   .
 \end{equation*}
 %
-Een uitspraak $(S,\ms,\mo,\sigma,\tau, \ms',\mo') \in (\longrightarrow)$ zullen we, om het intuïtieve concept van executie duidelijk te maken, ``elegant'' als volgt weergeven:
+Een uitspraak $(S,\ms,\mo,\sigma,\tau, \ms',\mo') \in (\longrightarrow)$ zullen we, om het intuïtieve concept van executie duidelijk te maken, als volgt weergeven:
 %
 \begin{equation*}
   \Terminates{S}{\ms,\mo}{\sigma,\tau}{\ms',\mo'}.

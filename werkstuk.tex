@@ -57,7 +57,12 @@
 \usepackage{environ}
 \usepackage{multicol}
 \usepackage{subcaption}
-\usepackage{setspace} \setstretch{1.1} %\doublespacing
+\usepackage{setspace} %\doublespacing
+\def\DefaultStretch{1.1}
+\def\TOCStretch{.95}
+\setstretch{\DefaultStretch}
+\usepackage[titles]{tocloft}
+\setlength{\cftbeforechapskip}{5pt}
 
 \geometry{margin=.5cm,landscape,a4paper}
 \savegeometry{landscapegeometry}
@@ -419,7 +424,9 @@
 
 \frontmatter
 
+\setstretch{\TOCStretch}
 \tableofcontents
+\setstretch{\DefaultStretch}
 \input inleiding.chapter
 
 \mainmatter
