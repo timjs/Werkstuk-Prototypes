@@ -3,10 +3,12 @@
 
 \chapter{Natuurlijke Semantiek}
 
-\section{Expressie evaluatie}
+Dit hoofdstuk is opgesplitst in twee delen. Het eerste deel zal zich bezig houden met het \emph{evalueren} van verscheidene soorten expressies, syntactische elementen uit $\Expr$, $\BExpr$ en $\MaybeExprs$, die zich in de taal voordoen. Typisch is de toestand en context van een programma nodig voor het evalueren van een expressie, maar wijzigt deze niet. In het tweede deel presenteren we de \emph{natuurlijke semantiek} die wij voor de taal hebben ontwikkeld.
+
+\section{Evaluatie (van expressies)}
 
 Expressies zijn syntactische elementen die zonder de \emph{toestand} van het programma te wijzigen \emph{geëvalueerd} kunnen worden tot een waarde $v \in \VV$. 
-Voor het evalueren definiëren we een aantal semantische functies, en één semantisch predikaat. Met een notatie die gebruik maakt van dubbele rechte haken geven we aan dat hier de stap wordt gemaakt van de \emph{syntaxis} van de taal naar het semantische model. Deze semantische functies (predikaat) nemen als input, naast de expressie die geëvalueerd dient te worden, ook de toestand van het programma: de geheugens $\ms$ en $\mo$ voor bereiken en objecten. Daarnaast leggen het huidige bereik $\sigma$ en het huidige object $\tau$ vast in welke \emph{omgeving} de evaluatie plaats vindt. Deze extra informatie noteren we als subscript bij de haken. Zo zijn evaluaties van ``gewone'' expressies ($\Expr$) zijn van de vorm
+Voor het evalueren definiëren we een aantal semantische functies en één semantisch predikaat. Met een notatie die gebruik maakt van dubbele rechte haken geven we aan dat hier de stap wordt gemaakt van de \emph{syntaxis} van de taal naar het semantische model. Deze semantische functies (predikaat) nemen als input, naast de expressie die geëvalueerd dient te worden, ook de toestand van het programma: de geheugens $\ms$ en $\mo$ voor bereiken en objecten. Daarnaast leggen het huidige bereik $\sigma$ en het huidige object $\tau$ vast in welke \emph{omgeving} de evaluatie plaats vindt. Deze extra informatie noteren we als subscript bij de haken. Zo zijn evaluaties van ``gewone'' expressies ($\Expr$) zijn van de vorm
 %
 \begin{equation*}
   \Express{E}{\ms,\mo,\sigma,\tau} = v \in \VV.
@@ -32,19 +34,33 @@ Boolse expressies, die gebruikt worden in de verscheidene loops van de taal, eva
   \Express[B]{\;}{} \subseteq \BExpr \times \MMs \times \MMo \times \LLs \times \LLo
 \end{equation*}
 %
-De reden voor deze andere aanpak is dat de definitie dan makkelijker leest. We definiëren dat $\Express[B]{b}{\ms,\mo,\sigma,\tau}$ de kleinste subset is van hierboven genoemde verzameling, die aan onderstaande eisen voldoet:
-%
-\begin{align*}
-  &\; \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} \\
-  \neg \Express[B]{b}{\ms,\mo,\sigma,\tau}
-  \Rightarrow&\; \Express[B]{\NOT b}{\ms,\mo,\sigma,\tau} \\
-  \Express[B]{b}{\ms,\mo,\sigma,\tau} \land \Express[B]{c}{\ms,\mo,\sigma,\tau}
-  \Rightarrow&\; \Express[B]{b \AND c}{\ms,\mo,\sigma,\tau} \\
-  \Express[B]{b}{\ms,\mo,\sigma,\tau}
-  \Rightarrow&\; \Express[B]{b \OR c}{\ms,\mo,\sigma,\tau} \\
-  \Express[B]{c}{\ms,\mo,\sigma,\tau}
-  \Rightarrow&\; \Express[B]{b \OR c}{\ms,\mo,\sigma,\tau}
-\end{align*}
+De reden voor deze andere aanpak is dat de definitie dan makkelijker leest. We definiëren dat $\Express[B]{\;}{}$ de kleinste subset is van hierboven genoemde verzameling, die aan onderstaande axioma's en afleidingsregels voldoet: $\Express[B]{b}{\ms,\mo,\sigma,\tau} \in \Express[B]{\;}{}$ dan en slechts dan als het volgt uit onderstaande axioma's en afleidingsregels.
+
+\begin{minipage}{.33\textwidth}
+  \begin{gather*}
+  \Express[B]{\TRUE}{\ms,\mo,\sigma,\tau} \\[15pt]
+  \frac
+    {\neg \Express[B]{b}{\ms,\mo,\sigma,\tau}}
+    {\Express[B]{\NOT b}{\ms,\mo,\sigma,\tau}}
+  \end{gather*}
+\end{minipage}
+\begin{minipage}{.33\textwidth}
+  \begin{gather*}
+  \frac
+    {\Express[B]{b}{\ms,\mo,\sigma,\tau} \quad \Express[B]{c}{\ms,\mo,\sigma,\tau}}
+    {\Express[B]{b \AND c}{\ms,\mo,\sigma,\tau}}
+  \end{gather*}
+\end{minipage}
+\begin{minipage}{.33\textwidth}
+  \begin{gather*}
+  \frac
+    {\Express[B]{b}{\ms,\mo,\sigma,\tau}}
+    {\Express[B]{b \OR c}{\ms,\mo,\sigma,\tau}} \\[15pt]
+  \frac
+    {\Express[B]{c}{\ms,\mo,\sigma,\tau}}
+    {\Express[B]{b \OR c}{\ms,\mo,\sigma,\tau}}
+  \end{gather*}
+\end{minipage}
 \begin{gather*}
   \Express[B]{e_1 \sim e_2}{\ms,\mo,\sigma,\tau} \textbf{ desda } n_1 \sim n_2 \\
   \Desdas{
@@ -78,14 +94,14 @@ De eerste type expressie dat we tegenkomen in de definitie van §\ref{sec:formel
 %
 \begin{equation*}
   \Express{n}{\ms,\mo,\sigma,\tau} = \Express[Z]{n}{}
-  \tag*{[num]}
+  \tag*{[getal]}
 \end{equation*}
 %
 Daarnaast hebben we natuurlijk de aritmetische expressies van de form $e_1 \circ e_2$. Hierbij is $\circ$ een van de operatoren $+$, $-$ of $\times$. Aritmetische expressies worden geëvalueerd door eerst beide deelexpressies te evalueren tot getallen en hier vervolgens de betreffende operator op lost te laten.
 %
 \begin{gather*}
   \Express{e_1 \circ e_2}{\ms,\mo,\sigma,\tau} = n_1 \circ n_2
-  \tag*{[op]} \\
+  \tag*{[operatie]} \\
   \Desdas{
     \Desda[waarbij]{n_1 = \Express{e_1}{\ms,\mo,\sigma,\tau} \in \ZZ}
     \Desda{n_2 = \Express{e_2}{\ms,\mo,\sigma,\tau} \in \ZZ}
@@ -166,33 +182,33 @@ De volgende voor de hand liggende definitie evalueert een element uit de syntact
 %
 Hier is $E^+$ een meta-variabele voor elementen uit $\Exprs$.
 
-\section{Executie}
+\section{Executie (Natuurlijke Semantiek)}
 
-De kern van de natuurlijke semantiek is een relatie $(\longrightarrow)$, die de eindtoestand na \emph{executie} van een bepaald programma, gegeven een begintoestand en context, bepaalt. De signatuur van deze relatie geeft dit weer:
+Nu zullen we een formele definitie geven van een \emph{natuurlijke semantiek}, ook wel \emph{big-step operational semantics}, voor de taal. Een natuurlijke semantiek doet uitspraken over de executie van een programma in zijn geheel. Deze abstracte kijk op de executie van een programma kenmerkt het concept van natuurlijke semantiek, welke de benaming ``natuurlijk'' heeft gekregen omdat het, net als \emph{natuurlijke deductie} voor de logica, in zekere zin de ''natuurlijk'' vorm van redeneren volgt.
+
+Uitspraken over de terminatie van een bepaald programma worden weergegeven door een relatie $(\longrightarrow)$, die de eindtoestand na \emph{executie} van een bepaald programma, gegeven een begintoestand en context, bepaalt. De signatuur van de relatie geeft dit weer:
 %
 \begin{equation*}
   (\longrightarrow)
   \subseteq
-  \underbrace{\Stm}_\text{programma} \times
-  \underbrace{(\MMs \times \MMo)}_\text{begintoestand} \times
-  \underbrace{(\II \times (\II \cup \{\nil\}))}_\text{context} \times
-  \underbrace{(\MMs \times \MMo)}_\text{eindtoestand}
+  \underbrace{\phantom{|}\!\Stm}_\text{programma} \times
+  \underbrace{\phantom{|}\!(\MMs \times \MMo)}_\text{begintoestand} \times
+  \underbrace{\phantom{|}\!(\II \times (\II \cup \{\nil\}))}_\text{context} \times
+  \underbrace{\phantom{|}\!(\MMs \times \MMo)}_\text{eindtoestand}
   .
 \end{equation*}
 %
-Een uitspraak
-%
-\begin{equation*}
-  (S,\ms,\mo,\sigma,\tau, \ms',\mo') \in (\longrightarrow)
-\end{equation*}
-%
-zullen we echter ``elegant'' als volgt weergeven, waardoor het intuïtieve concept van executie duidelijk wordt:
+Een uitspraak $(S,\ms,\mo,\sigma,\tau, \ms',\mo') \in (\longrightarrow)$ zullen we, om het intuïtieve concept van executie duidelijk te maken, ``elegant'' als volgt weergeven:
 %
 \begin{equation*}
   \Terminates{S}{\ms,\mo}{\sigma,\tau}{\ms',\mo'}.
 \end{equation*}
 %
-Deze uitspraak moet worden gelezen als: ``Executie van programma $S$, in begintoestand $\ms, \mo$ en met als context het bereik $\sigma$ en huidig object $\tau$, resulteert in eindtoestand $\ms', \mo'$''.
+Deze uitspraak moet dan gelezen worden als:
+
+\begin{quote}
+  ``Executie van programma $S$, in begintoestand $\ms, \mo$ en met als context het bereik $\sigma$ en huidig object $\tau$, resulteert in eindtoestand $\ms', \mo'$''.
+\end{quote}
 
 De \emph{context} waarin een programma kan worden geëxecuteerd, definiëren we als het bereik en huidige object. Het huidige bereik verandert niet na executie van een programma, omdat bereik te maken heeft met de ordening van de code van het programma, welke niet verandert tijdens executie. Ook het huidige object verandert niet na executie, omdat de executie van een programma binnen een bepaald object uitvoering van een methode binnen dit object representeert. Daarmee hebben we vastgesteld dat het bereik en huidige object enkel de executie beïnvloedt, dit is de reden dat we deze informatie de \emph{context} van een programma-executie noemen, en boven de pijl in een executie-uitspraak noteren.
 
